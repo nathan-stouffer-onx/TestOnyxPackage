@@ -17,6 +17,10 @@ let package = Package(
         .binaryTarget(
             name: "TestOnyxPackage",
             path: "onyx.xcframework.zip"
+        ),
+        .binaryTarget(
+            name: "TestShaderPackage",
+            path: "shader.xcframework.zip"
         )
     ]
 )
