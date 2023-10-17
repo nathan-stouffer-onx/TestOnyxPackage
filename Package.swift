@@ -9,54 +9,18 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "TestOnyxPackage",
-            targets: ["bgfxPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "onyxPackage", "protobufPackage", "shaderPackage", "stylingPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage" ]),
+            targets: ["TestOnyxPackage", "TestShaderPackage"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(
-            name: "bgfxPackage",
-            path: "bgfx.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "bimg_decodePackage",
-            path: "bimg_decode.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "bxPackage",
-            path: "bx.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "coreUtilsPackage",
-            path: "coreUtils.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "onyxPackage",
+            name: "TestOnyxPackage",
             path: "onyx.xcframework.zip"
         ),
         .binaryTarget(
-            name: "protobufPackage",
-            path: "protobuf.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "shaderPackage",
+            name: "TestShaderPackage",
             path: "shader.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "stylingPackage",
-            path: "styling.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "thirdPartyPackage",
-            path: "thirdParty.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "webpPackage",
-            path: "webp.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "webpdecoderPackage",
-            path: "webpdecoder.xcframework.zip"
         )
     ]
 )
