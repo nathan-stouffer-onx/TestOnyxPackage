@@ -19,6 +19,10 @@ let package = Package(
             path: "bgfx.xcframework.zip"
         ),
         .binaryTarget(
+            name: "bimgPackage",
+            path: "bimg.xcframework.zip"
+        ),
+        .binaryTarget(
             name: "bimg_decodePackage",
             path: "bimg_decode.xcframework.zip"
         ),
