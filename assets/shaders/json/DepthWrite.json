@@ -1,0 +1,47 @@
+{
+  "sortOrder": 4,
+  "requirements": {
+    "position": true,
+    "normal": false,
+    "uv0": false
+  },
+  "bools": {
+    "VarianceShadowMap": false
+  },
+  "outputs" : [
+    {
+      "alias" : "depth",
+      "dataType" : "vec4"
+    }
+  ],
+  "chunks": [
+    {
+      "data": "\tdepth.xyz = vec3(length(worldPosition.xyz) / u_nearFarPlane.y, 0, 0);",
+      "position": "Compose",
+      "positionOffset": 6,
+      "type": "Vertex"
+    },
+    {
+      "data": "\tfragColor.xyz = depth.xyz;",
+      "position": "Main",
+      "positionOffset": 0,
+      "type": "Pixel"
+    },
+    {
+      "lines": [
+            "\tfloat dx = dFdx(depth.x);",
+	          "\tfloat dy = dFdy(depth.x);",
+	          "\tfloat moment2 = depth.x * depth.x;// + 0.00025 * (dx * dx + dy * dy);",
+	          "\tfragColor = vec4(depth.x, moment2, 0.0, 0.0);"
+          ],
+      "position": "Main",
+      "positionOffset": 0,
+      "type": "Pixel",
+      "conditional" : {
+          "ifBoolTrue": "VarianceShadowMap"
+      }
+    }
+  ],
+  "ints": {},
+  "shaderParameters": []
+}

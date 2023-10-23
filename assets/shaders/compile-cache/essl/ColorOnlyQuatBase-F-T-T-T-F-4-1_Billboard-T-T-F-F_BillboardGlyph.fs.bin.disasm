@@ -1,0 +1,33 @@
+precision highp int;
+precision highp float;
+out mediump vec4 bgfx_FragColor;
+in vec4 v_color0;
+in vec4 v_color1;
+in vec4 v_color2;
+in vec4 v_color3;
+in vec4 v_texcoord0;
+uniform sampler2D s_texture0;
+uniform vec4 u_ScaleOffsetTex0;
+void main ()
+{
+  vec4 color_1;
+  vec4 tmpvar_2;
+  tmpvar_2 = texture (s_texture0, (u_ScaleOffsetTex0.xy + (v_texcoord0.xy * u_ScaleOffsetTex0.zw)));
+  vec3 tmpvar_3;
+  tmpvar_3 = ((tmpvar_2.xyz * 2.0) - 1.0);
+  vec4 tmpvar_4;
+  tmpvar_4 = mix (mix (mix (
+    (v_color0 * abs(min (tmpvar_3.x, 0.0)))
+  , v_color1, 
+    abs(min (tmpvar_3.y, 0.0))
+  ), v_color2, max (tmpvar_3.x, 0.0)), v_color3, max (tmpvar_3.y, 0.0));
+  float tmpvar_5;
+  tmpvar_5 = min (tmpvar_2.w, tmpvar_4.w);
+  color_1.xyz = (tmpvar_4.xyz * tmpvar_5);
+  color_1.w = min (1.0, tmpvar_5);
+  if ((color_1.w == 0.0)) {
+    discard;
+  };
+  bgfx_FragColor = color_1;
+}
+

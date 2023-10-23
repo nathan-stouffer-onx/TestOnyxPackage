@@ -1,0 +1,30 @@
+precision highp sampler2DArray;
+precision highp int;
+precision highp float;
+out vec4 bgfx_FragData[8];
+in vec4 v_texcoord7;
+void main ()
+{
+  float d_1;
+  vec4 fragColor_2;
+  fragColor_2.w = 0.0;
+  fragColor_2.xyz = v_texcoord7.xyz;
+  bgfx_FragData[0] = fragColor_2;
+  float tmpvar_3;
+  tmpvar_3 = (((
+    (v_texcoord7.z / v_texcoord7.w)
+   * 0.5) + 0.5) * 256.0);
+  float tmpvar_4;
+  tmpvar_4 = floor(tmpvar_3);
+  d_1 = ((tmpvar_3 - tmpvar_4) * 256.0);
+  float tmpvar_5;
+  tmpvar_5 = floor(d_1);
+  d_1 = ((d_1 - tmpvar_5) * 256.0);
+  vec4 tmpvar_6;
+  tmpvar_6.w = 1.0;
+  tmpvar_6.x = (tmpvar_4 / 256.0);
+  tmpvar_6.y = (tmpvar_5 / 256.0);
+  tmpvar_6.z = (floor(d_1) / 256.0);
+  bgfx_FragData[1] = tmpvar_6;
+}
+

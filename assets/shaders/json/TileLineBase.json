@@ -1,0 +1,631 @@
+{
+    "sortOrder" : 0,
+    "requirements":
+    {
+        "position": false,
+        "positionOutput": false,
+        "dashed" : true
+    },
+    "bools": {
+        "Dashed" : true,
+        "Position" : false,
+        "PositionOutput" : false,
+        "Tangent" : false
+    },
+    "inputs" :
+    [
+        {
+            "alias" : "position",
+            "dataType" : "vec3"
+        },
+        {
+            "alias" : "pattern",
+            "dataType" : "vec2",
+            "conditional" : {
+                "ifBoolTrue" : "DashPattern"
+            }
+        }
+    ],
+    "outputs" :
+    [
+        {
+            "alias": "worldPosition",
+            "dataType": "vec3",
+            "swizzle" : "xyz",
+            "conditional" : {
+                "ifBoolTrue": "PositionOutput"
+            }
+        },
+        {
+            "alias": "tilePosition",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "linePosition",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "color",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "screenPosition",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "lineCenter",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "dashRow",
+            "dataType": "float"
+        },
+        {
+            "alias": "texcoords",
+            "dataType": "vec4"
+        },
+        {
+            "alias" : "line_endAngles",
+            "dataType" : "vec4"
+        },
+        {
+            "alias" : "line_dir",
+            "dataType" : "vec3"
+        },
+        {
+            "alias" : "line_side",
+            "dataType" : "vec3"
+        },
+        {
+            "alias": "line_size",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "line_endPointsScreen",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "line_lengthTotal",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "line_endFlags",
+            "dataType": "vec4"
+        }
+    ],
+
+    "chunks": [
+    {
+        "lines":
+        [
+            "#include <common.sh>",
+            "#include \"map3dFunctions.sc\""
+        ],
+        "position": "Includes",
+        "type": "Vertex_and_Pixel"
+    },
+    {
+        "lines":
+        [
+            "#include \"map3dFragFunctions.sc\""
+        ],
+        "position": "Includes",
+        "type": "Pixel"
+    },
+    {
+        "lines" : [
+            "\t float cMaxLineWidth = 16.0; // analogous value in LineStyleAtlas.cpp",
+            "\t vec2 texParams = u_params.zw;",
+            "\t vec4 vecColor = texture2DLod(s_VectorColors, texParams, 0);",
+            "\t vec4 lineWidth = texture2DLod(s_VectorWidths, texParams, 0) * cMaxLineWidth;",
+            "\t float dashRow = texture2DLod(s_DashCoords, texParams, 0).r;",
+            "\t vec4 line_lengthTotal = vec4(u_params.xy,0,0);",
+            "\t float p2Cap = u_params.y;",
+            "\t vec2 p1 = u_p1p2.xy;",
+            "\t vec2 p2 = u_p1p2.zw;"
+        ],
+        "position" : "Main",
+        "type" : "Vertex"
+    },
+    {
+        "lines" : [
+            "\t vec2 tileP1 = mix(u_tileMin.xy, u_tileMax.xy, p1.xy);",
+            "\t vec2 tileP2 = mix(u_tileMin.xy, u_tileMax.xy, p2.xy);",
+            "\t vec2 tilePos = mix(p1, p2, position.y);",
+            "\t float tileZ = u_tileMin.z;",
+     
+            "vec4 texcoords = vec4(position.xy,0,0);",
+            "float lineLengthSoFar = position.z;",
+            "position.xyz = vec3(0, position.y, 0); //repacking to match the previous pos/uv setup, but with all data just in pos",
+
+            "vec4 line_size = lineWidth; //override lineWidth here to use debug values for line dimensions",
+            "float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0;//x is solid width, y is dash width, zw are outline gap and width params, constant on the end is excess padding so we have room for AA",
+            "widthExpansion /= 2.0; //account for x uv being -1 to both side so need to cut width in half to get proper pixel count",
+            "float endA = 1.0 - texcoords.y; //uv.y is 0 for this one, so make it 1.0",
+            "float endB = texcoords.y; //uv.y is 1 for this one"
+        ],
+        "position" : "Main",
+        "type" : "Vertex",
+        "positionOffset": 1
+    },
+    {
+        "lines" : [
+            "float tileZ1 = u_tileMin.z;",
+
+            "float z1 = meshHeightAtPlanes(p1, u_MeshResolution.x);",
+            "tileZ1 += z1 * u_tileSize.z;",
+
+            "float tileZ2 = u_tileMin.z;",
+            "float z2 = meshHeightAtPlanes(p2, u_MeshResolution.x);",
+
+            "tileZ2 += z2 * u_tileSize.z;",
+
+            "vec4 wp1 = vec4(tileP1, tileZ1, 1.0);",
+            "vec4 wp2 = vec4(tileP2, tileZ2, 1.0);",
+            
+            "vec4 screen1 = mul(u_proj, mul(u_view, wp1));",
+            "vec4 screen2 = mul(u_proj, mul(u_view, wp2));",
+            "float origW = mix(screen1.w, screen2.w, position.y);",
+            "screen1 /= screen1.w;",
+            "screen2 /= screen2.w;",
+            "screen1.xy = screen1.xy * 0.5 + 0.5;",
+            "screen2.xy = screen2.xy * 0.5 + 0.5;",
+            "screen1.xy /= u_viewTexel.xy;",
+            "screen2.xy /= u_viewTexel.xy;",
+
+            "vec4 line_endPointsScreen = vec4(screen1.xy, screen2.xy);",
+            "vec4 transformPosition = mix(screen1, screen2, position.y);",
+            "\t vec3 screenPos = transformPosition.xyz / transformPosition.w;",
+            "//float wPos = transformPosition.w / abs(transformPosition.w);",
+            
+            
+            "vec3 line_dir = screen2.xyz - screen1.xyz; //should this be screen or world distance?",
+            "float lineLen = length(line_dir);",
+            "line_dir /= lineLen;",
+            "vec3 line_side = vec3(normalize(vec2(-line_dir.y, line_dir.x)),0);",
+            "screenPos.xyz += line_side.xyz * texcoords.x * widthExpansion;",
+            
+            "//overlap ends for the pixel miter",
+            "vec2 endExpansion = (-line_dir.xy * endA * widthExpansion + line_dir.xy * endB * widthExpansion);",
+            "screenPos.xy += endExpansion;",
+
+            "//move for miters",
+            "vec4 line_endFlags = vec4(u_endAngles.xz,0,0);",
+            "vec2 prevTP = mix(u_tileMin.xy, u_tileMax.xy, u_endAngles.xy);",
+            "vec2 nextTP = mix(u_tileMin.xy, u_tileMax.xy, u_endAngles.zw);",
+            "vec3 prevPos = vec3(prevTP, u_tileMin.z + meshHeightAtPlanes(u_endAngles.xy, u_MeshResolution.x) * u_tileSize.z);",
+            "vec3 nextPos = vec3(nextTP, u_tileMin.z + meshHeightAtPlanes(u_endAngles.zw, u_MeshResolution.x) * u_tileSize.z);",
+            "vec4 screenPrev = mul(u_proj, mul(u_view, vec4(prevPos,1.0)));",
+            "vec4 screenNext = mul(u_proj, mul(u_view, vec4(nextPos,1.0)));",
+            "screenPrev /= screenPrev.w;",
+            "screenNext /= screenNext.w;",
+            "screenPrev.xy = screenPrev.xy * 0.5 + 0.5;",
+            "screenNext.xy = screenNext.xy * 0.5 + 0.5;",
+            "screenPrev.xy /= u_viewTexel.xy;",
+            "screenNext.xy /= u_viewTexel.xy;",
+
+            "vec3 prevDir = normalize(screenPrev.xyz - screen1.xyz);",
+            "vec3 nextDir = normalize(screenNext.xyz - screen2.xyz);",
+            "if(u_endAngles.x < -9999.0) prevDir = line_dir;",
+            "if(u_endAngles.z < -9999.0) nextDir = -line_dir;",
+            "vec3 endADir = normalize(prevDir + line_dir);",
+            "vec3 endBDir = normalize(-line_dir + nextDir);",
+            "//pass over the xy vectors for the mitered ends",
+            "vec4 line_endAngles = vec4(endADir.xy * sign(length(u_endAngles.xy)), endBDir.xy * sign(length(u_endAngles.zw))); //angle goes to 0 if theres no connecting segment to indicate its an end point",
+            "float end = texcoords.y;",
+            "texcoords.y *= lineLen / widthExpansion;",
+            "texcoords.y += sign(end - 0.5) * length(endExpansion) / widthExpansion;",
+            "texcoords.z = lineLen / widthExpansion;"
+        ],
+        "position" : "Main",
+        "type" : "Vertex",
+        "positionOffset": 4
+    },
+    {
+        "lines" : [
+            "\t float lineEdgeOffsetDist = lineWidth.x * 0.5;",
+            "\t vec4 lineCenter = vec4(1,1,1,1);// vec4(pixelLength * position.y + (lineWidth * 0.5f * position.z), 0.0, 0.0, 0.0);",
+            "\t vec4 screenPosition = vec4(screenPos.xyz, 1.0);// vec4(screenPos.xy + screenOffset, screenPos.z, 1.0);",
+            "\t vec4 linePosition = vec4(position.x, position.z, 0, lineWidth.x);",
+            "\t vec4 color = vec4(mix(vecColor.rgb, u_drawColor.rgb, u_drawColor.a), vecColor.a);",
+            "//\t screenPosition.w = sqrt(dot(u_screenDimensions.xy, u_screenDimensions.xy)) * lineEdgeOffsetDist * 0.5;",
+            "\t vec4 dashUV = vec4(position.xyz, 1.0);",
+            "\t float zBias = (1.0 / 2500.0) * max(1.0,widthExpansion*2.0) * pow(max(1.0, 1.0 + (u_nearFarPlane.y - u_nearFarPlane.x - 500.0) / 100.0),2.5);",
+            "\t screenPosition.z -= zBias / origW;"
+        ],
+        "position" : "Compose",
+        "type" : "Vertex"
+    },
+    {
+        "lines": [
+            "\tvec4 tilePosition = vec4(tilePos, 0.0, 0.0);",
+            "vec4 glPos = vec4(screenPosition.xyz, 1.0);",
+            "glPos.xy *= u_viewTexel.xy;",
+            "glPos.xy = glPos.xy * 2.0 - 1.0;",
+            "glPos.xyz *= origW;",
+            "glPos.w = origW;",
+            "\tgl_Position = glPos;"
+        ],
+        "position": "Compose",
+        "positionOffset": 10,
+        "type": "Vertex"
+    },
+    {
+        "data": "\tfloat repeat(float x) { return abs(fract(x*0.5+0.5)-0.5)*2.0; }",
+        "position": "Functions",
+        "positionOffset": 0,
+        "type": "Pixel" 
+    },
+    {
+        "lines": [
+            "float LineDistField(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded, float dashOn, float time)",
+            "{",
+            "\t// Don't let it get more round than circular.",
+            "\trounded = min(thick.y, rounded);",
+            "\t// midpoint",
+            "\tvec2 mid = (pB + pA) * 0.5;",
+            "\t// vector from point A to B",
+            "\tvec2 delta = pB - pA;",
+            "\t// Distance between endpoints",
+            "\tfloat lenD = length(delta);",
+            "\t// unit vector pointing in the line's direction",
+            "\tvec2 unit = delta / lenD;",
+            "\t// Check for when line endpoints are the same",
+            "\tif (lenD < 0.0001) unit = vec2(1.0, 0.0);",
+            "\t// Perpendicular vector to unit - also length 1.0",
+            "\tvec2 perp = unit.yx * vec2(-1.0, 1.0);",
+            "\t// position along line from midpoint",
+            "\tfloat dpx = dot(unit, uv.xy - mid);",
+            "\t// distance away from line at a right angle",
+            "\tfloat dpy = dot(perp, uv.xy - mid);",
+            "\t// Make a distance function that is 0 at the transition from black to white",
+            "\tfloat disty = abs(dpy) - thick.y + rounded;",
+            "\tfloat distx = abs(dpx) - lenD * 0.5 - thick.x + rounded;",
+            "\t// Too tired to remember what this does. Something like rounded endpoints for distance function.",
+            "\tfloat dist = length(vec2(max(0.0, distx), max(0.0,disty))) - rounded;",
+            "\tdist = min(dist, max(distx, disty));",
+            "\t// This is for animated dashed lines. Delete if you don't like dashes.",
+            "\tfloat dashScale = 2.0*thick.y;",
+            "\t// Make a distance function for the dashes",
+            "\tfloat dash = (repeat(dpx/dashScale + time)-0.5)*dashScale;",
+            "\t// Combine this distance function with the line's.",
+            "\tdist = max(dist, dash-(1.0-dashOn*1.0)*10000.0);",
+            "\t//distance from endpoint",
+            "//need to account for width and endcap size here to scale it so its not stretched",
+            "\tfloat distPa = length(pA - uv.xy) - thick.y;",
+            "\tfloat distPb = length(pB - uv.xy)- thick.y;",
+            "\tfloat endA = max(0.0, -sign(uv.x));",
+            "\tfloat endB = max(0.0,sign(uv.x - uv.z));",
+            "\tfloat endMask = endA + endB;",
+            "\treturn mix(dist, min(distPa, distPb), endMask);",
+            "\t//return dist;",
+            "}"
+        ],
+        "position": "Functions",
+        "positionOffset": 0,
+        "type": "Pixel" 
+    },
+    {
+        "lines": [
+            "float smoothStep(float val, float low, float high)",
+            "{",
+            "\tfloat f = (val - low) / (high - low);",
+            "\treturn min(max(f, 0.0), 1.0);",
+            "}"
+        ],
+        "position": "Functions",
+        "positionOffset": 0,
+        "type": "Pixel" 
+    },
+    {
+        "lines": [
+            "// This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.",
+            "float FillLine(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded)",
+            "{",
+            "\tfloat df = LineDistField(uv, pA, pB, thick, rounded, 0.0, 0.0);",
+            "\treturn smoothStep(saturate(-df), 0.0, 0.05);",
+            "}"
+        ],
+        "position": "Functions",
+        "positionOffset": 0,
+        "type": "Pixel" 
+    },
+    {
+        "lines": [
+            "// This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.",
+            "float DashLine(vec3 uv, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)",
+            "{",
+            "\tfloat dashLenCount = floor(texture2D(s_DashSampler, vec2(0.0, dashId)).x * (s_DashSampler_Res.x - 1.0) + 0.5);",
+            "\tfloat worldLineLen = totalLen.y - totalLen.x;",
+            "\tfloat screenLineLen = length(screenEndpoints.xy - screenEndpoints.zw);",
+            "\tfloat worldToScreenLengthScale = screenLineLen / worldLineLen;",
+            "\tfloat lengthOffset = totalLen.x * worldToScreenLengthScale +  uv.x * thick.y; //find our position along the dashing",
+            "\tlengthOffset /= thick.y; //put in scale of line widths per dash unit",
+            "\tfloat dashScale = 1.0; //magic number to fix scaling - may not be needed, converted to zoom controlled, or...?",
+            "\tfloat dashPosition = mod(dashScale * lengthOffset + u_time.x / 500.0, dashLenCount); //tile by the number of dash units we have per pattern ",
+            "\tfloat dashUVx = (dashPosition + 1.0) / s_DashSampler_Res.x;",
+            "\tfloat dashOnOff = texture2D(s_DashSampler, vec2(dashUVx, dashId)).x;",
+            "\tfloat dashDf = LineDistField(uv, pA, pB, thick, 0.0, 0.0, 0.0) * dashOnOff;",
+            "\tfloat dashLine = smoothStep((-dashDf), 0.0, 0.01);",
+            "\t return dashLine;",
+            "}"
+        ],
+        "position": "Functions",
+        "positionOffset": 0,
+        "type": "Pixel" 
+    },
+    {
+        "lines": [
+            "// This makes an outlined line in UV units. A 1.0 thick outline will span 0..1 in UV space.",
+            "float DrawOutline(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded, float outlineThick)",
+            "{",
+            "\tfloat df = LineDistField(uv, pA, pB, vec2(thick), rounded, 0.0, 0.0);",
+            "\treturn smoothStep(saturate(-((abs(df + outlineThick*0.5) - outlineThick * 0.5))), 0.0, 0.001);",
+            "}"
+        ],
+        "position": "Functions",
+        "positionOffset": 0,
+        "type": "Pixel" 
+    },
+    {
+        "lines": [
+            "\tfloat inX = inRange(tilePosition.x, u_TileFragClip.x, u_TileFragClip.z);",
+            "\tfloat inY = inRange(tilePosition.y, u_TileFragClip.y, u_TileFragClip.w);",
+            "\tif (inX * inY == 0.0)",
+            "\t{",
+            "\t\tdiscard;",
+            "\t}"
+        ],
+        "position": "Main",
+        "type": "Pixel"
+    },
+    {
+        "lines" : [
+            "\t vec2 d = abs(linePosition.xy);",
+            "\t float pos = dot(d, d);",
+            "\t float cMaxDashArrayLength = 16.0;",
+            "\t vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;",
+            "\t float dashV = dashRow + 0.5 * dashPixelWidth.y;"
+        ],
+        "position" : "Main",
+        "type" : "Pixel"
+    },
+    {
+        "lines": [
+            "//clip off the ends of the corners to make the mitered joints",
+            "vec2 toEndA = normalize(screenPosition.xy - line_endPointsScreen.xy);//normalize(texcoords.xy - vec2(0,0)) * u_viewTexel.xy;",
+            "vec2 toEndB = normalize(screenPosition.xy - line_endPointsScreen.zw);//normalize(texcoords.xy - vec2(0,texcoords.z)) * u_viewTexel.xy;",
+            "//spin the miters 90 deg so they're 90 deg to the miter angle",
+            "vec2 angleAUV = line_endAngles.xy;",
+            "vec2 angleBUV = line_endAngles.zw;",
+            "vec2 endADir = vec2(-angleAUV.y, angleAUV.x);",
+            "vec2 endBDir = vec2(-angleBUV.y, angleBUV.x);",
+            "//calculate if the directions are facing towards the center of the line like we expect, and flip if not",
+            "float flipA = sign(dot(endADir, line_dir.xy));//vec2(0,1)));",
+            "float flipB = sign(dot(endBDir, -line_dir.xy));//vec2(0,-1)));",
+            
+            "float clipA = -flipA * dot(toEndA, endADir); //see which side of the end we're on",
+            "float clipB = flipB * dot(toEndB, endBDir);",
+            "if( ((clipA * abs(line_endAngles.x)) > 0.0 && line_endFlags.x > -9999.0) || ((clipB * abs(line_endAngles.z)) < 0.0 && line_endFlags.y > -9999.0) )",
+            "\tdiscard;"
+        ],
+        "position": "Main",
+        "positionOffset": 0,
+        "type": "Pixel"
+      },
+    {
+        "lines": [
+            "float ends = texcoords.z;",
+            
+            "vec3 lineCoords = vec3(texcoords.yx, texcoords.z);",
+            "vec2 start = vec2(0,0);",
+            "vec2 end = vec2(ends, 0);",
+            "float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0;",
+            "widthExpansion /= 2.0; //account for x uv being -1 to both side so need to cut width in half to get proper pixel count",
+            "float solid = FillLine(lineCoords, start, end, vec2((line_size.x * 0.5) / widthExpansion, (line_size.x * 0.5) / widthExpansion), 0.0);",
+            "float solidOuterOutline = DrawOutline(lineCoords, start, end, vec2( ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion, ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion), 0.0, line_size.w * 0.5 / widthExpansion);",
+            "float dashLine = DashLine(lineCoords, dashV, start, end, line_endPointsScreen, line_lengthTotal.xy, vec2((line_size.y * 0.5) / widthExpansion,(line_size.y * 0.5) / widthExpansion));",
+            "float alpha = min(1.0, max(dashLine + solid + solidOuterOutline,0));",
+            "vec4 fragColor = vec4(solid*1.0, -solid*1.0, 0.0,1.0);",
+            "//temp variables for color, need to hook up to cpu access",
+            "vec4 u_lineOuterOutlineColor = vec4(0,0,1,1);",
+            "vec4 dashColor = vec4(1,0,0,1);",
+            "vec3 solidDashBlend = mix(color.xyz, dashLine * dashColor.xyz, dashLine);",
+            "fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutline), alpha);",
+            "//float df = LineDistField(lineCoords, start, end, vec2(1.0,1.0), 0.0, 0.0, 0.0);",
+            "//fragColor.xyzw = vec4(df, -df,0,1.0);",
+            "\tgl_FragData[0] = vec4(fragColor.rgb, fragColor.a * color.a * u_vectorFade.r);",
+            "\tgl_FragData[1] = vec4(0, 0, 0, 0);"
+        ],
+        "position": "Compose",
+        "type": "Pixel"
+    },
+    {
+        "lines": [
+            "\t//scaling from -1,1 to 0,1, but I suspect that may only be needed for opengl?",
+            "\tfloat d = ((depth.z / depth.w) * 0.5 + 0.5) * 256.0;",
+            "\tfloat r = floor(d);",
+            "\td = (d - r) * 256.0;",
+            "\tfloat g = floor(d);",
+            "\td = (d - g) * 256.0;",
+            "\tfloat b = floor(d);",
+            "\tgl_FragData[1] = vec4(r / 256.0, g / 256.0, b / 256.0, 1.0);"
+        ],
+        "position" : "Compose",
+        "type" : "Pixel",
+        "conditional" : {
+            "ifBoolTrue": "worldPosition"
+        }
+    }
+],
+
+    "shaderParameters": [
+        {
+            "componentName": "TileLineBase",
+            "name": "s_VectorColors",
+            "type": "texture",
+            "anisoFilter":  false
+        },
+        {
+            "componentName": "TileLineBase",
+            "name": "s_VectorWidths",
+            "type": "texture",
+            "anisoFilter":  false
+        },
+        {
+            "componentName" : "TileLineBase",
+            "name" : "s_DashCoords",
+            "type" : "texture",
+            "anisoFilter":  false
+        },
+        {
+            "componentName" : "TileLineBase",
+            "name" : "s_DashSampler",
+            "type" : "texture",
+            "anisoFilter":  false
+        },
+        {
+            "componentName": "TileLineBase",
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_time",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },        
+        {
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_tileMin",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": -10000.0,
+                "y": -10000.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_tileMax",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": -10000.0,
+                "y": -10000.0,
+                "z": 1.0
+            }
+        },
+        {
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_TileFragClip",
+            "realtimeUniform": true,
+            "type": "vec4",
+            "vec4": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0,
+                "w": 1.0
+            }
+        },
+        {
+            "componentName": "TileLineBase",
+            "realtimeUniform": true,
+            "instanced": true,
+            "name" : "u_endAngles",
+            "type" : "vec4"
+        },
+        {
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "instanced": true,
+            "name" : "u_p1p2",
+            "type" : "vec4",
+            "vec4": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+            }
+        },
+        {
+            "comment" : ".xy = normalized pixel height/width; zw = screen dimensions in pixels",
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "name" : "u_screenDimensions",
+            "type" : "vec4",
+            "vec4": {
+                "x" : 0.01,
+                "y" : 0.01,
+                "z" : 1280,
+                "w" : 720
+            }
+            
+        },
+        {
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "instanced": true,
+            "name" : "u_params",
+            "type" : "color",
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            }
+        },
+        {
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "name" : "u_drawColor",
+            "type" : "color",
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            }
+        },
+        {
+            "componentName": "TileLineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "name" : "u_vectorFade",
+            "type" : "float",
+            "float": 1.0
+        },
+        {
+            "componentName": "TileLineBase",
+            "realtimeUniform": true,
+            "name" : "u_nearFarPlane",
+            "type" : "vec3"
+        }
+    ]
+}

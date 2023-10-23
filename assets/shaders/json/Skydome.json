@@ -1,0 +1,89 @@
+{
+  "sortOrder": 4,
+  "requirements": {
+    "position": true,
+    "normal": false,
+    "uv0": false,
+    "positionOutput" : true
+  },
+  "inputs" : [
+    {
+      "alias" : "position",
+      "dataType" : "vec3"
+    }
+  ],
+  "outputs" :
+  [
+    {
+      "alias": "worldPosition",
+      "dataType": "vec3",
+      "swizzle" : "xyz"
+    }
+  ],
+  "bools": {},
+  "chunks": [
+    {
+      "comment" : "#include \"map3dFunctions.sc\"",
+
+      "lines":
+      [
+          "#include <common.sh>"
+          , "#include \"map3dFunctions.sc\""
+      ],
+      "position": "Includes",
+      "type": "Vertex_and_Pixel"
+    },
+    {
+      "lines": [
+        "\tgl_FragData[0] = vec4(mix(u_hazeColor, u_skyColor, worldPosition.z).xyz, 1.0);",
+        "\tgl_FragData[1] = vec4(1, 1, 1, 1);"
+      ],
+      "position": "Compose",
+      "positionOffset": 10,
+      "type": "Pixel"
+    },
+    {
+      "lines": [
+        "\tvec3 worldPosition = position;",
+        "\tvec4 projected = mul(u_proj, mul(u_view, vec4(position, 1.0)));",
+        "\tgl_Position = projected;"
+      ],
+      "position": "Main",
+      "type": "Vertex"
+    }
+  ],
+  "ints": {},
+  "shaderParameters": [
+    {
+    "componentName": "Skybox",
+    "imguiRate": 0.01,
+    "max": -1.0,
+    "min": -1.0,
+    "name": "u_skyColor",
+    "realtimeUniform": true,
+    "type": "vec4",
+    "vec4": {
+        "x": 0.52,
+        "y": 0.65,
+        "z": 0.85,
+        "w": 1
+    }
+  },
+  {
+    "componentName": "Skybox",
+    "imguiRate": 0.01,
+    "max": -1.0,
+    "min": -1.0,
+    "name": "u_hazeColor",
+    "realtimeUniform": true,
+    "type": "color",
+    "color": {
+        "r": 0.7,
+        "g": 0.8,
+        "b": 0.91,
+        "a": 1
+    }
+  }
+]
+
+}

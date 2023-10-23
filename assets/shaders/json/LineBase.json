@@ -1,0 +1,429 @@
+{
+    "sortOrder" : 0,
+    "requirements":
+    {
+        "position": false,
+        "positionOutput": false,
+        "transformPosition": false,
+        "dashed" : true
+    },
+    "bools": {
+        "Dashed" : true,
+        "Position" : false,
+        "PositionOutput" : false,
+        "Tangent" : false,
+        "TransformPosition" : false
+    },
+    "ints": {
+        "ColorCount" : 0,
+        "UVCount" :  0
+    },
+
+    "inputs" :
+    [
+        {
+            "alias" : "position",
+            "dataType" : "vec3"
+        },
+        {
+            "alias" : "pattern",
+            "dataType" : "vec2",
+            "conditional" : {
+                "ifBoolTrue" : "DashPattern"
+            }
+        }
+    ],
+
+    "outputs" :
+    [
+        {
+            "alias": "worldPosition",
+            "dataType": "vec3",
+            "swizzle" : "xyz",
+            "conditional" : {
+                "ifBoolTrue": "PositionOutput"
+            }
+        },
+        {
+            "alias": "linePosition",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "color",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "screenPosition",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "lineCenter",
+            "dataType": "vec4"
+        }
+    ],
+
+    "chunks": [
+    {
+        "lines":
+        [
+            "#include <common.sh>",
+            "#include \"map3dFunctions.sc\""
+        ],
+        "position": "Includes",
+        "type": "Vertex_and_Pixel"
+    },
+    {
+        "lines" : [
+            "\t float lineWidth = u_origin.w;",
+            "\t float lineLength = u_length.w;",
+            "\t float p1Cap = u_endCaps.x;",
+            "\t float p2Cap = u_endCaps.y;",
+            "\t vec3 p1 = u_origin.xyz;",
+            "\t vec3 p2 = p1 + ((u_length.xyz) * lineLength);"
+        ],
+        "position" : "Main",
+        "type" : "Vertex"
+    },
+    {
+        "lines" : [
+            "\t vec2 tileP1 = mix(u_tileMin.xy, u_tileMax.xy, clamp(p1.xy, 0, 1));",
+            "\t vec2 tileP2 = mix(u_tileMin.xy, u_tileMax.xy, clamp(p2.xy, 0, 1));",
+            "\t vec2 tilePos = mix(tileP1, tileP2, position.y);",
+            "\t float tileZ = u_tileMin.z;"
+        ],
+        "position" : "Main",
+        "type" : "Vertex",
+        "conditional" : {
+            "ifBoolTrue" : "TransformPosition"
+        },
+        "positionOffset": 1
+    },
+    {
+        "lines" : [
+            "\t vec4 screenP1 = mul(u_proj, mul(u_view, vec4(tileP1, tileZ, 1.0)));",
+            "\t vec4 screenP2 = mul(u_proj, mul(u_view, vec4(tileP2, tileZ, 1.0)));",
+            "\t float wPos = mix(screenP1.w, screenP2.w, position.y);",
+            "\t wPos = wPos / abs(wPos);",
+            "\t screenP1 /= screenP1.w;",
+            "\t screenP2 /= screenP2.w;",
+            "\t vec2 screenDir = normalize(screenP2.xy - screenP1.xy);",
+            "\t vec4 transformPosition = mix(screenP1, screenP2, position.y);", 
+            "\t vec3 screenPos = transformPosition.xyz;",
+            "\t float pixelLength = length((screenP2.xy - screenP1.xy) / u_screenDimensions.xy);"
+        ],
+        "position" : "Main",
+        "type" : "Vertex",
+        "conditional" : {
+            "ifBoolTrue" : "TransformPosition"
+        },
+        "positionOffset": 4
+    },
+    {
+        "lines" : [
+            "\t vec2 screenDir = u_length.xy;",
+            "\t vec3 screenPos = u_origin.xyz;",
+            "\t float pixelLength = u_length.w;",
+            "\t float wPos = 1.0;"
+        ],
+        "position" : "Main",
+        "type" : "Vertex",
+        "conditional" : {
+            "ifBoolFalse" : "TransformPosition"
+        },
+        "positionOffset": 1
+    },    
+    {
+        "lines" : [
+            "\t float lineEdgeOffsetDist = lineWidth * 0.5;",
+            "\t float capMultiplier = (p1Cap * (1.0 - position.y)) + (p2Cap * position.y);",
+            "\t vec2 capOffset = capMultiplier * (lineEdgeOffsetDist * position.z) * (u_screenDimensions.xy * screenDir.xy);",
+            "\t float screenLength = (lineLength * position.y);",
+            "\t vec2 screenOffset = screenLength * screenDir;",
+            "\t vec2 pixelOffset = (u_screenDimensions.zw * screenDir.xy);",
+            "\t vec4 lineCenter = vec4(pixelLength * position.y + (lineWidth * 0.5f * position.z), 0, 0, 0);",
+            "\t screenOffset.xy = (screenOffset * u_screenDimensions.xy) + capOffset;",
+            "\t vec4 screenPosition = vec4(screenPos.xy + screenOffset, screenPos.z, 1);",
+            "\t vec2 right = u_screenDimensions.xy * vec2(-screenDir.y, screenDir.x);",
+            "\t screenPosition.xy += position.x * right * lineEdgeOffsetDist;",
+            "\t vec4 linePosition = vec4(position.x, position.z, 0, lineWidth);",
+            "\t vec4 color = vec4(mix(u_color.rgb, u_drawColor.rgb, u_drawColor.a), u_color.a);",
+            "\t screenPosition.w = sqrt(dot(u_screenDimensions.xy, u_screenDimensions.xy)) * lineEdgeOffsetDist * 0.5;",
+            "\t vec4 dashUV = vec4(position.xyz, 1);",
+            "\t screenPosition.z -= (1.0 / 128.0);"
+        ],
+        "position" : "Compose",
+        "type" : "Vertex"
+    },
+    {
+        "lines" : [
+            "\t vec2 d = abs(linePosition.xy);",
+            "\t float pos = dot(d, d);",
+            "//\t vec4 tex = texture2D(s_DashSampler, lineCenter.xy / (linePosition.w * s_DashSampler_Res.x));",
+            "\t vec4 tex = texture2D(s_DashSampler, lineCenter.xy / (linePosition.w * 8.0));",
+            "\t vec4 outColor = vec4(color.xyz, tex.r * color.w * ceil(1.0 - pos));",
+            "\t// vec4 outColor = vec4(color.xyz, color.w * ceil(1.0 - pos));"
+        ],
+        "position" : "Main",
+        "type" : "Pixel"
+    },
+    {
+        "lines": [
+            "\tgl_Position = vec4(screenPosition.xyz * wPos, wPos);"
+            ],
+        "position": "Compose",
+        "positionOffset": 10,
+        "type": "Vertex"
+    },
+    {
+        "lines": [
+            "\tgl_FragData[0] = outColor;",
+            "\tgl_FragData[1] = vec4(0, 0, 0, 0);"
+        ],
+        "position": "Compose",
+        "type": "Pixel"
+    },
+    {
+        "lines": [
+            "\t//scaling from -1,1 to 0,1, but I suspect that may only be needed for opengl?",
+            "\tfloat d = ((depth.z / depth.w) * 0.5 + 0.5) * 256.0;",
+            "\tfloat r = floor(d);",
+            "\td = (d - r) * 256.0;",
+            "\tfloat g = floor(d);",
+            "\td = (d - g) * 256.0;",
+            "\tfloat b = floor(d);",
+            "\tgl_FragData[1] = vec4(r / 256.0, g / 256.0, b / 256.0, 1.0);"
+        ],
+        "position" : "Compose",
+        "type" : "Pixel",
+        "conditional" : {
+            "ifBoolTrue": "worldPosition"
+        }
+    }
+],
+
+    "shaderParameters": [
+        {
+            "componentName" : "LineBase",
+            "name" : "s_DashSampler",
+            "type" : "texture",
+            "samplerFlags" : 320
+        },
+        {
+            "componentName" : "LineBase",
+            "name" : "u_dashUV",
+            "type" : "vec3",
+            "vec3" : {
+                "x" : 0,
+                "y" : 0,
+                "z" : 0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_nearFarPlane",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_eyePos",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camRight",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camForward",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camUp",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_time",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },        
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_tileMin",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": -10000.0,
+                "y": -10000.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_tileMax",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": -10000.0,
+                "y": -10000.0,
+                "z": 1.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "instanced": true,
+            "name" : "u_origin",
+            "type" : "vec4",
+            "vec4": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "instanced": true,
+            "name" : "u_length",
+            "type" : "vec4",
+            "vec4": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+            }
+        },
+        {
+            "comment" : ".xy = normalized pixel height/width; zw = screen dimensions in pixels",
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "name" : "u_screenDimensions",
+            "type" : "vec4",
+            "vec4": {
+                "x" : 0.01,
+                "y" : 0.01,
+                "z" : 1280,
+                "w" : 720
+            }
+            
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "instanced": true,
+            "name" : "u_color",
+            "type" : "color",
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            }
+        },
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "name" : "u_drawColor",
+            "type" : "color",
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            }
+        },        
+        {
+            "componentName": "LineBase",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "realtimeUniform": true,
+            "instanced": true,
+            "name" : "u_endCaps",
+            "type" : "vec4",
+            "vec4": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0,
+                "w": 1.0
+            }
+        }
+    ]
+}

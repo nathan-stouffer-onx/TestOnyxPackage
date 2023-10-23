@@ -1,0 +1,59 @@
+precision highp int;
+precision highp float;
+in highp vec3 a_position;
+in highp vec4 i_data1;
+in highp vec4 i_data2;
+in highp vec4 i_data3;
+in highp vec4 i_data4;
+out highp vec4 v_color0;
+out highp vec4 v_texcoord5;
+out highp vec4 v_texcoord6;
+out highp vec4 v_texcoord7;
+uniform highp vec4 u_screenDimensions;
+uniform highp vec4 u_drawColor;
+void main ()
+{
+  highp vec4 screenPosition_1;
+  highp float tmpvar_2;
+  tmpvar_2 = (i_data4.w * 0.5);
+  highp vec4 tmpvar_3;
+  tmpvar_3.yzw = vec3(0.0, 0.0, 0.0);
+  highp float tmpvar_4;
+  tmpvar_4 = (i_data3.w * a_position.y);
+  tmpvar_3.x = (tmpvar_4 + (tmpvar_2 * a_position.z));
+  highp vec4 tmpvar_5;
+  tmpvar_5.w = 1.0;
+  tmpvar_5.xy = (i_data4.xy + ((
+    (tmpvar_4 * i_data3.xy)
+   * u_screenDimensions.xy) + (
+    (((i_data1.x * (1.0 - a_position.y)) + (i_data1.y * a_position.y)) * (tmpvar_2 * a_position.z))
+   * 
+    (u_screenDimensions.xy * i_data3.xy)
+  )));
+  tmpvar_5.z = i_data4.z;
+  highp vec2 tmpvar_6;
+  tmpvar_6.x = -(i_data3.y);
+  tmpvar_6.y = i_data3.x;
+  screenPosition_1.xy = (tmpvar_5.xy + ((a_position.x * u_screenDimensions.xy) * (tmpvar_6 * tmpvar_2)));
+  highp vec4 tmpvar_7;
+  tmpvar_7.z = 0.0;
+  tmpvar_7.x = a_position.x;
+  tmpvar_7.y = a_position.z;
+  tmpvar_7.w = i_data4.w;
+  highp vec4 tmpvar_8;
+  tmpvar_8.xyz = mix (i_data2.xyz, u_drawColor.xyz, u_drawColor.w);
+  tmpvar_8.w = i_data2.w;
+  screenPosition_1.w = ((sqrt(
+    dot (u_screenDimensions.xy, u_screenDimensions.xy)
+  ) * tmpvar_2) * 0.5);
+  screenPosition_1.z = (i_data4.z - 0.0078125);
+  highp vec4 tmpvar_9;
+  tmpvar_9.xyz = screenPosition_1.xyz;
+  tmpvar_9.w = 1.0;
+  gl_Position = tmpvar_9;
+  v_texcoord5 = tmpvar_3;
+  v_texcoord6 = screenPosition_1;
+  v_color0 = tmpvar_8;
+  v_texcoord7 = tmpvar_7;
+}
+

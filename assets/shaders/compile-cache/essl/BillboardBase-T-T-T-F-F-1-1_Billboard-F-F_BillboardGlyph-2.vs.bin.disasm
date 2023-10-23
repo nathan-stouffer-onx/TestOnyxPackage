@@ -1,0 +1,41 @@
+precision highp sampler2DArray;
+precision highp int;
+precision highp float;
+in highp vec4 a_color0;
+in highp vec4 a_normal;
+in highp vec3 a_position;
+in highp vec4 a_texcoord0;
+out highp vec4 v_color0;
+out highp vec3 v_normal;
+out highp vec3 v_position;
+out highp vec4 v_texcoord0;
+uniform highp mat4 u_viewProj;
+uniform mat4 u_model[32];
+uniform highp vec4 u_bbOffset;
+uniform highp vec4 u_billboardSize;
+uniform highp vec4 u_camRight;
+uniform highp vec4 u_camUp;
+void main ()
+{
+  highp vec3 pivot_1;
+  highp vec4 tmpvar_2;
+  tmpvar_2.w = 1.0;
+  tmpvar_2.xyz = a_position;
+  highp vec4 tmpvar_3;
+  tmpvar_3.w = 0.0;
+  tmpvar_3.xyz = a_normal.xyz;
+  pivot_1.xy = a_normal.xy;
+  pivot_1.z = (a_normal.z + u_bbOffset.x);
+  highp vec2 tmpvar_4;
+  tmpvar_4.x = (u_billboardSize.x * (a_position.x - 0.5));
+  tmpvar_4.y = (u_billboardSize.y * a_position.y);
+  highp vec4 tmpvar_5;
+  tmpvar_5.w = 1.0;
+  tmpvar_5.xyz = ((pivot_1 + (u_camRight.xyz * tmpvar_4.x)) + (u_camUp.xyz * tmpvar_4.y));
+  gl_Position = (u_viewProj * tmpvar_5);
+  v_color0 = a_color0;
+  v_texcoord0 = a_texcoord0;
+  v_normal = (u_model[0] * tmpvar_3).xyz;
+  v_position = (u_model[0] * tmpvar_2).xyz;
+}
+

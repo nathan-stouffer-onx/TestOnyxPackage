@@ -1,0 +1,95 @@
+precision highp int;
+precision highp float;
+out mediump vec4 bgfx_FragColor;
+in vec4 v_texcoord4;
+in vec4 v_texcoord5;
+in vec4 v_texcoord6;
+in vec4 v_texcoord7;
+uniform samplerCube s_fontAtlas;
+uniform vec4 u_sdfParams;
+void main ()
+{
+  float rgba_1[4];
+  if ((v_texcoord6.w == 1.0)) {
+    vec4 tmpvar_2;
+    tmpvar_2 = texture (s_fontAtlas, v_texcoord7.xyz);
+    vec4 tmpvar_3;
+    tmpvar_3.xyz = tmpvar_2.xyz;
+    tmpvar_3.w = (tmpvar_2.w * v_texcoord5.w);
+    bgfx_FragColor = tmpvar_3;
+    return;
+  };
+  if ((v_texcoord6.w == -1.0)) {
+    float shadowSmoothing_4;
+    float rgba2_5[4];
+    vec4 tmpvar_6;
+    tmpvar_6 = texture (s_fontAtlas, v_texcoord7.xyz);
+    highp int tmpvar_7;
+    tmpvar_7 = int(((v_texcoord7.w * 4.0) + 0.5));
+    rgba2_5[0] = tmpvar_6.z;
+    rgba2_5[1] = tmpvar_6.y;
+    rgba2_5[2] = tmpvar_6.x;
+    rgba2_5[3] = tmpvar_6.w;
+    vec3 tmpvar_8;
+    tmpvar_8 = (abs(dFdx(v_texcoord7.xyz)) + abs(dFdy(v_texcoord7.xyz)));
+    float tmpvar_9;
+    tmpvar_9 = (((16.0 * 
+      sqrt(dot (tmpvar_8, tmpvar_8))
+    ) / 1.414213) * u_sdfParams.y);
+    float tmpvar_10;
+    tmpvar_10 = (0.5 - (u_sdfParams.w * tmpvar_9));
+    shadowSmoothing_4 = (tmpvar_9 * u_sdfParams.z);
+    float edge0_11;
+    edge0_11 = (tmpvar_10 - shadowSmoothing_4);
+    float tmpvar_12;
+    tmpvar_12 = clamp (((rgba2_5[tmpvar_7] - edge0_11) / (
+      (tmpvar_10 + shadowSmoothing_4)
+     - edge0_11)), 0.0, 1.0);
+    vec4 tmpvar_13;
+    tmpvar_13.xyz = v_texcoord5.xyz;
+    tmpvar_13.w = ((tmpvar_12 * (tmpvar_12 * 
+      (3.0 - (2.0 * tmpvar_12))
+    )) * v_texcoord5.w);
+    bgfx_FragColor = tmpvar_13;
+    return;
+  };
+  vec4 tmpvar_14;
+  tmpvar_14 = texture (s_fontAtlas, v_texcoord7.xyz);
+  highp int tmpvar_15;
+  tmpvar_15 = int(((v_texcoord7.w * 4.0) + 0.5));
+  rgba_1[0] = tmpvar_14.z;
+  rgba_1[1] = tmpvar_14.y;
+  rgba_1[2] = tmpvar_14.x;
+  rgba_1[3] = tmpvar_14.w;
+  float tmpvar_16;
+  tmpvar_16 = rgba_1[tmpvar_15];
+  vec3 tmpvar_17;
+  tmpvar_17 = (abs(dFdx(v_texcoord7.xyz)) + abs(dFdy(v_texcoord7.xyz)));
+  float tmpvar_18;
+  tmpvar_18 = (((16.0 * 
+    sqrt(dot (tmpvar_17, tmpvar_17))
+  ) / 1.414213) * u_sdfParams.y);
+  float tmpvar_19;
+  tmpvar_19 = (0.5 - (u_sdfParams.w * tmpvar_18));
+  float edge0_20;
+  edge0_20 = (tmpvar_19 - tmpvar_18);
+  float tmpvar_21;
+  tmpvar_21 = clamp (((tmpvar_16 - edge0_20) / (
+    (tmpvar_19 + tmpvar_18)
+   - edge0_20)), 0.0, 1.0);
+  float edge0_22;
+  edge0_22 = (0.5 - tmpvar_18);
+  float tmpvar_23;
+  tmpvar_23 = clamp (((tmpvar_16 - edge0_22) / (
+    (0.5 + tmpvar_18)
+   - edge0_22)), 0.0, 1.0);
+  vec4 tmpvar_24;
+  tmpvar_24.xyz = mix (v_texcoord4.xyz, v_texcoord5.xyz, (tmpvar_23 * (tmpvar_23 * 
+    (3.0 - (2.0 * tmpvar_23))
+  )));
+  tmpvar_24.w = ((tmpvar_21 * (tmpvar_21 * 
+    (3.0 - (2.0 * tmpvar_21))
+  )) * v_texcoord5.w);
+  bgfx_FragColor = tmpvar_24;
+}
+

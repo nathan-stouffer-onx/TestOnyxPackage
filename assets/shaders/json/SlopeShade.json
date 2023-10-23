@@ -1,0 +1,28 @@
+{
+  "sortOrder": 11,
+  "requirements": {
+    "normal": true
+  },
+  "bools": {},
+  "chunks": [
+    {
+      "lines": [
+        "float PI_HALVES = PI_CONSTS.z;",
+        "vec4 angleTexel = texture2D(s_SlopeAngleTexture, vec2(calcSlopeAngle(normal.xyz) / PI_HALVES, 0.0));",
+        "fragColor.rgb = mix(fragColor.rgb, angleTexel.rgb, 0.5 * angleTexel.a);"
+      ],
+      "position": "Main",
+      "positionOffset": 1,
+      "type": "Pixel"
+    }
+  ],
+  "ints": {},
+  "shaderParameters": [
+    {
+      "componentName": "SlopeShade",
+      "name": "s_SlopeAngleTexture",
+      "type": "texture",
+      "anisoFilter":  false
+    }
+  ]
+}

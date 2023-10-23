@@ -1,0 +1,15 @@
+precision highp int;
+precision highp float;
+in highp vec3 a_position;
+out highp vec3 v_bitangent;
+uniform highp mat4 u_view;
+uniform highp mat4 u_proj;
+void main ()
+{
+  highp vec4 tmpvar_1;
+  tmpvar_1.w = 1.0;
+  tmpvar_1.xyz = a_position;
+  gl_Position = (u_proj * (u_view * tmpvar_1));
+  v_bitangent = a_position;
+}
+

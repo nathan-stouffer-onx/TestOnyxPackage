@@ -1,0 +1,57 @@
+precision highp sampler2DArray;
+precision highp int;
+precision highp float;
+in highp vec4 a_texcoord7;
+out vec4 v_texcoord4;
+out vec4 v_texcoord5;
+out vec4 v_texcoord6;
+out highp vec4 v_texcoord7;
+uniform highp mat4 u_view;
+uniform highp mat4 u_proj;
+uniform sampler2D s_heightTextureVert;
+uniform sampler2D s_vectorColors;
+uniform sampler2D s_vectorPatterns;
+uniform highp vec4 s_patterns_Res;
+uniform highp vec4 u_tileSize;
+uniform highp vec4 u_ScaleOffsetHeight;
+uniform highp vec4 u_tileDistortion;
+uniform highp vec4 u_tileMin;
+uniform highp vec4 u_tileMax;
+void main ()
+{
+  vec4 projected_1;
+  vec4 vecColor_2;
+  vec4 vecPattern_3;
+  highp vec3 tmpvar_4;
+  tmpvar_4.xy = mix (u_tileMin.xy, u_tileMax.xy, a_texcoord7.xy);
+  tmpvar_4.z = u_tileMin.z;
+  vec4 tmpvar_5;
+  tmpvar_5 = textureLod (s_vectorPatterns, a_texcoord7.zw, 0.0);
+  vecPattern_3.xy = tmpvar_5.xy;
+  vecPattern_3.zw = (tmpvar_5.zw * s_patterns_Res.xy);
+  vec4 tmpvar_6;
+  tmpvar_6 = textureLod (s_vectorColors, a_texcoord7.zw, 0.0);
+  vecColor_2.xyz = tmpvar_6.xyz;
+  vecColor_2.w = (tmpvar_6.w * 0.5);
+  vec4 tmpvar_7;
+  tmpvar_7.w = 1.0;
+  tmpvar_7.xy = tmpvar_4.xy;
+  tmpvar_7.z = (u_tileMin.z + ((textureLod (s_heightTextureVert, 
+    ((u_ScaleOffsetHeight.zw * a_texcoord7.xy) + u_ScaleOffsetHeight.xy)
+  , 0.0).x * 
+    mix (u_tileDistortion.x, u_tileDistortion.y, a_texcoord7.y)
+  ) * u_tileSize.z));
+  vec4 tmpvar_8;
+  tmpvar_8 = (u_proj * (u_view * tmpvar_7));
+  projected_1.xyw = tmpvar_8.xyw;
+  projected_1.z = (tmpvar_8.z - (tmpvar_8.w * 0.01));
+  highp vec4 tmpvar_9;
+  tmpvar_9.zw = vec2(0.0, 0.0);
+  tmpvar_9.xy = a_texcoord7.xy;
+  gl_Position = projected_1;
+  v_texcoord4 = vecPattern_3;
+  v_texcoord5 = vecColor_2;
+  v_texcoord6 = projected_1;
+  v_texcoord7 = tmpvar_9;
+}
+

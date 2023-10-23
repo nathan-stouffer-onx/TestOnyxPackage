@@ -1,0 +1,89 @@
+{
+  "sortOrder": 0,
+  "segments": [
+    {
+      "segment": "Base",
+      "name": "Base",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "IconBase",
+            "ints": {
+              "ColorCount": 0,
+              "UVCount": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "segment": "Billboard",
+      "name": "Billboard",
+      "combineType": "PickOne",
+      "includeNone": true,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "IconBillboard"
+          }
+        }
+      ]
+    },
+    {
+      "segment": "DepthBias",
+      "name": "DepthBias",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "DepthBias"
+          }
+        }
+      ]
+    },
+    {
+      "segment": "VertexTransforms",
+      "name": "VertexTransforms",
+      "combineType": "Combinations",
+      "includeNone": true,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "FixedSize"
+          }
+        }
+      ]
+    },
+    {
+      "segment": "textures",
+      "name": "textures",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "builtIn": {
+            "type": "TextureLayer",
+            "textureCount": 1
+          }
+        }
+      ]
+    },
+    {
+      "segment": "TerrainHeight",
+      "name": "TerrainHeight",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "TerrainHeight"
+          }
+        }
+      ]
+
+    }
+  ]
+}

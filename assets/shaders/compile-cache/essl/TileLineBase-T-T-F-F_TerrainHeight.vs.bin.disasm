@@ -1,0 +1,420 @@
+precision highp int;
+precision highp float;
+in highp vec3 a_position;
+out vec3 v_bitangent;
+out vec4 v_color0;
+out highp vec4 v_color3;
+out highp vec4 v_color4;
+out float v_depth;
+out vec3 v_tangent;
+out vec4 v_texcoord0;
+out vec4 v_texcoord1;
+out vec4 v_texcoord2;
+out vec4 v_texcoord3;
+out highp vec4 v_texcoord4;
+out vec4 v_texcoord5;
+out vec4 v_texcoord6;
+out highp vec4 v_texcoord7;
+uniform highp vec4 u_viewTexel;
+uniform highp mat4 u_view;
+uniform highp mat4 u_proj;
+uniform sampler2D s_heightTextureVert;
+uniform sampler2D s_VectorColors;
+uniform sampler2D s_VectorWidths;
+uniform sampler2D s_DashCoords;
+uniform highp vec4 u_tileSize;
+uniform highp vec4 u_ScaleOffsetHeight;
+uniform highp vec4 u_tileDistortion;
+uniform highp vec4 u_MeshResolution;
+uniform highp vec4 u_tileMin;
+uniform highp vec4 u_tileMax;
+uniform highp vec4 u_endAngles;
+uniform highp vec4 u_p1p2;
+uniform highp vec4 u_params;
+uniform highp vec4 u_drawColor;
+uniform highp vec4 u_nearFarPlane;
+void main ()
+{
+  vec4 glPos_1;
+  vec4 screenPosition_2;
+  vec3 nextDir_3;
+  vec3 prevDir_4;
+  vec4 screenNext_5;
+  vec4 screenPrev_6;
+  vec3 line_dir_7;
+  vec3 screenPos_8;
+  vec4 screen2_9;
+  vec4 screen1_10;
+  float tileZ2_11;
+  float tileZ1_12;
+  float widthExpansion_13;
+  vec4 texcoords_14;
+  vec4 tmpvar_15;
+  tmpvar_15 = textureLod (s_VectorColors, u_params.zw, 0.0);
+  vec4 tmpvar_16;
+  tmpvar_16 = (textureLod (s_VectorWidths, u_params.zw, 0.0) * 16.0);
+  float tmpvar_17;
+  tmpvar_17 = textureLod (s_DashCoords, u_params.zw, 0.0).x;
+  highp vec4 tmpvar_18;
+  tmpvar_18.zw = vec2(0.0, 0.0);
+  tmpvar_18.xy = u_params.xy;
+  vec2 tmpvar_19;
+  tmpvar_19 = mix (u_tileMin.xy, u_tileMax.xy, u_p1p2.xy);
+  vec2 tmpvar_20;
+  tmpvar_20 = mix (u_tileMin.xy, u_tileMax.xy, u_p1p2.zw);
+  highp vec2 tmpvar_21;
+  tmpvar_21 = mix (u_p1p2.xy, u_p1p2.zw, a_position.y);
+  vec4 tmpvar_22;
+  tmpvar_22.zw = vec2(0.0, 0.0);
+  tmpvar_22.xy = a_position.xy;
+  texcoords_14 = tmpvar_22;
+  highp vec3 tmpvar_23;
+  tmpvar_23.xz = vec2(0.0, 0.0);
+  tmpvar_23.y = a_position.y;
+  widthExpansion_13 = (((
+    (max (tmpvar_16.x, tmpvar_16.y) + tmpvar_16.z)
+   + tmpvar_16.w) + 2.0) / 2.0);
+  float tmpvar_24;
+  tmpvar_24 = (1.0 - a_position.y);
+  tileZ1_12 = u_tileMin.z;
+  highp vec2 tmpvar_25;
+  tmpvar_25 = floor((u_MeshResolution.x * clamp (u_p1p2.xy, vec2(0.00390625, 0.00390625), vec2(0.9960938, 0.9960938))));
+  highp vec2 tmpvar_26;
+  tmpvar_26.x = (tmpvar_25.x + 1.0);
+  tmpvar_26.y = tmpvar_25.y;
+  highp vec2 tmpvar_27;
+  tmpvar_27 = (tmpvar_26 / u_MeshResolution.x);
+  highp vec2 tmpvar_28;
+  tmpvar_28.x = tmpvar_25.x;
+  tmpvar_28.y = (tmpvar_25.y + 1.0);
+  highp vec2 tmpvar_29;
+  tmpvar_29 = (tmpvar_28 / u_MeshResolution.x);
+  highp vec2 tmpvar_30;
+  tmpvar_30.x = tmpvar_29.x;
+  tmpvar_30.y = tmpvar_27.y;
+  highp vec2 tmpvar_31;
+  tmpvar_31.x = tmpvar_27.x;
+  tmpvar_31.y = tmpvar_29.y;
+  highp float tmpvar_32;
+  highp vec2 x_33;
+  x_33 = (tmpvar_30 - u_p1p2.xy);
+  tmpvar_32 = sqrt(dot (x_33, x_33));
+  highp float tmpvar_34;
+  highp vec2 x_35;
+  x_35 = (tmpvar_31 - u_p1p2.xy);
+  tmpvar_34 = sqrt(dot (x_35, x_35));
+  highp vec2 tmpvar_36;
+  if ((tmpvar_32 <= tmpvar_34)) {
+    tmpvar_36 = tmpvar_30;
+  } else {
+    tmpvar_36 = tmpvar_31;
+  };
+  vec3 tmpvar_37;
+  tmpvar_37.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_27);
+  tmpvar_37.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_27) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_27.y));
+  vec3 tmpvar_38;
+  tmpvar_38.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_29);
+  tmpvar_38.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_29) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_29.y));
+  vec3 tmpvar_39;
+  tmpvar_39.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_36);
+  tmpvar_39.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_36) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_36.y));
+  vec3 tmpvar_40;
+  vec3 a_41;
+  a_41 = (tmpvar_38 - tmpvar_37);
+  vec3 b_42;
+  b_42 = (tmpvar_39 - tmpvar_37);
+  tmpvar_40 = ((a_41.yzx * b_42.zxy) - (a_41.zxy * b_42.yzx));
+  tileZ1_12 = (u_tileMin.z + ((
+    (dot (tmpvar_40, tmpvar_37) - dot (tmpvar_40.xy, mix (u_tileMin.xy, u_tileMax.xy, u_p1p2.xy)))
+   / tmpvar_40.z) * u_tileSize.z));
+  tileZ2_11 = u_tileMin.z;
+  highp vec2 tmpvar_43;
+  tmpvar_43 = floor((u_MeshResolution.x * clamp (u_p1p2.zw, vec2(0.00390625, 0.00390625), vec2(0.9960938, 0.9960938))));
+  highp vec2 tmpvar_44;
+  tmpvar_44.x = (tmpvar_43.x + 1.0);
+  tmpvar_44.y = tmpvar_43.y;
+  highp vec2 tmpvar_45;
+  tmpvar_45 = (tmpvar_44 / u_MeshResolution.x);
+  highp vec2 tmpvar_46;
+  tmpvar_46.x = tmpvar_43.x;
+  tmpvar_46.y = (tmpvar_43.y + 1.0);
+  highp vec2 tmpvar_47;
+  tmpvar_47 = (tmpvar_46 / u_MeshResolution.x);
+  highp vec2 tmpvar_48;
+  tmpvar_48.x = tmpvar_47.x;
+  tmpvar_48.y = tmpvar_45.y;
+  highp vec2 tmpvar_49;
+  tmpvar_49.x = tmpvar_45.x;
+  tmpvar_49.y = tmpvar_47.y;
+  highp float tmpvar_50;
+  highp vec2 x_51;
+  x_51 = (tmpvar_48 - u_p1p2.zw);
+  tmpvar_50 = sqrt(dot (x_51, x_51));
+  highp float tmpvar_52;
+  highp vec2 x_53;
+  x_53 = (tmpvar_49 - u_p1p2.zw);
+  tmpvar_52 = sqrt(dot (x_53, x_53));
+  highp vec2 tmpvar_54;
+  if ((tmpvar_50 <= tmpvar_52)) {
+    tmpvar_54 = tmpvar_48;
+  } else {
+    tmpvar_54 = tmpvar_49;
+  };
+  vec3 tmpvar_55;
+  tmpvar_55.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_45);
+  tmpvar_55.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_45) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_45.y));
+  vec3 tmpvar_56;
+  tmpvar_56.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_47);
+  tmpvar_56.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_47) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_47.y));
+  vec3 tmpvar_57;
+  tmpvar_57.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_54);
+  tmpvar_57.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_54) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_54.y));
+  vec3 tmpvar_58;
+  vec3 a_59;
+  a_59 = (tmpvar_56 - tmpvar_55);
+  vec3 b_60;
+  b_60 = (tmpvar_57 - tmpvar_55);
+  tmpvar_58 = ((a_59.yzx * b_60.zxy) - (a_59.zxy * b_60.yzx));
+  tileZ2_11 = (u_tileMin.z + ((
+    (dot (tmpvar_58, tmpvar_55) - dot (tmpvar_58.xy, mix (u_tileMin.xy, u_tileMax.xy, u_p1p2.zw)))
+   / tmpvar_58.z) * u_tileSize.z));
+  vec4 tmpvar_61;
+  tmpvar_61.w = 1.0;
+  tmpvar_61.xy = tmpvar_19;
+  tmpvar_61.z = tileZ1_12;
+  vec4 tmpvar_62;
+  tmpvar_62.w = 1.0;
+  tmpvar_62.xy = tmpvar_20;
+  tmpvar_62.z = tileZ2_11;
+  vec4 tmpvar_63;
+  tmpvar_63 = (u_proj * (u_view * tmpvar_61));
+  vec4 tmpvar_64;
+  tmpvar_64 = (u_proj * (u_view * tmpvar_62));
+  float tmpvar_65;
+  tmpvar_65 = mix (tmpvar_63.w, tmpvar_64.w, a_position.y);
+  screen1_10 = (tmpvar_63 / tmpvar_63.w);
+  screen2_9 = (tmpvar_64 / tmpvar_64.w);
+  screen1_10.xy = ((screen1_10.xy * 0.5) + 0.5);
+  screen2_9.xy = ((screen2_9.xy * 0.5) + 0.5);
+  screen1_10.xy = (screen1_10.xy / u_viewTexel.xy);
+  screen2_9.xy = (screen2_9.xy / u_viewTexel.xy);
+  vec4 tmpvar_66;
+  tmpvar_66.xy = screen1_10.xy;
+  tmpvar_66.zw = screen2_9.xy;
+  vec4 tmpvar_67;
+  tmpvar_67 = mix (screen1_10, screen2_9, a_position.y);
+  vec3 tmpvar_68;
+  tmpvar_68 = (screen2_9.xyz - screen1_10.xyz);
+  float tmpvar_69;
+  tmpvar_69 = sqrt(dot (tmpvar_68, tmpvar_68));
+  line_dir_7 = (tmpvar_68 / tmpvar_69);
+  vec2 tmpvar_70;
+  tmpvar_70.x = -(line_dir_7.y);
+  tmpvar_70.y = line_dir_7.x;
+  vec3 tmpvar_71;
+  tmpvar_71.z = 0.0;
+  tmpvar_71.xy = normalize(tmpvar_70);
+  screenPos_8 = ((tmpvar_67.xyz / tmpvar_67.w) + ((tmpvar_71 * a_position.x) * widthExpansion_13));
+  vec2 tmpvar_72;
+  tmpvar_72 = (((
+    -(line_dir_7.xy)
+   * tmpvar_24) * widthExpansion_13) + ((line_dir_7.xy * a_position.y) * widthExpansion_13));
+  screenPos_8.xy = (screenPos_8.xy + tmpvar_72);
+  highp vec4 tmpvar_73;
+  tmpvar_73.zw = vec2(0.0, 0.0);
+  tmpvar_73.xy = u_endAngles.xz;
+  vec2 tmpvar_74;
+  tmpvar_74 = mix (u_tileMin.xy, u_tileMax.xy, u_endAngles.xy);
+  vec2 tmpvar_75;
+  tmpvar_75 = mix (u_tileMin.xy, u_tileMax.xy, u_endAngles.zw);
+  highp vec2 tmpvar_76;
+  tmpvar_76 = floor((u_MeshResolution.x * clamp (u_endAngles.xy, vec2(0.00390625, 0.00390625), vec2(0.9960938, 0.9960938))));
+  highp vec2 tmpvar_77;
+  tmpvar_77.x = (tmpvar_76.x + 1.0);
+  tmpvar_77.y = tmpvar_76.y;
+  highp vec2 tmpvar_78;
+  tmpvar_78 = (tmpvar_77 / u_MeshResolution.x);
+  highp vec2 tmpvar_79;
+  tmpvar_79.x = tmpvar_76.x;
+  tmpvar_79.y = (tmpvar_76.y + 1.0);
+  highp vec2 tmpvar_80;
+  tmpvar_80 = (tmpvar_79 / u_MeshResolution.x);
+  highp vec2 tmpvar_81;
+  tmpvar_81.x = tmpvar_80.x;
+  tmpvar_81.y = tmpvar_78.y;
+  highp vec2 tmpvar_82;
+  tmpvar_82.x = tmpvar_78.x;
+  tmpvar_82.y = tmpvar_80.y;
+  highp float tmpvar_83;
+  highp vec2 x_84;
+  x_84 = (tmpvar_81 - u_endAngles.xy);
+  tmpvar_83 = sqrt(dot (x_84, x_84));
+  highp float tmpvar_85;
+  highp vec2 x_86;
+  x_86 = (tmpvar_82 - u_endAngles.xy);
+  tmpvar_85 = sqrt(dot (x_86, x_86));
+  highp vec2 tmpvar_87;
+  if ((tmpvar_83 <= tmpvar_85)) {
+    tmpvar_87 = tmpvar_81;
+  } else {
+    tmpvar_87 = tmpvar_82;
+  };
+  vec3 tmpvar_88;
+  tmpvar_88.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_78);
+  tmpvar_88.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_78) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_78.y));
+  vec3 tmpvar_89;
+  tmpvar_89.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_80);
+  tmpvar_89.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_80) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_80.y));
+  vec3 tmpvar_90;
+  tmpvar_90.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_87);
+  tmpvar_90.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_87) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_87.y));
+  vec3 tmpvar_91;
+  vec3 a_92;
+  a_92 = (tmpvar_89 - tmpvar_88);
+  vec3 b_93;
+  b_93 = (tmpvar_90 - tmpvar_88);
+  tmpvar_91 = ((a_92.yzx * b_93.zxy) - (a_92.zxy * b_93.yzx));
+  vec3 tmpvar_94;
+  tmpvar_94.xy = tmpvar_74;
+  tmpvar_94.z = (u_tileMin.z + ((
+    (dot (tmpvar_91, tmpvar_88) - dot (tmpvar_91.xy, mix (u_tileMin.xy, u_tileMax.xy, u_endAngles.xy)))
+   / tmpvar_91.z) * u_tileSize.z));
+  highp vec2 tmpvar_95;
+  tmpvar_95 = floor((u_MeshResolution.x * clamp (u_endAngles.zw, vec2(0.00390625, 0.00390625), vec2(0.9960938, 0.9960938))));
+  highp vec2 tmpvar_96;
+  tmpvar_96.x = (tmpvar_95.x + 1.0);
+  tmpvar_96.y = tmpvar_95.y;
+  highp vec2 tmpvar_97;
+  tmpvar_97 = (tmpvar_96 / u_MeshResolution.x);
+  highp vec2 tmpvar_98;
+  tmpvar_98.x = tmpvar_95.x;
+  tmpvar_98.y = (tmpvar_95.y + 1.0);
+  highp vec2 tmpvar_99;
+  tmpvar_99 = (tmpvar_98 / u_MeshResolution.x);
+  highp vec2 tmpvar_100;
+  tmpvar_100.x = tmpvar_99.x;
+  tmpvar_100.y = tmpvar_97.y;
+  highp vec2 tmpvar_101;
+  tmpvar_101.x = tmpvar_97.x;
+  tmpvar_101.y = tmpvar_99.y;
+  highp float tmpvar_102;
+  highp vec2 x_103;
+  x_103 = (tmpvar_100 - u_endAngles.zw);
+  tmpvar_102 = sqrt(dot (x_103, x_103));
+  highp float tmpvar_104;
+  highp vec2 x_105;
+  x_105 = (tmpvar_101 - u_endAngles.zw);
+  tmpvar_104 = sqrt(dot (x_105, x_105));
+  highp vec2 tmpvar_106;
+  if ((tmpvar_102 <= tmpvar_104)) {
+    tmpvar_106 = tmpvar_100;
+  } else {
+    tmpvar_106 = tmpvar_101;
+  };
+  vec3 tmpvar_107;
+  tmpvar_107.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_97);
+  tmpvar_107.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_97) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_97.y));
+  vec3 tmpvar_108;
+  tmpvar_108.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_99);
+  tmpvar_108.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_99) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_99.y));
+  vec3 tmpvar_109;
+  tmpvar_109.xy = mix (u_tileMin.xy, u_tileMax.xy, tmpvar_106);
+  tmpvar_109.z = (textureLod (s_heightTextureVert, ((u_ScaleOffsetHeight.zw * tmpvar_106) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_106.y));
+  vec3 tmpvar_110;
+  vec3 a_111;
+  a_111 = (tmpvar_108 - tmpvar_107);
+  vec3 b_112;
+  b_112 = (tmpvar_109 - tmpvar_107);
+  tmpvar_110 = ((a_111.yzx * b_112.zxy) - (a_111.zxy * b_112.yzx));
+  vec3 tmpvar_113;
+  tmpvar_113.xy = tmpvar_75;
+  tmpvar_113.z = (u_tileMin.z + ((
+    (dot (tmpvar_110, tmpvar_107) - dot (tmpvar_110.xy, mix (u_tileMin.xy, u_tileMax.xy, u_endAngles.zw)))
+   / tmpvar_110.z) * u_tileSize.z));
+  vec4 tmpvar_114;
+  tmpvar_114.w = 1.0;
+  tmpvar_114.xyz = tmpvar_94;
+  vec4 tmpvar_115;
+  tmpvar_115 = (u_proj * (u_view * tmpvar_114));
+  vec4 tmpvar_116;
+  tmpvar_116.w = 1.0;
+  tmpvar_116.xyz = tmpvar_113;
+  vec4 tmpvar_117;
+  tmpvar_117 = (u_proj * (u_view * tmpvar_116));
+  screenPrev_6 = (tmpvar_115 / tmpvar_115.w);
+  screenNext_5 = (tmpvar_117 / tmpvar_117.w);
+  screenPrev_6.xy = ((screenPrev_6.xy * 0.5) + 0.5);
+  screenNext_5.xy = ((screenNext_5.xy * 0.5) + 0.5);
+  screenPrev_6.xy = (screenPrev_6.xy / u_viewTexel.xy);
+  screenNext_5.xy = (screenNext_5.xy / u_viewTexel.xy);
+  prevDir_4 = normalize((screenPrev_6.xyz - screen1_10.xyz));
+  nextDir_3 = normalize((screenNext_5.xyz - screen2_9.xyz));
+  if ((u_endAngles.x < -9999.0)) {
+    prevDir_4 = line_dir_7;
+  };
+  if ((u_endAngles.z < -9999.0)) {
+    nextDir_3 = -(line_dir_7);
+  };
+  vec4 tmpvar_118;
+  tmpvar_118.xy = (normalize((prevDir_4 + line_dir_7)).xy * sign(sqrt(
+    dot (u_endAngles.xy, u_endAngles.xy)
+  )));
+  tmpvar_118.zw = (normalize((
+    -(line_dir_7)
+   + nextDir_3)).xy * sign(sqrt(
+    dot (u_endAngles.zw, u_endAngles.zw)
+  )));
+  texcoords_14.y = (a_position.y * (tmpvar_69 / widthExpansion_13));
+  texcoords_14.y = (texcoords_14.y + ((
+    sign((a_position.y - 0.5))
+   * 
+    sqrt(dot (tmpvar_72, tmpvar_72))
+  ) / widthExpansion_13));
+  texcoords_14.z = (tmpvar_69 / widthExpansion_13);
+  vec4 tmpvar_119;
+  tmpvar_119.w = 1.0;
+  tmpvar_119.xyz = screenPos_8;
+  screenPosition_2.xyw = tmpvar_119.xyw;
+  vec4 tmpvar_120;
+  tmpvar_120.z = 0.0;
+  tmpvar_120.x = tmpvar_23.x;
+  tmpvar_120.y = tmpvar_23.z;
+  tmpvar_120.w = tmpvar_16.x;
+  vec4 tmpvar_121;
+  tmpvar_121.xyz = mix (tmpvar_15.xyz, u_drawColor.xyz, u_drawColor.w);
+  tmpvar_121.w = tmpvar_15.w;
+  screenPosition_2.z = (screenPos_8.z - ((
+    (0.0004 * max (1.0, (widthExpansion_13 * 2.0)))
+   * 
+    pow (max (1.0, (1.0 + (
+      ((u_nearFarPlane.y - u_nearFarPlane.x) - 500.0)
+     / 100.0))), 2.5)
+  ) / tmpvar_65));
+  highp vec4 tmpvar_122;
+  tmpvar_122.zw = vec2(0.0, 0.0);
+  tmpvar_122.xy = tmpvar_21;
+  vec4 tmpvar_123;
+  tmpvar_123.w = 1.0;
+  tmpvar_123.xyz = screenPosition_2.xyz;
+  glPos_1.zw = tmpvar_123.zw;
+  glPos_1.xy = (screenPos_8.xy * u_viewTexel.xy);
+  glPos_1.xy = ((glPos_1.xy * 2.0) - 1.0);
+  glPos_1.xyz = (glPos_1.xyz * tmpvar_65);
+  glPos_1.w = tmpvar_65;
+  gl_Position = glPos_1;
+  v_texcoord0 = tmpvar_66;
+  v_color4 = tmpvar_18;
+  v_texcoord7 = tmpvar_122;
+  v_tangent = tmpvar_71;
+  v_color3 = tmpvar_73;
+  v_texcoord1 = tmpvar_16;
+  v_texcoord2 = tmpvar_118;
+  v_bitangent = line_dir_7;
+  v_texcoord3 = texcoords_14;
+  v_depth = tmpvar_17;
+  v_texcoord4 = vec4(1.0, 1.0, 1.0, 1.0);
+  v_texcoord5 = screenPosition_2;
+  v_color0 = tmpvar_121;
+  v_texcoord6 = tmpvar_120;
+}
+

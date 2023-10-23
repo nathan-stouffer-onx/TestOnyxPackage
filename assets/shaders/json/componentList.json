@@ -1,0 +1,138 @@
+[
+    {
+        "componentName": "BaseShader",
+        "filename": "BaseShader.json"
+    },
+    {
+        "componentName": "BillboardBase",
+        "filename": "BillboardBase.json"
+    },
+    {
+        "componentName": "LineBase",
+        "filename": "LineBase.json"
+    },
+    {
+        "componentName": "TileLineBase",
+        "filename": "TileLineBase.json"
+    },
+    {
+        "componentName": "TileVectorBase",
+        "filename": "TileVectorBase.json"
+    },
+    {
+        "componentName": "Billboard",
+        "filename": "Billboard.json"
+    },
+    {
+        "componentName": "DepthWrite",
+        "filename": "DepthWrite.json"
+    },
+    {
+        "componentName": "DirectionalLight",
+        "filename": "DirectionalLight.json"
+    },
+    {
+        "componentName": "IntersectTerrain",
+        "filename": "IntersectTerrain.json"
+    },
+    {
+        "componentName": "Line",
+        "filename": "Line.json"
+    },
+    {
+        "componentName": "HeightShade",
+        "filename": "HeightShade.json"
+    },
+    {
+        "componentName": "SDF",
+        "filename": "SDF.json"
+    },
+    {
+        "componentName": "Skydome",
+        "filename": "Skydome.json"
+    },
+    {
+        "componentName": "SlopeShade",
+        "filename": "SlopeShade.json"
+    },
+    {
+        "componentName": "Sunlight",
+        "filename": "Sunlight.json"
+    },
+    {
+        "componentName": "TextureLayer",
+        "filename": ""
+    },
+    {
+        "componentName": "BillboardGlyph",
+        "filename": ""
+    },
+    {
+        "componentName": "TopoLines",
+        "filename": "TopoLines.json"
+    },
+    {
+        "componentName": "VertColor",
+        "filename": "VertColor.json"
+    },
+    {
+        "componentName": "VertHeight",
+        "filename": "VertHeight.json"
+    },
+    {
+        "componentName": "TerrainHeight",
+        "filename": "TerrainHeight.json"
+    },    
+    {
+        "componentName": "Fog",
+        "filename": "Fog.json"
+    },
+    {
+        "componentName": "SlopeDirection",
+        "filename": "SlopeDirection.json"
+    },
+    {
+        "componentName": "Viewshed",
+        "filename": "Viewshed.json"
+    },
+    {
+        "componentName": "InvertedViewshed",
+        "filename": "InvertedViewshed.json"
+    },
+    {
+        "componentName": "Vector",
+        "filename": "Vector.json"
+    },
+    {
+        "componentName": "VectorHeight",
+        "filename": "VectorHeight.json"
+    },
+    {
+        "componentName": "FixedSize",
+        "filename": "FixedSize.json"
+    },
+    {
+        "componentName": "TransformSRT",
+        "filename": "TransformSRT.json"
+    },
+    {
+        "componentName": "GaussBlur",
+        "filename": "GaussBlur.json"
+    },
+    {
+        "componentName": "ColorOnlyQuatBase",
+        "filename": "ColorOnlyQuatBase.json"
+    },
+    {
+        "componentName": "DepthBias",
+        "filename": "DepthBias.json"
+    },
+    {
+        "componentName": "IconBase",
+        "filename": "IconBase.json"
+    },
+    {
+        "componentName": "IconBillboard",
+        "filename": "IconBillboard.json"
+    }
+]

@@ -1,0 +1,18 @@
+{
+  "sortOrder": 13,
+  "segments": [
+    {
+      "segment" : "skydome",
+      "name" : "Skydome",
+      "combineType" : "PickOne",
+      "includeNone" : false,
+      "components" : [
+        {
+        "jsonComponent" : {
+            "name" : "Skydome"
+          }
+        }
+      ]
+    }
+  ]
+}
