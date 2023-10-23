@@ -1,0 +1,236 @@
+{
+    "name": "backcountry-satellite-summer",
+    "version": 8,
+    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/backcountry/1674677385/sprites",
+    "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
+    "sources": {
+        "elevation": {
+            "minzoom": 0,
+            "maxzoom": 15,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/elevation-v2/latest/{z}/{x}/{y}.png"
+            ],
+            "type": "raster-dem",
+            "tileSize": 256
+        },
+        "aerial": {
+            "minzoom": 0,
+            "maxzoom": 19,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/aerial/latest/{z}/{x}/{y}.jpg"
+            ],
+            "type": "raster",
+            "tileSize": 256
+        },
+        "base": {
+            "type": "vector",
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/base/v0/{z}/{x}/{y}.pbf"
+            ],
+            "minzoom": 2,
+            "maxzoom": 13
+        }
+    },
+    "context": {
+		"sym-paint" : { "symbol-paint" :
+						{  "text-color" : "hsl(291, 17%, 60%)",
+						   "text-halo-color" : "#FFFFFFFF",
+						   "text-shadow-color" :  "#FFFFFF7F"
+		                } },
+        "sym-layout":  { "symbol-layout" :
+                            {
+                            "text-field": [
+                                "get",
+                                "label"
+                            ],
+                            "text-size": 17.5,
+                            "symbol-placement": "line",
+                            "text-font": [
+                            "Open Sans SemiBold"
+                            ],
+                            "visibility": "none"
+                            }
+                        }
+    },
+    "terrain": {
+        "source": "elevation",
+        "exaggeration": [
+            "interpolate",
+            [
+                "linear"
+            ],
+            [
+                "pitch"
+            ],
+            0,
+            0,
+            45,
+            2
+        ]
+    },
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "background-color": "hsl(0, 0%, 97%)"
+            }
+        },
+        {
+            "id": "tileserver_aerial",
+            "source": "aerial",
+            "type": "raster",
+            "minzoom": 0,
+            "maxzoom": 23
+        },
+        {
+            "id": "admin_bounds$country",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "line",
+            "minzoom": 2,
+            "maxzoom": 22,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "country"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "hsl(0, 0%, 60%)",
+                "line-width": 2.5
+            }
+        },
+        {
+            "id": "admin_bounds$state",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "line",
+            "minzoom": 4,
+            "maxzoom": 22,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "state"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    4,
+                    "hsl(0, 0%, 70%)",
+                    13,
+                    "hsl(0, 0%, 60%)"
+                ],
+                "line-width": 2.5,
+                "line-dasharray": [ 2, 4 ]
+            }
+        },
+        {
+            "id": "water$area_fill",
+            "source": "base",
+            "source-layer": "water_areas",
+            "type": "fill",
+            "minzoom": 2,
+            "maxzoom": 22,
+            "paint": {
+                "fill-color": "#89BDF9",
+                "fill-opacity": 0.25
+            }
+        },
+        {
+            "id": "admin_bounds$county_border_label",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "symbol",
+            "minzoom": 12,
+            "maxzoom": 22,
+            "filter": [
+                "==",
+                [
+                    "get",
+                    "data:type"
+                ],
+                "county"
+            ],
+            "layout":  { "base": "sym-layout" },
+            "paint": { "base" : "sym-paint" }
+        },
+        {
+            "id": "elevation$labels",
+            "source": "elevation",
+            "type": "contour",
+            "minzoom": 0,
+            "maxzoom": 23,
+            "layout":  {
+                "text-field": [ "get", "label" ],
+                "text-size": 7.5,
+                "symbol-placement": "line-center",
+                "text-font": [
+                   "Open Sans SemiBold"
+                ],
+                "intervalLayouts": [
+                    {
+                        "text-size": 14,
+                        "symbol-placement": "point",
+                        "text-font": [
+                           "Open Sans SemiBold"
+                        ],
+                        "interval": 100
+                    },
+                    {
+                        "text-size": 12,
+                        "symbol-placement": "point",
+                        "text-font": [
+                           "Open Sans SemiBold"
+                        ],
+                        "interval": 10
+                    }
+                ]
+            },
+            "paint": {
+               "text-color": "hsl(291, 0%, 0%)",
+               "text-shadow-color": "hsl(291, 20%, 10%)",
+                "intervalPaints": [
+                    {
+                        "text-color": "hsl(291, 100%, 70%)",
+                        "text-shadow-color": "hsl(291, 20%, 10%)"
+                    },
+                    {
+                        "text-color": "hsl(191, 100%, 70%)",
+                        "text-shadow-color": "hsl(191, 20%, 10%)"
+                    }
+                ]
+            }
+        }            
+    ]
+}
