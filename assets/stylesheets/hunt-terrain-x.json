@@ -1,0 +1,137 @@
+{
+    "name": "hunt-terrain-x",
+    "version": 8,
+    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/backcountry/1674677385/sprites",
+    "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
+    "sources": {
+        "elevation": {
+            "minzoom": 0,
+            "maxzoom": 15,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/elevation-v2/latest/{z}/{x}/{y}.png"
+            ],
+            "type": "raster-dem",
+            "tileSize": 256
+        },
+        "aerial": {
+            "minzoom": 0,
+            "maxzoom": 19,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/aerial/latest/{z}/{x}/{y}.jpg"
+            ],
+            "type": "raster",
+            "tileSize": 256
+        },
+        "hillshade": {
+            "minzoom": 0,
+            "maxzoom": 12,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/hillshade/v0/{z}/{x}/{y}.webp"
+            ],
+            "type": "raster",
+            "tileSize": 256
+        },
+        "transportation": {
+            "minzoom": 4,
+            "maxzoom": 13,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/transportation/v0/{z}/{x}/{y}.pbf"
+            ],
+            "type": "vector"
+        },
+        "raster-roads": {
+            "minzoom": 0,
+            "maxzoom": 17,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/overlay/aerial/latest/{z}/{x}/{y}.png"
+            ],
+            "type": "raster",
+            "tileSize": 256
+        },
+        "base": {
+            "type": "vector",
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/base/v0/{z}/{x}/{y}.pbf"
+            ],
+            "minzoom": 2,
+            "maxzoom": 13
+        }
+    },
+    "terrain": {
+        "source": "elevation",
+        "exaggeration": 1
+    },
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "background-color": "hsl(0, 0%, 97%)"
+            }
+        },
+        {
+            "id": "tileserver_aerial",
+            "source": "aerial",
+            "type": "raster",
+            "minzoom": 0,
+            "maxzoom": 23
+        },
+        {
+            "id": "roads$",
+            "source": "raster-roads",
+            "type": "raster",
+            "minzoom": 0,
+            "maxzoom": 23
+        },
+        {
+            "id": "admin_bounds$country",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "line",
+            "minzoom": 2,
+            
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round",
+                "visibility": "none"
+            },
+            "paint": {
+                "line-color": "hsl(0, 0%, 60%)",
+                "line-width": 2
+            }
+        },
+        {
+            "id": "transportation_roads$primary_fill$dark",
+            "source": "transportation",
+            "source-layer": "roads_us",
+            "type": "line",
+            "minzoom": 5,
+            
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round",
+                "visibility": "none"
+            },
+            "paint": {
+                "line-color": "hsl(46, 87%, 68%)",
+                "line-width": [
+                    "interpolate",
+                    [
+                        "exponential",
+                        1.5
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    5,
+                    0.75,
+                    18,
+                    32
+                ]
+            }
+        }
+    ]
+}

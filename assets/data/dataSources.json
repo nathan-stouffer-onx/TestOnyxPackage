@@ -1,0 +1,299 @@
+[
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/aerial/latest/",
+        "dataSource": {
+            "color": "FFFFFFFF",
+            "encoding": "color",
+            "format": "jpeg",
+            "maxLevel": 19,
+            "name": "Aerial",
+            "type": "basemap"
+        },
+        "fileType": ".jpg",
+        "prefix": "tile_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/hillshade/v0/",
+        "dataSource": {
+            "color": "FFFFFFFF",
+            "encoding": "color",
+            "format": "webp",
+            "maxLevel": 12,
+            "name": "Hillshade",
+            "type": "basemap"
+        },
+        "fileType": ".webp",
+        "prefix": "tile_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/elevation/terrarium/latest/",
+        "dataSource": {
+            "color": "FFFFFFFF",
+            "encoding": "terrarium",
+            "format": "png",
+            "maxLevel": 15,
+            "name": "Heightmap",
+            "type": "heightmap"
+        },
+        "fileType": ".png",
+        "prefix": "height_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/aerial-winter/latest/",
+        "dataSource": {
+            "color": "FFFFFFFF",
+            "encoding": "color",
+            "format": "png",
+            "minLevel": 5,
+            "maxLevel": 18,
+            "name": "Winter Aerial",
+            "type": "texture"
+        },
+        "fileType": ".png",
+        "prefix": "tile_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/overlay/aerial/latest/",
+        "dataSource": {
+            "color": "FFFFFFFF",
+            "encoding": "color",
+            "format": "png",
+            "maxLevel": 17,
+            "name": "Roads",
+            "type": "texture"
+        },
+        "fileType": ".png",
+        "prefix": "road_"
+    },
+    {
+        "baseUrl": "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/",
+        "dataSource": {
+            "color": "FFFFFFFF",
+            "encoding": "color",
+            "format": "png",
+            "maxLevel": 15,
+            "name": "Weather",
+            "sortOrder": 1,
+            "type": "texture"
+        },
+        "fileType": "",
+        "prefix": "weather_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/transportation/v0/",
+        "dataSource": {
+            "color": "6F0000FF",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 13,
+            "minLevel": 4,
+            "name": "Transportation",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "transportation_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/land/v0/",
+        "dataSource": {
+            "color": "6FFF0000",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 15,
+            "minLevel": 5,
+            "name": "Private Lands",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "property_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/hunt/v0/",
+        "dataSource": {
+            "color": "CF00FF00",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 15,
+            "minLevel": 5,
+            "name": "Public Lands",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "pub_"
+    },
+    {
+        "baseUrl": "https://tileserver.daily.onxmaps.com/v1/hunt-units/v0/",
+        "dataSource": {
+            "color": "CF00FF00",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 15,
+            "minLevel": 5,
+            "name": "Hunt Units",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "pub_"
+    },
+    {
+        "baseUrl": "UserMarkups",
+        "dataSource": {
+            "color": "CF0000FF",
+            "encoding": "geo_json",
+            "format": "text",
+			"internal":  true,
+            "maxLevel": 15,
+            "name": "User Markups",
+            "type": "user_markup"
+        },
+        "fileType": "",
+        "prefix": ""
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/transportation/v0/",
+        "dataSource": {
+            "color": "CF0000FF",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 15,
+            "minLevel": 5,
+            "name": "Transportation",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "transport_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/plan/v0/",
+        "dataSource": {
+            "color": "CF0000FF",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 15,
+            "minLevel": 5,
+            "name": "Plan",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "plan_"
+    },
+    {
+        "baseUrl": "https://tileserver.production.onxmaps.com/v1/base/v0/",
+        "dataSource": {
+            "color": "CF0000FF",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 15,
+            "minLevel": 5,
+            "name": "Admin",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "admin_"
+    },
+	{
+		"baseUrl": "heightTestPattern",
+		"dataSource": {
+			"color": "CF0000FF",
+			"encoding": "terrarium",
+			"format": "png",
+			"maxLevel": 15,
+			"minLevel": 0,
+			"internal": true,
+			"name": "Height Test Pattern",
+			"type": "heightmap"
+		},
+		"fileType": ".png",
+		"prefix": "htp_"
+    },
+	{
+		"baseUrl": "Mandelbrot Sat",
+		"dataSource": {
+			"color": "CF0000FF",
+			"encoding": "color",
+			"format": "png",
+			"maxLevel": 20,
+			"minLevel": 0,
+			"internal": true,
+			"name": "Mandelbrot Test Pattern",
+			"type": "basemap"
+		},
+		"fileType": ".png",
+		"prefix": "atp_"
+    },
+	{
+		"baseUrl": "Plasma Height Test Pattern",
+		"dataSource": {
+			"color": "CF0000FF",
+			"encoding": "color",
+			"format": "png",
+			"maxLevel": 20,
+			"minLevel": 0,
+			"internal": true,
+			"name": "Plasma Height Test Pattern",
+			"type": "heightmap"
+		},
+		"fileType": ".png",
+		"prefix": "ptp_h_"
+    },
+	{
+		"baseUrl": "Plasma Terrain Test Pattern",
+		"dataSource": {
+			"color": "CF0000FF",
+			"encoding": "color",
+			"format": "png",
+			"maxLevel": 20,
+			"minLevel": 0,
+			"internal": true,
+			"name": "Plasma Terrain Test Pattern",
+			"type": "basemap"
+		},
+		"fileType": ".png",
+		"prefix": "ptp_t_"
+    },
+	{
+		"baseUrl": "X Test Pattern",
+		"dataSource": {
+			"color": "CF0000FF",
+			"encoding": "color",
+			"format": "png",
+			"maxLevel": 20,
+			"minLevel": 0,
+			"internal": true,
+			"name": "X Test Pattern",
+			"type": "basemap"
+		},
+		"fileType": ".png",
+		"prefix": "ptp_t_"
+    },
+    {
+        "baseUrl": "Vector Test Pattern",
+        "dataSource": {
+            "color": "6FFF0000",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 20,
+            "minLevel": 0,
+			"internal":  true,
+            "name": "Vector Test Pattern",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "vec_test_"
+    },
+    {
+        "baseUrl": "Hilbert Curve Pattern",
+        "dataSource": {
+            "color": "6FFF0000",
+            "encoding": "mvt",
+            "format": "pbf",
+            "maxLevel": 20,
+            "minLevel": 0,
+			"internal":  true,
+            "name": "Hilbert Curve Pattern",
+            "type": "vector"
+        },
+        "fileType": ".pbf",
+        "prefix": "vec_hilbert_"
+    }
+]
