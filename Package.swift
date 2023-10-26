@@ -9,7 +9,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "TestOnyxPackage",
-            targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "onyxPackage", "protobufPackage", "shaderPackage", "stylingPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage" ]),
+            targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "onyxPackage", "protobufPackage", "shaderPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage" ]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -55,6 +55,10 @@ let package = Package(
         .binaryTarget(
             name: "stylingPackage",
             path: "styling.xcframework.zip"
+        ),
+        .binaryTarget(
+            name: "testAppPackage",
+            path: "testApp.xcframework.zip"
         ),
         .binaryTarget(
             name: "thirdPartyPackage",
