@@ -9,7 +9,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "TestOnyxPackage",
-            targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "onyxPackage", "protobufPackage", "shaderPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage" ]),
+            targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", "sqlite3Package", "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -37,6 +37,14 @@ let package = Package(
             path: "bx.xcframework.zip"
         ),
         .binaryTarget(
+            name: "cryptoPackage",
+            path: "crypto.xcframework.zip"
+        ),
+        .binaryTarget(
+            name: "curlPackage",
+            path: "curl.xcframework.zip"
+        ),
+        .binaryTarget(
             name: "coreUtilsPackage",
             path: "coreUtils.xcframework.zip"
         ),
@@ -45,12 +53,24 @@ let package = Package(
             path: "onyx.xcframework.zip"
         ),
         .binaryTarget(
+            name: "nghttp2Package",
+            path: "nghttp2.xcframework.zip"
+        ),
+        .binaryTarget(
             name: "protobufPackage",
             path: "protobuf.xcframework.zip"
         ),
         .binaryTarget(
             name: "shaderPackage",
             path: "shader.xcframework.zip"
+        ),
+        .binaryTarget(
+            name: "sqlite3Package",
+            path: "sqlite3.xcframework.zip"
+        ),
+        .binaryTarget(
+            name: "sslPackage",
+            path: "ssl.xcframework.zip"
         ),
         .binaryTarget(
             name: "stylingPackage",
@@ -71,6 +91,10 @@ let package = Package(
         .binaryTarget(
             name: "webpdecoderPackage",
             path: "webpdecoder.xcframework.zip"
+        ),
+        .binaryTarget(
+            name: "zPackage",
+            path: "z.xcframework.zip"
         )
     ]
 )
