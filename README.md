@@ -7,3 +7,7 @@ Additionally, you will have to add cxx interoperability to your app:
 * Under `Custom Flags` -> `Other Swift Flags` add `-cxx-interoperability-mode=default`
 
 An example of utilizing this package can be found [here](https://github.com/nathan-stouffer-onx/InteropDemo).
+
+## Note
+
+* This only works on device right now, we are still figuring out the simulator
