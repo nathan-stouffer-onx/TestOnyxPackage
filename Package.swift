@@ -4,16 +4,27 @@
 import PackageDescription
 
 let package = Package(
-    name: "TestOnyxPackage",
+    name: "LocalSwiftPackage",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "TestOnyxPackage",
+            name: "OnyxCxx",
             targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", "sqlite3Package", "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ]),
+        .library(
+            name: "OnyxViewer",
+            targets: ["OnyxViewer"]
+        )
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        .target(
+            name: "OnyxViewer",
+            dependencies: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", "sqlite3Package", "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ],
+            swiftSettings: [
+                .interoperabilityMode(.Cxx),
+            ]
+        ),
         .target(
             name: "Assets",
             resources: [
@@ -96,5 +107,6 @@ let package = Package(
             name: "zPackage",
             path: "z.xcframework.zip"
         )
-    ]
+    ],
+    cxxLanguageStandard: .cxx17
 )
