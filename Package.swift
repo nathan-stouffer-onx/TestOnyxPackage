@@ -4,22 +4,22 @@
 import PackageDescription
 
 let package = Package(
-    name: "LocalSwiftPackage",
+    name: "TestOnyxPackage",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "OnyxCxx",
+            name: "OnyxCore",
             targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", "sqlite3Package", "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ]),
         .library(
-            name: "OnyxViewer",
-            targets: ["OnyxViewer"]
+            name: "OnyxMap",
+            targets: ["OnyxMap"]
         )
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "OnyxViewer",
+            name: "OnyxMap",
             dependencies: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", "sqlite3Package", "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
