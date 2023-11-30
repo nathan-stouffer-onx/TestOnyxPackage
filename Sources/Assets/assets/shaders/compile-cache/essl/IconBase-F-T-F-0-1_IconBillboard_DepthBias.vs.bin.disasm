@@ -1,0 +1,37 @@
+precision highp int;
+precision highp float;
+in highp vec3 a_position;
+in highp vec4 a_texcoord0;
+out highp vec3 v_position;
+out highp vec4 v_texcoord0;
+out highp vec4 v_texcoord7;
+uniform highp mat4 u_view;
+uniform highp mat4 u_proj;
+uniform highp vec4 u_depthModifier;
+uniform highp vec4 u_camRight;
+uniform highp vec4 u_camUp;
+uniform highp vec4 u_scale;
+uniform highp vec4 i_iconPos;
+uniform highp vec4 i_pixelSize;
+uniform highp vec4 i_scaleOffsetTex;
+void main ()
+{
+  highp vec3 pivot_1;
+  highp vec3 position_2;
+  highp vec2 tmpvar_3;
+  tmpvar_3 = (i_pixelSize.xy * u_scale.x);
+  pivot_1.xy = i_iconPos.xy;
+  pivot_1.z = (i_iconPos.z + tmpvar_3.y);
+  highp vec2 tmpvar_4;
+  tmpvar_4 = (tmpvar_3 * a_position.xy);
+  position_2 = ((pivot_1 + (u_camRight.xyz * tmpvar_4.x)) - (u_camUp.xyz * tmpvar_4.y));
+  highp vec4 tmpvar_5;
+  tmpvar_5.w = 1.0;
+  tmpvar_5.xyz = position_2;
+  gl_Position = (u_proj * (u_view * tmpvar_5));
+  gl_Position.z = (gl_Position.z - (gl_Position.w * u_depthModifier.x));
+  v_position = position_2;
+  v_texcoord0 = a_texcoord0;
+  v_texcoord7 = i_scaleOffsetTex;
+}
+

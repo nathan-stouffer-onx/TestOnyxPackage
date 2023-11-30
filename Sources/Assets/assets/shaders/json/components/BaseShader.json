@@ -1,0 +1,337 @@
+{
+    "sortOrder" : 0,
+    "requirements":
+    {
+        "position": true,
+        "positionOutput": false,
+        "transformPosition": true
+    },
+    "bools": {
+        "Normal" : false,
+        "Position" : true,
+        "PositionOutput" : false,
+        "Tangent" : false,
+        "TransformPosition" : true
+    },
+    "ints": {
+        "ColorCount" : 0,
+        "UVCount" :  0
+    },
+
+    "inputs" :
+    [
+        {
+            "comment" : "existing: a_position",
+            "alias" : "position",
+            "dataType" : "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Position"
+            }
+        },
+        {
+            "comment" : "existing: a_normal",
+            "alias": "normal",
+            "dataType": "vec4",
+            "conditional" : {
+                "ifBoolTrue": "Normal"
+            }
+        },
+        {
+            "comment" : "existing: a_tangent",
+            "alias": "tangent",
+            "dataType": "vec4",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        },
+        {
+            "comment" : "existing: a_bitangent",
+            "alias": "bitangent",
+            "dataType": "vec4",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        },
+        {
+            "comment" : "existing: a_texcoords",
+            "alias": "texcoords",
+            "dataType": "vec4"
+        }
+    ],
+
+    "outputs" :
+    [
+        {
+            "comment" : "existing: v_position",
+            "alias": "worldPosition",
+            "dataType": "vec4",
+            "swizzle" : "xyzw",
+            "conditional" : {
+                "ifBoolTrue": "PositionOutput"
+            }
+        },
+        {
+            "comment" : "Depth output; existing v_color4",
+            "alias" : "depth",
+            "dataType": "vec4",
+            "conditional" : {
+                "ifBoolTrue" : "TransformPosition"
+            }
+        },
+        {
+            "alias": "normal",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Normal"
+            }
+        },
+        {
+            "alias": "tangent",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        },        
+        {
+            "alias": "bitangent",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        },        
+        {
+            "alias": "texcoords",
+            "dataType": "vec4"
+        }
+    ],
+
+    "chunks": [
+    {
+        "lines":
+        [
+            "#include <common.sh>",
+            "#include \"OnyxFunctions.sc\""
+        ],
+        "position": "Includes",
+        "type": "Vertex_and_Pixel"
+    },
+    {
+        "lines":
+        [
+            "#include \"OnyxFragFunctions.sc\""
+        ],
+        "position": "Includes",
+        "type": "Pixel"
+    },
+    {
+        "comment" : "lerp between tileMin and tileMax.  tileMin is (xPos, yPos, skirtSize); tileMax is (xPos, yPos, 1.0)",
+        "lines": [
+            "\tvec2 tileCoord = mix(u_tileMin.xy, u_tileMax.xy, position.xy);",
+            "\tfloat baseHeight = u_tileMin.z + (position.z * u_tileMax.z);",
+            "\tvec4 worldPosition = vec4(tileCoord, baseHeight, baseHeight);",
+            "\tvec3 vertexPosition = worldPosition.xyz;"
+        ],
+        "position": "Main",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Position"
+        }
+    },
+
+    {
+        "data": "mat4 viewMat = u_view;",
+        "position": "Main",
+        "positionOffset": 1,
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "TransformPosition"
+        }
+    },
+    {
+        "comment": "TODO figure out a way to have positionOffset = 0 so other components easily override base shader behavior",
+        "lines": [
+            "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(vertexPosition.xyz, 1.0)));",
+            "\tvec4 depth = projected;"
+            ],
+        "position": "Compose",
+        "positionOffset": 1,
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "TransformPosition"
+        }
+    },
+    {
+        "lines": [
+            "\tgl_Position = projected;"
+            ],
+        "position": "Compose",
+        "positionOffset": 10,
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "TransformPosition"
+        }
+    },
+
+    {
+        "data": "normal = mul(u_model[0], vec4(normal.xyz, 0.0));",
+        "position": "Main",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Normal"
+        }
+    },
+    {
+        "data": "tangent = mul(u_model[0], vec4(tangent, 0.0));",
+        "position": "Main",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Tangent"
+        }
+    },
+    {
+        "lines":[
+            "bitangent = cross(normal, tangent);"
+        ],
+        "position": "Compose",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Tangent"
+        }
+    },
+    {
+        "data": "vec4 fragColor = vec4(1.0, 1.0, 1.0, 0.0);",
+        "position": "Main",
+        "type": "Pixel"
+    },
+    {
+        "lines": [
+            "\tgl_FragData[0] = fragColor;",
+            "\t//scaling from -1,1 to 0,1, but I suspect that may only be needed for opengl?",
+            "\tfloat d = ((depth.z / depth.w) * 0.5 + 0.5) * 256.0;",
+            "\tfloat r = floor(d);",
+            "\td = (d - r) * 256.0;",
+            "\tfloat g = floor(d);",
+            "\td = (d - g) * 256.0;",
+            "\tfloat b = floor(d);",
+            "\tgl_FragData[1] = vec4(r / 256.0, g / 256.0, b / 256.0, 1.0);"
+        ],
+        "position": "Compose",
+        "type": "Pixel"
+    }
+],
+
+    "shaderParameters": [
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.009999999776482582,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_nearFarPlane",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "shaderType": "Vertex_and_Pixel",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.009999999776482582,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_eyePos",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.009999999776482582,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camRight",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.009999999776482582,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camForward",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camUp",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_time",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },        
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_tileMin",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": -10000.0,
+                "y": -10000.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_tileMax",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": -10000.0,
+                "y": -10000.0,
+                "z": 1.0
+            }
+        }
+    ]
+}

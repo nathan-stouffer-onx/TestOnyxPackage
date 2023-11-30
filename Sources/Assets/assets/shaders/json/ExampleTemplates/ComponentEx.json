@@ -1,0 +1,93 @@
+{
+    "sortOrder": 0,
+    "requirements":
+    {
+        "exampleRequiredBool": true,
+        "exampleRequiredInt": 5
+    },
+    "bools":
+    {
+        "exampleBool1": true,
+        "exampleBool2": false
+    },
+    "ints": {
+        "ColorCount": 0,
+        "UVCount": 1
+    },
+    "inputs":
+    [
+        {
+            "alias": "inputName", 
+            "dataType": "vec4",
+            "conditional": {
+                "ifBoolTrue": "exampleBool1",
+                "ifBoolFalse": "exampleBool2",
+                "ifIntEqual": "UVCount",
+                "targetValue": 1,
+                "forThisIntTimes": "I don't know what this does",
+                "loopReplaceValue": "I don't know what this does"
+            }
+
+        }
+    ],
+    "outputs":
+    [
+        {
+            "alias": "outputName", 
+            "dataType": "vec4",
+            "conditional": {
+                "ifBoolTrue": "exampleBool1",
+                "ifBoolFalse": "exampleBool2",
+                "ifIntEqual": "UVCount",
+                "targetValue": 1,
+                "forThisIntTimes": "I don't know what this does",
+                "loopReplaceValue": "I don't know what this does"
+            }
+        }
+    ],
+    "chunks": [
+        {
+            "lines": [
+                "#include <common.sh>",
+                "#include \"OnyxFunctions.sc\""
+            ],
+            "position": "Includes",
+            "positionOffset": 0,
+            "type": "Vertex_and_Pixel",
+            "conditional": {
+                "ifBoolTrue": "exampleRequiredBool"
+            }
+        },
+        {
+            "data": "#include \"OnyxFragFunctions.sc\"",
+            "position": "Includes",
+            "type": "Pixel"
+        }
+    ],
+    "shaderParameters": [
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_tileMin",
+            "realtimeUniform": true,
+            "instanced": false,
+            "type": "vec3",
+            "vec3": {
+                "x": -10000.0,
+                "y": -10000.0,
+                "z": 0.0
+            },
+            "conditional": {
+              "ifBoolTrue": "exampleBool1"
+            },
+            "anisoFilter": true,
+            "samplerFlags": 320
+        }
+    ]
+
+
+
+
+}

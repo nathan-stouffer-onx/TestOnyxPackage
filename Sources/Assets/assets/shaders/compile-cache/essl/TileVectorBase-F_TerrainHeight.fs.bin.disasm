@@ -1,0 +1,33 @@
+precision highp int;
+precision highp float;
+out mediump vec4 bgfx_FragData[8];
+in vec3 v_bitangent;
+in vec4 v_texcoord4;
+in vec4 v_texcoord5;
+in vec4 v_texcoord7;
+uniform sampler2D s_patterns;
+uniform vec4 s_patterns_Res;
+uniform vec4 u_tileVectorData;
+uniform vec4 u_eyePos;
+uniform vec4 u_TileFragClip;
+void main ()
+{
+  vec2 worldUV_1;
+  float tmpvar_2;
+  tmpvar_2 = (float((u_TileFragClip.x <= v_texcoord7.x)) * float((v_texcoord7.x <= u_TileFragClip.z)));
+  float tmpvar_3;
+  tmpvar_3 = (float((u_TileFragClip.y <= v_texcoord7.y)) * float((v_texcoord7.y <= u_TileFragClip.w)));
+  if (((tmpvar_2 * tmpvar_3) == 0.0)) {
+    discard;
+  };
+  worldUV_1 = ((v_bitangent.xy + u_eyePos.xy) * 1000.0);
+  worldUV_1 = (worldUV_1 / exp2((20.0 - u_tileVectorData.x)));
+  vec2 tmpvar_4;
+  tmpvar_4.x = (float(mod (worldUV_1.x, v_texcoord4.z)));
+  tmpvar_4.y = (float(mod (worldUV_1.y, v_texcoord4.w)));
+  vec4 tmpvar_5;
+  tmpvar_5 = textureLod (s_patterns, (v_texcoord4.xy + (tmpvar_4 * s_patterns_Res.zw)), 0.0);
+  bgfx_FragData[0] = (v_texcoord5 * tmpvar_5);
+  bgfx_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
+}
+

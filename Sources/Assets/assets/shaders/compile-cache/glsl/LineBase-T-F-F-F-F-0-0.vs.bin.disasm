@@ -1,0 +1,58 @@
+attribute vec3 a_position;
+varying vec4 v_color0;
+varying vec4 v_texcoord5;
+varying vec4 v_texcoord6;
+varying vec4 v_texcoord7;
+uniform vec4 u_origin;
+uniform vec4 u_length;
+uniform vec4 u_screenDimensions;
+uniform vec4 u_color;
+uniform vec4 u_drawColor;
+uniform vec4 u_endCaps;
+void main ()
+{
+  vec4 screenPosition_1;
+  float tmpvar_2;
+  tmpvar_2 = (u_origin.w * 0.5);
+  vec4 tmpvar_3;
+  tmpvar_3.yzw = vec3(0.0, 0.0, 0.0);
+  float tmpvar_4;
+  tmpvar_4 = (u_length.w * a_position.y);
+  tmpvar_3.x = (tmpvar_4 + (tmpvar_2 * a_position.z));
+  vec4 tmpvar_5;
+  tmpvar_5.w = 1.0;
+  tmpvar_5.xy = (u_origin.xy + ((
+    (tmpvar_4 * u_length.xy)
+   * u_screenDimensions.xy) + (
+    (((u_endCaps.x * (1.0 - a_position.y)) + (u_endCaps.y * a_position.y)) * (tmpvar_2 * a_position.z))
+   * 
+    (u_screenDimensions.xy * u_length.xy)
+  )));
+  tmpvar_5.z = u_origin.z;
+  vec2 tmpvar_6;
+  tmpvar_6.x = -(u_length.y);
+  tmpvar_6.y = u_length.x;
+  screenPosition_1.xy = (tmpvar_5.xy + ((a_position.x * u_screenDimensions.xy) * (tmpvar_6 * tmpvar_2)));
+  vec4 tmpvar_7;
+  tmpvar_7.z = 0.0;
+  tmpvar_7.x = a_position.x;
+  tmpvar_7.y = a_position.z;
+  tmpvar_7.w = u_origin.w;
+  vec4 tmpvar_8;
+  tmpvar_8.xyz = mix (u_color.xyz, u_drawColor.xyz, u_drawColor.w);
+  tmpvar_8.w = u_color.w;
+  screenPosition_1.w = ((sqrt(
+    dot (u_screenDimensions.xy, u_screenDimensions.xy)
+  ) * tmpvar_2) * 0.5);
+  screenPosition_1.z = (u_origin.z - 0.0078125);
+  screenPosition_1.z = clamp (screenPosition_1.z, 0.0, 1.0);
+  vec4 tmpvar_9;
+  tmpvar_9.xyz = screenPosition_1.xyz;
+  tmpvar_9.w = 1.0;
+  gl_Position = tmpvar_9;
+  v_texcoord7 = tmpvar_7;
+  v_color0 = tmpvar_8;
+  v_texcoord6 = screenPosition_1;
+  v_texcoord5 = tmpvar_3;
+}
+

@@ -1,0 +1,15 @@
+precision highp int;
+precision highp float;
+out mediump vec4 bgfx_FragData[8];
+in vec3 v_bitangent;
+uniform vec4 u_skyColor;
+uniform vec4 u_hazeColor;
+void main ()
+{
+  mediump vec4 tmpvar_1;
+  tmpvar_1.w = 1.0;
+  tmpvar_1.xyz = mix (u_hazeColor, u_skyColor, v_bitangent.z).xyz;
+  bgfx_FragData[0] = tmpvar_1;
+  bgfx_FragData[1] = vec4(1.0, 1.0, 1.0, 1.0);
+}
+

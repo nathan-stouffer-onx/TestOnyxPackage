@@ -1,0 +1,233 @@
+{
+    "ComponentCompatibleComment" : "IconBillboard, DepthBias, FixedSize",
+
+    "sortOrder" : 1,
+    "requirements":
+    {
+        "position": true,
+        "positionOutput": true
+    },
+    "bools": {
+        "CanonTileCoords": false,
+        "PositionOutput" : true,
+        "TransformPosition" : true
+    },
+    "ints": {
+        "ColorCount" : 0,
+        "UVCount" :  1
+    },
+    "inputs" :
+    [
+        {
+            "alias": "position",
+            "dataType": "vec3"
+        },
+        {
+            "alias": "texcoord0",
+            "dataType": "vec4"
+        }
+    ],
+
+    "outputs" :
+    [
+        {
+            "alias": "position",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "PositionOutput"
+            }
+        },
+        {
+            "alias": "texcoord0",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "scaleOffsetTex",
+            "dataType": "vec4"
+        }
+    ],
+
+    "chunks": [
+    {
+        "comment" : "#include \"OnyxFunctions.sc\"",
+        "position": "Includes",
+        "type": "Vertex_and_Pixel",
+        "lines":
+        [
+            "#include <../examples/common/common.sh>",
+            "#include \"OnyxFunctions.sc\""
+        ]
+    },
+    {
+        "comment": "Aliases our shader system doesn't make automatically. Main use is for compatibility with other components",
+        "type": "Vertex",
+        "position": "Main",
+        "lines":
+        [
+            "\t// Custom aliases",
+            "\tvec3 midpoint = i_iconPos.xyz; // For compatibility with FixedSize",
+            "\tfloat uniformScale = u_scale.x;",
+            "\tvec2 pixelSize = i_pixelSize.xy;",
+            "\tvec2 scale = uniformScale * pixelSize;"
+        ]
+    },
+    { 
+        "type": "Vertex",
+        "position": "Main",
+        "positionOffset": 3,
+        "lines":[
+            "\t// Midpoint is in canonical tile coordinates except for height",
+            "\tmidpoint = mix(u_tileMin.xyz, u_tileMax.xyz, midpoint.xyz);"
+        ],
+        "conditional" : {
+            "ifBoolTrue": "CanonTileCoords"
+        }
+    },
+    {
+        "type": "Vertex",
+        "position": "Main",
+        "positionOffset": 5,
+        "comment": "Scale then rotate then translate. We assume quaternions are {x, y, z, w}",
+        "lines":
+        [
+            "\t// Scale, rotate, translate position",
+            "\tposition = vec3(scale.xy, 1.0) * position;",
+            "\tposition = rotate(vec4(0, 0, 0, 1), position) + midpoint;"
+        ],
+        "conditional":{
+            "ifBoolTrue": "TransformPosition"
+        }
+    },
+    {
+        "type": "Vertex",
+        "position": "Compose",
+        "lines": [
+            "\tgl_Position = mul(u_proj, mul(u_view, vec4(position.xyz, 1.0)));"
+        ],
+        "conditional" : {
+            "ifBoolTrue": "PositionOutput"
+        }
+    },
+    {
+        "type": "Vertex",
+        "position": "Compose",
+        "lines": [
+            "\t// Aliases for output to pixel shader",
+            "\tvec4 scaleOffsetTex = i_scaleOffsetTex;" 
+        ]
+    },
+    {
+        "Comment": "Quad texturing",
+        "type": "Pixel",
+        "position": "Main",
+        "lines": [
+            "\t// Get sprite texture color",
+            "\tvec4 fragColor = vec4_splat(0.f);",
+            "\tvec2 texcoords = texcoord0.xy;",
+            "\tfragColor = sampleTextureFunc(s_spriteTex, texcoords, scaleOffsetTex);"
+        ]
+    },
+    {
+
+        "type": "Pixel",
+        "position": "Compose",
+        "positionOffset": 10,
+        "data": "\tgl_FragColor = fragColor;"
+    }
+],
+
+    "shaderParameters": [
+        {
+            "componentName": "IconBase",
+            "name": "u_tileMin",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "conditional": {
+                "ifBoolTrue": "CanonTileCoords"
+            }
+        },
+        {
+            "componentName": "IconBase",
+            "name": "u_tileMax",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "conditional": {
+                "ifBoolTrue": "CanonTileCoords"
+            }
+        },
+        {
+            "componentName": "IconBase",
+            "imguiRate": 0.01,
+            "min": -99999.0,
+            "max": 99999.0,
+            "name": "u_scale",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "componentName": "IconBase",
+            "name": "s_spriteTex",
+            "realtimeUniform": true,
+            "type": "texture"
+        },
+
+        {
+            "comment": "Icon position relative to camera",
+            "componentName": "IconBase",
+            "name": "i_iconPos",
+            "realtimeUniform": false,
+            "instanced": true,
+            "type": "vec4",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+            }
+        },
+        {
+            "componentName": "IconBase",
+            "imguiRate": 0.01,
+            "min": -1.0,
+            "max": 1.0,
+            "name": "i_pixelSize",
+            "realtimeUniform": false,
+            "instanced": true,
+            "type": "vec4",
+            "vec3": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+            }
+        },
+        {
+            "componentName": "IconBase",
+            "name": "i_scaleOffsetTex",
+            "realtimeUniform": false,
+            "instanced": true,
+            "type": "vec4",
+            "vec3": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+            }
+        }
+    ]
+}

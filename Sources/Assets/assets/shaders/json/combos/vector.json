@@ -1,0 +1,31 @@
+{
+  "sortOrder": 13,
+  "segments": [
+    {
+      "segment": "TileVectorBase",
+      "name": "TileVectorBase",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "TileVectorBase"
+          }
+        }
+      ]
+    },
+    {
+      "Segment": "terrainHeight",
+      "name": "TerrainHeight",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "TerrainHeight"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+    "sortOrder": 19,
+    "bools": {},
+    "ints": {},
+    "chunks": [
+      {
+        "lines": [
+            "float TWO_PI = PI_CONSTS.y;",
+            "float PI_HALVES = PI_CONSTS.z;",
+            "// store height, angle, and aspect in local variables",
+            "float height = worldPosition.w + u_eyePos.z;",
+            "float angle = calcSlopeAngle(normal.xyz);",
+            "float aspect = calcSlopeDir(normal.xyz);",
+            "// compute whether values are in the ranges",
+            "float inHeight = texture2D(s_HeightBandTexture, vec2(lerpInv(u_HeightExtents.x, u_HeightExtents.y, height), 0.0)).a;",
+            "float inAngle = texture2D(s_SlopeAngleTexture, vec2(angle / PI_HALVES, 0.0)).a;",
+            "float inAspect = texture2D(s_SlopeDirTexture, vec2(aspect / TWO_PI, 0.0)).a;",
+            "float isInIntersection = inHeight * inAngle * inAspect;",
+            "float grey = (1.0 - u_dimStrength.x) * (fragColor.x + fragColor.y + fragColor.z) / 3.0;",
+            "fragColor.rgb = isInIntersection * fragColor.xyz + (1.0 - isInIntersection) * vec3(grey, grey, grey);"
+        ],
+        "position": "Main",
+        "positionOffset": 1,
+        "type": "Pixel"
+      }
+    ],
+    "shaderParameters": [
+      {
+        "componentName": "IntersectTerrain",
+        "float": 0.3,
+        "imguiRate": 0.009999999776482582,
+        "max": 1.0,
+        "min": 0.0,
+        "name": "u_dimStrength",
+        "realtimeUniform": true,
+        "type": "float"
+      },
+      {
+        "componentName": "IntersectTerrain",
+        "name": "s_HeightBandTexture",
+        "type": "texture",
+        "anisoFilter": false
+      },
+      {
+        "componentName": "IntersectTerrain",
+        "name": "u_HeightExtents",
+        "type": "vec2"
+      },
+      {
+        "componentName": "IntersectTerrain",
+        "name": "s_SlopeAngleTexture",
+        "type": "texture",
+        "anisoFilter": false
+      },
+      {
+        "componentName": "IntersectTerrain",
+        "name": "s_SlopeDirTexture",
+        "type": "texture",
+        "anisoFilter": false
+      }
+    ],
+    "requirements": {
+      "position": true,
+      "positionOutput": true,
+      "normal":  true
+    }
+  }

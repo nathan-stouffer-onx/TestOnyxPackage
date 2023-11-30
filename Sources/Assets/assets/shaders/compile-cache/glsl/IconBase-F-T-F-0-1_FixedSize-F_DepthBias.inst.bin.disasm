@@ -1,0 +1,29 @@
+attribute vec3 a_position;
+attribute vec4 a_texcoord0;
+attribute vec4 i_data0;
+attribute vec4 i_data2;
+varying vec3 v_position;
+varying vec4 v_texcoord0;
+varying vec4 v_texcoord7;
+uniform mat4 u_view;
+uniform mat4 u_proj;
+uniform vec4 u_depthModifier;
+void main ()
+{
+  vec3 position_1;
+  vec4 tmpvar_2;
+  tmpvar_2.w = 1.0;
+  tmpvar_2.xyz = i_data0.xyz;
+  vec3 x_3;
+  x_3 = (u_view * tmpvar_2).xyz;
+  position_1 = (sqrt(dot (x_3, x_3)) * a_position);
+  vec4 tmpvar_4;
+  tmpvar_4.w = 1.0;
+  tmpvar_4.xyz = position_1;
+  gl_Position = (u_proj * (u_view * tmpvar_4));
+  gl_Position.z = (gl_Position.z - (gl_Position.w * u_depthModifier.x));
+  v_position = position_1;
+  v_texcoord0 = a_texcoord0;
+  v_texcoord7 = i_data2;
+}
+

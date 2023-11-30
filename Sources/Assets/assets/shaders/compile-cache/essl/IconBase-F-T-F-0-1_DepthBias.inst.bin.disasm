@@ -1,0 +1,23 @@
+precision highp int;
+precision highp float;
+in highp vec3 a_position;
+in highp vec4 a_texcoord0;
+in highp vec4 i_data2;
+out highp vec3 v_position;
+out highp vec4 v_texcoord0;
+out highp vec4 v_texcoord7;
+uniform highp mat4 u_view;
+uniform highp mat4 u_proj;
+uniform highp vec4 u_depthModifier;
+void main ()
+{
+  highp vec4 tmpvar_1;
+  tmpvar_1.w = 1.0;
+  tmpvar_1.xyz = a_position;
+  gl_Position = (u_proj * (u_view * tmpvar_1));
+  gl_Position.z = (gl_Position.z - (gl_Position.w * u_depthModifier.x));
+  v_position = a_position;
+  v_texcoord0 = a_texcoord0;
+  v_texcoord7 = i_data2;
+}
+

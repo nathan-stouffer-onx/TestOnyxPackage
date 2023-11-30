@@ -1,0 +1,13 @@
+precision highp int;
+precision highp float;
+out mediump vec4 bgfx_FragColor;
+in vec4 v_texcoord0;
+in vec4 v_texcoord7;
+uniform sampler2D s_spriteTex;
+void main ()
+{
+  vec4 tmpvar_1;
+  tmpvar_1 = texture (s_spriteTex, (v_texcoord7.xy + (v_texcoord7.zw * v_texcoord0.xy)));
+  bgfx_FragColor = tmpvar_1;
+}
+

@@ -1,0 +1,19 @@
+varying vec4 v_color0;
+varying vec4 v_texcoord5;
+varying vec4 v_texcoord7;
+uniform sampler2D s_DashSampler;
+void main ()
+{
+  vec2 tmpvar_1;
+  tmpvar_1 = abs(v_texcoord7.xy);
+  vec4 tmpvar_2;
+  tmpvar_2.xyz = v_color0.xyz;
+  tmpvar_2.w = ((texture2D (s_DashSampler, (v_texcoord5.xy / 
+    (v_texcoord7.w * 8.0)
+  )).x * v_color0.w) * ceil((1.0 - 
+    dot (tmpvar_1, tmpvar_1)
+  )));
+  gl_FragData[0] = tmpvar_2;
+  gl_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
+}
+

@@ -1,0 +1,74 @@
+varying vec4 v_texcoord6;
+varying vec4 v_texcoord7;
+uniform sampler2D s_BlurTex;
+uniform vec4 u_GaussBlurScale;
+void main ()
+{
+  float d_1;
+  float count_2;
+  vec4 c_0_3;
+  vec4 c_1_4;
+  vec4 c_2_5;
+  vec4 c_3_6;
+  vec4 c_4_7;
+  vec4 c_5_8;
+  vec4 c_6_9;
+  vec4 color_10;
+  c_0_3 = texture2D (s_BlurTex, (v_texcoord6.xy + (vec2(-3.0, -3.0) * u_GaussBlurScale.xy)));
+  c_1_4 = texture2D (s_BlurTex, (v_texcoord6.xy + (vec2(-2.0, -2.0) * u_GaussBlurScale.xy)));
+  c_2_5 = texture2D (s_BlurTex, (v_texcoord6.xy - u_GaussBlurScale.xy));
+  c_3_6 = texture2D (s_BlurTex, v_texcoord6.xy);
+  c_4_7 = texture2D (s_BlurTex, (v_texcoord6.xy + u_GaussBlurScale.xy));
+  c_5_8 = texture2D (s_BlurTex, (v_texcoord6.xy + (vec2(2.0, 2.0) * u_GaussBlurScale.xy)));
+  c_6_9 = texture2D (s_BlurTex, (v_texcoord6.xy + (vec2(3.0, 3.0) * u_GaussBlurScale.xy)));
+  float tmpvar_11;
+  tmpvar_11 = (1.0 - float((c_0_3.y >= 0.99999)));
+  color_10 = ((c_0_3 * tmpvar_11) * 0.015625);
+  count_2 = (tmpvar_11 * 0.015625);
+  float tmpvar_12;
+  tmpvar_12 = (1.0 - float((c_1_4.y >= 0.99999)));
+  color_10 = (color_10 + ((c_1_4 * tmpvar_12) * 0.09375));
+  count_2 = (count_2 + (tmpvar_12 * 0.09375));
+  float tmpvar_13;
+  tmpvar_13 = (1.0 - float((c_2_5.y >= 0.99999)));
+  color_10 = (color_10 + ((c_2_5 * tmpvar_13) * 0.234375));
+  count_2 = (count_2 + (tmpvar_13 * 0.234375));
+  float tmpvar_14;
+  tmpvar_14 = (1.0 - float((c_3_6.y >= 0.99999)));
+  color_10 = (color_10 + ((c_3_6 * tmpvar_14) * 0.3125));
+  count_2 = (count_2 + (tmpvar_14 * 0.3125));
+  float tmpvar_15;
+  tmpvar_15 = (1.0 - float((c_4_7.y >= 0.99999)));
+  color_10 = (color_10 + ((c_4_7 * tmpvar_15) * 0.234375));
+  count_2 = (count_2 + (tmpvar_15 * 0.234375));
+  float tmpvar_16;
+  tmpvar_16 = (1.0 - float((c_5_8.y >= 0.99999)));
+  color_10 = (color_10 + ((c_5_8 * tmpvar_16) * 0.09375));
+  count_2 = (count_2 + (tmpvar_16 * 0.09375));
+  float tmpvar_17;
+  tmpvar_17 = (1.0 - float((c_6_9.y >= 0.99999)));
+  color_10 = (color_10 + ((c_6_9 * tmpvar_17) * 0.015625));
+  count_2 = (count_2 + (tmpvar_17 * 0.015625));
+  color_10 = (color_10 / count_2);
+  if ((count_2 <= 0.0001)) {
+    color_10 = vec4(1.0, 1.0, 1.0, 1.0);
+  };
+  gl_FragData[0] = color_10;
+  float tmpvar_18;
+  tmpvar_18 = (((
+    (v_texcoord7.z / v_texcoord7.w)
+   * 0.5) + 0.5) * 256.0);
+  float tmpvar_19;
+  tmpvar_19 = floor(tmpvar_18);
+  d_1 = ((tmpvar_18 - tmpvar_19) * 256.0);
+  float tmpvar_20;
+  tmpvar_20 = floor(d_1);
+  d_1 = ((d_1 - tmpvar_20) * 256.0);
+  vec4 tmpvar_21;
+  tmpvar_21.w = 1.0;
+  tmpvar_21.x = (tmpvar_19 / 256.0);
+  tmpvar_21.y = (tmpvar_20 / 256.0);
+  tmpvar_21.z = (floor(d_1) / 256.0);
+  gl_FragData[1] = tmpvar_21;
+}
+

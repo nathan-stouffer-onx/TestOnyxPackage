@@ -1,0 +1,45 @@
+precision highp int;
+precision highp float;
+out mediump vec4 bgfx_FragData[8];
+in vec4 v_texcoord2;
+in vec4 v_texcoord3;
+in vec4 v_texcoord4;
+in vec4 v_texcoord6;
+uniform vec4 u_dashLength;
+uniform vec4 u_gapLength;
+uniform vec4 u_fogVars;
+uniform vec4 u_fogColor;
+void main ()
+{
+  float d_1;
+  vec4 fragColor_2;
+  vec4 tmpvar_3;
+  tmpvar_3.xyz = v_texcoord2.xyz;
+  tmpvar_3.w = (v_texcoord2.w * float((
+    (float(mod (v_texcoord3.y, (u_dashLength.x + u_gapLength.x))))
+   <= u_dashLength.x)));
+  fragColor_2.w = tmpvar_3.w;
+  float tmpvar_4;
+  tmpvar_4 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
+  fragColor_2.xyz = mix (v_texcoord2.xyz, u_fogColor.xyz, (tmpvar_4 * (tmpvar_4 * 
+    (3.0 - (2.0 * tmpvar_4))
+  )));
+  bgfx_FragData[0] = fragColor_2;
+  float tmpvar_5;
+  tmpvar_5 = (((
+    (v_texcoord6.z / v_texcoord6.w)
+   * 0.5) + 0.5) * 256.0);
+  float tmpvar_6;
+  tmpvar_6 = floor(tmpvar_5);
+  d_1 = ((tmpvar_5 - tmpvar_6) * 256.0);
+  float tmpvar_7;
+  tmpvar_7 = floor(d_1);
+  d_1 = ((d_1 - tmpvar_7) * 256.0);
+  mediump vec4 tmpvar_8;
+  tmpvar_8.w = 1.0;
+  tmpvar_8.x = (tmpvar_6 / 256.0);
+  tmpvar_8.y = (tmpvar_7 / 256.0);
+  tmpvar_8.z = (floor(d_1) / 256.0);
+  bgfx_FragData[1] = tmpvar_8;
+}
+

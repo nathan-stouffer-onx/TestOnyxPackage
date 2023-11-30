@@ -1,0 +1,62 @@
+
+{
+    "segments": [
+        {
+            "segment": "baseShader",
+            "name": "baseShader",
+            "combineType": "PickOne",
+            "includeNone": false,
+            "components": [
+                {
+                    "jsonComponent": {
+                        "name": "BaseShader"
+                    }
+                }
+            ]
+        },
+        {
+            "segment": "FixedSize",
+            "name": "FixedSize",
+            "combineType": "PickOne",
+            "includeNone": false,
+            "components": [
+                {
+                    "jsonComponent": 
+                    {
+                        "name": "FixedSize"
+                    }
+                }
+            ]
+        },
+        {
+            "segment": "TransformSRT",
+            "name": "TransformSRT",
+            "combineType": "PickOne",
+            "includeNone": false,
+            "components": [
+                {
+                    "jsonComponent": 
+                    {
+                        "name": "TransformSRT"
+                    }
+                }
+            ]
+        },
+        {
+            "segment": "TextureLayer",
+            "name": "TextureLayer",
+            "combineType": "PickOne",
+            "includeNone": false,
+            "components": [
+                {
+                    "builtIn" :
+                    {
+                        "type" : "TextureLayer",
+                        "textureCount" : 1
+                    }
+
+                }
+            ]
+        }
+    ]
+}

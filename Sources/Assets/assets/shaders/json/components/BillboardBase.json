@@ -1,0 +1,257 @@
+{
+    "sortOrder" : 1,
+    "requirements":
+    {
+        "position": true,
+        "positionOutput": true,
+        "transformPosition": false
+    },
+    "bools": {
+        "Normal" : false,
+        "Position" : true,
+        "PositionOutput" : true,
+        "Tangent" : false,
+        "TransformPosition" : false
+    },
+    "ints": {
+        "ColorCount" : 0,
+        "UVCount" :  0
+    },
+
+    "inputs" :
+    [
+        {
+            "alias": "position",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Position"
+            }
+        },
+        {
+            "alias": "normal",
+            "dataType": "vec4",
+            "conditional" : {
+                "ifBoolTrue": "Normal"
+            }
+        },
+        {
+            "alias": "tangent",
+            "dataType": "vec4",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        },
+        {
+            "alias": "bitangent",
+            "dataType": "vec4",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        }
+    ],
+
+    "outputs" :
+    [
+        {
+            "alias": "position",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "PositionOutput"
+            }
+        },
+        {
+            "alias": "normal",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Normal"
+            }
+        },
+        {
+            "alias": "tangent",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        },        
+        {
+            "alias": "bitangent",
+            "dataType": "vec3",
+            "conditional" : {
+                "ifBoolTrue": "Tangent"
+            }
+        }
+    ],
+
+    "chunks": [
+    {
+        "comment" : "#include \"OnyxFunctions.sc\"",
+
+        "lines":
+        [
+            "#include <../examples/common/common.sh>"
+            , "#include \"OnyxFunctions.sc\""
+        ],
+        "position": "Includes",
+        "type": "Vertex_and_Pixel"
+    },
+    {
+        "data": "position.xy = mul(u_model[0], vec4(position.xy, 0, 1)).xy;  // Preserve Z as depth",
+        "position": "Main",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Position"
+        }
+    },
+    {
+        "data": "gl_Position = vec4(position, 1);",
+        "position": "Compose",
+        "positionOffset": 0,
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "PositionOutput"
+        }
+    },
+
+
+    {
+        "data": "mat4 viewMat = u_view;",
+        "position": "Main",
+        "positionOffset": 1,
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "TransformPosition"
+        }
+    },
+    {
+        "lines": [  "vec2 pos = mul(u_proj, mul(viewMat, vec4(position.xy, 0, 1))).xy; // Preserve Z as depth",
+                    "gl_Position = vec4(pos.xy, position.z, 1);"
+        ],
+        "position": "Compose",
+        "positionOffset": 1,
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "TransformPosition"
+        }
+    },
+
+    {
+        "data": "normal = mul(u_model[0], vec4(normal.xy, 0.0, 0.0) );",
+        "position": "Main",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Normal"
+        }
+    },
+    {
+        "data": "v_normal = normal.xyz;",
+        "position": "Compose",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Normal"
+        }
+    },
+    {
+        "data": "tangent = mul(u_model[0], vec4(tangent.xy, 0.0, 0.0) );",
+        "position": "Main",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Tangent"
+        }
+    },
+    {
+        "lines":[
+            "v_tangent = tangent;",
+            "v_bitangent = cross(v_normal, v_tangent);"
+        ],
+        "position": "Compose",
+        "type": "Vertex",
+        "conditional" : {
+            "ifBoolTrue": "Tangent"
+        }
+    },
+
+    {
+        "data": "vec4 fragColor = vec4(0,0,0,0);",
+        "position": "Main",
+        "type": "Pixel"
+    },
+    {
+        "data": "gl_FragColor = fragColor;",
+        "position": "Compose",
+        "type": "Pixel"
+    }
+],
+
+    "shaderParameters": [
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_nearFarPlane",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_eyePos",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camRight",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camForward",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "componentName": "BaseShader",
+            "imguiRate": 0.01,
+            "max": -1.0,
+            "min": -1.0,
+            "name": "u_camUp",
+            "realtimeUniform": true,
+            "type": "vec3",
+            "vec3": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        }
+    ]
+}
