@@ -11,6 +11,7 @@
                 "https://tileserver.production.onxmaps.com/v1/elevation-v2/latest/{z}/{x}/{y}.png"
             ],
             "type": "raster-dem",
+            "encoding": "terrarium",
             "tileSize": 256
         },
         "aerial": {
@@ -32,40 +33,52 @@
         }
     },
     "context": {
-		"sym-paint" : { "symbol-paint" :
-						{  "text-color" : "hsl(291, 17%, 60%)",
-						   "text-halo-color" : "#FFFFFFFF",
-						   "text-shadow-color" :  "#FFFFFF7F"
-		                } },
-        "sym-layout":  { "symbol-layout" :
-                            {
-                            "text-field": [
-                                "get",
-                                "label"
-                            ],
-                            "text-size": 17.5,
-                            "symbol-placement": "line",
-                            "text-font": [
-                            "Open Sans SemiBold"
-                            ],
-                            "visibility": "none"
-                            }
-                        }
+        "exaggeration-expr": {
+            "number": [
+                "interpolate",
+                [
+                    "linear"
+                ],
+                [
+                    "pitch"
+                ],
+                0,
+                0,
+                45,
+                2
+            ]
+        }
+    },
+    "layouts": {
+        "sym-layout": {
+            "symbol-layout": {
+                "text-field": [
+                    "get",
+                    "label"
+                ],
+                "text-size": 17.5,
+                "symbol-placement": "line",
+                "text-font": [
+                    "Open Sans SemiBold"
+                ],
+                "visibility": "none"
+            }
+        }
+    },
+    "paints": {
+        "sym-paint": {
+            "symbol-paint": {
+                "text-color": "hsl(291, 17%, 60%)",
+                "text-halo-color": "#FFFFFFFF",
+                "text-shadow-color": "#FFFFFF7F"
+            }
+        }
     },
     "terrain": {
         "source": "elevation",
         "exaggeration": [
-            "interpolate",
-            [
-                "linear"
-            ],
-            [
-                "pitch"
-            ],
-            0,
-            0,
-            45,
-            2
+            "context",
+            "exaggeration-expr"
         ]
     },
     "layers": [
@@ -152,7 +165,10 @@
                     "hsl(0, 0%, 60%)"
                 ],
                 "line-width": 2.5,
-                "line-dasharray": [ 2, 4 ]
+                "line-dasharray": [
+                    2,
+                    4
+                ]
             }
         },
         {
@@ -182,8 +198,12 @@
                 ],
                 "county"
             ],
-            "layout":  { "base": "sym-layout" },
-            "paint": { "base" : "sym-paint" }
+            "layout": {
+                "base": "sym-layout"
+            },
+            "paint": {
+                "base": "sym-paint"
+            }
         },
         {
             "id": "elevation$labels",
@@ -191,19 +211,22 @@
             "type": "contour",
             "minzoom": 0,
             "maxzoom": 23,
-            "layout":  {
-                "text-field": [ "get", "label" ],
+            "layout": {
+                "text-field": [
+                    "get",
+                    "label"
+                ],
                 "text-size": 7.5,
                 "symbol-placement": "line-center",
                 "text-font": [
-                   "Open Sans SemiBold"
+                    "Open Sans SemiBold"
                 ],
                 "intervalLayouts": [
                     {
                         "text-size": 14,
                         "symbol-placement": "point",
                         "text-font": [
-                           "Open Sans SemiBold"
+                            "Open Sans SemiBold"
                         ],
                         "interval": 100
                     },
@@ -211,15 +234,15 @@
                         "text-size": 12,
                         "symbol-placement": "point",
                         "text-font": [
-                           "Open Sans SemiBold"
+                            "Open Sans SemiBold"
                         ],
                         "interval": 10
                     }
                 ]
             },
             "paint": {
-               "text-color": "hsl(291, 0%, 0%)",
-               "text-shadow-color": "hsl(291, 20%, 10%)",
+                "text-color": "hsl(291, 0%, 0%)",
+                "text-shadow-color": "hsl(291, 20%, 10%)",
                 "intervalPaints": [
                     {
                         "text-color": "hsl(291, 100%, 70%)",
@@ -231,6 +254,6 @@
                     }
                 ]
             }
-        }            
+        }
     ]
 }

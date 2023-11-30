@@ -1,1 +1,1594 @@
-{"BLUEBIRD_BACKCOUNTRY":{"width":88,"height":88,"x":0,"y":0,"pixelRatio":1},"EVENT_BADGE_CIRQUE":{"width":88,"height":88,"x":88,"y":0,"pixelRatio":1},"EVENT_BADGE_RUT":{"width":88,"height":88,"x":0,"y":88,"pixelRatio":1},"FIFTY_PROJECT":{"width":88,"height":88,"x":88,"y":88,"pixelRatio":1},"LEAVE_NO_TRACE":{"width":88,"height":88,"x":176,"y":0,"pixelRatio":1},"EVENT_BADGE_LEADVILLE":{"width":100,"height":70,"x":176,"y":88,"pixelRatio":1},"AREA_NA_LG":{"width":150,"height":60,"x":0,"y":176,"pixelRatio":1},"AREA_NA_MD":{"width":134,"height":60,"x":150,"y":176,"pixelRatio":1},"AREA_NA_SM":{"width":110,"height":60,"x":0,"y":236,"pixelRatio":1},"AREA_NP_LG":{"width":150,"height":60,"x":110,"y":236,"pixelRatio":1},"AREA_NP_MD":{"width":134,"height":60,"x":284,"y":176,"pixelRatio":1},"AREA_NP_SM":{"width":110,"height":60,"x":418,"y":176,"pixelRatio":1},"AREA_OTHER_LG":{"width":150,"height":60,"x":528,"y":176,"pixelRatio":1},"AREA_OTHER_MD":{"width":134,"height":60,"x":260,"y":236,"pixelRatio":1},"AREA_OTHER_SM":{"width":110,"height":60,"x":394,"y":236,"pixelRatio":1},"GLACIER_FILL":{"width":60,"height":60,"x":504,"y":236,"pixelRatio":1},"INTERMITTANT_LAKE_FILL":{"width":60,"height":60,"x":564,"y":236,"pixelRatio":1},"SALT_FLAT_FILL":{"width":60,"height":60,"x":624,"y":236,"pixelRatio":1},"WETLAND_FILL":{"width":60,"height":60,"x":264,"y":0,"pixelRatio":1},"SNOTEL_PIN_SELECTED":{"width":36,"height":50,"x":324,"y":0,"pixelRatio":1},"AVALANCHE_FATALITY":{"width":40,"height":40,"x":360,"y":0,"pixelRatio":1},"AVALANCHE_HUMAN_INVOLVED":{"width":40,"height":40,"x":400,"y":0,"pixelRatio":1},"AVALANCHE_OBSERVATION":{"width":40,"height":40,"x":440,"y":0,"pixelRatio":1},"BEACON_LOGO_PURPLE":{"width":40,"height":39,"x":480,"y":0,"pixelRatio":1},"BEACON_LOGO_RED":{"width":40,"height":39,"x":520,"y":0,"pixelRatio":1},"info-marker":{"width":29,"height":39,"x":560,"y":0,"pixelRatio":1},"CLOSURE_WILDLIFE":{"width":36,"height":36,"x":589,"y":0,"pixelRatio":1},"FEATURED_SKI_TOURING_PIN":{"width":30,"height":36,"x":625,"y":0,"pixelRatio":1},"FEATURED_SNOWSHOEING_PIN":{"width":30,"height":36,"x":655,"y":0,"pixelRatio":1},"FEATURED_TRAIL_PIN":{"width":30,"height":36,"x":276,"y":88,"pixelRatio":1},"FEATURED_XC_SKIING_PIN":{"width":30,"height":36,"x":306,"y":88,"pixelRatio":1},"HAZARD":{"width":36,"height":36,"x":336,"y":88,"pixelRatio":1},"SKI_DIFFICULTY_DIFFICULT":{"width":36,"height":36,"x":372,"y":88,"pixelRatio":1},"SNOTEL_PIN":{"width":36,"height":36,"x":408,"y":88,"pixelRatio":1},"USFW_SHIELD":{"width":36,"height":36,"x":444,"y":88,"pixelRatio":1},"WILDFIRE_ACTIVE":{"width":36,"height":36,"x":480,"y":88,"pixelRatio":1},"interstate-highway-truck-1":{"width":25,"height":36,"x":678,"y":176,"pixelRatio":1},"interstate-highway-truck-2":{"width":26,"height":36,"x":516,"y":88,"pixelRatio":1},"interstate-highway-truck-3":{"width":32,"height":36,"x":542,"y":88,"pixelRatio":1},"EVENT_START_FINISH":{"width":72,"height":34,"x":574,"y":88,"pixelRatio":1},"WILDFIRE_ACTIVE_MINOR":{"width":28,"height":34,"x":646,"y":88,"pixelRatio":1},"us-highway-business-1":{"width":25,"height":34,"x":674,"y":88,"pixelRatio":1},"us-highway-business-2":{"width":25,"height":34,"x":0,"y":296,"pixelRatio":1},"us-highway-business-3":{"width":30,"height":34,"x":25,"y":296,"pixelRatio":1},"us-highway-truck-1":{"width":25,"height":34,"x":55,"y":296,"pixelRatio":1},"us-highway-truck-2":{"width":25,"height":34,"x":80,"y":296,"pixelRatio":1},"us-highway-truck-3":{"width":30,"height":33,"x":105,"y":296,"pixelRatio":1},"SKI_DIFFICULTY_DIFFICULT_EXTREME":{"width":53,"height":32,"x":135,"y":296,"pixelRatio":1},"SKI_DIFFICULTY_EXTREME":{"width":53,"height":32,"x":188,"y":296,"pixelRatio":1},"TRAIL_APPALACHIAN":{"width":32,"height":32,"x":241,"y":296,"pixelRatio":1},"TRAIL_CONTINENTAL_DIVIDE":{"width":32,"height":32,"x":273,"y":296,"pixelRatio":1},"TRAIL_PACIFIC_CREST":{"width":32,"height":32,"x":305,"y":296,"pixelRatio":1},"WETLAND_FILL_SMALL":{"width":32,"height":32,"x":337,"y":296,"pixelRatio":1},"WILDERNESS_FILL":{"width":31,"height":31,"x":369,"y":296,"pixelRatio":1},"WMA_FILL":{"width":30,"height":30,"x":400,"y":296,"pixelRatio":1},"PEAK":{"width":36,"height":28,"x":430,"y":296,"pixelRatio":1},"ONEWAY_BLACK":{"width":20,"height":26,"x":466,"y":296,"pixelRatio":1},"ONEWAY_BLUE":{"width":20,"height":26,"x":486,"y":296,"pixelRatio":1},"ONEWAY_GREEN_HIGHLIGHT":{"width":20,"height":26,"x":506,"y":296,"pixelRatio":1},"ONEWAY_ORANGE":{"width":20,"height":26,"x":526,"y":296,"pixelRatio":1},"ONEWAY_PINK":{"width":20,"height":26,"x":546,"y":296,"pixelRatio":1},"ONEWAY_RED":{"width":20,"height":26,"x":566,"y":296,"pixelRatio":1},"SKI_DIFFICULTY_EASY":{"width":26,"height":26,"x":586,"y":296,"pixelRatio":1},"SKI_DIFFICULTY_EASY_INTERMEDIATE":{"width":26,"height":26,"x":612,"y":296,"pixelRatio":1},"SKI_DIFFICULTY_INTERMEDIATE":{"width":26,"height":26,"x":638,"y":296,"pixelRatio":1},"SKI_DIFFICULTY_INTERMEDIATE_DIFFICULT":{"width":26,"height":26,"x":664,"y":296,"pixelRatio":1},"DIVE_AREA":{"width":35,"height":25,"x":0,"y":330,"pixelRatio":1},"interstate-highway-3":{"width":32,"height":25,"x":35,"y":330,"pixelRatio":1},"interstate-highway-business-3":{"width":32,"height":25,"x":67,"y":330,"pixelRatio":1},"AIRPORT":{"width":24,"height":24,"x":99,"y":330,"pixelRatio":1},"AIRPORT_HDR":{"width":24,"height":24,"x":123,"y":330,"pixelRatio":1},"AMPHITHEATRE":{"width":24,"height":24,"x":147,"y":330,"pixelRatio":1},"BAT_COUNTRY":{"width":48,"height":24,"x":171,"y":330,"pixelRatio":1},"BEACH_ACCESS":{"width":24,"height":24,"x":219,"y":330,"pixelRatio":1},"BIRD_VIEWING":{"width":24,"height":24,"x":243,"y":330,"pixelRatio":1},"BLM_SHIELD":{"width":24,"height":24,"x":267,"y":330,"pixelRatio":1},"BOAT_RAMP":{"width":24,"height":24,"x":291,"y":330,"pixelRatio":1},"BREWERY":{"width":24,"height":24,"x":315,"y":330,"pixelRatio":1},"BUS_STOP":{"width":24,"height":24,"x":339,"y":330,"pixelRatio":1},"CABIN":{"width":24,"height":24,"x":363,"y":330,"pixelRatio":1},"CAMPGROUND":{"width":24,"height":24,"x":387,"y":330,"pixelRatio":1},"CAMPSITE":{"width":24,"height":24,"x":411,"y":330,"pixelRatio":1},"CANOE_TRAILHEAD":{"width":24,"height":24,"x":435,"y":330,"pixelRatio":1},"CAVING":{"width":24,"height":24,"x":459,"y":330,"pixelRatio":1},"CLIMBING":{"width":24,"height":24,"x":483,"y":330,"pixelRatio":1},"CORRAL":{"width":24,"height":24,"x":507,"y":330,"pixelRatio":1},"DAYUSE":{"width":24,"height":24,"x":531,"y":330,"pixelRatio":1},"DISC_GOLF":{"width":24,"height":24,"x":555,"y":330,"pixelRatio":1},"DISTILLERY":{"width":24,"height":24,"x":579,"y":330,"pixelRatio":1},"DOCK":{"width":24,"height":24,"x":603,"y":330,"pixelRatio":1},"ENTRANCE_STATION":{"width":24,"height":24,"x":627,"y":330,"pixelRatio":1},"EQUESTRIAN_TRAIL":{"width":24,"height":24,"x":651,"y":330,"pixelRatio":1},"FERRY":{"width":24,"height":24,"x":675,"y":330,"pixelRatio":1},"FIRST_AID":{"width":24,"height":24,"x":0,"y":355,"pixelRatio":1},"FISHING_ACCESS":{"width":24,"height":24,"x":24,"y":355,"pixelRatio":1},"FISHING_PIER":{"width":24,"height":24,"x":48,"y":355,"pixelRatio":1},"FISH_HATCHERY":{"width":24,"height":24,"x":72,"y":355,"pixelRatio":1},"GAS_STATION":{"width":24,"height":24,"x":96,"y":355,"pixelRatio":1},"GEYSER":{"width":24,"height":24,"x":120,"y":355,"pixelRatio":1},"GOLF":{"width":24,"height":24,"x":144,"y":355,"pixelRatio":1},"HAND_LAUNCH":{"width":24,"height":24,"x":168,"y":355,"pixelRatio":1},"HANG_GLIDING":{"width":24,"height":24,"x":192,"y":355,"pixelRatio":1},"HELIPORT":{"width":24,"height":24,"x":216,"y":355,"pixelRatio":1},"HOTSPRING":{"width":24,"height":24,"x":240,"y":355,"pixelRatio":1},"INTERPRETIVE_SITE":{"width":24,"height":24,"x":264,"y":355,"pixelRatio":1},"LICENSING_AGENT":{"width":24,"height":24,"x":288,"y":355,"pixelRatio":1},"LIGHTHOUSE":{"width":24,"height":24,"x":312,"y":355,"pixelRatio":1},"LODGE":{"width":24,"height":24,"x":336,"y":355,"pixelRatio":1},"MARINA":{"width":24,"height":24,"x":360,"y":355,"pixelRatio":1},"MINE_aerial":{"width":24,"height":24,"x":384,"y":355,"pixelRatio":1},"MINE_topo":{"width":24,"height":24,"x":408,"y":355,"pixelRatio":1},"MOUNTAIN_BIKING":{"width":24,"height":24,"x":432,"y":355,"pixelRatio":1},"NASA_FACILITY":{"width":24,"height":24,"x":456,"y":355,"pixelRatio":1},"NAVAJO":{"width":24,"height":24,"x":480,"y":355,"pixelRatio":1},"NON_ETHANOL":{"width":24,"height":24,"x":504,"y":355,"pixelRatio":1},"NPS_SHIELD":{"width":24,"height":24,"x":528,"y":355,"pixelRatio":1},"OBSERVATION_TOWER":{"width":24,"height":24,"x":552,"y":355,"pixelRatio":1},"OHV_AREA":{"width":24,"height":24,"x":576,"y":355,"pixelRatio":1},"ONXMAPS":{"width":24,"height":24,"x":600,"y":355,"pixelRatio":1},"PARKING_AREA":{"width":24,"height":24,"x":624,"y":355,"pixelRatio":1},"PASS_aerial":{"width":24,"height":24,"x":648,"y":355,"pixelRatio":1},"PASS_topo":{"width":24,"height":24,"x":672,"y":355,"pixelRatio":1},"PEAK_aerial":{"width":24,"height":24,"x":0,"y":379,"pixelRatio":1},"PEAK_topo":{"width":24,"height":24,"x":24,"y":379,"pixelRatio":1},"PETROGLYPH":{"width":24,"height":24,"x":48,"y":379,"pixelRatio":1},"PICNIC_AREA":{"width":24,"height":24,"x":72,"y":379,"pixelRatio":1},"PICNIC_SHELTER":{"width":24,"height":24,"x":96,"y":379,"pixelRatio":1},"RANGER_STATION":{"width":24,"height":24,"x":120,"y":379,"pixelRatio":1},"RESTROOM":{"width":24,"height":24,"x":144,"y":379,"pixelRatio":1},"ROADBLOCK":{"width":24,"height":24,"x":168,"y":379,"pixelRatio":1},"RUINS":{"width":24,"height":24,"x":192,"y":379,"pixelRatio":1},"RV_CAMPSITE":{"width":24,"height":24,"x":216,"y":379,"pixelRatio":1},"SCENIC_AREA":{"width":24,"height":24,"x":240,"y":379,"pixelRatio":1},"SEAPLANE_BASE":{"width":24,"height":24,"x":264,"y":379,"pixelRatio":1},"SHELTER":{"width":24,"height":24,"x":288,"y":379,"pixelRatio":1},"SKI_AREA":{"width":24,"height":24,"x":312,"y":379,"pixelRatio":1},"SNOWMOBILE":{"width":24,"height":24,"x":336,"y":379,"pixelRatio":1},"SOUVENIRS":{"width":24,"height":24,"x":360,"y":379,"pixelRatio":1},"SPACE_FACILITY":{"width":24,"height":24,"x":384,"y":379,"pixelRatio":1},"STOCK_TANK":{"width":24,"height":24,"x":408,"y":379,"pixelRatio":1},"SURF_AREA":{"width":24,"height":24,"x":432,"y":379,"pixelRatio":1},"SWIMMING":{"width":24,"height":24,"x":456,"y":379,"pixelRatio":1},"TELEPHONE":{"width":24,"height":24,"x":480,"y":379,"pixelRatio":1},"TOWER_aerial":{"width":24,"height":24,"x":504,"y":379,"pixelRatio":1},"TOWER_topo":{"width":24,"height":24,"x":528,"y":379,"pixelRatio":1},"TRAILHEAD":{"width":24,"height":24,"x":552,"y":379,"pixelRatio":1},"TRAIN_STATION":{"width":24,"height":24,"x":576,"y":379,"pixelRatio":1},"USFS_SHIELD":{"width":24,"height":24,"x":600,"y":379,"pixelRatio":1},"VISITOR_CENTER":{"width":24,"height":24,"x":624,"y":379,"pixelRatio":1},"WARMING_HUT":{"width":24,"height":24,"x":648,"y":379,"pixelRatio":1},"WATERFALL":{"width":24,"height":24,"x":672,"y":379,"pixelRatio":1},"WATERFOWL_PRODUCTION_AREA":{"width":24,"height":24,"x":0,"y":403,"pixelRatio":1},"WIND_SURFING":{"width":24,"height":24,"x":24,"y":403,"pixelRatio":1},"WRECK":{"width":24,"height":24,"x":48,"y":403,"pixelRatio":1},"XC_SKIING":{"width":24,"height":24,"x":72,"y":403,"pixelRatio":1},"YAKIMA_NATION":{"width":24,"height":24,"x":96,"y":403,"pixelRatio":1},"interstate-highway-1":{"width":22,"height":24,"x":120,"y":403,"pixelRatio":1},"interstate-highway-2":{"width":24,"height":24,"x":142,"y":403,"pixelRatio":1},"interstate-highway-business-1":{"width":24,"height":24,"x":166,"y":403,"pixelRatio":1},"interstate-highway-business-2":{"width":24,"height":24,"x":190,"y":403,"pixelRatio":1},"wind-bubble-large-e":{"width":128,"height":24,"x":214,"y":403,"pixelRatio":1},"wind-bubble-large-n":{"width":128,"height":24,"x":342,"y":403,"pixelRatio":1},"wind-bubble-large-ne":{"width":128,"height":24,"x":470,"y":403,"pixelRatio":1},"wind-bubble-large-nw":{"width":128,"height":24,"x":0,"y":427,"pixelRatio":1},"wind-bubble-large-offline":{"width":128,"height":24,"x":128,"y":427,"pixelRatio":1},"wind-bubble-large-s":{"width":128,"height":24,"x":256,"y":427,"pixelRatio":1},"wind-bubble-large-se":{"width":128,"height":24,"x":384,"y":427,"pixelRatio":1},"wind-bubble-large-sw":{"width":128,"height":24,"x":512,"y":427,"pixelRatio":1},"wind-bubble-large-w":{"width":128,"height":24,"x":0,"y":451,"pixelRatio":1},"wind-bubble-small-e":{"width":70,"height":24,"x":598,"y":403,"pixelRatio":1},"wind-bubble-small-n":{"width":70,"height":24,"x":128,"y":451,"pixelRatio":1},"wind-bubble-small-ne":{"width":70,"height":24,"x":198,"y":451,"pixelRatio":1},"wind-bubble-small-nw":{"width":70,"height":24,"x":268,"y":451,"pixelRatio":1},"wind-bubble-small-offline":{"width":70,"height":24,"x":338,"y":451,"pixelRatio":1},"wind-bubble-small-s":{"width":70,"height":24,"x":408,"y":451,"pixelRatio":1},"wind-bubble-small-se":{"width":70,"height":24,"x":478,"y":451,"pixelRatio":1},"wind-bubble-small-sw":{"width":70,"height":24,"x":548,"y":451,"pixelRatio":1},"wind-bubble-small-w":{"width":70,"height":24,"x":618,"y":451,"pixelRatio":1},"capital_aerial":{"width":23,"height":23,"x":668,"y":403,"pixelRatio":1},"capital_topo":{"width":23,"height":23,"x":640,"y":427,"pixelRatio":1},"us-highway-2":{"width":24,"height":23,"x":663,"y":427,"pixelRatio":1},"EVENT_FINISH":{"width":41,"height":22,"x":0,"y":475,"pixelRatio":1},"EVENT_START":{"width":41,"height":22,"x":41,"y":475,"pixelRatio":1},"PARK":{"width":22,"height":22,"x":82,"y":475,"pixelRatio":1},"trail-end":{"width":22,"height":22,"x":104,"y":475,"pixelRatio":1},"trail-loop":{"width":22,"height":22,"x":126,"y":475,"pixelRatio":1},"trail-start":{"width":22,"height":22,"x":148,"y":475,"pixelRatio":1},"us-highway-1":{"width":21,"height":22,"x":170,"y":475,"pixelRatio":1},"us-highway-3":{"width":29,"height":22,"x":191,"y":475,"pixelRatio":1},"CHEVRONS_GREEN":{"width":24,"height":20,"x":220,"y":475,"pixelRatio":1},"CHEVRONS_PURPLE":{"width":24,"height":20,"x":244,"y":475,"pixelRatio":1},"WATER_SOURCE_topo":{"width":14,"height":20,"x":268,"y":475,"pixelRatio":1},"county-highway-1":{"width":19,"height":20,"x":282,"y":475,"pixelRatio":1},"county-highway-2":{"width":22,"height":20,"x":301,"y":475,"pixelRatio":1},"county-highway-3":{"width":28,"height":20,"x":323,"y":475,"pixelRatio":1},"county-highway-4":{"width":35,"height":20,"x":351,"y":475,"pixelRatio":1},"state-highway-1":{"width":22,"height":20,"x":386,"y":475,"pixelRatio":1},"state-highway-2":{"width":25,"height":20,"x":408,"y":475,"pixelRatio":1},"state-highway-3":{"width":29,"height":20,"x":433,"y":475,"pixelRatio":1},"state-highway-4":{"width":35,"height":20,"x":462,"y":475,"pixelRatio":1},"BENCH":{"width":18,"height":18,"x":497,"y":475,"pixelRatio":1},"CONCESSIONS":{"width":18,"height":18,"x":515,"y":475,"pixelRatio":1},"FEE_SITE":{"width":18,"height":18,"x":533,"y":475,"pixelRatio":1},"FIREWOOD":{"width":18,"height":18,"x":551,"y":475,"pixelRatio":1},"FOOD_STORAGE":{"width":18,"height":18,"x":569,"y":475,"pixelRatio":1},"FOOT_BRIDGE":{"width":18,"height":18,"x":587,"y":475,"pixelRatio":1},"GAUGING_STATION":{"width":18,"height":18,"x":605,"y":475,"pixelRatio":1},"GENERAL_STORE":{"width":18,"height":18,"x":623,"y":475,"pixelRatio":1},"INFORMATION":{"width":18,"height":18,"x":641,"y":475,"pixelRatio":1},"KENNEL":{"width":18,"height":18,"x":659,"y":475,"pixelRatio":1},"LAUNDRY":{"width":18,"height":18,"x":677,"y":475,"pixelRatio":1},"PLAYGROUND":{"width":18,"height":18,"x":684,"y":236,"pixelRatio":1},"POTABLE_WATER":{"width":18,"height":18,"x":685,"y":0,"pixelRatio":1},"RECYCLING":{"width":18,"height":18,"x":0,"y":497,"pixelRatio":1},"RV_DUMP":{"width":18,"height":18,"x":18,"y":497,"pixelRatio":1},"SHOWER":{"width":18,"height":18,"x":36,"y":497,"pixelRatio":1},"TRASH":{"width":18,"height":18,"x":54,"y":497,"pixelRatio":1},"WIFI":{"width":18,"height":18,"x":72,"y":497,"pixelRatio":1},"GATE":{"width":23,"height":16,"x":90,"y":497,"pixelRatio":1},"WATER_SOURCE":{"width":16,"height":16,"x":113,"y":497,"pixelRatio":1},"EXIT":{"width":28,"height":15,"x":129,"y":497,"pixelRatio":1},"pop_place_aerial":{"width":13,"height":13,"x":157,"y":497,"pixelRatio":1},"ARROW_WHITE_LINE":{"width":36,"height":12,"x":170,"y":497,"pixelRatio":1},"pop_place_topo":{"width":12,"height":12,"x":206,"y":497,"pixelRatio":1},"ARROW_BLACK":{"width":11,"height":6,"x":218,"y":497,"pixelRatio":1},"ARROW_GRAY":{"width":11,"height":6,"x":229,"y":497,"pixelRatio":1},"ARROW_WHITE":{"width":11,"height":6,"x":240,"y":497,"pixelRatio":1}}
+{
+    "BLUEBIRD_BACKCOUNTRY": {
+        "width": 88,
+        "height": 88,
+        "x": 0,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "EVENT_BADGE_CIRQUE": {
+        "width": 88,
+        "height": 88,
+        "x": 88,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "EVENT_BADGE_RUT": {
+        "width": 88,
+        "height": 88,
+        "x": 0,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "FIFTY_PROJECT": {
+        "width": 88,
+        "height": 88,
+        "x": 88,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "LEAVE_NO_TRACE": {
+        "width": 88,
+        "height": 88,
+        "x": 176,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "EVENT_BADGE_LEADVILLE": {
+        "width": 100,
+        "height": 70,
+        "x": 176,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "AREA_NA_LG": {
+        "width": 150,
+        "height": 60,
+        "x": 0,
+        "y": 176,
+        "pixelRatio": 1
+    },
+    "AREA_NA_MD": {
+        "width": 134,
+        "height": 60,
+        "x": 150,
+        "y": 176,
+        "pixelRatio": 1
+    },
+    "AREA_NA_SM": {
+        "width": 110,
+        "height": 60,
+        "x": 0,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "AREA_NP_LG": {
+        "width": 150,
+        "height": 60,
+        "x": 110,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "AREA_NP_MD": {
+        "width": 134,
+        "height": 60,
+        "x": 284,
+        "y": 176,
+        "pixelRatio": 1
+    },
+    "AREA_NP_SM": {
+        "width": 110,
+        "height": 60,
+        "x": 418,
+        "y": 176,
+        "pixelRatio": 1
+    },
+    "AREA_OTHER_LG": {
+        "width": 150,
+        "height": 60,
+        "x": 528,
+        "y": 176,
+        "pixelRatio": 1
+    },
+    "AREA_OTHER_MD": {
+        "width": 134,
+        "height": 60,
+        "x": 260,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "AREA_OTHER_SM": {
+        "width": 110,
+        "height": 60,
+        "x": 394,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "GLACIER_FILL": {
+        "width": 60,
+        "height": 60,
+        "x": 504,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "INTERMITTANT_LAKE_FILL": {
+        "width": 60,
+        "height": 60,
+        "x": 564,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "SALT_FLAT_FILL": {
+        "width": 60,
+        "height": 60,
+        "x": 624,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "WETLAND_FILL": {
+        "width": 60,
+        "height": 60,
+        "x": 264,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "SNOTEL_PIN_SELECTED": {
+        "width": 36,
+        "height": 50,
+        "x": 324,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "AVALANCHE_FATALITY": {
+        "width": 40,
+        "height": 40,
+        "x": 360,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "AVALANCHE_HUMAN_INVOLVED": {
+        "width": 40,
+        "height": 40,
+        "x": 400,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "AVALANCHE_OBSERVATION": {
+        "width": 40,
+        "height": 40,
+        "x": 440,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BEACON_LOGO_PURPLE": {
+        "width": 40,
+        "height": 39,
+        "x": 480,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BEACON_LOGO_RED": {
+        "width": 40,
+        "height": 39,
+        "x": 520,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "info-marker": {
+        "width": 29,
+        "height": 39,
+        "x": 560,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "CLOSURE_WILDLIFE": {
+        "width": 36,
+        "height": 36,
+        "x": 589,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "FEATURED_SKI_TOURING_PIN": {
+        "width": 30,
+        "height": 36,
+        "x": 625,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "FEATURED_SNOWSHOEING_PIN": {
+        "width": 30,
+        "height": 36,
+        "x": 655,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "FEATURED_TRAIL_PIN": {
+        "width": 30,
+        "height": 36,
+        "x": 276,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "FEATURED_XC_SKIING_PIN": {
+        "width": 30,
+        "height": 36,
+        "x": 306,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "HAZARD": {
+        "width": 36,
+        "height": 36,
+        "x": 336,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "SKI_DIFFICULTY_DIFFICULT": {
+        "width": 36,
+        "height": 36,
+        "x": 372,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "SNOTEL_PIN": {
+        "width": 36,
+        "height": 36,
+        "x": 408,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "USFW_SHIELD": {
+        "width": 36,
+        "height": 36,
+        "x": 444,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "WILDFIRE_ACTIVE": {
+        "width": 36,
+        "height": 36,
+        "x": 480,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "interstate-highway-truck-1": {
+        "width": 25,
+        "height": 36,
+        "x": 678,
+        "y": 176,
+        "pixelRatio": 1
+    },
+    "interstate-highway-truck-2": {
+        "width": 26,
+        "height": 36,
+        "x": 516,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "interstate-highway-truck-3": {
+        "width": 32,
+        "height": 36,
+        "x": 542,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "EVENT_START_FINISH": {
+        "width": 72,
+        "height": 34,
+        "x": 574,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "WILDFIRE_ACTIVE_MINOR": {
+        "width": 28,
+        "height": 34,
+        "x": 646,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "us-highway-business-1": {
+        "width": 25,
+        "height": 34,
+        "x": 674,
+        "y": 88,
+        "pixelRatio": 1
+    },
+    "us-highway-business-2": {
+        "width": 25,
+        "height": 34,
+        "x": 0,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "us-highway-business-3": {
+        "width": 30,
+        "height": 34,
+        "x": 25,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "us-highway-truck-1": {
+        "width": 25,
+        "height": 34,
+        "x": 55,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "us-highway-truck-2": {
+        "width": 25,
+        "height": 34,
+        "x": 80,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "us-highway-truck-3": {
+        "width": 30,
+        "height": 33,
+        "x": 105,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "SKI_DIFFICULTY_DIFFICULT_EXTREME": {
+        "width": 53,
+        "height": 32,
+        "x": 135,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "SKI_DIFFICULTY_EXTREME": {
+        "width": 53,
+        "height": 32,
+        "x": 188,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "TRAIL_APPALACHIAN": {
+        "width": 32,
+        "height": 32,
+        "x": 241,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "TRAIL_CONTINENTAL_DIVIDE": {
+        "width": 32,
+        "height": 32,
+        "x": 273,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "TRAIL_PACIFIC_CREST": {
+        "width": 32,
+        "height": 32,
+        "x": 305,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "WETLAND_FILL_SMALL": {
+        "width": 32,
+        "height": 32,
+        "x": 337,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "WILDERNESS_FILL": {
+        "width": 31,
+        "height": 31,
+        "x": 369,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "WMA_FILL": {
+        "width": 30,
+        "height": 30,
+        "x": 400,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "PEAK": {
+        "width": 36,
+        "height": 28,
+        "x": 430,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "ONEWAY_BLACK": {
+        "width": 20,
+        "height": 26,
+        "x": 466,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "ONEWAY_BLUE": {
+        "width": 20,
+        "height": 26,
+        "x": 486,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "ONEWAY_GREEN_HIGHLIGHT": {
+        "width": 20,
+        "height": 26,
+        "x": 506,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "ONEWAY_ORANGE": {
+        "width": 20,
+        "height": 26,
+        "x": 526,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "ONEWAY_PINK": {
+        "width": 20,
+        "height": 26,
+        "x": 546,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "ONEWAY_RED": {
+        "width": 20,
+        "height": 26,
+        "x": 566,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "SKI_DIFFICULTY_EASY": {
+        "width": 26,
+        "height": 26,
+        "x": 586,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "SKI_DIFFICULTY_EASY_INTERMEDIATE": {
+        "width": 26,
+        "height": 26,
+        "x": 612,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "SKI_DIFFICULTY_INTERMEDIATE": {
+        "width": 26,
+        "height": 26,
+        "x": 638,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "SKI_DIFFICULTY_INTERMEDIATE_DIFFICULT": {
+        "width": 26,
+        "height": 26,
+        "x": 664,
+        "y": 296,
+        "pixelRatio": 1
+    },
+    "DIVE_AREA": {
+        "width": 35,
+        "height": 25,
+        "x": 0,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "interstate-highway-3": {
+        "width": 32,
+        "height": 25,
+        "x": 35,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "interstate-highway-business-3": {
+        "width": 32,
+        "height": 25,
+        "x": 67,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "AIRPORT": {
+        "width": 24,
+        "height": 24,
+        "x": 99,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "AIRPORT_HDR": {
+        "width": 24,
+        "height": 24,
+        "x": 123,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "AMPHITHEATRE": {
+        "width": 24,
+        "height": 24,
+        "x": 147,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "BAT_COUNTRY": {
+        "width": 48,
+        "height": 24,
+        "x": 171,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "BEACH_ACCESS": {
+        "width": 24,
+        "height": 24,
+        "x": 219,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "BIRD_VIEWING": {
+        "width": 24,
+        "height": 24,
+        "x": 243,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "BLM_SHIELD": {
+        "width": 24,
+        "height": 24,
+        "x": 267,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "BOAT_RAMP": {
+        "width": 24,
+        "height": 24,
+        "x": 291,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "BREWERY": {
+        "width": 24,
+        "height": 24,
+        "x": 315,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "BUS_STOP": {
+        "width": 24,
+        "height": 24,
+        "x": 339,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "CABIN": {
+        "width": 24,
+        "height": 24,
+        "x": 363,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "CAMPGROUND": {
+        "width": 24,
+        "height": 24,
+        "x": 387,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "CAMPSITE": {
+        "width": 24,
+        "height": 24,
+        "x": 411,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "CANOE_TRAILHEAD": {
+        "width": 24,
+        "height": 24,
+        "x": 435,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "CAVING": {
+        "width": 24,
+        "height": 24,
+        "x": 459,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "CLIMBING": {
+        "width": 24,
+        "height": 24,
+        "x": 483,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "CORRAL": {
+        "width": 24,
+        "height": 24,
+        "x": 507,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "DAYUSE": {
+        "width": 24,
+        "height": 24,
+        "x": 531,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "DISC_GOLF": {
+        "width": 24,
+        "height": 24,
+        "x": 555,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "DISTILLERY": {
+        "width": 24,
+        "height": 24,
+        "x": 579,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "DOCK": {
+        "width": 24,
+        "height": 24,
+        "x": 603,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "ENTRANCE_STATION": {
+        "width": 24,
+        "height": 24,
+        "x": 627,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "EQUESTRIAN_TRAIL": {
+        "width": 24,
+        "height": 24,
+        "x": 651,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "FERRY": {
+        "width": 24,
+        "height": 24,
+        "x": 675,
+        "y": 330,
+        "pixelRatio": 1
+    },
+    "FIRST_AID": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "FISHING_ACCESS": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "FISHING_PIER": {
+        "width": 24,
+        "height": 24,
+        "x": 48,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "FISH_HATCHERY": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "GAS_STATION": {
+        "width": 24,
+        "height": 24,
+        "x": 96,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "GEYSER": {
+        "width": 24,
+        "height": 24,
+        "x": 120,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "GOLF": {
+        "width": 24,
+        "height": 24,
+        "x": 144,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "HAND_LAUNCH": {
+        "width": 24,
+        "height": 24,
+        "x": 168,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "HANG_GLIDING": {
+        "width": 24,
+        "height": 24,
+        "x": 192,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "HELIPORT": {
+        "width": 24,
+        "height": 24,
+        "x": 216,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "HOTSPRING": {
+        "width": 24,
+        "height": 24,
+        "x": 240,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "INTERPRETIVE_SITE": {
+        "width": 24,
+        "height": 24,
+        "x": 264,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "LICENSING_AGENT": {
+        "width": 24,
+        "height": 24,
+        "x": 288,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "LIGHTHOUSE": {
+        "width": 24,
+        "height": 24,
+        "x": 312,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "LODGE": {
+        "width": 24,
+        "height": 24,
+        "x": 336,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "MARINA": {
+        "width": 24,
+        "height": 24,
+        "x": 360,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "MINE_aerial": {
+        "width": 24,
+        "height": 24,
+        "x": 384,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "MINE_topo": {
+        "width": 24,
+        "height": 24,
+        "x": 408,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "MOUNTAIN_BIKING": {
+        "width": 24,
+        "height": 24,
+        "x": 432,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "NASA_FACILITY": {
+        "width": 24,
+        "height": 24,
+        "x": 456,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "NAVAJO": {
+        "width": 24,
+        "height": 24,
+        "x": 480,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "NON_ETHANOL": {
+        "width": 24,
+        "height": 24,
+        "x": 504,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "NPS_SHIELD": {
+        "width": 24,
+        "height": 24,
+        "x": 528,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "OBSERVATION_TOWER": {
+        "width": 24,
+        "height": 24,
+        "x": 552,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "OHV_AREA": {
+        "width": 24,
+        "height": 24,
+        "x": 576,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "ONXMAPS": {
+        "width": 24,
+        "height": 24,
+        "x": 600,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "PARKING_AREA": {
+        "width": 24,
+        "height": 24,
+        "x": 624,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "PASS_aerial": {
+        "width": 24,
+        "height": 24,
+        "x": 648,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "PASS_topo": {
+        "width": 24,
+        "height": 24,
+        "x": 672,
+        "y": 355,
+        "pixelRatio": 1
+    },
+    "PEAK_aerial": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "PEAK_topo": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "PETROGLYPH": {
+        "width": 24,
+        "height": 24,
+        "x": 48,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "PICNIC_AREA": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "PICNIC_SHELTER": {
+        "width": 24,
+        "height": 24,
+        "x": 96,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "RANGER_STATION": {
+        "width": 24,
+        "height": 24,
+        "x": 120,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "RESTROOM": {
+        "width": 24,
+        "height": 24,
+        "x": 144,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "ROADBLOCK": {
+        "width": 24,
+        "height": 24,
+        "x": 168,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "RUINS": {
+        "width": 24,
+        "height": 24,
+        "x": 192,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "RV_CAMPSITE": {
+        "width": 24,
+        "height": 24,
+        "x": 216,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SCENIC_AREA": {
+        "width": 24,
+        "height": 24,
+        "x": 240,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SEAPLANE_BASE": {
+        "width": 24,
+        "height": 24,
+        "x": 264,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SHELTER": {
+        "width": 24,
+        "height": 24,
+        "x": 288,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SKI_AREA": {
+        "width": 24,
+        "height": 24,
+        "x": 312,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SNOWMOBILE": {
+        "width": 24,
+        "height": 24,
+        "x": 336,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SOUVENIRS": {
+        "width": 24,
+        "height": 24,
+        "x": 360,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SPACE_FACILITY": {
+        "width": 24,
+        "height": 24,
+        "x": 384,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "STOCK_TANK": {
+        "width": 24,
+        "height": 24,
+        "x": 408,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SURF_AREA": {
+        "width": 24,
+        "height": 24,
+        "x": 432,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "SWIMMING": {
+        "width": 24,
+        "height": 24,
+        "x": 456,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "TELEPHONE": {
+        "width": 24,
+        "height": 24,
+        "x": 480,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "TOWER_aerial": {
+        "width": 24,
+        "height": 24,
+        "x": 504,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "TOWER_topo": {
+        "width": 24,
+        "height": 24,
+        "x": 528,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "TRAILHEAD": {
+        "width": 24,
+        "height": 24,
+        "x": 552,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "TRAIN_STATION": {
+        "width": 24,
+        "height": 24,
+        "x": 576,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "USFS_SHIELD": {
+        "width": 24,
+        "height": 24,
+        "x": 600,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "VISITOR_CENTER": {
+        "width": 24,
+        "height": 24,
+        "x": 624,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "WARMING_HUT": {
+        "width": 24,
+        "height": 24,
+        "x": 648,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "WATERFALL": {
+        "width": 24,
+        "height": 24,
+        "x": 672,
+        "y": 379,
+        "pixelRatio": 1
+    },
+    "WATERFOWL_PRODUCTION_AREA": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "WIND_SURFING": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "WRECK": {
+        "width": 24,
+        "height": 24,
+        "x": 48,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "XC_SKIING": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "YAKIMA_NATION": {
+        "width": 24,
+        "height": 24,
+        "x": 96,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "interstate-highway-1": {
+        "width": 22,
+        "height": 24,
+        "x": 120,
+        "y": 403,
+        "pixelRatio": 1,
+        "stretchX" : [ [ 10, 12 ] ],
+        "stretchY" : [ [ 8, 9 ] ],
+        "content" : [ 5, 6, 17, 20 ]
+    },
+    "interstate-highway-2": {
+        "width": 24,
+        "height": 24,
+        "x": 142,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "interstate-highway-business-1": {
+        "width": 24,
+        "height": 24,
+        "x": 166,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "interstate-highway-business-2": {
+        "width": 24,
+        "height": 24,
+        "x": 190,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-e": {
+        "width": 128,
+        "height": 24,
+        "x": 214,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-n": {
+        "width": 128,
+        "height": 24,
+        "x": 342,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-ne": {
+        "width": 128,
+        "height": 24,
+        "x": 470,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-nw": {
+        "width": 128,
+        "height": 24,
+        "x": 0,
+        "y": 427,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-offline": {
+        "width": 128,
+        "height": 24,
+        "x": 128,
+        "y": 427,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-s": {
+        "width": 128,
+        "height": 24,
+        "x": 256,
+        "y": 427,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-se": {
+        "width": 128,
+        "height": 24,
+        "x": 384,
+        "y": 427,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-sw": {
+        "width": 128,
+        "height": 24,
+        "x": 512,
+        "y": 427,
+        "pixelRatio": 1
+    },
+    "wind-bubble-large-w": {
+        "width": 128,
+        "height": 24,
+        "x": 0,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-e": {
+        "width": 70,
+        "height": 24,
+        "x": 598,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-n": {
+        "width": 70,
+        "height": 24,
+        "x": 128,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-ne": {
+        "width": 70,
+        "height": 24,
+        "x": 198,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-nw": {
+        "width": 70,
+        "height": 24,
+        "x": 268,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-offline": {
+        "width": 70,
+        "height": 24,
+        "x": 338,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-s": {
+        "width": 70,
+        "height": 24,
+        "x": 408,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-se": {
+        "width": 70,
+        "height": 24,
+        "x": 478,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-sw": {
+        "width": 70,
+        "height": 24,
+        "x": 548,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "wind-bubble-small-w": {
+        "width": 70,
+        "height": 24,
+        "x": 618,
+        "y": 451,
+        "pixelRatio": 1
+    },
+    "capital_aerial": {
+        "width": 23,
+        "height": 23,
+        "x": 668,
+        "y": 403,
+        "pixelRatio": 1
+    },
+    "capital_topo": {
+        "width": 23,
+        "height": 23,
+        "x": 640,
+        "y": 427,
+        "pixelRatio": 1
+    },
+    "us-highway-2": {
+        "width": 24,
+        "height": 23,
+        "x": 663,
+        "y": 427,
+        "pixelRatio": 1
+    },
+    "EVENT_FINISH": {
+        "width": 41,
+        "height": 22,
+        "x": 0,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "EVENT_START": {
+        "width": 41,
+        "height": 22,
+        "x": 41,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "PARK": {
+        "width": 22,
+        "height": 22,
+        "x": 82,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "trail-end": {
+        "width": 22,
+        "height": 22,
+        "x": 104,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "trail-loop": {
+        "width": 22,
+        "height": 22,
+        "x": 126,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "trail-start": {
+        "width": 22,
+        "height": 22,
+        "x": 148,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "us-highway-1": {
+        "width": 21,
+        "height": 22,
+        "x": 170,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "us-highway-3": {
+        "width": 29,
+        "height": 22,
+        "x": 191,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "CHEVRONS_GREEN": {
+        "width": 24,
+        "height": 20,
+        "x": 220,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "CHEVRONS_PURPLE": {
+        "width": 24,
+        "height": 20,
+        "x": 244,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "WATER_SOURCE_topo": {
+        "width": 14,
+        "height": 20,
+        "x": 268,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "county-highway-1": {
+        "width": 19,
+        "height": 20,
+        "x": 282,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "county-highway-2": {
+        "width": 22,
+        "height": 20,
+        "x": 301,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "county-highway-3": {
+        "width": 28,
+        "height": 20,
+        "x": 323,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "county-highway-4": {
+        "width": 35,
+        "height": 20,
+        "x": 351,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "state-highway-1": {
+        "width": 22,
+        "height": 20,
+        "x": 386,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "state-highway-2": {
+        "width": 25,
+        "height": 20,
+        "x": 408,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "state-highway-3": {
+        "width": 29,
+        "height": 20,
+        "x": 433,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "state-highway-4": {
+        "width": 35,
+        "height": 20,
+        "x": 462,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "BENCH": {
+        "width": 18,
+        "height": 18,
+        "x": 497,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "CONCESSIONS": {
+        "width": 18,
+        "height": 18,
+        "x": 515,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "FEE_SITE": {
+        "width": 18,
+        "height": 18,
+        "x": 533,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "FIREWOOD": {
+        "width": 18,
+        "height": 18,
+        "x": 551,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "FOOD_STORAGE": {
+        "width": 18,
+        "height": 18,
+        "x": 569,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "FOOT_BRIDGE": {
+        "width": 18,
+        "height": 18,
+        "x": 587,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "GAUGING_STATION": {
+        "width": 18,
+        "height": 18,
+        "x": 605,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "GENERAL_STORE": {
+        "width": 18,
+        "height": 18,
+        "x": 623,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "INFORMATION": {
+        "width": 18,
+        "height": 18,
+        "x": 641,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "KENNEL": {
+        "width": 18,
+        "height": 18,
+        "x": 659,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "LAUNDRY": {
+        "width": 18,
+        "height": 18,
+        "x": 677,
+        "y": 475,
+        "pixelRatio": 1
+    },
+    "PLAYGROUND": {
+        "width": 18,
+        "height": 18,
+        "x": 684,
+        "y": 236,
+        "pixelRatio": 1
+    },
+    "POTABLE_WATER": {
+        "width": 18,
+        "height": 18,
+        "x": 685,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "RECYCLING": {
+        "width": 18,
+        "height": 18,
+        "x": 0,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "RV_DUMP": {
+        "width": 18,
+        "height": 18,
+        "x": 18,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "SHOWER": {
+        "width": 18,
+        "height": 18,
+        "x": 36,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "TRASH": {
+        "width": 18,
+        "height": 18,
+        "x": 54,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "WIFI": {
+        "width": 18,
+        "height": 18,
+        "x": 72,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "GATE": {
+        "width": 23,
+        "height": 16,
+        "x": 90,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "WATER_SOURCE": {
+        "width": 16,
+        "height": 16,
+        "x": 113,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "EXIT": {
+        "width": 28,
+        "height": 15,
+        "x": 129,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "pop_place_aerial": {
+        "width": 13,
+        "height": 13,
+        "x": 157,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "ARROW_WHITE_LINE": {
+        "width": 36,
+        "height": 12,
+        "x": 170,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "pop_place_topo": {
+        "width": 12,
+        "height": 12,
+        "x": 206,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "ARROW_BLACK": {
+        "width": 11,
+        "height": 6,
+        "x": 218,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "ARROW_GRAY": {
+        "width": 11,
+        "height": 6,
+        "x": 229,
+        "y": 497,
+        "pixelRatio": 1
+    },
+    "ARROW_WHITE": {
+        "width": 11,
+        "height": 6,
+        "x": 240,
+        "y": 497,
+        "pixelRatio": 1
+    }
+}

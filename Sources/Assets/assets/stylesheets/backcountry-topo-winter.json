@@ -11,6 +11,7 @@
                 "https://tileserver.production.onxmaps.com/v1/elevation-v2/latest/{z}/{x}/{y}.png"
             ],
             "type": "raster-dem",
+            "encoding": "terrarium",
             "tileSize": 256
         },
         "backcountry": {

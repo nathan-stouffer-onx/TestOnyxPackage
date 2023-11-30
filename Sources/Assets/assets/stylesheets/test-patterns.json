@@ -11,6 +11,7 @@
                 "Height Test Pattern{z}/{x}/{y}.png"
             ],
             "type": "raster-dem",
+            "encoding": "unknown",
             "tileSize": 256,
             "internal": true
         },
@@ -21,6 +22,7 @@
                 "Plasma Height Test Pattern{z}/{x}/{y}.png"
             ],
             "type": "raster-dem",
+            "encoding": "unknown",
             "tileSize": 256,
             "internal": true
         },

@@ -11,6 +11,7 @@
                 "https://tileserver.production.onxmaps.com/v1/elevation-v2/latest/{z}/{x}/{y}.png"
             ],
             "type": "raster-dem",
+            "encoding": "terrarium",
             "tileSize": 256
         },
         "backcountry": {
@@ -45,7 +46,13 @@
                 "https://tileserver.production.onxmaps.com/v1/aerial-winter/latest/{z}/{x}/{y}.png"
             ],
             "type": "raster",
-            "tileSize": 256
+            "tileSize": 256,
+            "bounds": [
+                [ -114.4534, 46.8806, -112.5835, 49.1323 ],
+                [ -116.4809, 48.1446, -115.7933, 48.5989 ],
+                [ -123.7456, 41.2184, -129.5340, 53.7335 ],
+                [ -127.3212, 32.2183, -98.7034, 47.8554 ]
+            ]
         },
         "aerial-leaf-off": {
             "minzoom": 7,
