@@ -1,65 +1,150 @@
 attribute vec4 a_normal;
 attribute vec4 a_tangent;
 varying vec4 v_texcoord7;
+uniform mat4 u_view;
 uniform vec4 s_spriteTex_Res;
 uniform vec4 u_screenRes;
 uniform vec4 i_offsets0;
 uniform vec4 i_offsets1;
 uniform vec4 i_screenPosSize;
-uniform vec4 i_uv;
+uniform vec4 i_uvVpOriAngle;
 void main ()
 {
-  vec2 tmpvar_1;
-  tmpvar_1 = i_screenPosSize.zw;
-  float tmpvar_2;
-  tmpvar_2 = (i_offsets0.z - i_offsets0.y);
-  float tmpvar_3;
-  tmpvar_3 = floor(((i_screenPosSize.z * 0.5) - (tmpvar_2 * 0.5)));
-  vec4 tmpvar_4;
-  tmpvar_4.x = -(i_offsets0.x);
-  tmpvar_4.y = tmpvar_3;
-  tmpvar_4.z = floor((tmpvar_3 + tmpvar_2));
-  tmpvar_4.w = tmpvar_1.x;
-  vec4 tmpvar_5;
-  tmpvar_5.x = (((
+  vec3 iconRgt_1;
+  vec3 iconDown_2;
+  vec2 tmpvar_3;
+  tmpvar_3 = i_screenPosSize.zw;
+  vec2 tmpvar_4;
+  tmpvar_4 = i_screenPosSize.xy;
+  float tmpvar_5;
+  tmpvar_5 = (i_offsets0.z - i_offsets0.y);
+  float tmpvar_6;
+  tmpvar_6 = floor(((i_screenPosSize.z * 0.5) - (tmpvar_5 * 0.5)));
+  vec4 tmpvar_7;
+  tmpvar_7.x = -(i_offsets0.x);
+  tmpvar_7.y = tmpvar_6;
+  tmpvar_7.z = floor((tmpvar_6 + tmpvar_5));
+  tmpvar_7.w = tmpvar_3.x;
+  vec4 tmpvar_8;
+  tmpvar_8.x = (((
     ((1.0 - a_normal.x) - a_normal.y)
    - a_normal.z) - a_normal.w) - a_tangent.x);
-  tmpvar_5.yzw = a_normal.yzw;
-  vec3 tmpvar_6;
-  tmpvar_6.x = -(i_offsets1.y);
-  tmpvar_6.y = tmpvar_1.y;
-  tmpvar_6.z = ((i_screenPosSize.w + i_offsets1.w) - i_offsets1.z);
-  vec3 tmpvar_7;
-  tmpvar_7.x = (((1.0 - a_tangent.y) - a_tangent.z) - a_tangent.w);
-  tmpvar_7.y = a_tangent.z;
-  tmpvar_7.z = a_tangent.w;
-  float tmpvar_8;
-  tmpvar_8 = (i_screenPosSize.x + (dot (tmpvar_5, tmpvar_4) + (a_tangent.x * 
-    ((i_screenPosSize.z + i_offsets1.x) - i_offsets0.w)
-  )));
+  tmpvar_8.yzw = a_normal.yzw;
   float tmpvar_9;
-  tmpvar_9 = (i_screenPosSize.y + dot (tmpvar_7, tmpvar_6));
+  tmpvar_9 = (dot (tmpvar_8, tmpvar_7) + (a_tangent.x * (
+    (i_screenPosSize.z + i_offsets1.x)
+   - i_offsets0.w)));
   vec3 tmpvar_10;
-  tmpvar_10.z = 0.0;
-  tmpvar_10.x = (((tmpvar_8 - 
+  tmpvar_10.x = -(i_offsets1.y);
+  tmpvar_10.y = tmpvar_3.y;
+  tmpvar_10.z = ((i_screenPosSize.w + i_offsets1.w) - i_offsets1.z);
+  vec3 tmpvar_11;
+  tmpvar_11.x = (((1.0 - a_tangent.y) - a_tangent.z) - a_tangent.w);
+  tmpvar_11.y = a_tangent.z;
+  tmpvar_11.z = a_tangent.w;
+  float tmpvar_12;
+  tmpvar_12 = dot (tmpvar_11, tmpvar_10);
+  float tmpvar_13;
+  tmpvar_13 = (i_screenPosSize.x + tmpvar_9);
+  float tmpvar_14;
+  tmpvar_14 = (i_screenPosSize.y + tmpvar_12);
+  vec3 tmpvar_15;
+  tmpvar_15.z = 0.0;
+  tmpvar_15.x = (((tmpvar_13 - 
     (u_screenRes.x * 0.5)
   ) * u_screenRes.z) * 2.0);
-  tmpvar_10.y = -(((
-    (tmpvar_9 - (u_screenRes.y * 0.5))
+  tmpvar_15.y = -(((
+    (tmpvar_14 - (u_screenRes.y * 0.5))
    * u_screenRes.w) * 2.0));
-  vec4 tmpvar_11;
-  tmpvar_11.zw = vec2(0.0, 1.0);
-  tmpvar_11.xy = tmpvar_10.xy;
-  gl_Position = tmpvar_11;
-  vec4 tmpvar_12;
-  tmpvar_12.x = (i_uv.x + ((
+  vec4 tmpvar_16;
+  tmpvar_16.zw = vec2(0.0, 1.0);
+  tmpvar_16.xy = tmpvar_15.xy;
+  gl_Position = tmpvar_16;
+  float tmpvar_17;
+  tmpvar_17 = cos(i_uvVpOriAngle.w);
+  float tmpvar_18;
+  tmpvar_18 = sin(i_uvVpOriAngle.w);
+  vec4 tmpvar_19;
+  tmpvar_19.w = 0.0;
+  tmpvar_19.x = tmpvar_17;
+  tmpvar_19.y = -(tmpvar_18);
+  tmpvar_19.z = 0.0;
+  vec4 tmpvar_20;
+  tmpvar_20.w = 0.0;
+  tmpvar_20.x = tmpvar_18;
+  tmpvar_20.y = tmpvar_17;
+  tmpvar_20.z = -0.0;
+  vec4 tmpvar_21;
+  tmpvar_21.w = 0.0;
+  tmpvar_21.x = -0.0;
+  tmpvar_21.y = 0.0;
+  tmpvar_21.z = (tmpvar_17 + (1.0 - tmpvar_17));
+  mat4 tmpvar_22;
+  tmpvar_22[0].x = tmpvar_19.x;
+  tmpvar_22[1].x = tmpvar_19.y;
+  tmpvar_22[2].x = tmpvar_19.z;
+  tmpvar_22[3].x = tmpvar_19.w;
+  tmpvar_22[0].y = tmpvar_20.x;
+  tmpvar_22[1].y = tmpvar_20.y;
+  tmpvar_22[2].y = tmpvar_20.z;
+  tmpvar_22[3].y = tmpvar_20.w;
+  tmpvar_22[0].z = tmpvar_21.x;
+  tmpvar_22[1].z = tmpvar_21.y;
+  tmpvar_22[2].z = tmpvar_21.z;
+  tmpvar_22[3].z = tmpvar_21.w;
+  tmpvar_22[0].w = 0.0;
+  tmpvar_22[1].w = 0.0;
+  tmpvar_22[2].w = 0.0;
+  tmpvar_22[3].w = 1.0;
+  vec3 tmpvar_23;
+  tmpvar_23 = (tmpvar_22 * vec4(0.0, 1.0, 0.0, 0.0)).xyz;
+  iconDown_2 = tmpvar_23;
+  vec3 tmpvar_24;
+  tmpvar_24 = (tmpvar_22 * vec4(1.0, 0.0, 0.0, 0.0)).xyz;
+  iconRgt_1 = tmpvar_24;
+  if ((i_uvVpOriAngle.z != 1.0)) {
+    vec4 tmpvar_25;
+    tmpvar_25.w = 0.0;
+    tmpvar_25.xyz = tmpvar_23;
+    vec3 tmpvar_26;
+    tmpvar_26 = normalize((u_view * tmpvar_25).xyz);
+    iconDown_2.xz = tmpvar_26.xz;
+    iconDown_2.y = -(tmpvar_26.y);
+    vec4 tmpvar_27;
+    tmpvar_27.w = 0.0;
+    tmpvar_27.xyz = tmpvar_24;
+    vec3 tmpvar_28;
+    tmpvar_28 = normalize((u_view * tmpvar_27).xyz);
+    iconRgt_1.xz = tmpvar_28.xz;
+    iconRgt_1.y = -(tmpvar_28.y);
+  };
+  vec3 tmpvar_29;
+  tmpvar_29.z = 0.0;
+  tmpvar_29.xy = tmpvar_4;
+  vec2 tmpvar_30;
+  tmpvar_30 = (((
+    ((((tmpvar_9 * iconRgt_1) + (tmpvar_12 * iconDown_2)) - (0.5 * (
+      (i_screenPosSize.z * iconRgt_1)
+     + 
+      (i_screenPosSize.w * iconDown_2)
+    ))) + tmpvar_29)
+  .xy + 
+    (0.5 * i_screenPosSize.zw)
+  ) - (0.5 * u_screenRes.xy)) * (2.0 * u_screenRes.zw));
+  vec4 tmpvar_31;
+  tmpvar_31.zw = vec2(0.0, 1.0);
+  tmpvar_31.x = tmpvar_30.x;
+  tmpvar_31.y = -(tmpvar_30.y);
+  gl_Position = tmpvar_31;
+  vec4 tmpvar_32;
+  tmpvar_32.x = (i_uvVpOriAngle.x + ((
     dot (a_normal, i_offsets0)
    + 
     (a_tangent.x * i_offsets1.x)
   ) * s_spriteTex_Res.z));
-  tmpvar_12.y = (i_uv.y + (dot (a_tangent.yzw, i_offsets1.yzw) * s_spriteTex_Res.w));
-  tmpvar_12.z = tmpvar_8;
-  tmpvar_12.w = tmpvar_9;
-  v_texcoord7 = tmpvar_12;
+  tmpvar_32.y = (i_uvVpOriAngle.y + (dot (a_tangent.yzw, i_offsets1.yzw) * s_spriteTex_Res.w));
+  tmpvar_32.z = tmpvar_13;
+  tmpvar_32.w = tmpvar_14;
+  v_texcoord7 = tmpvar_32;
 }
 

@@ -11,10 +11,12 @@ uniform vec4 s_spriteTex_Res;
 
 //definitions
 uniform vec4 u_screenRes;
+uniform vec4 u_orientToMap;
+uniform vec4 u_oriAngle;
 uniform vec4 i_offsets0;
 uniform vec4 i_offsets1;
 uniform vec4 i_screenPosSize;
-uniform vec4 i_uv;
+uniform vec4 i_uvVpOriAngle;
 
 //functions
 

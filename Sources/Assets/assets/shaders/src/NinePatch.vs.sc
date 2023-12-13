@@ -13,10 +13,12 @@ uniform vec4 s_spriteTex_Res;
 
 //definitions
 uniform vec4 u_screenRes;
+uniform vec4 u_orientToMap;
+uniform vec4 u_oriAngle;
 uniform vec4 i_offsets0;
 uniform vec4 i_offsets1;
 uniform vec4 i_screenPosSize;
-uniform vec4 i_uv;
+uniform vec4 i_uvVpOriAngle;
 
 //functions
 
@@ -48,8 +50,10 @@ vec4 normal = a_normal.xyzw;
 	float y0 = 1.0 - grid1.y - grid1.z - grid1.w; // for y0, all cells will be 0 so we'll get 1.0
 	vec2 screenSize = i_screenPosSize.zw;
 	vec2 screenPos = i_screenPosSize.xy;
+	vec2 uvIn = i_uvVpOriAngle.xy;
 	float midPatchSizePx = i_offsets0.z - i_offsets0.y;
 	float halfWidth = screenSize.x * 0.5f;
+	float rotAngle = i_uvVpOriAngle.w;
 	// Compute x screen offsets
 	float vert0xOfs = -i_offsets0.x;
 	float vert2xOfs = floor(halfWidth - (midPatchSizePx * 0.5f));
@@ -71,11 +75,25 @@ vec4 normal = a_normal.xyzw;
 	float yScreenN = (yScreenPx - (u_screenRes.y * 0.5)) * u_screenRes.w * 2.0;
 	vec3 pos =  vec3(xScreenN, -yScreenN, 0);
 	gl_Position = vec4(pos.xy, 0, 1);
+	mat4 rotMat = getRotMat(vec3(0, 0, 1), rotAngle);
+	vec3 iconDown = mul(rotMat, vec4(0, 1, 0, 0)).xyz;
+	vec3 iconRgt = mul(rotMat, vec4(1, 0, 0, 0)).xyz;
+	if (i_uvVpOriAngle.z != 1.0) {
+		iconDown = normalize(mul(u_view, vec4(iconDown, 0)).xyz);
+		iconDown.y *= -1.0;
+		iconRgt = normalize(mul(u_view, vec4(iconRgt, 0)).xyz);
+		iconRgt.y *= -1.0;
+	}
+	vec3 midpoint = 0.5*(screenSize.x * iconRgt + screenSize.y * iconDown);
+	vec3 offset = widthOffset * iconRgt + heightOffset * iconDown;
+	vec2 finalPosScrSp = ((offset - midpoint + vec3(screenPos.xy, 0))).xy + (0.5*screenSize.xy);
+	vec2 finalPosN = (finalPosScrSp - 0.5*u_screenRes.xy) * (2.0 * u_screenRes.zw);
+	gl_Position = vec4(finalPosN.x, -finalPosN.y, 0, 1);
 	// Compute UV offset
 	float xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex_Res.z;
 	float yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex_Res.w;
 	//vec4 uv = vertXOffsets;
-	vec4 uv = vec4(i_uv.x + xofs, i_uv.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);
+	vec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);
 
 v_texcoord7 = uv.xyzw;
 

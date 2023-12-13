@@ -956,103 +956,245 @@
             "minzoom": 5,
             "maxzoom": 22,
             "filter": [
-                "step",
+              "step",
+              [
+                "zoom"
+              ],
+              [
+                "all",
                 [
-                    "zoom"
+                  "match",
+                  [
+                    "get",
+                    "data:shield"
+                  ],
+                  [
+                    "interstate-highway",
+                    "us-highway",
+                    "county-highway",
+                    "state-highway",
+                    "provincial-highway",
+                    "mexico-highway"
+                  ],
+                  true,
+                  false
                 ],
                 [
-                    "all",
-                    [
-                        "match",
-                        [
-                            "get",
-                            "data:shield"
-                        ],
-                        [
-                            "interstate-highway",
-                            "us-highway",
-                            "county-highway",
-                            "state-highway",
-                            "provincial-highway",
-                            "mexico-highway"
-                        ],
-                        true,
-                        false
-                    ],
-                    [
-                        "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "tertiary"
-                        ],
-                        false,
-                        true
-                    ]
-                ],
-                10,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "interstate-highway",
-                        "us-highway",
-                        "county-highway",
-                        "state-highway",
-                        "provincial-highway",
-                        "mexico-highway"
-                    ],
-                    true,
-                    false
-                ],
-                13,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "county-highway",
-                        "state-highway",
-                        "interstate-highway",
-                        "interstate-highway-business",
-                        "interstate-highway-truck",
-                        "us-highway",
-                        "us-highway-business",
-                        "us-highway-truck",
-                        "provincial-highway",
-                        "mexico-highway"
-                    ],
-                    true,
-                    false
+                  "match",
+                  [
+                    "get",
+                    "data:type"
+                  ],
+                  [
+                    "tertiary"
+                  ],
+                  false,
+                  true
                 ]
+              ],
+              10,
+              [
+                "match",
+                [
+                  "get",
+                  "data:shield"
+                ],
+                [
+                  "interstate-highway",
+                  "us-highway",
+                  "county-highway",
+                  "state-highway",
+                  "provincial-highway",
+                  "mexico-highway"
+                ],
+                true,
+                false
+              ],
+              13,
+              [
+                "match",
+                [
+                  "get",
+                  "data:shield"
+                ],
+                [
+                  "county-highway",
+                  "state-highway",
+                  "interstate-highway",
+                  "interstate-highway-business",
+                  "interstate-highway-truck",
+                  "us-highway",
+                  "us-highway-business",
+                  "us-highway-truck",
+                  "provincial-highway",
+                  "mexico-highway"
+                ],
+                true,
+                false
+              ]
             ],
             "layout": {
-                "symbol-placement": "line",
-                "icon-image": "info-marker",
-                "icon-size": [
-                    "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
-                    5,
-                    0.7,
-                    14,
-                    1
+              "text-size": [
+                "interpolate",
+                [
+                  "linear"
                 ],
-                "icon-rotation-alignment": "viewport",
-                "symbol-spacing": 300
+                [
+                  "zoom"
+                ],
+                6,
+                8,
+                14,
+                10
+              ],
+              "text-offset": [
+                "match",
+                [
+                  "get",
+                  "data:shield"
+                ],
+                [
+                  "us-highway-business",
+                  "us-highway-truck",
+                  "interstate-highway-truck"
+                ],
+                [
+                  "literal",
+                  [
+                    0,
+                    0.55
+                  ]
+                ],
+                [
+                  "literal",
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "symbol-placement": "line",
+              "icon-image": [
+                "match",
+                [
+                  "get",
+                  "data:shield"
+                ],
+                [
+                  "county-highway",
+                  "state-highway",
+                  "interstate-highway",
+                  "interstate-highway-business",
+                  "interstate-highway-truck",
+                  "us-highway",
+                  "us-highway-business",
+                  "us-highway-truck"
+                ],
+                [
+                  "concat",
+                  [
+                    "get",
+                    "data:shield"
+                  ],
+                  "-",
+                  [
+                    "to-string",
+                    [
+                      "length",
+                      [
+                        "get",
+                        "data:highway_number"
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "provincial-highway",
+                  "mexico-highway"
+                ],
+                [
+                  "concat",
+                  "county-highway-",
+                  [
+                    "to-string",
+                    [
+                      "length",
+                      [
+                        "get",
+                        "data:highway_number"
+                      ]
+                    ]
+                  ]
+                ],
+                ""
+              ],
+              "icon-size": [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "zoom"
+                ],
+                5,
+                0.7,
+                14,
+                1
+              ],
+              "icon-rotation-alignment": "viewport",
+              "text-max-angle": 38,
+              "symbol-spacing": 300,
+              "text-font": [
+                "match",
+                [
+                  "get",
+                  "data:shield"
+                ],
+                [
+                  "interstate-highway",
+                  "interstate-highway-business",
+                  "interstate-highway-truck"
+                ],
+                [
+                  "literal",
+                  [
+                    "Open Sans Bold"
+                  ]
+                ],
+                [
+                  "literal",
+                  [
+                    "Open Sans SemiBold"
+                  ]
+                ]
+              ],
+              "text-rotation-alignment": "viewport",
+              "text-field": [
+                "to-string",
+                [
+                  "get",
+                  "data:highway_number"
+                ]
+              ],
+              "text-letter-spacing": 0.05
             },
-            "paint": {}
-        }
+            "paint": {
+              "text-color": [
+                "match",
+                [
+                  "get",
+                  "data:shield"
+                ],
+                [
+                  "interstate-highway",
+                  "interstate-highway-business",
+                  "interstate-highway-truck"
+                ],
+                "hsl(0, 0%, 100%)",
+                "hsl(0, 0%, 10%)"
+              ]
+            }
+          }
+      
     ]
 }

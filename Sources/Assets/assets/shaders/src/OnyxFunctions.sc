@@ -286,3 +286,64 @@ vec3 rotate(vec4 unitQuat, vec3 toRot)
      + 2.0 * dot(toRot, b) * b 
      + 2.0 * unitQuat.w * cross(b, toRot);
 }
+
+mat4 getRotMat(vec3 axis, float rad)
+{
+    float cosA = cos(rad);
+	float sinA = sin(rad);
+	float omCosA = 1.0 - cosA;
+
+    float X = axis.x;
+    float Y = axis.y;
+    float Z = axis.z;
+
+    return mtxFromRows(
+        vec4(cosA + X * X * omCosA, X * Y * omCosA - Z * sinA, X * Z  * omCosA + Y * sinA, 0),
+        vec4(X * Y * omCosA + Z * sinA, cosA + Y * Y * omCosA, Y * Z * omCosA - X * sinA, 0),
+        vec4(Z * X * omCosA - Y * sinA, Z * Y * omCosA + X * sinA, cosA + Z * Z * omCosA, 0),
+        vec4(0, 0, 0, 1)
+    );
+}
+
+vec3 rotate(vec3 v, vec3 axis, float rad)
+{
+    return mul(getRotMat(axis, rad), vec4(v, 1.0)).xyz;
+}
+
+// Creates a quaternion rotating "from" to "to". Assumes that "from" and "to" are normalized. 
+// If rotation is ill-defined, will return identity quaternion
+vec4 getQuatRot(vec3 from, vec3 to)
+{
+	// Invalid if vectors are equal/negations of each other or if either are zero
+    float epsilon = 1e-4;
+	if (equWeak(from, to, epsilon) ||
+		equWeak(from, -to, epsilon) ||
+		equWeak(from, vec3(0, 0, 0), epsilon) || equWeak(to, vec3(0, 0, 0), epsilon))
+	{
+		return vec4(0, 0, 0, 1);
+	}
+
+    from = normalize(from);
+    to = normalize(to);
+
+    float angle = acos(dot(from, to));
+    float hTheta = 0.5 * angle;
+    vec3 rotAxis = normalize(cross(from, to)) * sin(hTheta);
+
+    return vec4(rotAxis, cos(hTheta));
+}
+
+vec4 quatMult(vec4 lhs, vec4 rhs)
+{
+    return vec4(
+        lhs.y * rhs.z - lhs.z * rhs.y + lhs.w * rhs.x + lhs.x * rhs.w,
+		lhs.z * rhs.x - lhs.x * rhs.z + lhs.w * rhs.y + lhs.y * rhs.w,
+		lhs.x * rhs.y - lhs.y * rhs.x + lhs.w * rhs.z + lhs.z * rhs.w,
+		lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z
+    );
+}
+
+vec4 composeQuatRots(vec4 firstRot, vec4 secondRot)
+{
+    return quatMult(secondRot, firstRot);
+}
