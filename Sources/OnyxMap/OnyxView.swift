@@ -17,10 +17,13 @@ public class OnyxView: UIView {
     
     var prefix: String
     var token: String
+
+    var viewportId: std.string
     
     public init(frame: CGRect, prefix: String, token: String) {        
         self.prefix = prefix
         self.token = token
+        self.viewportId = std.string("main")
         
         super.init(frame: frame)
         
@@ -127,12 +130,12 @@ public class OnyxView: UIView {
     }
     
     public func point(for coordinate: CLLocationCoordinate2D) -> CGPoint? {
-        let result = onyx.point(lgal.world.Vector2(coordinate.longitude, coordinate.latitude))
+        let result = onyx.point(self.viewportId, lgal.world.Vector2(coordinate.longitude, coordinate.latitude))
         return CGPoint(x: result.x, y: result.y)
     }
     
     public func coordinate(for point: CGPoint) -> CLLocationCoordinate2D? {
-        let result = onyx.coordinate(lgal.world.Vector2(point.x, point.y))
+        let result = onyx.coordinate(self.viewportId, lgal.world.Vector2(point.x, point.y))
         return CLLocationCoordinate2D(latitude: result.y, longitude: result.y)
     }
     
