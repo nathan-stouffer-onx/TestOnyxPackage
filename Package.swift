@@ -9,7 +9,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "OnyxCore",
-            targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", "sqlite3Package", "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ]),
+            targets: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", /*"sqlite3Package",*/ "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ]),
         .library(
             name: "OnyxMap",
             targets: ["OnyxMap"]
@@ -20,7 +20,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "OnyxMap",
-            dependencies: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", "sqlite3Package", "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ],
+            dependencies: [ "Assets", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", /*"sqlite3Package",*/ "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
             ]
@@ -75,10 +75,10 @@ let package = Package(
             name: "shaderPackage",
             path: "shader.xcframework.zip"
         ),
-        .binaryTarget(
-            name: "sqlite3Package",
-            path: "sqlite3.xcframework.zip"
-        ),
+        //.binaryTarget(
+        //    name: "sqlite3Package",
+        //    path: "sqlite3.xcframework.zip"
+        //),
         .binaryTarget(
             name: "sslPackage",
             path: "ssl.xcframework.zip"
