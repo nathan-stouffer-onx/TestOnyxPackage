@@ -29,11 +29,11 @@ dcl_constantbuffer CB0[18], immediateIndexed
 dcl_sampler s0, mode_default
 dcl_sampler s1, mode_default
 dcl_sampler s2, mode_default
-dcl_sampler s4, mode_default
+dcl_sampler s3, mode_default
 dcl_resource_texture2d (float,float,float,float) t0
 dcl_resource_texturecube (float,float,float,float) t1
 dcl_resource_texture2d (float,float,float,float) t2
-dcl_resource_texture2d (float,float,float,float) t4
+dcl_resource_texture2d (float,float,float,float) t3
 dcl_input_ps linear v2.xyzw
 dcl_input_ps linear v3.xy
 dcl_input_ps linear v4.x
@@ -128,7 +128,7 @@ mov r1.y, l(0)
 sample_indexable(texture2d)(float,float,float,float) r1.xyzw, r1.xyxx, t0.xyzw, s0
 mul r0.w, r1.w, l(0.500000)
 mad r2.xy, v5.xyxx, cb0[15].zwzz, cb0[15].xyxx
-sample_indexable(texture2d)(float,float,float,float) r2.xyzw, r2.xyxx, t4.xyzw, s4
+sample_indexable(texture2d)(float,float,float,float) r2.xyzw, r2.xyxx, t3.xyzw, s3
 add r2.xyz, r2.xyzx, l(-1.000000, -1.000000, -1.000000, 0.000000)
 mad r2.xyz, r2.wwww, r2.xyzx, l(1.000000, 1.000000, 1.000000, 0.000000)
 mov o0.w, r2.w

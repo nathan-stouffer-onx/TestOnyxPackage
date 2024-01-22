@@ -5,10 +5,8 @@ $input v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4
 #include "OnyxFragFunctions.sc"
 
 //samplers
-SAMPLER2D(s_heightTextureVert, 1);
-uniform vec4 s_heightTextureVert_Res;
-SAMPLER2D(s_heightTextureFrag, 0);
-uniform vec4 s_heightTextureFrag_Res;
+SAMPLER2D(s_heightTexture, 0);
+uniform vec4 s_heightTexture_Res;
 
 //cubeSamplers
 
@@ -32,7 +30,7 @@ uniform vec4 u_tileMax;
 float heightAt(vec2 uv, vec4 scaleOffset)
 {
 	vec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;
-	return texture2D(s_heightTextureFrag, scaledUV).r;
+	return texture2D(s_heightTexture, scaledUV).r;
 }
 // expects uv to be in tile coordinates
 float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)

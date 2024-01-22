@@ -24,7 +24,7 @@
         "float heightAt(vec2 uv, vec4 scaleOffset)",
         "{",
         "\tvec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;",
-        "\treturn texture2DLod(s_heightTextureVert, scaledUV, 0).r;",
+        "\treturn texture2DLod(s_heightTexture, scaledUV, 0).r;",
         "}"
       ],
       "position": "Functions",
@@ -36,7 +36,7 @@
         "float heightAt(vec2 uv, vec4 scaleOffset)",
         "{",
         "\tvec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;",
-        "\treturn texture2D(s_heightTextureFrag, scaledUV).r;",
+        "\treturn texture2D(s_heightTexture, scaledUV).r;",
         "}"
       ],
       "position": "Functions",
@@ -73,7 +73,7 @@
         "// expects uv to be in tile coordinates",
         "vec3 normalAt(vec2 uv, vec2 distortion, vec4 scaleOffset)",
         "{",
-        "\tvec2 pixelWidth = s_heightTextureFrag_Res.zw;",
+        "\tvec2 pixelWidth = s_heightTexture_Res.zw;",
         "\tvec2 tileDelta = pixelWidth / scaleOffset.z;",
         "\tvec2 westUV = uv - vec2(tileDelta.x, 0);",
         "\tvec2 eastUV = uv + vec2(tileDelta.x, 0);",
@@ -131,7 +131,7 @@
         "//vec3 res = gl_FragData[0].xyz;",
         "//if(u_lightStrengthPow.z > 0.5) res = norm.xyz * 0.5 + 0.5;",
         "//if(u_lightStrengthPow.z > 1.0) { float z = worldPosition.z - u_tileMin.z; res = vec3(z,z,z);}",
-        "//if(u_lightStrengthPow.z > 1.5) res = texture2D(s_heightTextureFrag, texcoords.xy * scaleOffsetHeight.z + scaleOffsetHeight.xy).xyz;",
+        "//if(u_lightStrengthPow.z > 1.5) res = texture2D(s_heightTexture, texcoords.xy * scaleOffsetHeight.z + scaleOffsetHeight.xy).xyz;",
         "//gl_FragData[0].xyz = res;"
       ],
       "position": "Compose",
@@ -146,13 +146,7 @@
   "shaderParameters": [
     {
       "componentName": "VertHeight",
-      "name": "s_heightTextureVert",
-      "type": "texture",
-      "anisoFilter": true
-    },
-    {
-      "componentName": "VertHeight",
-      "name": "s_heightTextureFrag",
+      "name": "s_heightTexture",
       "type": "texture",
       "anisoFilter": true
     },

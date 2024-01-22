@@ -5,8 +5,8 @@ $input v_texcoord7, v_texcoord6, v_color0, v_depth, v_texcoord5, v_texcoord4, v_
 #include "OnyxFragFunctions.sc"
 
 //samplers
-SAMPLER2D(s_heightTextureVert, 4);
-uniform vec4 s_heightTextureVert_Res;
+SAMPLER2D(s_heightTexture, 4);
+uniform vec4 s_heightTexture_Res;
 SAMPLER2D(s_VectorColors, 2);
 uniform vec4 s_VectorColors_Res;
 SAMPLER2D(s_VectorWidths, 3);
@@ -88,7 +88,10 @@ float smoothStep(float val, float low, float high)
 float FillLine(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded)
 {
 	float df = LineDistField(uv, pA, pB, thick, rounded, 0.0, 0.0);
-	return smoothStep(saturate(-df), 0.0, 0.05);
+	float dist = df;
+	vec2 ddist = vec2(dFdx(dist), dFdy(dist));
+	float pixelDist = dist / length(ddist);
+	return saturate(0.5 - pixelDist);
 }
 // This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.
 float DashLine(vec3 uv, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)
@@ -105,13 +108,22 @@ float DashLine(vec3 uv, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, ve
 	float dashOnOff = texture2D(s_DashSampler, vec2(dashUVx, dashId)).x;
 	float dashDf = LineDistField(uv, pA, pB, thick, 0.0, 0.0, 0.0) * dashOnOff;
 	float dashLine = smoothStep((-dashDf), 0.0, 0.01);
+	float dist = -dashDf;
+	vec2 ddist = vec2(dFdx(dist), dFdy(dist));
+	float pixelDist = dist / length(ddist);
+//	return saturate(0.5 - pixelDist);
 	 return dashLine;
 }
 // This makes an outlined line in UV units. A 1.0 thick outline will span 0..1 in UV space.
 float DrawOutline(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded, float outlineThick)
 {
 	float df = LineDistField(uv, pA, pB, vec2(thick), rounded, 0.0, 0.0);
-	return smoothStep(saturate(-((abs(df + outlineThick*0.5) - outlineThick * 0.5))), 0.0, 0.001);
+	float outlineDf = ((abs(df + outlineThick*0.5) - outlineThick * 0.5));
+	float dist = outlineDf;
+	vec2 ddist = vec2(dFdx(dist), dFdy(dist));
+	float pixelDist = dist / length(ddist);
+	return saturate(0.5 - pixelDist) * abs(sign(outlineThick));
+//	return smoothStep(saturate(-((abs(df + outlineThick*0.5) - outlineThick * 0.5))), 0.0, 0.001);
 }
 
 void main()
@@ -180,6 +192,7 @@ vec3 solidDashBlend = mix(color.xyz, dashLine * dashColor.xyz, dashLine);
 fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutline), alpha);
 //float df = LineDistField(lineCoords, start, end, vec2(1.0,1.0), 0.0, 0.0, 0.0);
 //fragColor.xyzw = vec4(df, -df,0,1.0);
+//fragColor.xyzw = vec4(1.0, 0.0,1.0,1.0);
 	gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * color.a * u_vectorFade.r);
 	gl_FragData[1] = vec4(0, 0, 0, 0);
 

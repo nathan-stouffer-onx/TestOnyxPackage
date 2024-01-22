@@ -6,8 +6,8 @@ $output v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4
 #include "OnyxFunctions.sc"
 
 //samplers
-SAMPLER2D(s_heightTextureVert, 0);
-uniform vec4 s_heightTextureVert_Res;
+SAMPLER2D(s_heightTexture, 0);
+uniform vec4 s_heightTexture_Res;
 SAMPLER2D(s_vectorColor, 2);
 uniform vec4 s_vectorColor_Res;
 SAMPLER2D(s_texture0, 1);
@@ -37,7 +37,7 @@ uniform vec4 u_tileMax;
 float heightAt(vec2 uv)
 {
 	vec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;
-	return texture2DLod(s_heightTextureVert, scaledUV, 0).r;
+	return texture2DLod(s_heightTexture, scaledUV, 0).r;
 }
 // expects uv to be in tile coordinates
 float distortedHeightAt(vec2 uv)
@@ -49,7 +49,7 @@ float distortedHeightAt(vec2 uv)
 // expects uv to be in tile coordinates
 vec3 normalAt(vec2 uv)
 {
-	vec2 pixelWidth = 1.0 / s_heightTextureVert_Res.xy;
+	vec2 pixelWidth = 1.0 / s_heightTexture_Res.xy;
 	vec2 tileDelta = pixelWidth / u_ScaleOffsetHeight.z;
 	vec2 westUV = uv - vec2(tileDelta.x, 0);
 	vec2 eastUV = uv + vec2(tileDelta.x, 0);

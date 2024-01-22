@@ -84,8 +84,7 @@
             "id": "mandelbrot-aerial",
             "source": "mandelbrot",
             "type": "raster",
-            "minzoom": 0,
-            "maxzoom": 23
+            "minzoom": 0
         },
         {
             "id": "test-vectors$fill",
@@ -93,7 +92,6 @@
             "source-layer": "Vector Test Pattern",
             "type": "fill",
             "minzoom": 0,
-            "maxzoom": 23,
             "paint": {
                 "fill-color": "rgb(0, 255, 0)"
             }
@@ -104,7 +102,6 @@
             "source-layer": "Vector Test Pattern",
             "type": "line",
             "minzoom": 0,
-            "maxzoom": 23,
             "paint": {
                 "line-width": 4,
                 "line-color": "rgb(0, 255, 0)"
@@ -116,7 +113,6 @@
             "source-layer": "Hilbert Curve Pattern",
             "type": "line",
             "minzoom": 0,
-            "maxzoom": 23,
             "paint": {
                 "line-color": "rgb(255, 0, 0)",
                 "line-width": [

@@ -119,8 +119,7 @@
             "id": "tileserver_aerial",
             "source": "aerial",
             "type": "raster",
-            "minzoom": 0,
-            "maxzoom": 23
+            "minzoom": 0
         },
         {
             "id": "admin_bounds$country",

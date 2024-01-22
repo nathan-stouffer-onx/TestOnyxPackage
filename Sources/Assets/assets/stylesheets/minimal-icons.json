@@ -59,8 +59,7 @@
             "id": "tileserver_aerial",
             "source": "aerial",
             "type": "raster",
-            "minzoom": 0,
-            "maxzoom": 23
+            "minzoom": 0
         },
         {
             "id": "water$area_fill",
@@ -68,7 +67,6 @@
             "source-layer": "water_areas",
             "type": "fill",
             "minzoom": 2,
-            "maxzoom": 22,
             "paint": {
                 "fill-color": "#89BDF9",
                 "fill-pattern": "checker1"
@@ -80,7 +78,6 @@
             "source-layer": "water_areas",
             "type": "line",
             "minzoom": 2,
-            "maxzoom": 22,
             "paint": {
                 "line-color": "#89BDF9",
                 "line-width": 2
@@ -92,7 +89,6 @@
             "source-layer": "admin_boundaries",
             "type": "line",
             "minzoom": 2,
-            "maxzoom": 22,
             "filter": [
                 "match",
                 [
@@ -120,7 +116,6 @@
             "source-layer": "admin_boundaries",
             "type": "line",
             "minzoom": 4,
-            "maxzoom": 22,
             "filter": [
                 "match",
                 [

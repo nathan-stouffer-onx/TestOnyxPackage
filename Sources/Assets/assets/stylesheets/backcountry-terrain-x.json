@@ -129,15 +129,13 @@
             "id": "tileserver_aerial",
             "source": "aerial",
             "type": "raster",
-            "minzoom": 0,
-            "maxzoom": 23
+            "minzoom": 0
         },
         {
             "id": "aerial_winter$",
             "source": "aerial-winter",
             "type": "raster",
-            "minzoom": 7,
-            "maxzoom": 23
+            "minzoom": 7
         },
         {
             "id": "admin_bounds$country",
@@ -806,7 +804,6 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
-            "maxzoom": 20,
             "filter": [
                 "all",
                 [
@@ -852,7 +849,6 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
-            "maxzoom": 20,
             "filter": [
                 "all",
                 [
@@ -916,7 +912,6 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
-            "maxzoom": 20,
             "filter": [
                 "all",
                 [

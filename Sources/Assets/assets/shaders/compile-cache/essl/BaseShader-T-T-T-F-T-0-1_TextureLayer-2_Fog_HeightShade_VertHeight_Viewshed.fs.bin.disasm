@@ -7,8 +7,8 @@ in vec4 v_texcoord4;
 in vec4 v_texcoord5;
 in vec4 v_texcoord6;
 in vec4 v_texcoord7;
-uniform sampler2D s_heightTextureFrag;
-uniform vec4 s_heightTextureFrag_Res;
+uniform sampler2D s_heightTexture;
+uniform vec4 s_heightTexture_Res;
 uniform sampler2D s_HeightBandTexture;
 uniform sampler2D s_texture0;
 uniform sampler2D s_texture1;
@@ -34,7 +34,7 @@ void main ()
   vec4 fragColor_3;
   vec3 normal_4;
   vec2 tmpvar_5;
-  tmpvar_5 = (s_heightTextureFrag_Res.zw / v_texcoord2.z);
+  tmpvar_5 = (s_heightTexture_Res.zw / v_texcoord2.z);
   vec2 tmpvar_6;
   tmpvar_6.y = 0.0;
   tmpvar_6.x = tmpvar_5.x;
@@ -56,31 +56,31 @@ void main ()
   vec2 tmpvar_13;
   tmpvar_13 = (v_texcoord5.xy + tmpvar_12);
   float tmpvar_14;
-  tmpvar_14 = (texture (s_heightTextureFrag, ((v_texcoord2.zw * v_texcoord5.xy) + v_texcoord2.xy)).x * mix (v_texcoord3.x, v_texcoord3.y, v_texcoord5.y));
+  tmpvar_14 = (texture (s_heightTexture, ((v_texcoord2.zw * v_texcoord5.xy) + v_texcoord2.xy)).x * mix (v_texcoord3.x, v_texcoord3.y, v_texcoord5.y));
   vec2 tmpvar_15;
   tmpvar_15 = (u_heightTileSize.xy / 256.0);
   vec3 tmpvar_16;
   tmpvar_16.y = 0.0;
   tmpvar_16.x = -(tmpvar_15.x);
-  tmpvar_16.z = ((texture (s_heightTextureFrag, (
+  tmpvar_16.z = ((texture (s_heightTexture, (
     (v_texcoord2.zw * tmpvar_7)
    + v_texcoord2.xy)).x * mix (v_texcoord3.x, v_texcoord3.y, tmpvar_7.y)) - tmpvar_14);
   vec3 tmpvar_17;
   tmpvar_17.y = 0.0;
   tmpvar_17.x = tmpvar_15.x;
-  tmpvar_17.z = ((texture (s_heightTextureFrag, (
+  tmpvar_17.z = ((texture (s_heightTexture, (
     (v_texcoord2.zw * tmpvar_9)
    + v_texcoord2.xy)).x * mix (v_texcoord3.x, v_texcoord3.y, tmpvar_9.y)) - tmpvar_14);
   vec3 tmpvar_18;
   tmpvar_18.x = 0.0;
   tmpvar_18.y = -(tmpvar_15.y);
-  tmpvar_18.z = ((texture (s_heightTextureFrag, (
+  tmpvar_18.z = ((texture (s_heightTexture, (
     (v_texcoord2.zw * tmpvar_11)
    + v_texcoord2.xy)).x * mix (v_texcoord3.x, v_texcoord3.y, tmpvar_11.y)) - tmpvar_14);
   vec3 tmpvar_19;
   tmpvar_19.x = 0.0;
   tmpvar_19.y = tmpvar_15.y;
-  tmpvar_19.z = ((texture (s_heightTextureFrag, (
+  tmpvar_19.z = ((texture (s_heightTexture, (
     (v_texcoord2.zw * tmpvar_13)
    + v_texcoord2.xy)).x * mix (v_texcoord3.x, v_texcoord3.y, tmpvar_13.y)) - tmpvar_14);
   normal_4 = normalize(((

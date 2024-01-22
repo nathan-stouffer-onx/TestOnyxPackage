@@ -75,6 +75,7 @@ let package = Package(
             name: "shaderPackage",
             path: "shader.xcframework.zip"
         ),
+        // TODO possibly re-enable this to get sqlite stuff working in our local apps (it works in iOS repo because they already have this)
         //.binaryTarget(
         //    name: "sqlite3Package",
         //    path: "sqlite3.xcframework.zip"

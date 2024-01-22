@@ -11,7 +11,7 @@
         "float heightAt(vec2 uv)",
         "{",
         "\tvec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;",
-        "\treturn texture2DLod(s_heightTextureVert, scaledUV, 0).r;",
+        "\treturn texture2DLod(s_heightTexture, scaledUV, 0).r;",
         "}"
       ],
       "position": "Functions",
@@ -46,7 +46,7 @@
         "// expects uv to be in tile coordinates",
         "vec3 normalAt(vec2 uv)",
         "{",
-        "\tvec2 pixelWidth = 1.0 / s_heightTextureVert_Res.xy;",
+        "\tvec2 pixelWidth = 1.0 / s_heightTexture_Res.xy;",
         "\tvec2 tileDelta = pixelWidth / u_ScaleOffsetHeight.z;",
         "\tvec2 westUV = uv - vec2(tileDelta.x, 0);",
         "\tvec2 eastUV = uv + vec2(tileDelta.x, 0);",
@@ -89,7 +89,7 @@
   "shaderParameters": [
     {
       "componentName": "VertHeight",
-      "name": "s_heightTextureVert",
+      "name": "s_heightTexture",
       "type": "texture",
       "anisoFilter":  true
     },

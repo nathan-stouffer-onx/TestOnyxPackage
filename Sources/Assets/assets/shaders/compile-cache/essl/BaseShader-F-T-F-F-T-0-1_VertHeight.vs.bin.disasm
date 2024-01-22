@@ -8,7 +8,7 @@ out highp vec4 v_texcoord6;
 out vec4 v_texcoord7;
 uniform highp mat4 u_view;
 uniform highp mat4 u_proj;
-uniform sampler2D s_heightTextureVert;
+uniform sampler2D s_heightTexture;
 uniform highp vec4 u_tileSize;
 uniform highp vec4 u_tileDistortion;
 uniform highp vec4 u_ScaleOffsetHeight;
@@ -24,7 +24,7 @@ void main ()
   tmpvar_3.z = tmpvar_2;
   tmpvar_3.w = tmpvar_2;
   vertexPosition_1.xy = tmpvar_3.xy;
-  vertexPosition_1.z = (tmpvar_2 + ((textureLod (s_heightTextureVert, 
+  vertexPosition_1.z = (tmpvar_2 + ((textureLod (s_heightTexture, 
     ((u_ScaleOffsetHeight.zw * a_texcoord7.xy) + u_ScaleOffsetHeight.xy)
   , 0.0).x * 
     mix (u_tileDistortion.x, u_tileDistortion.y, a_texcoord7.y)

@@ -32,7 +32,7 @@
             "maxzoom": 13
         }
     },
-    "context": {
+    "expressions": {
         "exaggeration-expr": {
             "number": [
                 "interpolate",
@@ -96,8 +96,7 @@
             "id": "tileserver_aerial",
             "source": "aerial",
             "type": "raster",
-            "minzoom": 0,
-            "maxzoom": 23
+            "minzoom": 0
         },
         {
             "id": "admin_bounds$country",
@@ -105,7 +104,6 @@
             "source-layer": "admin_boundaries",
             "type": "line",
             "minzoom": 2,
-            "maxzoom": 22,
             "filter": [
                 "match",
                 [
@@ -133,7 +131,6 @@
             "source-layer": "admin_boundaries",
             "type": "line",
             "minzoom": 4,
-            "maxzoom": 22,
             "filter": [
                 "match",
                 [
@@ -177,7 +174,6 @@
             "source-layer": "water_areas",
             "type": "fill",
             "minzoom": 2,
-            "maxzoom": 22,
             "paint": {
                 "fill-color": "#89BDF9",
                 "fill-opacity": 0.25
@@ -206,53 +202,46 @@
             }
         },
         {
-            "id": "elevation$labels",
+            "id": "contour$labels$major",
             "source": "elevation",
-            "type": "contour",
-            "minzoom": 0,
+            "type": "contour-label",
+            "minzoom": 12,
             "maxzoom": 23,
             "layout": {
-                "text-field": [
-                    "get",
-                    "label"
-                ],
-                "text-size": 7.5,
-                "symbol-placement": "line-center",
+                "text-size": 14,
+                "symbol-placement": "point",
                 "text-font": [
                     "Open Sans SemiBold"
                 ],
-                "intervalLayouts": [
-                    {
-                        "text-size": 14,
-                        "symbol-placement": "point",
-                        "text-font": [
-                            "Open Sans SemiBold"
-                        ],
-                        "interval": 100
-                    },
-                    {
-                        "text-size": 12,
-                        "symbol-placement": "point",
-                        "text-font": [
-                            "Open Sans SemiBold"
-                        ],
-                        "interval": 10
-                    }
-                ]
+                "contour-label-period": 1000,
+                "contour-label-units": "feet",
+                "contour-label-suffix": "ft"
             },
             "paint": {
-                "text-color": "hsl(291, 0%, 0%)",
-                "text-shadow-color": "hsl(291, 20%, 10%)",
-                "intervalPaints": [
-                    {
-                        "text-color": "hsl(291, 100%, 70%)",
-                        "text-shadow-color": "hsl(291, 20%, 10%)"
-                    },
-                    {
-                        "text-color": "hsl(191, 100%, 70%)",
-                        "text-shadow-color": "hsl(191, 20%, 10%)"
-                    }
-                ]
+                "text-color": "hsl(291, 100%, 70%)",
+                "text-shadow-color": "hsl(291, 20%, 10%)"
+            }
+        },
+        {
+            "id": "contour$labels$minor",
+            "source": "elevation",
+            "type": "contour-label",
+            "minzoom": 15,
+            "maxzoom": 23,
+            "layout": {
+                "text-size": 12,
+                "symbol-placement": "point",
+                "text-font": [
+                    "Open Sans SemiBold"
+                ],
+                "contour-label-period": 250,
+                "contour-label-skip-period": 1000,
+                "contour-label-units": "feet",
+                "contour-label-suffix": "ft"
+            },
+            "paint": {
+                "text-color": "hsl(191, 100%, 70%)",
+                "text-shadow-color": "hsl(191, 20%, 10%)"
             }
         }
     ]

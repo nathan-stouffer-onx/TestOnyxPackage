@@ -9,8 +9,6 @@ public class OnyxView: UIView {
     var device: MTLDevice!
     var metalLayer: CAMetalLayer!
 	
-	var timer: CADisplayLink!
-	
 	var pointers: Array<UITouch?> = Array(repeating: nil, count: 4)
     
     public override var bounds: CGRect { didSet{ metalLayer.frame = bounds } }
@@ -18,12 +16,20 @@ public class OnyxView: UIView {
     var prefix: String
     var token: String
 
-    var viewportId: std.string
+    var viewportId: Int
     
+    typealias PresentCallback = @convention(c) () -> Int32
+
+    let presentCallback : PresentCallback = 
+    {
+        metalLayer.setNeedsDisplay()
+        metalLayer.display()
+    }
+
     public init(frame: CGRect, prefix: String, token: String) {        
         self.prefix = prefix
         self.token = token
-        self.viewportId = std.string("main")
+        self.viewportId = 0
         
         super.init(frame: frame)
         
@@ -43,10 +49,12 @@ public class OnyxView: UIView {
         onyx.setToken(std.string(self.token))
         let unsafeMetalLayer = UnsafeMutableRawPointer(Unmanaged.passRetained(metalLayer).toOpaque())
         let unsafeMetalDevice = UnsafeMutableRawPointer(Unmanaged.passRetained(device).toOpaque())
-        onyx.initialize(UInt32(metalLayer.frame.width), UInt32(metalLayer.frame.height), unsafeMetalLayer, unsafeMetalDevice, std.string(self.prefix + "/"))
-        
-        timer = CADisplayLink(target: self, selector: #selector(renderloop))
-        timer.add(to: RunLoop.main, forMode: .default)
+        onyx.initialize(UInt32(metalLayer.frame.width),
+                        UInt32(metalLayer.frame.height),
+                        unsafeMetalLayer,
+                        unsafeMetalDevice, std.string(self.prefix + "/"),
+                        presentCallback
+                        )
     }
     
     required init?(coder: NSCoder) {
@@ -108,19 +116,7 @@ public class OnyxView: UIView {
 			}
 		}
     }
-    
-    func render() {
-        autoreleasepool {
-            onyx.render()
-            metalLayer.setNeedsDisplay()
-            metalLayer.display()
-        }
-    }
 
-    @objc func renderloop() {
-        self.render()
-    }
-    
     public func setCacheSize(_ size: Int?) {
         onyx.setCacheSize(size ?? 1 << 30)
     }

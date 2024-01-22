@@ -91,7 +91,6 @@
             "type": "raster",
             "source": "hillshade",
             "minzoom": 0,
-            "maxzoom": 20,
             "paint": {
                 "raster-opacity": 0.5
             }
@@ -1835,7 +1834,6 @@
             "source-layer": "trail",
             "type": "line",
             "minzoom": 11,
-            "maxzoom": 20,
             "layout": {
                 "line-cap": "round",
                 "line-join": "round"
@@ -1865,7 +1863,6 @@
             "source-layer": "trail",
             "type": "line",
             "minzoom": 11,
-            "maxzoom": 20,
             "layout": {
                 "line-cap": "round",
                 "line-join": "round"

@@ -127,7 +127,6 @@
             "type": "raster",
             "source": "hillshade",
             "minzoom": 0,
-            "maxzoom": 20,
             "paint": {
                 "raster-opacity": 0.5
             }
@@ -1871,7 +1870,6 @@
             "source-layer": "avalanche_forecast",
             "type": "fill",
             "minzoom": 5,
-            "maxzoom": 20,
             "paint": {
                 "fill-color": [
                     "match",
@@ -2145,7 +2143,6 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
-            "maxzoom": 20,
             "filter": [
                 "all",
                 [
@@ -2191,7 +2188,6 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
-            "maxzoom": 20,
             "filter": [
                 "all",
                 [
@@ -2255,7 +2251,6 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
-            "maxzoom": 20,
             "filter": [
                 "all",
                 [

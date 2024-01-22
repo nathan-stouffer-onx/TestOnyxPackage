@@ -29,13 +29,13 @@ dcl_constantbuffer CB0[15], immediateIndexed
 dcl_sampler s0, mode_default
 dcl_sampler s1, mode_default
 dcl_sampler s2, mode_default
+dcl_sampler s3, mode_default
 dcl_sampler s4, mode_default
-dcl_sampler s5, mode_default
 dcl_resource_texture2d (float,float,float,float) t0
 dcl_resource_texture2d (float,float,float,float) t1
 dcl_resource_texture2d (float,float,float,float) t2
+dcl_resource_texture2d (float,float,float,float) t3
 dcl_resource_texture2d (float,float,float,float) t4
-dcl_resource_texture2d (float,float,float,float) t5
 dcl_input_ps linear v2.xyzw
 dcl_input_ps linear v3.xy
 dcl_input_ps linear v4.x
@@ -124,11 +124,11 @@ mul r1.x, r1.z, r1.w
 sample_indexable(texture2d)(float,float,float,float) r1.xyzw, r1.xyxx, t0.xyzw, s0
 mul r1.w, r1.w, l(0.500000)
 mad r3.xy, v5.xyxx, cb0[11].zwzz, cb0[11].xyxx
-sample_indexable(texture2d)(float,float,float,float) r3.xyzw, r3.xyxx, t4.xyzw, s4
+sample_indexable(texture2d)(float,float,float,float) r3.xyzw, r3.xyxx, t3.xyzw, s3
 add r3.xyz, r3.xyzx, l(-1.000000, -1.000000, -1.000000, 0.000000)
 mad r3.xyz, r3.wwww, r3.xyzx, l(1.000000, 1.000000, 1.000000, 0.000000)
 mad r4.xy, v5.xyxx, cb0[12].zwzz, cb0[12].xyxx
-sample_indexable(texture2d)(float,float,float,float) r4.xyzw, r4.xyxx, t5.xyzw, s5
+sample_indexable(texture2d)(float,float,float,float) r4.xyzw, r4.xyxx, t4.xyzw, s4
 add r4.xyz, -r3.xyzx, r4.xyzx
 mad r3.xyz, r4.wwww, r4.xyzx, r3.xyzx
 add o0.w, r3.w, r4.w

@@ -34,13 +34,13 @@ dcl_sampler s1, mode_default
 dcl_sampler s2, mode_default
 dcl_sampler s3, mode_default
 dcl_sampler s4, mode_default
-dcl_sampler s6, mode_default
+dcl_sampler s5, mode_default
 dcl_resource_texture2d (float,float,float,float) t0
 dcl_resource_texture2d (float,float,float,float) t1
 dcl_resource_texture2d (float,float,float,float) t2
 dcl_resource_texturecube (float,float,float,float) t3
 dcl_resource_texture2d (float,float,float,float) t4
-dcl_resource_texture2d (float,float,float,float) t6
+dcl_resource_texture2d (float,float,float,float) t5
 dcl_input_ps linear v1.xyzw
 dcl_input_ps linear v3.xy
 dcl_input_ps linear v4.xyzw
@@ -109,7 +109,7 @@ lt r1.xy, r0.xzxx, -r0.xzxx
 add r2.xyz, r0.xyzx, r0.xyzx
 div r1.zw, v4.xxxy, v4.wwww
 mad r1.zw, r1.zzzw, l(0.000000, 0.000000, 0.500000, 0.500000), l(0.000000, 0.000000, 0.500000, 0.500000)
-sample_indexable(texture2d)(float,float,float,float) r3.xyz, r1.zwzz, t6.xyzw, s6
+sample_indexable(texture2d)(float,float,float,float) r3.xyz, r1.zwzz, t5.xyzw, s5
 lt r0.w, l(0.500000), cb0[18].x
 if_z r0.w
   min r0.w, |r0.x|, |r0.y|

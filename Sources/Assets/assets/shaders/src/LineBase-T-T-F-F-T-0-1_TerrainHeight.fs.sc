@@ -4,8 +4,8 @@ $input v_texcoord7, v_color0, v_texcoord6, v_texcoord5
 #include "OnyxFunctions.sc"
 
 //samplers
-SAMPLER2D(s_heightTextureVert, 1);
-uniform vec4 s_heightTextureVert_Res;
+SAMPLER2D(s_heightTexture, 1);
+uniform vec4 s_heightTexture_Res;
 SAMPLER2D(s_DashSampler, 0);
 uniform vec4 s_DashSampler_Res;
 

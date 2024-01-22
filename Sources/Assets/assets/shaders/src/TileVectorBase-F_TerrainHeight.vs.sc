@@ -6,8 +6,8 @@ $output v_texcoord4, v_bitangent, v_texcoord7, v_texcoord6, v_texcoord5
 #include "OnyxFunctions.sc"
 
 //samplers
-SAMPLER2D(s_heightTextureVert, 0);
-uniform vec4 s_heightTextureVert_Res;
+SAMPLER2D(s_heightTexture, 0);
+uniform vec4 s_heightTexture_Res;
 SAMPLER2D(s_vectorColors, 2);
 uniform vec4 s_vectorColors_Res;
 SAMPLER2D(s_vectorPatterns, 3);
@@ -40,7 +40,7 @@ uniform vec4 u_TileFragClip;
 float heightAt(vec2 uv)
 {
 	vec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;
-	return texture2DLod(s_heightTextureVert, scaledUV, 0).r;
+	return texture2DLod(s_heightTexture, scaledUV, 0).r;
 }
 // expects uv to be in tile coordinates
 float distortedHeightAt(vec2 uv)

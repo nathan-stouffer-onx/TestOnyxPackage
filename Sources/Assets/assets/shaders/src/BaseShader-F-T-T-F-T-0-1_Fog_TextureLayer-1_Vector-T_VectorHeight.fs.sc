@@ -5,8 +5,8 @@ $input v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4
 #include "OnyxFragFunctions.sc"
 
 //samplers
-SAMPLER2D(s_heightTextureVert, 0);
-uniform vec4 s_heightTextureVert_Res;
+SAMPLER2D(s_heightTexture, 0);
+uniform vec4 s_heightTexture_Res;
 SAMPLER2D(s_vectorColor, 2);
 uniform vec4 s_vectorColor_Res;
 SAMPLER2D(s_texture0, 1);

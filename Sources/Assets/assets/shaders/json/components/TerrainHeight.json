@@ -17,7 +17,7 @@
         "float heightAt(vec2 uv)",
         "{",
         "\tvec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;",
-        "\treturn texture2DLod(s_heightTextureVert, scaledUV, 0).r;",
+        "\treturn texture2DLod(s_heightTexture, scaledUV, 0).r;",
         "}"
       ],
       "position": "Functions",
@@ -144,7 +144,7 @@
   "shaderParameters": [
     {
       "componentName": "TerrainHeight",
-      "name": "s_heightTextureVert",
+      "name": "s_heightTexture",
       "type": "texture",
       "anisoFilter": true
     },

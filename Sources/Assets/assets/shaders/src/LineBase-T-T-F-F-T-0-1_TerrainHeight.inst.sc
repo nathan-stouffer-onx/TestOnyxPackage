@@ -6,8 +6,8 @@ $output v_texcoord7, v_color0, v_texcoord6, v_texcoord5
 #include "OnyxFunctions.sc"
 
 //samplers
-SAMPLER2D(s_heightTextureVert, 1);
-uniform vec4 s_heightTextureVert_Res;
+SAMPLER2D(s_heightTexture, 1);
+uniform vec4 s_heightTexture_Res;
 SAMPLER2D(s_DashSampler, 0);
 uniform vec4 s_DashSampler_Res;
 
@@ -35,7 +35,7 @@ uniform vec4 u_drawColor;
 float heightAt(vec2 uv)
 {
 	vec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;
-	return texture2DLod(s_heightTextureVert, scaledUV, 0).r;
+	return texture2DLod(s_heightTexture, scaledUV, 0).r;
 }
 // expects uv to be in tile coordinates
 float distortedHeightAt(vec2 uv)
