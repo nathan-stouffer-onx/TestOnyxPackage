@@ -18,12 +18,12 @@ uniform sampler2D s_SlopeDirTexture;
 uniform sampler2D s_HeightBandTexture;
 uniform sampler2D s_texture0;
 uniform samplerCube s_cubeDepth0;
-uniform vec4 u_viewshedColor0;
-uniform vec4 u_viewshedRange;
+uniform vec4 u_viewshedTint0;
+uniform vec4 u_viewshedRange0;
 uniform vec4 u_viewshedPos0;
-uniform vec4 u_viewshedFarPlane;
-uniform vec4 u_viewshedStrength;
-uniform vec4 u_viewshedBias;
+uniform vec4 u_viewshedFarPlane0;
+uniform vec4 u_viewshedInverted0;
+uniform vec4 u_viewshedBias0;
 uniform vec4 u_heightTileSize;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_TopoParams;
@@ -295,88 +295,90 @@ void main ()
   vec3 rayDir_57;
   rayDir_57.xz = tmpvar_56.xz;
   rayDir_57.y = -(tmpvar_56.y);
-  fragColor_4.xyz = (fragColor_4.xyz + ((
-    ((float((tmpvar_55 < u_viewshedRange.x)) * float((
-      (tmpvar_55 - u_viewshedBias.x)
-     < 
-      (texture (s_cubeDepth0, rayDir_57).x * u_viewshedFarPlane.x)
-    ))) * u_viewshedStrength.x)
+  fragColor_4.xyz = mix (fragColor_4.xyz, ((
+    ((fragColor_4.x + fragColor_4.y) + fragColor_4.z)
+   / 3.0) * u_viewshedTint0.xyz), ((
+    float((tmpvar_55 < u_viewshedRange0.x))
    * 
-    mix (0.45, 0.15, (tmpvar_55 / u_viewshedRange.x))
-  ) * u_viewshedColor0.xyz));
-  float lineStrength_58;
+    abs((u_viewshedInverted0.x - float((
+      (tmpvar_55 - u_viewshedBias0.x)
+     < 
+      (texture (s_cubeDepth0, rayDir_57).x * u_viewshedFarPlane0.x)
+    ))))
+  ) * u_viewshedTint0.w));
+  vec4 lineColor_58;
   float tmpvar_59;
   tmpvar_59 = sqrt(dot (tmpvar_56, tmpvar_56));
   float period_60;
-  period_60 = (u_viewshedRange.x / 4.0);
+  period_60 = (u_viewshedRange0.x / 4.0);
   float tmpvar_61;
   tmpvar_61 = ((1.0/(period_60)) * tmpvar_59);
   float tmpvar_62;
   tmpvar_62 = (0.5 * period_60);
   float tmpvar_63;
   tmpvar_63 = (50.0 * tmpvar_59);
-  lineStrength_58 = (((1.0 - 
-    min (((0.6666667 * abs(
-      (fract((tmpvar_61 - 0.5)) - 0.5)
-    )) / (abs(
-      dFdx(tmpvar_61)
-    ) + abs(
-      dFdy(tmpvar_61)
-    ))), 1.0)
-  ) * (
-    float((-(tmpvar_62) <= tmpvar_59))
+  vec4 tmpvar_64;
+  tmpvar_64.xyz = (vec3(1.0, 1.0, 1.0) - u_viewshedTint0.xyz);
+  tmpvar_64.w = u_viewshedTint0.w;
+  lineColor_58.w = tmpvar_64.w;
+  lineColor_58.xyz = mix (fragColor_4.xyz, tmpvar_64.xyz, u_viewshedTint0.w);
+  fragColor_4.xyz = mix (fragColor_4.xyz, lineColor_58.xyz, ((
+    (1.0 - min (((0.6666667 * 
+      abs((fract((tmpvar_61 - 0.5)) - 0.5))
+    ) / (
+      abs(dFdx(tmpvar_61))
+     + 
+      abs(dFdy(tmpvar_61))
+    )), 1.0))
    * 
-    float((tmpvar_59 <= (u_viewshedRange.x + tmpvar_62)))
-  )) + ((1.0 - 
-    min (((0.6666667 * abs(
-      (fract((tmpvar_63 - 0.5)) - 0.5)
-    )) / (abs(
-      dFdx(tmpvar_63)
-    ) + abs(
-      dFdy(tmpvar_63)
-    ))), 1.0)
-  ) * (
-    float((-0.01 <= tmpvar_59))
+    (float((-(tmpvar_62) <= tmpvar_59)) * float((tmpvar_59 <= (u_viewshedRange0.x + tmpvar_62))))
+  ) + (
+    (1.0 - min (((0.6666667 * 
+      abs((fract((tmpvar_63 - 0.5)) - 0.5))
+    ) / (
+      abs(dFdx(tmpvar_63))
+     + 
+      abs(dFdy(tmpvar_63))
+    )), 1.0))
    * 
-    float((tmpvar_59 <= 0.09))
+    (float((-0.01 <= tmpvar_59)) * float((tmpvar_59 <= 0.09)))
   )));
-  fragColor_4.xyz = (((1.0 - lineStrength_58) * fragColor_4.xyz) + (lineStrength_58 * (vec3(1.0, 1.0, 1.0) - u_viewshedColor0.xyz)));
   bgfx_FragData[0] = fragColor_4;
-  float tmpvar_64;
-  tmpvar_64 = (((
+  float tmpvar_65;
+  tmpvar_65 = (((
     (v_texcoord6.z / v_texcoord6.w)
    * 0.5) + 0.5) * 256.0);
-  float tmpvar_65;
-  tmpvar_65 = floor(tmpvar_64);
-  d_2 = ((tmpvar_64 - tmpvar_65) * 256.0);
   float tmpvar_66;
-  tmpvar_66 = floor(d_2);
-  d_2 = ((d_2 - tmpvar_66) * 256.0);
-  mediump vec4 tmpvar_67;
-  tmpvar_67.w = 1.0;
-  tmpvar_67.x = (tmpvar_65 / 256.0);
-  tmpvar_67.y = (tmpvar_66 / 256.0);
-  tmpvar_67.z = (floor(d_2) / 256.0);
-  bgfx_FragData[1] = tmpvar_67;
-  vec3 tmpvar_68;
-  tmpvar_68 = normalize(-(v_texcoord7.xyz));
+  tmpvar_66 = floor(tmpvar_65);
+  d_2 = ((tmpvar_65 - tmpvar_66) * 256.0);
+  float tmpvar_67;
+  tmpvar_67 = floor(d_2);
+  d_2 = ((d_2 - tmpvar_67) * 256.0);
+  mediump vec4 tmpvar_68;
+  tmpvar_68.w = 1.0;
+  tmpvar_68.x = (tmpvar_66 / 256.0);
+  tmpvar_68.y = (tmpvar_67 / 256.0);
+  tmpvar_68.z = (floor(d_2) / 256.0);
+  bgfx_FragData[1] = tmpvar_68;
   vec3 tmpvar_69;
-  tmpvar_69.x = (tmpvar_68.y * 0.5);
-  tmpvar_69.y = (-(tmpvar_68.x) * 0.5);
-  tmpvar_69.z = max ((0.7 * (1.0 - 
-    max (0.0, tmpvar_68.z)
+  tmpvar_69 = normalize(-(v_texcoord7.xyz));
+  vec3 tmpvar_70;
+  tmpvar_70.x = (tmpvar_69.y * 0.5);
+  tmpvar_70.y = (-(tmpvar_69.x) * 0.5);
+  tmpvar_70.z = max ((0.7 * (1.0 - 
+    max (0.0, tmpvar_69.z)
   )), 0.2);
   vertDim_1 = ((1.0 - max (0.0, normal_5.z)) * 2.0);
-  float tmpvar_70;
-  tmpvar_70 = pow (min (max (
+  float tmpvar_71;
+  tmpvar_71 = pow (min (max (
     dot (normalize(((
       (2.0 * normal_5)
      * 
-      dot (normal_5, tmpvar_69)
-    ) - tmpvar_69)), tmpvar_68)
+      dot (normal_5, tmpvar_70)
+    ) - tmpvar_70)), tmpvar_69)
   , 0.0), 1.0), u_lightStrengthPow.y);
   bgfx_FragData[0].xyz = (bgfx_FragData[0].xyz + ((
-    (tmpvar_70 * u_lightStrengthPow.x)
+    (tmpvar_71 * u_lightStrengthPow.x)
    * 
     ((vertDim_1 * 0.9) + 0.1)
   ) * min (

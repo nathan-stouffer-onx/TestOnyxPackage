@@ -22,12 +22,12 @@ SAMPLERCUBE(s_cubeDepth0, 3);
 uniform vec4 s_cubeDepth0_Res;
 
 //definitions
-uniform vec4 u_viewshedColor0;
-uniform vec4 u_viewshedRange;
+uniform vec4 u_viewshedTint0;
+uniform vec4 u_viewshedRange0;
 uniform vec4 u_viewshedPos0;
-uniform vec4 u_viewshedFarPlane;
-uniform vec4 u_viewshedStrength;
-uniform vec4 u_viewshedBias;
+uniform vec4 u_viewshedFarPlane0;
+uniform vec4 u_viewshedInverted0;
+uniform vec4 u_viewshedBias0;
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_heightTileSize;

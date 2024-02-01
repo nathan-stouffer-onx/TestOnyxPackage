@@ -19,12 +19,12 @@ SAMPLERCUBE(s_cubeDepth0, 2);
 uniform vec4 s_cubeDepth0_Res;
 
 //definitions
-uniform vec4 u_viewshedColor0;
-uniform vec4 u_viewshedRange;
+uniform vec4 u_viewshedTint0;
+uniform vec4 u_viewshedRange0;
 uniform vec4 u_viewshedPos0;
-uniform vec4 u_viewshedFarPlane;
-uniform vec4 u_viewshedStrength;
-uniform vec4 u_viewshedBias;
+uniform vec4 u_viewshedFarPlane0;
+uniform vec4 u_viewshedInverted0;
+uniform vec4 u_viewshedBias0;
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_heightTileSize;
@@ -120,10 +120,10 @@ float cubemapRayTo(vec3 lightSource, vec3 pixelPos)
 	vec3 rayDir = pixelPos - lightSource;
 	// multiply y coordinate of cube map index by -1 because south is +y (matches slippy map)
 	rayDir.y *= -1.0;
-	float dist = textureCube(s_cubeDepth0, rayDir).x * u_viewshedFarPlane.x;
+	float dist = textureCube(s_cubeDepth0, rayDir).x * u_viewshedFarPlane0.x;
 	return dist;
 }
-vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec3 viewshedColor)
+vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec4 viewshedTint)
 {
 	float dist = length(pixelPos - viewshedPos);
 	float inRange = float(dist < range);
@@ -131,21 +131,22 @@ vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float
 	float lineStrength = levelSets(dist, range / 4.0, 0.0, 0.0, range, 1.5);
 	// add a couple small circles close to the eye
 	lineStrength += levelSets(dist, 0.02, 0.0, 0.0, 0.08, 1.5);
-	vec3 lineColor = vec3(1.0, 1.0, 1.0) - viewshedColor;
-	return (1.0 - lineStrength) * terrainColor + lineStrength * lineColor;
+	vec4 lineColor = vec4(vec3(1.0, 1.0, 1.0) - viewshedTint.rgb, viewshedTint.a);
+	lineColor.rgb = mix(terrainColor, lineColor.rgb, viewshedTint.a);
+	return mix(terrainColor, lineColor.rgb, lineStrength);
 }
-vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec3 viewshedColor)
+vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float inverted, float range, vec4 viewshedTint)
 {
 	float dist = length(pixelPos - viewshedPos);
-	float biasedDist = dist - u_viewshedBias.x; // simple depth bias
-	//biasedDist -= max(dot(v_normal, vec3(0,0,1)), 0.0) * u_viewshedBias.y; // normal/slope bias
+	float biasedDist = dist - u_viewshedBias0.x; // simple depth bias
 	float cubemapDist = cubemapRayTo(viewshedPos, pixelPos);
 	float inRange = float(dist < range);
-	float isVisible = float(biasedDist < cubemapDist);
-	float distanceFade = mix(0.45, 0.15, dist / range);
+	float isVisible = abs(inverted - float(biasedDist < cubemapDist));
+	float grey = (terrainColor.r + terrainColor.g + terrainColor.b) / 3.0;
+	vec3 color = grey * viewshedTint.rgb;
 	// compute the strength to apply to the the viewshed color
-	float strength = inRange * isVisible * u_viewshedStrength.x * distanceFade;
-	return terrainColor + strength * viewshedColor;
+	float strength = inRange * isVisible * viewshedTint.a;
+	return mix(terrainColor, color, strength);
 }
 
 void main()
@@ -174,8 +175,8 @@ fragColor.xyz = calcTopo(fragColor.xyz, worldPosition.w + u_eyePos.z, topoDist /
 //lighting
 fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
 
-fragColor.xyz = calcViewshed(fragColor.xyz, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange.x, u_viewshedColor0.xyz);
-fragColor.xyz = calcViewshedRings(fragColor.xyz, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange.x, u_viewshedColor0.xyz);
+fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);
+fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedTint0);
 
 //compose
 	gl_FragData[0] = fragColor;

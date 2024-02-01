@@ -14,7 +14,7 @@
         "\tvec3 rayDir = pixelPos - lightSource;",
         "\t// multiply y coordinate of cube map index by -1 because south is +y (matches slippy map)",
         "\trayDir.y *= -1.0;",
-        "\tfloat dist = textureCube(s_cubeDepth0, rayDir).x * u_viewshedFarPlane.x;",
+        "\tfloat dist = textureCube(s_cubeDepth0, rayDir).x * u_viewshedFarPlane0.x;",
         "\treturn dist;",
         "}"
       ],
@@ -24,7 +24,7 @@
     {
       "comment": "function to compute the concentric viewshed rings",
       "lines": [
-        "vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec3 viewshedColor)",
+        "vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec4 viewshedTint)",
         "{",
         "\tfloat dist = length(pixelPos - viewshedPos);",
         "\tfloat inRange = float(dist < range);",
@@ -32,8 +32,9 @@
         "\tfloat lineStrength = levelSets(dist, range / 4.0, 0.0, 0.0, range, 1.5);",
         "\t// add a couple small circles close to the eye",
         "\tlineStrength += levelSets(dist, 0.02, 0.0, 0.0, 0.08, 1.5);",
-        "\tvec3 lineColor = vec3(1.0, 1.0, 1.0) - viewshedColor;",
-        "\treturn (1.0 - lineStrength) * terrainColor + lineStrength * lineColor;",
+        "\tvec4 lineColor = vec4(vec3(1.0, 1.0, 1.0) - viewshedTint.rgb, viewshedTint.a);",
+        "\tlineColor.rgb = mix(terrainColor, lineColor.rgb, viewshedTint.a);",
+        "\treturn mix(terrainColor, lineColor.rgb, lineStrength);",
         "}"
       ],
       "position": "Functions",
@@ -41,18 +42,18 @@
     },
     {
       "lines": [
-        "vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec3 viewshedColor)",
+        "vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float inverted, float range, vec4 viewshedTint)",
         "{",
         "\tfloat dist = length(pixelPos - viewshedPos);",
-        "\tfloat biasedDist = dist - u_viewshedBias.x; // simple depth bias",
-        "\t//biasedDist -= max(dot(v_normal, vec3(0,0,1)), 0.0) * u_viewshedBias.y; // normal/slope bias",
+        "\tfloat biasedDist = dist - u_viewshedBias0.x; // simple depth bias",
         "\tfloat cubemapDist = cubemapRayTo(viewshedPos, pixelPos);",
         "\tfloat inRange = float(dist < range);",
-        "\tfloat isVisible = float(biasedDist < cubemapDist);",
-        "\tfloat distanceFade = mix(0.45, 0.15, dist / range);",
+        "\tfloat isVisible = abs(inverted - float(biasedDist < cubemapDist));",
+        "\tfloat grey = (terrainColor.r + terrainColor.g + terrainColor.b) / 3.0;",
+        "\tvec3 color = grey * viewshedTint.rgb;",
         "\t// compute the strength to apply to the the viewshed color",
-        "\tfloat strength = inRange * isVisible * u_viewshedStrength.x * distanceFade;",
-        "\treturn terrainColor + strength * viewshedColor;",
+        "\tfloat strength = inRange * isVisible * viewshedTint.a;",
+        "\treturn mix(terrainColor, color, strength);",
         "}"
       ],
       "position": "Functions",
@@ -60,8 +61,8 @@
     },
     {
       "lines": [
-        "fragColor.xyz = calcViewshed(fragColor.xyz, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange.x, u_viewshedColor0.xyz);",
-        "fragColor.xyz = calcViewshedRings(fragColor.xyz, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange.x, u_viewshedColor0.xyz);"
+        "fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);",
+        "fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedTint0);"
       ],
       "position": "Lighting",
       "positionOffset": 0,
@@ -71,7 +72,7 @@
   "shaderParameters": [
     {
       "componentName": "Viewshed",
-      "name": "u_viewshedColor0",
+      "name": "u_viewshedTint0",
       "type" : "color",
       "color": {
           "r": 0.0,
@@ -82,7 +83,7 @@
     },
     {
       "componentName": "Viewshed",
-      "name": "u_viewshedRange",
+      "name": "u_viewshedRange0",
       "type": "float",
       "float": 10.0
     },
@@ -105,23 +106,21 @@
     },
     {
       "componentName": "Viewshed",
-      "name": "u_viewshedFarPlane",
+      "name": "u_viewshedFarPlane0",
       "realtimeUniform": true,
       "type": "float",
       "float": 40000.0
     },
     {
       "componentName": "Viewshed",
-      "name": "u_viewshedStrength",
+      "name": "u_viewshedInverted0",
       "realtimeUniform": true,
       "type": "float",
-      "float": 1.0,
-      "max": 1.0,
-      "min": 0.0
+      "float": 0.0
     },
     {
       "componentName": "Viewshed",
-      "name": "u_viewshedBias",
+      "name": "u_viewshedBias0",
       "type": "vec3",
       "vec3": {
         "x": 0.05,

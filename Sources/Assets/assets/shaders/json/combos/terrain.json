@@ -146,11 +146,6 @@
           "jsonComponent": {
             "name": "Viewshed"
           }
-        },
-        {
-          "jsonComponent": {
-            "name": "InvertedViewshed"
-          }
         }
       ]
     }

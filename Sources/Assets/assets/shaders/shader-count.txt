@@ -1,2 +1,2 @@
 NOTE: includes vertex and fragment shaders
-Shader count: 870
+Shader count: 598

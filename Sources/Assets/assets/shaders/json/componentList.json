@@ -96,10 +96,6 @@
         "filename": "components/Viewshed.json"
     },
     {
-        "componentName": "InvertedViewshed",
-        "filename": "components/InvertedViewshed.json"
-    },
-    {
         "componentName": "Vector",
         "filename": "components/Vector.json"
     },
