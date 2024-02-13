@@ -24,7 +24,7 @@
     {
       "comment": "function to compute the concentric viewshed rings",
       "lines": [
-        "vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec4 viewshedTint)",
+        "vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec4 tint)",
         "{",
         "\tfloat dist = length(pixelPos - viewshedPos);",
         "\tfloat inRange = float(dist < range);",
@@ -32,8 +32,7 @@
         "\tfloat lineStrength = levelSets(dist, range / 4.0, 0.0, 0.0, range, 1.5);",
         "\t// add a couple small circles close to the eye",
         "\tlineStrength += levelSets(dist, 0.02, 0.0, 0.0, 0.08, 1.5);",
-        "\tvec4 lineColor = vec4(vec3(1.0, 1.0, 1.0) - viewshedTint.rgb, viewshedTint.a);",
-        "\tlineColor.rgb = mix(terrainColor, lineColor.rgb, viewshedTint.a);",
+        "\tvec4 lineColor = vec4(mix(terrainColor, tint.rgb, tint.a), tint.a);",
         "\treturn mix(terrainColor, lineColor.rgb, lineStrength);",
         "}"
       ],
@@ -42,7 +41,7 @@
     },
     {
       "lines": [
-        "vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float inverted, float range, vec4 viewshedTint)",
+        "vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float inverted, float range, vec4 tint)",
         "{",
         "\tfloat dist = length(pixelPos - viewshedPos);",
         "\tfloat biasedDist = dist - u_viewshedBias0.x; // simple depth bias",
@@ -50,9 +49,9 @@
         "\tfloat inRange = float(dist < range);",
         "\tfloat isVisible = abs(inverted - float(biasedDist < cubemapDist));",
         "\tfloat grey = (terrainColor.r + terrainColor.g + terrainColor.b) / 3.0;",
-        "\tvec3 color = grey * viewshedTint.rgb;",
+        "\tvec3 color = grey * tint.rgb;",
         "\t// compute the strength to apply to the the viewshed color",
-        "\tfloat strength = inRange * isVisible * viewshedTint.a;",
+        "\tfloat strength = inRange * isVisible * tint.a;",
         "\treturn mix(terrainColor, color, strength);",
         "}"
       ],
@@ -62,7 +61,7 @@
     {
       "lines": [
         "fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);",
-        "fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedTint0);"
+        "fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedRingTint0);"
       ],
       "position": "Lighting",
       "positionOffset": 0,
@@ -78,6 +77,17 @@
           "r": 0.0,
           "g": 0.8,
           "b": 1.0,
+          "a": 1.0
+      }
+    },
+    {
+      "componentName": "Viewshed",
+      "name": "u_viewshedRingTint0",
+      "type" : "color",
+      "color": {
+          "r": 1.0,
+          "g": 0.2,
+          "b": 0.0,
           "a": 1.0
       }
     },

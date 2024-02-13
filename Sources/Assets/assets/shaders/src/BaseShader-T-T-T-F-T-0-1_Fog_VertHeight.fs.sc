@@ -18,6 +18,7 @@ uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
@@ -81,7 +82,7 @@ vec4 tileDistortion = v_texcoord3.xyzw;
 vec4 scaleOffsetHeight = v_texcoord2.xyzw;
 //main start
 normal.xyz = normalAt(texcoords.xy, tileDistortion.xy, scaleOffsetHeight);
-vec4 fragColor = vec4(1.0, 1.0, 1.0, 0.0);
+vec4 fragColor = u_BackgroundColor;
 
 //lighting
 fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);

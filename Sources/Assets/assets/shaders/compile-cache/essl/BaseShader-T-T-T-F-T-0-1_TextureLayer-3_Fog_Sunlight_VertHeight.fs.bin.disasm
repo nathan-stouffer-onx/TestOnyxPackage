@@ -27,8 +27,12 @@ uniform vec4 u_CascadeDebug;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
 uniform vec4 u_ScaleOffsetTex0;
+uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
+uniform vec4 u_OpacityTex1;
 uniform vec4 u_ScaleOffsetTex2;
+uniform vec4 u_OpacityTex2;
+uniform vec4 u_BackgroundColor;
 void main ()
 {
   float vertDim_1;
@@ -98,16 +102,16 @@ void main ()
   vec4 color_21;
   vec4 tmpvar_22;
   tmpvar_22 = texture (s_texture0, (u_ScaleOffsetTex0.xy + (v_texcoord5.xy * u_ScaleOffsetTex0.zw)));
-  color_21.xyz = mix (vec3(1.0, 1.0, 1.0), tmpvar_22.xyz, tmpvar_22.w);
-  color_21.w = tmpvar_22.w;
+  color_21.xyz = mix (u_BackgroundColor.xyz, tmpvar_22.xyz, (tmpvar_22.w * u_OpacityTex0.x));
+  color_21.w = max (u_BackgroundColor.w, tmpvar_22.w);
   vec4 tmpvar_23;
   tmpvar_23 = texture (s_texture1, (u_ScaleOffsetTex1.xy + (v_texcoord5.xy * u_ScaleOffsetTex1.zw)));
-  color_21.xyz = mix (color_21.xyz, tmpvar_23.xyz, tmpvar_23.w);
-  color_21.w = (tmpvar_22.w + tmpvar_23.w);
+  color_21.xyz = mix (color_21.xyz, tmpvar_23.xyz, (tmpvar_23.w * u_OpacityTex1.x));
+  color_21.w = max (color_21.w, tmpvar_23.w);
   vec4 tmpvar_24;
   tmpvar_24 = texture (s_texture2, (u_ScaleOffsetTex2.xy + (v_texcoord5.xy * u_ScaleOffsetTex2.zw)));
-  color_21.xyz = mix (color_21.xyz, tmpvar_24.xyz, tmpvar_24.w);
-  color_21.w = (color_21.w + tmpvar_24.w);
+  color_21.xyz = mix (color_21.xyz, tmpvar_24.xyz, (tmpvar_24.w * u_OpacityTex2.x));
+  color_21.w = max (color_21.w, tmpvar_24.w);
   vec3 tangentSun_25;
   vec3 planetNormal_26;
   float tmpvar_27;

@@ -21,6 +21,7 @@ uniform vec4 s_cubeDepth0_Res;
 
 //definitions
 uniform vec4 u_viewshedTint0;
+uniform vec4 u_viewshedRingTint0;
 uniform vec4 u_viewshedRange0;
 uniform vec4 u_viewshedPos0;
 uniform vec4 u_viewshedFarPlane0;
@@ -34,8 +35,12 @@ uniform vec4 u_lightStrengthPow;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
 uniform vec4 u_ScaleOffsetTex0;
+uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
+uniform vec4 u_OpacityTex1;
 uniform vec4 u_ScaleOffsetTex2;
+uniform vec4 u_OpacityTex2;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;

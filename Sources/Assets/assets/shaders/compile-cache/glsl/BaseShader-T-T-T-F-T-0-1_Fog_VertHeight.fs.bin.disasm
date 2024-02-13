@@ -10,6 +10,7 @@ uniform vec4 u_heightTileSize;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
+uniform vec4 u_BackgroundColor;
 void main ()
 {
   float d_1;
@@ -74,10 +75,10 @@ void main ()
    - 
     (tmpvar_18.zxy * tmpvar_15.yzx)
   )));
-  fragColor_2.w = 0.0;
+  fragColor_2.w = u_BackgroundColor.w;
   float tmpvar_19;
   tmpvar_19 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_2.xyz = mix (vec3(1.0, 1.0, 1.0), u_fogColor.xyz, (tmpvar_19 * (tmpvar_19 * 
+  fragColor_2.xyz = mix (u_BackgroundColor.xyz, u_fogColor.xyz, (tmpvar_19 * (tmpvar_19 * 
     (3.0 - (2.0 * tmpvar_19))
   )));
   gl_FragData[0] = fragColor_2;

@@ -17,6 +17,7 @@ uniform vec4 u_tileDistortion;
 uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;

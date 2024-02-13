@@ -10,6 +10,7 @@ $input v_texcoord7, v_texcoord6, v_color0
 
 //definitions
 uniform vec4 u_overrideColor;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
@@ -28,7 +29,7 @@ vec4 depth = v_texcoord7.xyzw;
 vec4 texcoords = v_texcoord6.xyzw;
 vec4 color = v_color0.xyzw;
 //main start
-vec4 fragColor = vec4(1.0, 1.0, 1.0, 0.0);
+vec4 fragColor = u_BackgroundColor;
 fragColor = vec4(color.x, 0, 0, 1.0);
 
 

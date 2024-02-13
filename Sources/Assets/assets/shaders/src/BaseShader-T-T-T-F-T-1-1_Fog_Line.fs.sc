@@ -16,6 +16,7 @@ uniform vec4 u_dashLength;
 uniform vec4 u_gapLength;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
@@ -57,7 +58,7 @@ vec4 fogDist = v_texcoord4.xyzw;
 vec4 line_texcoord = v_texcoord3.xyzw;
 vec4 line_color = v_texcoord2.xyzw;
 //main start
-vec4 fragColor = vec4(1.0, 1.0, 1.0, 0.0);
+vec4 fragColor = u_BackgroundColor;
 float styleAlpha = lineStyleAlpha(line_texcoord.y, u_dashLength.x, u_gapLength.x);
 
 fragColor = vec4(line_color.xyz, line_color.a * styleAlpha);

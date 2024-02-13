@@ -1,0 +1,93 @@
+{
+    "sortOrder": 19,
+    "bools": {},
+    "ints": {},
+    "chunks": [
+      {
+        "lines": [
+          "// def unpacks to (elevation, slope angle, slope aspect)",
+          "vec3 calculateIntersection(vec3 inputColor, vec3 def, float inverted, vec4 tint)",
+          "{",
+          "\tfloat TWO_PI = PI_CONSTS.y;",
+          "\tfloat PI_HALVES = PI_CONSTS.z;",
+          "\t// compute whether values are in the ranges",
+          "\tfloat inElevation = texture2D(s_ElevationShadeTexture, vec2(lerpInv(u_ElevationExtents.x, u_ElevationExtents.y, def.x), 0.0)).r;",
+          "\tfloat inAngle = texture2D(s_SlopeAngleShadeTexture, vec2(def.y / PI_HALVES, 0.0)).r;",
+          "\tfloat inAspect = texture2D(s_SlopeAspectShadeTexture, vec2(def.z / TWO_PI, 0.0)).r;",
+          "\tfloat inIntersection = inElevation * inAngle * inAspect;",
+          "\tfloat grey = (inputColor.x + inputColor.y + inputColor.z) / 3.0;",
+          "\tvec3 color = grey * tint.rgb;",
+          "\t// compute the strength to apply to the the viewshed color",
+          "\tfloat strength = abs(inverted - inIntersection) * tint.a;",
+          "\treturn mix(inputColor.rgb, color.rgb, strength);",
+          "}"
+        ],
+        "position": "Functions",
+        "type": "Pixel"
+      },
+      {
+        "lines": [
+            
+            "// store height, angle, and aspect in local variables",
+            "float height = worldPosition.w + u_eyePos.z;",
+            "float angle = calcSlopeAngle(normal.xyz);",
+            "float aspect = calcSlopeDir(normal.xyz);",
+            "fragColor.rgb = calculateIntersection(fragColor.rgb, vec3(height, angle, aspect), u_IntersectInverted.x, u_IntersectTint);"
+        ],
+        "position": "Main",
+        "positionOffset": 1,
+        "type": "Pixel"
+      }
+    ],
+    "shaderParameters": [
+      {
+        "componentName": "IntersectShade",
+        "name": "u_IntersectTint",
+        "realtimeUniform": true,
+        "type": "color",
+        "color": {
+          "r": 0.0,
+          "g": 0.8,
+          "b": 1.0,
+          "a": 1.0
+        }
+      },
+      {
+        "componentName": "IntersectShade",
+        "max": 1.0,
+        "min": 0.0,
+        "name": "u_IntersectInverted",
+        "realtimeUniform": true,
+        "type": "float",
+        "float": 0.0
+      },
+      {
+        "componentName": "IntersectShade",
+        "name": "s_ElevationShadeTexture",
+        "type": "texture",
+        "anisoFilter": false
+      },
+      {
+        "componentName": "IntersectShade",
+        "name": "u_ElevationExtents",
+        "type": "vec2"
+      },
+      {
+        "componentName": "IntersectShade",
+        "name": "s_SlopeAngleShadeTexture",
+        "type": "texture",
+        "anisoFilter": false
+      },
+      {
+        "componentName": "IntersectShade",
+        "name": "s_SlopeAspectShadeTexture",
+        "type": "texture",
+        "anisoFilter": false
+      }
+    ],
+    "requirements": {
+      "position": true,
+      "positionOutput": true,
+      "normal":  true
+    }
+  }

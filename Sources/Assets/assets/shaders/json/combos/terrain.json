@@ -80,7 +80,7 @@
           "components": [
             {
               "jsonComponent": {
-                "name": "IntersectTerrain"
+                "name": "IntersectShade"
               }
             }
           ]
@@ -93,22 +93,22 @@
           "components": [
             {
               "jsonComponent": {
-                "name": "SlopeShade"
+                "name": "SlopeAngleShade"
               }
             },
             {
               "jsonComponent": {
-                "name": "HeightShade"
+                "name": "ElevationShade"
               }
             },
             {
               "jsonComponent": {
-                "name": "TopoLines"
+                "name": "ContourLine"
               }
             },
             {
               "jsonComponent": {
-                "name": "SlopeDirection"
+                "name": "SlopeAspectShade"
               }
             }
           ]

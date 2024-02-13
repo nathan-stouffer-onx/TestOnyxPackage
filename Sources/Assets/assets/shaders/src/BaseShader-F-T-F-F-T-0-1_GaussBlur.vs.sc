@@ -13,6 +13,7 @@ uniform vec4 s_BlurTex_Res;
 
 //definitions
 uniform vec4 u_GaussBlurScale;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;

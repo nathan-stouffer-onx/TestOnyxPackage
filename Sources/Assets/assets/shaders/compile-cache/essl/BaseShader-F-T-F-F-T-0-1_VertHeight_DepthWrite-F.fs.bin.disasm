@@ -2,11 +2,12 @@ precision highp int;
 precision highp float;
 out mediump vec4 bgfx_FragData[8];
 in vec4 v_texcoord7;
+uniform vec4 u_BackgroundColor;
 void main ()
 {
   float d_1;
   vec4 fragColor_2;
-  fragColor_2.w = 0.0;
+  fragColor_2.w = u_BackgroundColor.w;
   fragColor_2.xyz = v_texcoord7.xyz;
   bgfx_FragData[0] = fragColor_2;
   float tmpvar_3;

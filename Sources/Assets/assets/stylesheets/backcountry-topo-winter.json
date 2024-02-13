@@ -1,7 +1,7 @@
 {
     "name": "backcountry-topo-winter",
     "version": 8,
-    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/backcountry/1674677385/sprites",
+    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706133353/sprites",
     "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
     "sources": {
         "elevation": {
@@ -79,7 +79,7 @@
             "minzoom": 0,
             "maxzoom": 12,
             "tiles": [
-                "https://tileserver.production.onxmaps.com/v1/hillshade/v0/{z}/{x}/{y}.webp"
+                "https://tileserver.production.onxmaps.com/v1/hillshade/latest/{z}/{x}/{y}.webp"
             ],
             "type": "raster",
             "tileSize": 256
@@ -95,7 +95,7 @@
         "base": {
             "type": "vector",
             "tiles": [
-                "https://tileserver.production.onxmaps.com/v1/base/v0/{z}/{x}/{y}.pbf"
+                "https://tileserver.production.onxmaps.com/v1/base/latest/{z}/{x}/{y}.pbf"
             ],
             "minzoom": 2,
             "maxzoom": 13
@@ -116,10 +116,40 @@
     },
     "layers": [
         {
-            "id": "background",
+            "id": "background$dark",
             "type": "background",
+            "layout": {
+            },
             "paint": {
-                "background-color": "hsl(0, 0%, 97%)"
+                "background-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    5,
+                    "rgba(237, 241, 215, 1)",
+                    6.5,
+                    "rgba(237, 241, 215, 1)",
+                    7.5,
+                    "rgba(197, 201, 159, 1)",
+                    8.5,
+                    "rgba(220, 220, 189, 1)",
+                    9.5,
+                    "rgba(192, 195, 153, 1)",
+                    10,
+                    "rgba(180, 178, 131, 1)",
+                    11,
+                    "rgba(178, 177, 139, 1)",
+                    12,
+                    "rgba(209, 205, 166, 1)",
+                    13,
+                    "rgba(225, 221, 185, 1)",
+                    14,
+                    "rgba(237, 235, 202, 1)"
+                ]
             }
         },
         {
@@ -1864,6 +1894,231 @@
                 ]
             }
         },
+		{
+			"id": "transportation_roads$hwy_shields$dark",
+			"source": "transportation",
+			"source-layer": "roads_us",
+			"type": "symbol",
+			"minzoom": 5,
+			"maxzoom": 22,
+			"filter": [
+				"step",
+				[ "zoom" ],
+				[
+					"all",
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "interstate-highway", "us-highway", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"match",
+						[ "get", "data:type" ],
+						[ "tertiary" ],
+						false,
+						true
+					]
+				],
+				9,
+				[
+					"match",
+					[ "get", "data:shield" ],
+					[ "interstate-highway", "us-highway", "county-highway", "state-highway", "provincial-highway", "mexico-highway" ],
+					true,
+					false
+				],
+				13,
+				[
+					"match",
+					[ "get", "data:shield" ],
+					[ "county-highway", "state-highway", "interstate-highway", "interstate-highway-business", "interstate-highway-truck", "us-highway", "us-highway-business", "us-highway-truck", "provincial-highway", "mexico-highway" ],
+					true,
+					false
+				]
+			],
+			"layout": {
+				"text-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					10,
+					8,
+					14,
+					10
+				],
+				"text-offset": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "us-highway-business", "us-highway-truck", "interstate-highway-truck" ],
+					[
+						"literal",
+						[ 0, 0.55 ]
+					],
+					[
+						"literal",
+						[ 0, 0 ]
+					]
+				],
+				"symbol-placement": "line",
+				"icon-image": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "county-highway", "provincial-highway", "mexico-highway" ],
+					[
+						"concat",
+						"highway-county-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "state-highway" ],
+					[
+						"concat",
+						"highway-state-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway" ],
+					[
+						"concat",
+						"highway-interstate-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway-business" ],
+					[
+						"concat",
+						"highway-interstate-business-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway-truck" ],
+					[
+						"concat",
+						"highway-interstate-truck-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "us-highway" ],
+					[
+						"concat",
+						"highway-us-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "us-highway-business" ],
+					[
+						"concat",
+						"highway-us-business-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "us-highway-truck" ],
+					[
+						"concat",
+						"highway-us-truck-",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					""
+				],
+				"icon-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					9,
+					0.7,
+					12,
+					0.8,
+					14,
+					0.9
+				],
+				"icon-rotation-alignment": "viewport",
+				"text-max-angle": 38,
+				"symbol-spacing": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					9,
+					300,
+					10,
+					300,
+					12,
+					300
+				],
+				"text-font": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
+					[
+						"literal",
+						[ "Open Sans Bold" ]
+					],
+					[
+						"literal",
+						[ "Open Sans SemiBold" ]
+					]
+				],
+				"text-rotation-alignment": "viewport",
+				"text-field": [
+					"to-string",
+					[ "get", "data:highway_number" ]
+				],
+				"text-letter-spacing": 0.05,
+				"visibility": "visible"
+			},
+			"paint": {
+				"text-color": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
+					"hsl(0, 0%, 100%)",
+					"hsl(0, 0%, 10%)"
+				],
+				"icon-opacity": 0.7
+			}
+		},
         {
             "id": "avalanche_forecast$fill",
             "source": "conditions",
@@ -2674,10 +2929,11 @@
         },
         {
             "id": "natural_places$geo_features$dark",
-            "type": "symbol",
             "source": "base",
             "source-layer": "places",
-            "minzoom": 7,
+            "type": "symbol",
+            "minzoom": 0,
+            "maxzoom": 22,
             "filter": [
                 "step",
                 [
@@ -2704,6 +2960,7 @@
                         "data:type"
                     ],
                     [
+                        "island",
                         "peak",
                         "volcano"
                     ],
@@ -2719,48 +2976,778 @@
                     ],
                     [
                         "arch",
+                        "beach",
+                        "cape",
                         "cliff",
                         "crater",
                         "dam",
+                        "dyke",
+                        "island",
+                        "isthmus",
+                        "lava",
                         "peak",
+                        "peninsula",
                         "ridge",
                         "rock",
                         "saddle",
-                        "tower",
-                        "volcano"
+                        "valley",
+                        "volcano",
+                        "wood"
                     ],
                     true,
                     false
-                ]
-            ],
-            "layout": {
-                "text-field": [
-                    "get",
-                    "label"
                 ],
-                "text-font": [
-                    "Roboto Medium Italic"
-                ],
-                "text-size": [
+                14,
+                [
                     "match",
                     [
                         "get",
                         "data:type"
                     ],
                     [
+                        "arch",
+                        "beach",
+                        "cape",
+                        "cliff",
+                        "crater",
+                        "dam",
+                        "dyke",
+                        "island",
+                        "isthmus",
+                        "lava",
+                        "mineshaft",
+                        "peak",
+                        "peninsula",
+                        "ridge",
+                        "rock",
+                        "saddle",
+                        "tower",
+                        "valley",
+                        "volcano",
+                        "wood"
+                    ],
+                    true,
+                    false
+                ]
+            ],
+            "layout": {
+                "text-font": [
+                    "Open Sans SemiBold Italic"
+                ],
+                "text-size": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        0,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        9,
+                        10
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        0,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        9,
+                        10
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        0,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        9,
+                        12
+                    ],
+                    14,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        11,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        11,
+                        13
+                    ],
+                    16,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        12,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        12,
+                        14
+                    ]
+                ],
+                "text-padding": 2,
+                "text-max-width": 3,
+                "icon-image": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                true,
+                                false
+                            ],
+                            "",
+                            "GEO_PEAK_TOPO"
+                        ],
+                        ""
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                true,
+                                false
+                            ],
+                            "",
+                            "GEO_PEAK_TOPO"
+                        ],
+                        [
+                            "saddle"
+                        ],
+                        "GEO_PASS_TOPO",
+                        ""
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                true,
+                                false
+                            ],
+                            "",
+                            "GEO_PEAK_TOPO"
+                        ],
+                        [
+                            "saddle"
+                        ],
+                        "GEO_PASS_TOPO",
+                        [
+                            "tower"
+                        ],
+                        "GEO_TOWER_TOPO",
+                        ""
+                    ],
+                    14,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                true,
+                                false
+                            ],
+                            "",
+                            "GEO_PEAK_TOPO"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        "GEO_MINE_TOPO",
+                        [
+                            "saddle"
+                        ],
+                        "GEO_PASS_TOPO",
+                        [
+                            "tower"
+                        ],
+                        "GEO_TOWER_TOPO",
+                        ""
+                    ]
+                ],
+                "icon-size": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "saddle",
+                            "volcano"
+                        ],
+                        0.6,
+                        [
+                            "tower"
+                        ],
+                        0.6,
+                        [
+                            "mineshaft"
+                        ],
+                        0.5,
+                        0
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "saddle",
+                            "volcano"
+                        ],
+                        0.7,
+                        [
+                            "tower"
+                        ],
+                        0.6,
+                        [
+                            "mineshaft"
+                        ],
+                        0.5,
+                        0
+                    ],
+                    14,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "saddle",
+                            "volcano"
+                        ],
+                        0.7,
+                        [
+                            "tower"
+                        ],
+                        0.6,
+                        [
+                            "mineshaft"
+                        ],
+                        0.5,
+                        0
+                    ],
+                    16,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "saddle",
+                            "volcano"
+                        ],
+                        0.8,
+                        [
+                            "tower"
+                        ],
+                        0.6,
+                        [
+                            "mineshaft"
+                        ],
+                        0.5,
+                        0
+                    ]
+                ],
+                "symbol-sort-key": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    [
+                        "peak",
+                        "volcano"
+                    ],
+                    1,
+                    [
+                        "saddle"
+                    ],
+                    2,
+                    3
+                ],
+                "icon-anchor": "bottom",
+                "visibility": "visible",
+                "text-field": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                false,
+                                true
+                            ],
+                            [
+                                "format",
+                                [
+                                    "get",
+                                    "label"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans SemiBold Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 1
+                                },
+                                "\n",
+                                [
+                                    "get",
+                                    "data:elevation_feet"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                },
+                                " ft",
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                }
+                            ],
+                            ""
+                        ],
+                        [
+                            "mineshaft",
+                            "dam",
+                            "tower"
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans Regular"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans Italic"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ]
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                false,
+                                true
+                            ],
+                            [
+                                "format",
+                                [
+                                    "get",
+                                    "label"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans SemiBold Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 1
+                                },
+                                "\n",
+                                [
+                                    "get",
+                                    "data:elevation_feet"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                },
+                                " ft",
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                }
+                            ],
+                            ""
+                        ],
+                        [
+                            "mineshaft",
+                            "dam",
+                            "tower"
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans Regular"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans SemiBold Italic"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ]
+                    ]
+                ],
+                "text-justify": "center",
+                "text-anchor": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    [
+                        "peak",
+                        "volcano",
+                        "saddle",
+                        "tower",
                         "mineshaft"
                     ],
-                    9,
-                    12
+                    "bottom",
+                    "center"
                 ],
-                "text-letter-spacing": 1.0,
-                "text-max-width": 5,
-                "text-anchor": "top",
-                "visibility": "visible"
+                "text-radial-offset": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano",
+                            "saddle",
+                            "tower",
+                            "mineshaft"
+                        ],
+                        1.6,
+                        0
+                    ],
+                    15,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano",
+                            "saddle",
+                            "tower",
+                            "mineshaft"
+                        ],
+                        1.7,
+                        0
+                    ]
+                ]
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 40%)",
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    "rgba(61, 82, 55, 1)",
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak"
+                        ],
+                        "rgba(78, 78, 78, 1)",
+                        "rgba(117, 100, 84, 1)"
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak"
+                        ],
+                        "rgba(71, 71, 71, 1)",
+                        "rgba(62, 62, 62, 1)"
+                    ],
+                    13,
+                    "rgba(66, 66, 66, 1)"
+                ],
+                "text-halo-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    "rgba(247, 247, 233, 1)",
+                    12,
+                    "rgba(235, 234, 220, 1)",
+                    14,
+                    "rgba(244, 246, 235, 1)"
+                ],
+                "text-halo-width": 1.25,
+                "text-halo-blur": 1,
+                "icon-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    0.7,
+                    13,
+                    1
+                ]
             }
         },
         {
@@ -2768,29 +3755,229 @@
             "source": "base",
             "source-layer": "populated_places",
             "type": "symbol",
-            "minzoom": 4,
-            "maxzoom": 15,
+            "minzoom": 3,
+            "maxzoom": 16,
             "filter": [
                 "match",
                 [
                     "get",
-                    "data:type"
+                    "data:capital"
                 ],
                 [
-                    "hamlet",
-                    "suburb",
-                    "neighbourhood"
+                    "state",
+                    "country"
                 ],
                 false,
                 true
             ],
             "layout": {
                 "text-field": [
-                    "get",
-                    "label"
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    [
+                        "neighbourhood",
+                        "suburb"
+                    ],
+                    [
+                        "upcase",
+                        [
+                            "get",
+                            "label"
+                        ]
+                    ],
+                    [
+                        "to-string",
+                        [
+                            "get",
+                            "label"
+                        ]
+                    ]
                 ],
                 "text-font": [
-                    "Open Sans SemiBold"
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "city"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Bold"
+                            ]
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Medium"
+                            ]
+                        ]
+                    ],
+                    10,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "city",
+                            "town"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Bold"
+                            ]
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Condensed Regular"
+                            ]
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Medium"
+                            ]
+                        ]
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "city",
+                            "town",
+                            "village"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Bold"
+                            ]
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Condensed Regular"
+                            ]
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Medium"
+                            ]
+                        ]
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "city"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Black"
+                            ]
+                        ],
+                        [
+                            "town",
+                            "village"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Bold"
+                            ]
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Condensed Regular"
+                            ]
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Medium"
+                            ]
+                        ]
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "city"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Black"
+                            ]
+                        ],
+                        [
+                            "town",
+                            "village"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Bold"
+                            ]
+                        ],
+                        [
+                            "suburb",
+                            "neighbourhood"
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Condensed Bold"
+                            ]
+                        ],
+                        [
+                            "literal",
+                            [
+                                "Roboto Bold"
+                            ]
+                        ]
+                    ]
                 ],
                 "text-size": [
                     "interpolate",
@@ -2800,15 +3987,1096 @@
                     [
                         "zoom"
                     ],
-                    0,
+                    5,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "hamlet",
+                            "suburb",
+                            "neighbourhood"
+                        ],
+                        9,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            10,
+                            75000,
+                            11,
+                            300000,
+                            12
+                        ],
+                        9
+                    ],
+                    8,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "hamlet",
+                            "suburb",
+                            "neighbourhood"
+                        ],
+                        8,
+                        [
+                            "town",
+                            "village"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            10,
+                            75000,
+                            11,
+                            300000,
+                            11,
+                            750000,
+                            12
+                        ],
+                        [
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            11,
+                            75000,
+                            12,
+                            300000,
+                            13,
+                            750000,
+                            15
+                        ],
+                        8
+                    ],
+                    9,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood"
+                        ],
+                        8,
+                        [
+                            "hamlet",
+                            "suburb"
+                        ],
+                        8,
+                        [
+                            "town",
+                            "village"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            10,
+                            1000,
+                            10,
+                            10000,
+                            11,
+                            30000,
+                            12,
+                            75000,
+                            12,
+                            100000,
+                            13,
+                            200000,
+                            14
+                        ],
+                        [
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            10,
+                            1000,
+                            11,
+                            10000,
+                            12,
+                            30000,
+                            13,
+                            75000,
+                            13,
+                            100000,
+                            14,
+                            200000,
+                            16
+                        ],
+                        10
+                    ],
                     10,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        10,
+                        [
+                            "hamlet"
+                        ],
+                        10,
+                        [
+                            "town",
+                            "village"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            10,
+                            1000,
+                            10,
+                            10000,
+                            12,
+                            30000,
+                            12,
+                            75000,
+                            13,
+                            100000,
+                            14,
+                            200000,
+                            15
+                        ],
+                        [
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            10,
+                            1000,
+                            11,
+                            10000,
+                            12,
+                            30000,
+                            13,
+                            75000,
+                            14,
+                            100000,
+                            16,
+                            200000,
+                            18
+                        ],
+                        10
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        10,
+                        [
+                            "hamlet"
+                        ],
+                        11,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            11,
+                            1000,
+                            12,
+                            5000,
+                            14,
+                            30000,
+                            15,
+                            75000,
+                            17,
+                            100000,
+                            20,
+                            200000,
+                            24
+                        ],
+                        10
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        11,
+                        [
+                            "hamlet"
+                        ],
+                        11,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            13,
+                            1000,
+                            14,
+                            5000,
+                            16,
+                            20000,
+                            20,
+                            100000,
+                            25,
+                            500000,
+                            30
+                        ],
+                        10
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        12,
+                        [
+                            "hamlet"
+                        ],
+                        14,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            14,
+                            1000,
+                            15,
+                            5000,
+                            20,
+                            20000,
+                            25,
+                            100000,
+                            30,
+                            500000,
+                            35
+                        ],
+                        10
+                    ],
                     15,
-                    15
-                ]
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        14,
+                        [
+                            "hamlet"
+                        ],
+                        17,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            18,
+                            1000,
+                            20,
+                            5000,
+                            25,
+                            20000,
+                            30,
+                            100000,
+                            35
+                        ],
+                        10
+                    ]
+                ],
+                "text-letter-spacing": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    7,
+                    0,
+                    8,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "city"
+                        ],
+                        0.05,
+                        0
+                    ],
+                    10,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "city"
+                        ],
+                        0.05,
+                        0
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "hamlet",
+                            "suburb",
+                            "neighbourhood"
+                        ],
+                        0,
+                        [
+                            "town",
+                            "village"
+                        ],
+                        0.05,
+                        [
+                            "city"
+                        ],
+                        0.07,
+                        0
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "hamlet",
+                            "suburb",
+                            "neighbourhood"
+                        ],
+                        0,
+                        [
+                            "town",
+                            "village"
+                        ],
+                        0.05,
+                        [
+                            "city"
+                        ],
+                        0.1,
+                        0.05
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "hamlet",
+                            "suburb",
+                            "neighbourhood"
+                        ],
+                        0.05,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        0.1,
+                        0.05
+                    ]
+                ],
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    7,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        0.6,
+                        [
+                            "town",
+                            "village"
+                        ],
+                        0.6,
+                        [
+                            "city"
+                        ],
+                        0.7,
+                        0.6
+                    ],
+                    8,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        0.6,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            0.6,
+                            75000,
+                            0.7,
+                            300000,
+                            0.7,
+                            750000,
+                            0.9
+                        ],
+                        0.6
+                    ],
+                    9,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        0.5,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            0.6,
+                            25000,
+                            0.7,
+                            75000,
+                            0.7,
+                            300000,
+                            0.8,
+                            750000,
+                            1
+                        ],
+                        0.5
+                    ],
+                    10,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        0.6,
+                        [
+                            "town",
+                            "village",
+                            "city"
+                        ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:population"
+                                ]
+                            ],
+                            0.7,
+                            25000,
+                            0.8,
+                            75000,
+                            0.8,
+                            300000,
+                            0.9,
+                            750000,
+                            1
+                        ],
+                        0.6
+                    ],
+                    10.01,
+                    0
+                ],
+                "symbol-sort-key": [
+                    "*",
+                    -1,
+                    [
+                        "to-number",
+                        [
+                            "get",
+                            "data:population"
+                        ]
+                    ]
+                ],
+                "visibility": "visible",
+                "text-variable-anchor": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "literal",
+                        [
+                            "bottom",
+                            "left",
+                            "right",
+                            "bottom-left",
+                            "bottom-right",
+                            "top-left",
+                            "top-right",
+                            "top"
+                        ]
+                    ],
+                    10,
+                    [
+                        "literal",
+                        [
+                            "center"
+                        ]
+                    ]
+                ],
+                "text-radial-offset": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9.99,
+                    0.2,
+                    10,
+                    0
+                ],
+                "text-justify": "auto",
+                "icon-image": "POP_PLACE",
+                "text-max-width": 5,
+                "text-allow-overlap": false
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 40%)",
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-color": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 60%)",
+                        [
+                            "town",
+                            "village"
+                        ],
+                        "hsl(0, 0%, 50%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 45%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    4,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 60%)",
+                        [
+                            "town",
+                            "village"
+                        ],
+                        "hsl(0, 0%, 50%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 45%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    5,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 60%)",
+                        [
+                            "town",
+                            "village"
+                        ],
+                        "hsl(0, 0%, 50%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 40%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    6,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 60%)",
+                        [
+                            "town",
+                            "village"
+                        ],
+                        "hsl(0, 0%, 40%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    7,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 60%)",
+                        [
+                            "town",
+                            "village"
+                        ],
+                        "hsl(0, 0%, 35%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    8,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 60%)",
+                        [
+                            "town",
+                            "village"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 25%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    9,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 60%)",
+                        [
+                            "town",
+                            "village"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 25%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    10,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        "hsl(0, 0%, 50%)",
+                        [
+                            "village",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 40%)",
+                        [
+                            "town"
+                        ],
+                        "hsl(0, 0%, 40%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        "hsl(0, 0%, 40%)",
+                        [
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 50%)",
+                        [
+                            "village"
+                        ],
+                        "hsl(0, 0%, 40%)",
+                        [
+                            "town"
+                        ],
+                        "hsl(0, 0%, 40%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "village",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 35%)",
+                        [
+                            "town"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 20%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        "hsl(0, 0%, 50%)",
+                        [
+                            "village",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 35%)",
+                        [
+                            "town"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 20%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    14,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        "hsl(0, 0%, 35%)",
+                        [
+                            "village",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "town"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 20%)",
+                        "hsl(0, 0%, 40%)"
+                    ],
+                    15,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "neighbourhood",
+                            "suburb"
+                        ],
+                        "hsl(0, 0%, 30%)",
+                        [
+                            "village",
+                            "hamlet"
+                        ],
+                        "hsl(0, 0%, 25%)",
+                        [
+                            "town"
+                        ],
+                        "hsl(0, 0%, 25%)",
+                        [
+                            "city"
+                        ],
+                        "hsl(0, 0%, 20%)",
+                        "hsl(0, 0%, 40%)"
+                    ]
+                ],
+                "text-halo-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    "rgba(245, 247, 230, 1)",
+                    10,
+                    "rgba(247, 247, 234, 1)",
+                    12,
+                    "rgba(245, 241, 233, 1)"
+                ],
+                "text-halo-width": 1.25,
+                "icon-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    6,
+                    0.7,
+                    10,
+                    0.8
+                ]
             }
         },
         {
@@ -2860,6 +5128,102 @@
                 "text-color": "hsl(0, 0%, 50%)",
                 "text-halo-color": "hsl(0, 0%, 100%)"
             }
+        },
+        {
+            "id": "trail$line_shield_label",
+            "type": "symbol",
+            "source": "backcountry",
+            "source-layer": "trail",
+            "minzoom": 8,
+            "maxzoom": 20,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:long_distance_trail_name"
+                ],
+                [
+                    "Appalachian Trail"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "icon-image": "TRAIL_APPALACHIAN",
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0.7,
+                    10,
+                    0.8
+                ],
+                "icon-padding": 0,
+                "icon-rotation-alignment": "viewport",
+                "symbol-spacing": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    100,
+                    16,
+                    200
+                ]
+            },
+            "paint": {}
+        },
+        {
+            "id": "backcountry_event$leave_no_trace_icon",
+            "type": "symbol",
+            "source": "backcountry",
+            "source-layer": "event_backcountry_points_of_interest",
+            "minzoom": 8,
+            "maxzoom": 19,
+            "filter": [
+                "all",
+                [
+                    "match",
+                    [
+                        "get",
+                        "data:event_name"
+                    ],
+                    [
+                        "Leave No Trace Spotlight"
+                    ],
+                    true,
+                    false
+                ]
+            ],
+            "layout": {
+                "visibility": "visible",
+                "icon-ignore-placement": true,
+                "icon-image": "LEAVE_NO_TRACE_SPOTLIGHT",
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0.8,
+                    15,
+                    1
+                ]
+            },
+            "paint": {}
         }
     ]
 }

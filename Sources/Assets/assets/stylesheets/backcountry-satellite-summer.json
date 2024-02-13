@@ -1,7 +1,7 @@
 {
     "name": "backcountry-satellite-summer",
     "version": 8,
-    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/backcountry/1674677385/sprites",
+    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706133353/sprites",
     "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
     "sources": {
         "elevation": {
@@ -603,6 +603,380 @@
             }
         },
         {
+            "id": "transportation_roads$hwy_shields$light",
+            "source": "transportation",
+            "source-layer": "roads_us",
+            "type": "symbol",
+            "minzoom": 5,
+            "maxzoom": 22,
+            "filter": [
+                "step",
+                [
+                    "zoom"
+                ],
+                [
+                    "all",
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:shield"
+                        ],
+                        [
+                            "interstate-highway",
+                            "us-highway",
+                            "provincial-highway",
+                            "mexico-highway"
+                        ],
+                        true,
+                        false
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "tertiary"
+                        ],
+                        false,
+                        true
+                    ]
+                ],
+                9,
+                [
+                    "all",
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:shield"
+                        ],
+                        [
+                            "interstate-highway",
+                            "us-highway",
+                            "county-highway",
+                            "state-highway",
+                            "provincial-highway",
+                            "mexico-highway"
+                        ],
+                        true,
+                        false
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "tertiary"
+                        ],
+                        false,
+                        true
+                    ]
+                ],
+                10,
+                [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "interstate-highway",
+                        "us-highway",
+                        "county-highway",
+                        "state-highway",
+                        "provincial-highway",
+                        "mexico-highway"
+                    ],
+                    true,
+                    false
+                ],
+                13,
+                [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "county-highway",
+                        "state-highway",
+                        "interstate-highway",
+                        "interstate-highway-business",
+                        "interstate-highway-truck",
+                        "us-highway",
+                        "us-highway-business",
+                        "us-highway-truck",
+                        "provincial-highway",
+                        "mexico-highway"
+                    ],
+                    true,
+                    false
+                ]
+            ],
+            "layout": {
+                "text-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    8,
+                    14,
+                    10
+                ],
+                "text-offset": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "us-highway-business",
+                        "us-highway-truck",
+                        "interstate-highway-truck"
+                    ],
+                    [
+                        "literal",
+                        [
+                            0,
+                            0.55
+                        ]
+                    ],
+                    [
+                        "literal",
+                        [
+                            0,
+                            0
+                        ]
+                    ]
+                ],
+                "symbol-placement": "line",
+                "icon-image": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "county-highway",
+                        "provincial-highway",
+                        "mexico-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-county-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "state-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-state-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "interstate-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-interstate-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "interstate-highway-business"
+                    ],
+                    [
+                        "concat",
+                        "highway-interstate-business-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "interstate-highway-truck"
+                    ],
+                    [
+                        "concat",
+                        "highway-interstate-truck-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "us-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-us-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "us-highway-business"
+                    ],
+                    [
+                        "concat",
+                        "highway-us-business-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "us-highway-truck"
+                    ],
+                    [
+                        "concat",
+                        "highway-us-truck-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    ""
+                ],
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    0.7,
+                    12,
+                    0.8,
+                    14,
+                    0.9
+                ],
+                "icon-rotation-alignment": "viewport",
+                "text-max-angle": 38,
+                "symbol-spacing": 300,
+                "text-font": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "interstate-highway",
+                        "interstate-highway-business",
+                        "interstate-highway-truck"
+                    ],
+                    [
+                        "literal",
+                        [
+                            "Open Sans Bold"
+                        ]
+                    ],
+                    [
+                        "literal",
+                        [
+                            "Open Sans SemiBold"
+                        ]
+                    ]
+                ],
+                "text-rotation-alignment": "viewport",
+                "text-field": [
+                    "to-string",
+                    [
+                        "get",
+                        "data:highway_number"
+                    ]
+                ],
+                "text-letter-spacing": 0.05,
+                "visibility": "visible"
+            },
+            "paint": {
+                "text-color": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "interstate-highway",
+                        "interstate-highway-business",
+                        "interstate-highway-truck"
+                    ],
+                    "hsl(0, 0%, 90%)",
+                    "hsl(0, 0%, 0%)"
+                ],
+                "icon-opacity": 0.7
+            }
+        },
+        {
             "id": "water$area_label$light",
             "type": "symbol",
             "source": "base",
@@ -947,10 +1321,11 @@
         },
         {
             "id": "natural_places$geo_features$light",
-            "type": "symbol",
             "source": "base",
             "source-layer": "places",
+            "type": "symbol",
             "minzoom": 7,
+            "maxzoom": 22,
             "filter": [
                 "step",
                 [
@@ -977,6 +1352,7 @@
                         "data:type"
                     ],
                     [
+                        "island",
                         "peak",
                         "volcano"
                     ],
@@ -992,47 +1368,581 @@
                     ],
                     [
                         "arch",
+                        "beach",
+                        "cape",
                         "cliff",
                         "crater",
                         "dam",
+                        "dyke",
+                        "island",
+                        "isthmus",
+                        "lava",
                         "peak",
+                        "peninsula",
                         "ridge",
                         "rock",
                         "saddle",
-                        "tower",
-                        "volcano"
+                        "valley",
+                        "volcano",
+                        "wood"
                     ],
                     true,
                     false
-                ]
-            ],
-            "layout": {
-                "text-field": [
-                    "get",
-                    "label"
                 ],
-                "text-font": [
-                    "Roboto Medium Italic"
-                ],
-                "text-size": [
+                14,
+                [
                     "match",
                     [
                         "get",
                         "data:type"
                     ],
                     [
+                        "arch",
+                        "beach",
+                        "cape",
+                        "cliff",
+                        "crater",
+                        "dam",
+                        "dyke",
+                        "island",
+                        "isthmus",
+                        "lava",
+                        "mineshaft",
+                        "peak",
+                        "peninsula",
+                        "ridge",
+                        "rock",
+                        "saddle",
+                        "tower",
+                        "valley",
+                        "volcano",
+                        "wood"
+                    ],
+                    true,
+                    false
+                ]
+            ],
+            "layout": {
+                "text-font": [
+                    "Roboto Medium Italic"
+                ],
+                "text-size": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        0,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        9,
+                        10
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        0,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        9,
+                        10
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        9,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        9,
+                        11
+                    ],
+                    14,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        11,
+                        [
+                            "dam",
+                            "tower"
+                        ],
+                        11,
+                        13
+                    ]
+                ],
+                "text-padding": 2,
+                "text-max-width": 3,
+                "icon-image": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                true,
+                                false
+                            ],
+                            "",
+                            "GEO_PEAK_AERIAL"
+                        ],
+                        ""
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                true,
+                                false
+                            ],
+                            "",
+                            "GEO_PEAK_AERIAL"
+                        ],
+                        [
+                            "saddle"
+                        ],
+                        "GEO_PASS_AERIAL",
+                        ""
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                true,
+                                false
+                            ],
+                            "",
+                            "GEO_PEAK_AERIAL"
+                        ],
+                        [
+                            "mineshaft"
+                        ],
+                        "GEO_MINE_AERIAL",
+                        [
+                            "saddle"
+                        ],
+                        "GEO_PASS_AERIAL",
+                        [
+                            "tower"
+                        ],
+                        "GEO_TOWER_AERIAL",
+                        ""
+                    ]
+                ],
+                "icon-size": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    [
+                        "peak",
+                        "saddle",
+                        "volcano"
+                    ],
+                    0.6,
+                    [
+                        "tower"
+                    ],
+                    0.6,
+                    [
                         "mineshaft"
                     ],
-                    9,
-                    12
+                    0.5,
+                    0
                 ],
-                "text-letter-spacing": 1.0,
-                "text-max-width": 5,
-                "text-anchor": "top",
-                "visibility": "visible"
+                "symbol-sort-key": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    [
+                        "peak"
+                    ],
+                    1,
+                    [
+                        "saddle"
+                    ],
+                    2,
+                    3
+                ],
+                "icon-anchor": "bottom",
+                "visibility": "visible",
+                "text-field": [
+                    "step",
+                    [
+                        "zoom"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                false,
+                                true
+                            ],
+                            [
+                                "format",
+                                [
+                                    "get",
+                                    "label"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans SemiBold Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 1
+                                },
+                                "\n",
+                                [
+                                    "get",
+                                    "data:elevation_feet"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                },
+                                " ft",
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                }
+                            ],
+                            ""
+                        ],
+                        [
+                            "mineshaft",
+                            "dam",
+                            "tower"
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans Regular"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans Italic"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ]
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano"
+                        ],
+                        [
+                            "case",
+                            [
+                                "match",
+                                [
+                                    "to-number",
+                                    [
+                                        "get",
+                                        "data:elevation_feet"
+                                    ]
+                                ],
+                                0,
+                                false,
+                                true
+                            ],
+                            [
+                                "format",
+                                [
+                                    "get",
+                                    "label"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans SemiBold Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 1
+                                },
+                                "\n",
+                                [
+                                    "get",
+                                    "data:elevation_feet"
+                                ],
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                },
+                                " ft",
+                                {
+                                    "text-font": [
+                                        "literal",
+                                        [
+                                            "Open Sans Italic"
+                                        ]
+                                    ],
+                                    "font-scale": 0.9
+                                }
+                            ],
+                            ""
+                        ],
+                        [
+                            "mineshaft",
+                            "dam",
+                            "tower"
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans Regular"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ],
+                        [
+                            "format",
+                            [
+                                "get",
+                                "label"
+                            ],
+                            {
+                                "text-font": [
+                                    "literal",
+                                    [
+                                        "Open Sans SemiBold Italic"
+                                    ]
+                                ],
+                                "font-scale": 1
+                            }
+                        ]
+                    ]
+                ],
+                "text-justify": "center",
+                "text-anchor": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    [
+                        "peak",
+                        "volcano",
+                        "saddle",
+                        "tower",
+                        "mineshaft"
+                    ],
+                    "bottom",
+                    "center"
+                ],
+                "text-radial-offset": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano",
+                            "saddle",
+                            "tower",
+                            "mineshaft"
+                        ],
+                        1.6,
+                        0
+                    ],
+                    15,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "peak",
+                            "volcano",
+                            "saddle",
+                            "tower",
+                            "mineshaft"
+                        ],
+                        1.7,
+                        0
+                    ]
+                ]
             },
             "paint": {
-                "text-color": "#80FF80"
+                "text-color": "rgba(251, 251, 251, 1)",
+                "text-halo-color": "rgba(0, 0, 0, 1)",
+                "text-halo-width": 1.25,
+                "text-halo-blur": 1,
+                "icon-opacity": 0.7
             }
         },
         {
@@ -1188,6 +2098,102 @@
                 ],
                 "line-color": "hsl(212, 100%, 37%)"
             }
+        },
+        {
+            "id": "trail$line_shield_label",
+            "type": "symbol",
+            "source": "backcountry",
+            "source-layer": "trail",
+            "minzoom": 8,
+            "maxzoom": 20,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:long_distance_trail_name"
+                ],
+                [
+                    "Appalachian Trail"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "icon-image": "TRAIL_APPALACHIAN",
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0.7,
+                    10,
+                    0.8
+                ],
+                "icon-padding": 0,
+                "icon-rotation-alignment": "viewport",
+                "symbol-spacing": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    100,
+                    16,
+                    200
+                ]
+            },
+            "paint": {}
+        },
+        {
+            "id": "backcountry_event$leave_no_trace_icon",
+            "type": "symbol",
+            "source": "backcountry",
+            "source-layer": "event_backcountry_points_of_interest",
+            "minzoom": 8,
+            "maxzoom": 19,
+            "filter": [
+                "all",
+                [
+                    "match",
+                    [
+                        "get",
+                        "data:event_name"
+                    ],
+                    [
+                        "Leave No Trace Spotlight"
+                    ],
+                    true,
+                    false
+                ]
+            ],
+            "layout": {
+                "visibility": "visible",
+                "icon-ignore-placement": true,
+                "icon-image": "LEAVE_NO_TRACE_SPOTLIGHT",
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0.8,
+                    15,
+                    1
+                ]
+            },
+            "paint": {}
         }
     ]
 }

@@ -34,6 +34,7 @@ uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
@@ -104,7 +105,7 @@ vec4 tileDistortion = v_texcoord0.xyzw;
 vec4 scaleOffsetHeight = v_color4.xyzw;
 //main start
 normal.xyz = normalAt(texcoords.xy, tileDistortion.xy, scaleOffsetHeight);
-vec4 fragColor = vec4(1.0, 1.0, 1.0, 0.0);
+vec4 fragColor = u_BackgroundColor;
 	float hillshade = calcSunlightTangent(sunUV.xy, vec3(normal.x, normal.y, normal.z), sunDir.xyz);//dot(normalize(normal.xyz * 2.0 - 1.0), normalize(sunDir.xyz));
 	float nightShadeAmount = 0.5;
 	float nightShade = dot(normal.xyz * 2.0 - 1.0, normalize(vec3(0.2, 0.2, 1.0)));

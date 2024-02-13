@@ -10,6 +10,7 @@ $output v_texcoord7, v_texcoord6, v_color0
 //cubeSamplers
 
 //definitions
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;

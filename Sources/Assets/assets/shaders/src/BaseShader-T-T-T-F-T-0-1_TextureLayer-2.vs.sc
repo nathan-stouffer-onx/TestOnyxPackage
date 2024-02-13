@@ -15,7 +15,10 @@ uniform vec4 s_texture1_Res;
 
 //definitions
 uniform vec4 u_ScaleOffsetTex0;
+uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
+uniform vec4 u_OpacityTex1;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;

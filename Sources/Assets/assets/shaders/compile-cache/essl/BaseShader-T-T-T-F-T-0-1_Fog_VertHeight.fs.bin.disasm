@@ -13,6 +13,7 @@ uniform vec4 u_heightTileSize;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
+uniform vec4 u_BackgroundColor;
 void main ()
 {
   float vertDim_1;
@@ -78,10 +79,10 @@ void main ()
    - 
     (tmpvar_19.zxy * tmpvar_16.yzx)
   )));
-  fragColor_3.w = 0.0;
+  fragColor_3.w = u_BackgroundColor.w;
   float tmpvar_20;
   tmpvar_20 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_3.xyz = mix (vec3(1.0, 1.0, 1.0), u_fogColor.xyz, (tmpvar_20 * (tmpvar_20 * 
+  fragColor_3.xyz = mix (u_BackgroundColor.xyz, u_fogColor.xyz, (tmpvar_20 * (tmpvar_20 * 
     (3.0 - (2.0 * tmpvar_20))
   )));
   bgfx_FragData[0] = fragColor_3;

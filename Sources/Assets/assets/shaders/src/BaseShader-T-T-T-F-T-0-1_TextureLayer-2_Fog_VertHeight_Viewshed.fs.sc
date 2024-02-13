@@ -18,6 +18,7 @@ uniform vec4 s_cubeDepth0_Res;
 
 //definitions
 uniform vec4 u_viewshedTint0;
+uniform vec4 u_viewshedRingTint0;
 uniform vec4 u_viewshedRange0;
 uniform vec4 u_viewshedPos0;
 uniform vec4 u_viewshedFarPlane0;
@@ -31,7 +32,10 @@ uniform vec4 u_lightStrengthPow;
 uniform vec4 u_fogVars;
 uniform vec4 u_fogColor;
 uniform vec4 u_ScaleOffsetTex0;
+uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
+uniform vec4 u_OpacityTex1;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
@@ -48,14 +52,16 @@ vec4 BlendTextures(vec4 color, vec2 uv)
 	{
 vec2 modUV = u_ScaleOffsetTex0.xy + uv * u_ScaleOffsetTex0.zw;
 	tex = texture2D(s_texture0, modUV);
-	color.xyz = mix(color.xyz, tex.xyz, tex.a);
-	color.a += tex.a;
+	float t = tex.a * u_OpacityTex0.x;
+	color.xyz = mix(color.xyz, tex.xyz, t);
+	color.a = max(color.a, tex.a);
 	}
 	{
 vec2 modUV = u_ScaleOffsetTex1.xy + uv * u_ScaleOffsetTex1.zw;
 	tex = texture2D(s_texture1, modUV);
-	color.xyz = mix(color.xyz, tex.xyz, tex.a);
-	color.a += tex.a;
+	float t = tex.a * u_OpacityTex1.x;
+	color.xyz = mix(color.xyz, tex.xyz, t);
+	color.a = max(color.a, tex.a);
 	}
 	return color;
 }
@@ -109,7 +115,7 @@ float cubemapRayTo(vec3 lightSource, vec3 pixelPos)
 	float dist = textureCube(s_cubeDepth0, rayDir).x * u_viewshedFarPlane0.x;
 	return dist;
 }
-vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec4 viewshedTint)
+vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float range, vec4 tint)
 {
 	float dist = length(pixelPos - viewshedPos);
 	float inRange = float(dist < range);
@@ -117,11 +123,10 @@ vec3 calcViewshedRings(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float
 	float lineStrength = levelSets(dist, range / 4.0, 0.0, 0.0, range, 1.5);
 	// add a couple small circles close to the eye
 	lineStrength += levelSets(dist, 0.02, 0.0, 0.0, 0.08, 1.5);
-	vec4 lineColor = vec4(vec3(1.0, 1.0, 1.0) - viewshedTint.rgb, viewshedTint.a);
-	lineColor.rgb = mix(terrainColor, lineColor.rgb, viewshedTint.a);
+	vec4 lineColor = vec4(mix(terrainColor, tint.rgb, tint.a), tint.a);
 	return mix(terrainColor, lineColor.rgb, lineStrength);
 }
-vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float inverted, float range, vec4 viewshedTint)
+vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float inverted, float range, vec4 tint)
 {
 	float dist = length(pixelPos - viewshedPos);
 	float biasedDist = dist - u_viewshedBias0.x; // simple depth bias
@@ -129,9 +134,9 @@ vec3 calcViewshed(vec3 terrainColor, vec3 viewshedPos, vec3 pixelPos, float inve
 	float inRange = float(dist < range);
 	float isVisible = abs(inverted - float(biasedDist < cubemapDist));
 	float grey = (terrainColor.r + terrainColor.g + terrainColor.b) / 3.0;
-	vec3 color = grey * viewshedTint.rgb;
+	vec3 color = grey * tint.rgb;
 	// compute the strength to apply to the the viewshed color
-	float strength = inRange * isVisible * viewshedTint.a;
+	float strength = inRange * isVisible * tint.a;
 	return mix(terrainColor, color, strength);
 }
 
@@ -147,14 +152,14 @@ vec4 tileDistortion = v_texcoord3.xyzw;
 vec4 scaleOffsetHeight = v_texcoord2.xyzw;
 //main start
 normal.xyz = normalAt(texcoords.xy, tileDistortion.xy, scaleOffsetHeight);
-vec4 fragColor = vec4(1.0, 1.0, 1.0, 0.0);
+vec4 fragColor = u_BackgroundColor;
 fragColor = BlendTextures(fragColor, texcoords.xy);
 
 //lighting
 fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
 
 fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);
-fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedTint0);
+fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedRingTint0);
 
 //compose
 	gl_FragData[0] = fragColor;

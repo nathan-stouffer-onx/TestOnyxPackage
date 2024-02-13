@@ -32,16 +32,16 @@
         "filename": "components/DirectionalLight.json"
     },
     {
-        "componentName": "IntersectTerrain",
-        "filename": "components/IntersectTerrain.json"
+        "componentName": "IntersectShade",
+        "filename": "components/IntersectShade.json"
     },
     {
         "componentName": "Line",
         "filename": "components/Line.json"
     },
     {
-        "componentName": "HeightShade",
-        "filename": "components/HeightShade.json"
+        "componentName": "ElevationShade",
+        "filename": "components/ElevationShade.json"
     },
     {
         "componentName": "SDF",
@@ -52,8 +52,8 @@
         "filename": "components/Skydome.json"
     },
     {
-        "componentName": "SlopeShade",
-        "filename": "components/SlopeShade.json"
+        "componentName": "SlopeAngleShade",
+        "filename": "components/SlopeAngleShade.json"
     },
     {
         "componentName": "Sunlight",
@@ -68,8 +68,8 @@
         "filename": ""
     },
     {
-        "componentName": "TopoLines",
-        "filename": "components/TopoLines.json"
+        "componentName": "ContourLine",
+        "filename": "components/ContourLine.json"
     },
     {
         "componentName": "VertColor",
@@ -88,8 +88,8 @@
         "filename": "components/Fog.json"
     },
     {
-        "componentName": "SlopeDirection",
-        "filename": "components/SlopeDirection.json"
+        "componentName": "SlopeAspectShade",
+        "filename": "components/SlopeAspectShade.json"
     },
     {
         "componentName": "Viewshed",

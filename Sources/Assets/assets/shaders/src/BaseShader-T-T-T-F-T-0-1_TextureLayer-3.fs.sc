@@ -16,8 +16,12 @@ uniform vec4 s_texture2_Res;
 
 //definitions
 uniform vec4 u_ScaleOffsetTex0;
+uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
+uniform vec4 u_OpacityTex1;
 uniform vec4 u_ScaleOffsetTex2;
+uniform vec4 u_OpacityTex2;
+uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
@@ -34,20 +38,23 @@ vec4 BlendTextures(vec4 color, vec2 uv)
 	{
 vec2 modUV = u_ScaleOffsetTex0.xy + uv * u_ScaleOffsetTex0.zw;
 	tex = texture2D(s_texture0, modUV);
-	color.xyz = mix(color.xyz, tex.xyz, tex.a);
-	color.a += tex.a;
+	float t = tex.a * u_OpacityTex0.x;
+	color.xyz = mix(color.xyz, tex.xyz, t);
+	color.a = max(color.a, tex.a);
 	}
 	{
 vec2 modUV = u_ScaleOffsetTex1.xy + uv * u_ScaleOffsetTex1.zw;
 	tex = texture2D(s_texture1, modUV);
-	color.xyz = mix(color.xyz, tex.xyz, tex.a);
-	color.a += tex.a;
+	float t = tex.a * u_OpacityTex1.x;
+	color.xyz = mix(color.xyz, tex.xyz, t);
+	color.a = max(color.a, tex.a);
 	}
 	{
 vec2 modUV = u_ScaleOffsetTex2.xy + uv * u_ScaleOffsetTex2.zw;
 	tex = texture2D(s_texture2, modUV);
-	color.xyz = mix(color.xyz, tex.xyz, tex.a);
-	color.a += tex.a;
+	float t = tex.a * u_OpacityTex2.x;
+	color.xyz = mix(color.xyz, tex.xyz, t);
+	color.a = max(color.a, tex.a);
 	}
 	return color;
 }
@@ -62,7 +69,7 @@ vec4 worldPosition = v_texcoord7.xyzw;
 vec4 depth = v_texcoord6.xyzw;
 vec4 texcoords = v_texcoord5.xyzw;
 //main start
-vec4 fragColor = vec4(1.0, 1.0, 1.0, 0.0);
+vec4 fragColor = u_BackgroundColor;
 fragColor = BlendTextures(fragColor, texcoords.xy);
 
 //lighting
