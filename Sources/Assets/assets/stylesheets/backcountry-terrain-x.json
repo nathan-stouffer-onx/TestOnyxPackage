@@ -3108,7 +3108,7 @@
                 ]
             },
             "paint": {
-                "text-color": "#80FF80"
+                "text-color": "#C7C7C7"
             }
         },
         {
@@ -3371,7 +3371,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "text-color": "#80FF80"
+                "text-color": "#C7C7C7"
             }
         },
         {
