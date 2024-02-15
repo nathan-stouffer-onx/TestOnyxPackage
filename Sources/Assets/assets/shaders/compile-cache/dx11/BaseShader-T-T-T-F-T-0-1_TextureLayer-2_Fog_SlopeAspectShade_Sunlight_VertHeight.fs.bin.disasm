@@ -205,7 +205,7 @@ if_z r0.w
   add r4.xyz, -r2.xyzx, r0.wwww
   mad r3.xyz, cb0[6].xxxx, r4.xyzx, r2.xyzx
 endif 
-add r0.w, -cb0[10].x, l(1.000000)
+add r0.w, -cb0[10].x, cb0[10].y
 add r1.w, v7.x, -cb0[10].x
 div r0.w, l(1.000000, 1.000000, 1.000000, 1.000000), r0.w
 mul_sat r0.w, r0.w, r1.w

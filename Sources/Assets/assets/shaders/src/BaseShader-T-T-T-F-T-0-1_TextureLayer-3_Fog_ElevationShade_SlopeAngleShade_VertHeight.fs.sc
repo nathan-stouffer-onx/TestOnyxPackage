@@ -27,8 +27,8 @@ uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_ElevationExtents;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
@@ -74,10 +74,10 @@ vec2 modUV = u_ScaleOffsetTex2.xy + uv * u_ScaleOffsetTex2.zw;
 }
 
 
-vec3 calcFogResult(vec3 color, float dist)
+vec3 calcFogResult(vec3 color, vec2 transition, float t)
 {
-	float d = smoothstep(u_fogVars.x, 1.0, dist);
-	return mix(color, u_fogColor.rgb, d);
+	float d = smoothstep(transition.x, transition.y, t);
+	return mix(color, u_FogColor.rgb, d);
 }
 // for pixel shader -  expects uv to be in tile coordinates
 float heightAt(vec2 uv, vec4 scaleOffset)
@@ -146,7 +146,7 @@ vec4 angleTexel = texture2D(s_SlopeAngleShadeTexture, vec2(calcSlopeAngle(normal
 fragColor.rgb = mix(fragColor.rgb, angleTexel.rgb, angleTexel.a);
 
 //lighting
-fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
+fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
 
 
 //compose

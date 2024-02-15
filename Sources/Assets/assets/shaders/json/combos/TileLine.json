@@ -1,29 +1,43 @@
 {
-    "segments" : [ {
-            "segment" : "TileLineBase",
-            "name" : "TileLineBase",
-            "combineType" : "PickOne",
-            "includeNone" : false,
-            "components" : [
-                {
-                    "jsonComponent" : {
-                        "name" : "TileLineBase"
-                    }
-                }
-            ]
-        },
+  "segments": [
+    {
+      "segment": "TileLineBase",
+      "name": "TileLineBase",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
         {
-            "Segment": "terrainHeight",
-            "name": "TerrainHeight",
-            "combineType": "PickOne",
-            "includeNone": false,
-            "components": [
-              {
-                "jsonComponent": {
-                  "name": "TerrainHeight"
-                }
-              }
-            ]
+          "jsonComponent": {
+            "name": "TileLineBase"
           }
-    ]
+        }
+      ]
+    },
+    {
+      "Segment": "terrainHeight",
+      "name": "TerrainHeight",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "TerrainHeight"
+          }
+        }
+      ]
+    },
+    {
+      "segment": "fog",
+      "name": "Fog",
+      "combineType": "PickOne",
+      "includeNone": true,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "Fog"
+          }
+        }
+      ]
+    }
+  ]
 }

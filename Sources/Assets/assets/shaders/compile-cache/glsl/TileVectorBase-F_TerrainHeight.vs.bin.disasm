@@ -1,5 +1,6 @@
 attribute vec4 a_texcoord7;
 varying vec3 v_bitangent;
+varying float v_depth;
 varying vec4 v_texcoord4;
 varying vec4 v_texcoord5;
 varying vec4 v_texcoord6;
@@ -14,7 +15,9 @@ uniform vec4 u_tileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_MeshResolution;
+uniform vec4 u_nearFarPlane;
 uniform vec4 u_tileMin;
+uniform vec4 u_TileVectorOpacityTransition;
 uniform vec4 u_tileMax;
 void main ()
 {
@@ -83,22 +86,29 @@ void main ()
   tileZ_3 = (u_tileMin.z + ((
     (dot (tmpvar_23, tmpvar_20) - dot (tmpvar_23.xy, mix (u_tileMin.xy, u_tileMax.xy, a_texcoord7.xy)))
    / tmpvar_23.z) * u_tileSize.z));
-  vec4 tmpvar_26;
-  tmpvar_26.w = 1.0;
-  tmpvar_26.xy = tmpvar_5.xy;
-  tmpvar_26.z = tileZ_3;
+  float tmpvar_26;
+  tmpvar_26 = clamp (((
+    (sqrt(dot (tmpvar_5, tmpvar_5)) / u_nearFarPlane.y)
+   - u_TileVectorOpacityTransition.x) / (u_TileVectorOpacityTransition.y - u_TileVectorOpacityTransition.x)), 0.0, 1.0);
   vec4 tmpvar_27;
-  tmpvar_27 = (u_proj * (u_view * tmpvar_26));
-  projected_1.xyw = tmpvar_27.xyw;
-  projected_1.z = (tmpvar_27.z - (tmpvar_27.w * 0.01));
+  tmpvar_27.w = 1.0;
+  tmpvar_27.xy = tmpvar_5.xy;
+  tmpvar_27.z = tileZ_3;
   vec4 tmpvar_28;
-  tmpvar_28.zw = vec2(0.0, 0.0);
-  tmpvar_28.xy = tmpvar_4;
+  tmpvar_28 = (u_proj * (u_view * tmpvar_27));
+  projected_1.xyw = tmpvar_28.xyw;
+  projected_1.z = (tmpvar_28.z - (tmpvar_28.w * 0.01));
+  vec4 tmpvar_29;
+  tmpvar_29.zw = vec2(0.0, 0.0);
+  tmpvar_29.xy = tmpvar_4;
   gl_Position = projected_1;
   v_texcoord4 = vecPattern_2;
   v_bitangent = tmpvar_5;
-  v_texcoord7 = tmpvar_28;
+  v_texcoord7 = tmpvar_29;
   v_texcoord6 = projected_1;
+  v_depth = (1.0 - (tmpvar_26 * (tmpvar_26 * 
+    (3.0 - (2.0 * tmpvar_26))
+  )));
   v_texcoord5 = tmpvar_7;
 }
 

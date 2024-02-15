@@ -1,4 +1,5 @@
 varying vec3 v_bitangent;
+varying float v_depth;
 varying vec4 v_texcoord4;
 varying vec4 v_texcoord5;
 varying vec4 v_texcoord7;
@@ -22,7 +23,9 @@ void main ()
   vec2 tmpvar_4;
   tmpvar_4.x = (float(mod (worldUV_1.x, v_texcoord4.z)));
   tmpvar_4.y = (float(mod (worldUV_1.y, v_texcoord4.w)));
-  gl_FragData[0] = (v_texcoord5 * texture2DLod (s_patterns, (v_texcoord4.xy + (tmpvar_4 * s_patterns_Res.zw)), 0.0));
+  gl_FragData[0] = ((v_texcoord5 * texture2DLod (s_patterns, (v_texcoord4.xy + 
+    (tmpvar_4 * s_patterns_Res.zw)
+  ), 0.0)) * v_depth);
   gl_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }
 

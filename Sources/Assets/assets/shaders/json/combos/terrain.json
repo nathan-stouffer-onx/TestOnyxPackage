@@ -103,11 +103,6 @@
             },
             {
               "jsonComponent": {
-                "name": "ContourLine"
-              }
-            },
-            {
-              "jsonComponent": {
                 "name": "SlopeAspectShade"
               }
             }
@@ -116,23 +111,28 @@
       ]
     },
     {
-      "Segment": "effects",
-      "name": "Effects",
+      "Segment": "Sunlight",
+      "name": "Sunlight",
       "combineType": "Combinations",
       "includeNone": true,
-      "segments": [
+      "components": [
         {
-          "Segment": "sunlight",
-          "name": "Sunlight",
-          "combineType": "PickOne",
-          "includeNone": true,
-          "components": [
-            {
-              "jsonComponent": {
-                "name": "Sunlight"                
-              }
-            }
-          ]
+          "jsonComponent": {
+            "name": "Sunlight"
+          }
+        }
+      ]
+    },
+    {
+      "Segment": "ContourLine",
+      "name": "ContourLine",
+      "combineType": "PickOne",
+      "includeNone": true,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "ContourLine"
+          }
         }
       ]
     },

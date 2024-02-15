@@ -31,6 +31,7 @@ uniform vec4 u_ContourParams0;
 uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
+uniform vec4 u_ContourFade;
 uniform vec4 u_SunTimeData;
 uniform vec4 u_SunMinStrength;
 uniform vec4 u_SunAmbient;
@@ -47,8 +48,8 @@ uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
 uniform vec4 u_MaxNormalZ;
 uniform vec4 u_ElevationExtents;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_BackgroundColor;
@@ -98,7 +99,7 @@ mat4 viewMat = u_view;
 	vec4 scaleOffsetHeight = u_ScaleOffsetHeight;
 
 //lighting
-vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0,0.0,0.0);
+vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);
 
 	vec2 shadowTileCoord = mix(u_sunShadowTileMin.xy, u_sunShadowTileMax.xy, position.xy);
 	float shadowBaseHeight = u_sunShadowTileMin.z + (position.z * u_sunShadowTileMax.z);

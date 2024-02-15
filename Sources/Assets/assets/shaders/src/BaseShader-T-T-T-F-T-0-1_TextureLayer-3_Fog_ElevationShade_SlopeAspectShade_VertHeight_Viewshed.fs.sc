@@ -37,8 +37,8 @@ uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_MaxNormalZ;
 uniform vec4 u_ElevationExtents;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
@@ -84,10 +84,10 @@ vec2 modUV = u_ScaleOffsetTex2.xy + uv * u_ScaleOffsetTex2.zw;
 }
 
 
-vec3 calcFogResult(vec3 color, float dist)
+vec3 calcFogResult(vec3 color, vec2 transition, float t)
 {
-	float d = smoothstep(u_fogVars.x, 1.0, dist);
-	return mix(color, u_fogColor.rgb, d);
+	float d = smoothstep(transition.x, transition.y, t);
+	return mix(color, u_FogColor.rgb, d);
 }
 vec3 slopeAspectShade(vec3 inputColor, vec3 normal)
 {
@@ -193,10 +193,10 @@ fragColor.rgb = mix(fragColor.rgb, heightTexel.rgb, heightTexel.a);
 //fragColor.rgb = mix(fragColor.rgb, majorColor, levelMajor);
 
 //lighting
-fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
-
 fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);
 fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedRingTint0);
+fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
+
 
 //compose
 	gl_FragData[0] = fragColor;

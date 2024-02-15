@@ -26,8 +26,8 @@ uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
 uniform vec4 u_MaxNormalZ;
 uniform vec4 u_ElevationExtents;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
@@ -241,8 +241,8 @@ void main ()
   tmpvar_46 = texture2D (s_SlopeAngleShadeTexture, tmpvar_45);
   fragColor_3.xyz = mix (fragColor_3.xyz, tmpvar_46.xyz, tmpvar_46.w);
   float tmpvar_47;
-  tmpvar_47 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_3.xyz = mix (fragColor_3.xyz, u_fogColor.xyz, (tmpvar_47 * (tmpvar_47 * 
+  tmpvar_47 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_3.xyz = mix (fragColor_3.xyz, u_FogColor.xyz, (tmpvar_47 * (tmpvar_47 * 
     (3.0 - (2.0 * tmpvar_47))
   )));
   gl_FragData[0] = fragColor_3;

@@ -1,5 +1,5 @@
 $input a_texcoord7
-$output v_texcoord4, v_bitangent, v_texcoord7, v_texcoord6, v_texcoord5
+$output v_texcoord4, v_bitangent, v_texcoord7, v_texcoord6, v_depth, v_texcoord5
 
 //includes
 #include <common.sh>
@@ -31,6 +31,7 @@ uniform vec4 u_camForward;
 uniform vec4 u_camUp;
 uniform vec4 u_time;
 uniform vec4 u_tileMin;
+uniform vec4 u_TileVectorOpacityTransition;
 uniform vec4 u_vectorFade;
 uniform vec4 u_tileMax;
 uniform vec4 u_TileFragClip;
@@ -149,6 +150,7 @@ mat4 viewMat = u_view;
 //lighting
 
 //compose
+	float distFade = 1.0 - smoothstep(u_TileVectorOpacityTransition.x, u_TileVectorOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);
 	vec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xy, tileZ, 1.0)));
 	projected.z -= (projected.w * 0.01);
 	//projected.z -= (1.0 / 128.0);
@@ -160,6 +162,7 @@ v_texcoord4 = vecPattern.xyzw;
 v_bitangent = worldPosition.xyz;
 v_texcoord7 = tilePosition.xyzw;
 v_texcoord6 = depth.xyzw;
+v_depth = distFade;
 v_texcoord5 = vecColor.xyzw;
 
 }

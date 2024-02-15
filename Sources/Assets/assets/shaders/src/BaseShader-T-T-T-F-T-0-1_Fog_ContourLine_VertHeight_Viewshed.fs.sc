@@ -29,8 +29,9 @@ uniform vec4 u_ContourParams0;
 uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_ContourFade;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
@@ -42,19 +43,19 @@ uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 
 //functions
-vec3 calcFogResult(vec3 color, float dist)
+vec3 calcFogResult(vec3 color, vec2 transition, float t)
 {
-	float d = smoothstep(u_fogVars.x, 1.0, dist);
-	return mix(color, u_fogColor.rgb, d);
+	float d = smoothstep(transition.x, transition.y, t);
+	return mix(color, u_FogColor.rgb, d);
 }
 // def unpacks to (period, min, max, width)
-vec3 calcContour(vec3 baseColor, vec4 color, vec4 def, float height, vec2 position)
+vec3 calcContour(vec3 baseColor, vec4 color, vec4 def, float height, float opacity)
 {
 	vec3 blended = mix(baseColor, color.rgb, color.a);
 	float t = levelSets(height, def.x, 0.0, def.y, def.z, def.w);
 	t = clamp(pow(t + 0.5, 3.0) - 0.5, 0.0, 1.0); // remove edge haze
-	float fade = clamp(pow(1.0 - length(position) / (u_nearFarPlane.y / 3.0), 3.0), 0.0, 1.0); // horizon fade
-	return mix(baseColor, blended, t * fade);
+	//float fade = clamp(pow(1.0 - length(position) / (u_nearFarPlane.y / 3.0), 3.0), 0.0, 1.0); // horizon fade
+	return mix(baseColor, blended, t * opacity);
 }
 // for pixel shader -  expects uv to be in tile coordinates
 float heightAt(vec2 uv, vec4 scaleOffset)
@@ -137,15 +138,15 @@ vec4 scaleOffsetHeight = v_texcoord2.xyzw;
 //main start
 normal.xyz = normalAt(texcoords.xy, tileDistortion.xy, scaleOffsetHeight);
 vec4 fragColor = u_BackgroundColor;
-float contourDist = length(worldPosition.xyz) / u_nearFarPlane.y;
-fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w + u_eyePos.z, worldPosition.xy);
-fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w + u_eyePos.z, worldPosition.xy);
+float contourFade = 1.0 - smoothstep(u_ContourFade.x, u_ContourFade.y, length(worldPosition.xyz) / u_nearFarPlane.y);
+fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w + u_eyePos.z, contourFade);
+fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w + u_eyePos.z, contourFade);
 
 //lighting
-fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
-
 fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);
 fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedRingTint0);
+fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
+
 
 //compose
 	gl_FragData[0] = fragColor;

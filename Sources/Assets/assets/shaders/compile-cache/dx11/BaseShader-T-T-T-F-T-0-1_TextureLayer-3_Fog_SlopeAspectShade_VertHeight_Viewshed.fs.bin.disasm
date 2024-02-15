@@ -204,15 +204,6 @@ max o0.w, r1.w, r4.w
 mad r3.xyz, r1.zzzz, r4.xyzx, r3.xyzx
 add r2.xyz, r2.xyzx, -r3.xyzx
 mad r1.xzw, r1.xxxx, r2.xxyz, r3.xxyz
-add r2.xyz, -r1.xzwx, cb0[12].xyzx
-add r2.w, -cb0[11].x, l(1.000000)
-div r2.w, l(1.000000, 1.000000, 1.000000, 1.000000), r2.w
-add r3.x, v4.x, -cb0[11].x
-mul_sat r2.w, r2.w, r3.x
-mad r3.x, r2.w, l(-2.000000), l(3.000000)
-mul r2.w, r2.w, r2.w
-mul r2.w, r2.w, r3.x
-mad r1.xzw, r2.wwww, r2.xxyz, r1.xxzw
 add r2.x, r1.z, r1.x
 add r2.x, r1.w, r2.x
 mul r2.x, r2.x, l(0.333333)
@@ -221,6 +212,15 @@ mad r1.xzw, r0.xxxx, r2.xxyz, r1.xxzw
 add r2.xyz, -r1.xzwx, cb0[2].xyzx
 mul r2.xyz, r2.xyzx, cb0[2].wwww
 mad r1.xyz, r1.yyyy, r2.xyzx, r1.xzwx
+add r2.xyz, -r1.xyzx, cb0[12].xyzx
+add r0.x, -cb0[11].x, cb0[11].y
+div r0.x, l(1.000000, 1.000000, 1.000000, 1.000000), r0.x
+add r1.w, v4.x, -cb0[11].x
+mul_sat r0.x, r0.x, r1.w
+mad r1.w, r0.x, l(-2.000000), l(3.000000)
+mul r0.x, r0.x, r0.x
+mul r0.x, r0.x, r1.w
+mad r1.xyz, r0.xxxx, r2.xyzx, r1.xyzx
 dp3 r0.x, -v7.xyzx, -v7.xyzx
 rsq r0.x, r0.x
 mul r2.xyz, r0.xxxx, -v7.xyzx

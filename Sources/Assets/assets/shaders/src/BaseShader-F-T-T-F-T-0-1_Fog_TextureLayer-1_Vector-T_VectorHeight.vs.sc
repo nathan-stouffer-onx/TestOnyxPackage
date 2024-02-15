@@ -22,8 +22,8 @@ uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
@@ -88,7 +88,7 @@ mat4 viewMat = u_view;
 	vertexPosition.z += z * u_tileSize.z;
 
 //lighting
-vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0,0.0,0.0);
+vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);
 
 
 //compose

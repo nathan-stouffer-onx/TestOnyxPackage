@@ -3,6 +3,7 @@ precision highp float;
 out mediump vec4 bgfx_FragData[8];
 in vec3 v_bitangent;
 in vec4 v_color0;
+in vec4 v_color2;
 in vec4 v_color3;
 in vec4 v_color4;
 in float v_depth;
@@ -282,7 +283,7 @@ void main ()
   tmpvar_64.w = tmpvar_63;
   mediump vec4 tmpvar_65;
   tmpvar_65.xyz = tmpvar_64.xyz;
-  tmpvar_65.w = ((tmpvar_63 * v_color0.w) * u_vectorFade.x);
+  tmpvar_65.w = ((tmpvar_63 * v_color0.w) * (u_vectorFade.x * v_color2.x));
   bgfx_FragData[0] = tmpvar_65;
   bgfx_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }

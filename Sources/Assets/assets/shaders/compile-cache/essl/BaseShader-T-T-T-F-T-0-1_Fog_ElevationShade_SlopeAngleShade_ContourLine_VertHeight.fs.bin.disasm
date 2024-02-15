@@ -17,9 +17,10 @@ uniform vec4 u_ContourParams0;
 uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
+uniform vec4 u_ContourFade;
 uniform vec4 u_ElevationExtents;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
@@ -122,30 +123,32 @@ void main ()
   tmpvar_25 = texture (s_SlopeAngleShadeTexture, tmpvar_24);
   fragColor_3.xyz = mix (fragColor_3.xyz, tmpvar_25.xyz, tmpvar_25.w);
   float tmpvar_26;
-  tmpvar_26 = ((1.0/(u_ContourParams0.x)) * tmpvar_22);
+  tmpvar_26 = clamp (((
+    (sqrt(dot (v_texcoord7.xyz, v_texcoord7.xyz)) / u_nearFarPlane.y)
+   - u_ContourFade.x) / (u_ContourFade.y - u_ContourFade.x)), 0.0, 1.0);
   float tmpvar_27;
-  tmpvar_27 = (0.5 * u_ContourParams0.x);
+  tmpvar_27 = (1.0 - (tmpvar_26 * (tmpvar_26 * 
+    (3.0 - (2.0 * tmpvar_26))
+  )));
   float tmpvar_28;
-  tmpvar_28 = (u_nearFarPlane.y / 3.0);
+  tmpvar_28 = ((1.0/(u_ContourParams0.x)) * tmpvar_22);
   float tmpvar_29;
-  tmpvar_29 = dot (v_texcoord7.xy, v_texcoord7.xy);
+  tmpvar_29 = (0.5 * u_ContourParams0.x);
   fragColor_3.xyz = mix (fragColor_3.xyz, mix (fragColor_3.xyz, u_ContourColor0.xyz, u_ContourColor0.w), (clamp (
     (pow (((
       (1.0 - min (((
         (1.0/(u_ContourParams0.w))
        * 
-        abs((fract((tmpvar_26 - 0.5)) - 0.5))
+        abs((fract((tmpvar_28 - 0.5)) - 0.5))
       ) / (
-        abs(dFdx(tmpvar_26))
+        abs(dFdx(tmpvar_28))
        + 
-        abs(dFdy(tmpvar_26))
+        abs(dFdy(tmpvar_28))
       )), 1.0))
      * 
-      (float(((u_ContourParams0.y - tmpvar_27) <= tmpvar_22)) * float((tmpvar_22 <= (u_ContourParams0.z + tmpvar_27))))
+      (float(((u_ContourParams0.y - tmpvar_29) <= tmpvar_22)) * float((tmpvar_22 <= (u_ContourParams0.z + tmpvar_29))))
     ) + 0.5), 3.0) - 0.5)
-  , 0.0, 1.0) * clamp (
-    pow ((1.0 - (sqrt(tmpvar_29) / tmpvar_28)), 3.0)
-  , 0.0, 1.0)));
+  , 0.0, 1.0) * tmpvar_27));
   float tmpvar_30;
   tmpvar_30 = ((1.0/(u_ContourParams1.x)) * tmpvar_22);
   float tmpvar_31;
@@ -164,12 +167,10 @@ void main ()
      * 
       (float(((u_ContourParams1.y - tmpvar_31) <= tmpvar_22)) * float((tmpvar_22 <= (u_ContourParams1.z + tmpvar_31))))
     ) + 0.5), 3.0) - 0.5)
-  , 0.0, 1.0) * clamp (
-    pow ((1.0 - (sqrt(tmpvar_29) / tmpvar_28)), 3.0)
-  , 0.0, 1.0)));
+  , 0.0, 1.0) * tmpvar_27));
   float tmpvar_32;
-  tmpvar_32 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_3.xyz = mix (fragColor_3.xyz, u_fogColor.xyz, (tmpvar_32 * (tmpvar_32 * 
+  tmpvar_32 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_3.xyz = mix (fragColor_3.xyz, u_FogColor.xyz, (tmpvar_32 * (tmpvar_32 * 
     (3.0 - (2.0 * tmpvar_32))
   )));
   bgfx_FragData[0] = fragColor_3;

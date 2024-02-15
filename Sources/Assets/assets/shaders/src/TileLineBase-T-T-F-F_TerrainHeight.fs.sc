@@ -1,4 +1,4 @@
-$input v_texcoord7, v_texcoord6, v_color0, v_depth, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2, v_bitangent, v_tangent, v_texcoord1, v_texcoord0, v_color4, v_color3
+$input v_texcoord7, v_texcoord6, v_color0, v_depth, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2, v_bitangent, v_tangent, v_texcoord1, v_texcoord0, v_color4, v_color3, v_color2
 //includes
 #include <common.sh>
 #include "OnyxFunctions.sc"
@@ -33,6 +33,7 @@ uniform vec4 u_screenDimensions;
 uniform vec4 u_params;
 uniform vec4 u_drawColor;
 uniform vec4 u_vectorFade;
+uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_nearFarPlane;
 
 //functions
@@ -143,6 +144,7 @@ vec4 line_size = v_texcoord1.xyzw;
 vec4 line_endPointsScreen = v_texcoord0.xyzw;
 vec4 line_lengthTotal = v_color4.xyzw;
 vec4 line_endFlags = v_color3.xyzw;
+vec4 distFade = v_color2.xyzw;
 //main start
 	float inX = inRange(tilePosition.x, u_TileFragClip.x, u_TileFragClip.z);
 	float inY = inRange(tilePosition.y, u_TileFragClip.y, u_TileFragClip.w);
@@ -172,8 +174,6 @@ if( ((clipA * abs(line_endAngles.x)) > 0.0 && line_endFlags.x > -9999.0) || ((cl
 	discard;
 
 //lighting
-
-//compose
 float ends = texcoords.z;
 vec3 lineCoords = vec3(texcoords.yx, texcoords.z);
 vec2 start = vec2(0,0);
@@ -193,7 +193,9 @@ fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutl
 //float df = LineDistField(lineCoords, start, end, vec2(1.0,1.0), 0.0, 0.0, 0.0);
 //fragColor.xyzw = vec4(df, -df,0,1.0);
 //fragColor.xyzw = vec4(1.0, 0.0,1.0,1.0);
-	gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * color.a * u_vectorFade.r);
+
+//compose
+	gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * color.a * u_vectorFade.r * distFade.x);
 	gl_FragData[1] = vec4(0, 0, 0, 0);
 
 

@@ -21,8 +21,8 @@ uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
@@ -34,10 +34,10 @@ uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 
 //functions
-vec3 calcFogResult(vec3 color, float dist)
+vec3 calcFogResult(vec3 color, vec2 transition, float t)
 {
-	float d = smoothstep(u_fogVars.x, 1.0, dist);
-	return mix(color, u_fogColor.rgb, d);
+	float d = smoothstep(transition.x, transition.y, t);
+	return mix(color, u_FogColor.rgb, d);
 }
 vec4 BlendTextures(vec4 color, vec2 uv)
 {
@@ -67,7 +67,7 @@ fragColor = BlendTextures(fragColor, texcoords.xy);
 	fragColor = vec4(1.0, 1.0, 0.0, 1.0);
 
 //lighting
-fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
+fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
 
 
 //compose

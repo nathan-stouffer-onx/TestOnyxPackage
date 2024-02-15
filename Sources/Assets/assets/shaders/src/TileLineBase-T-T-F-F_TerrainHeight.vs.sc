@@ -1,5 +1,5 @@
 $input a_position
-$output v_texcoord7, v_texcoord6, v_color0, v_depth, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2, v_bitangent, v_tangent, v_texcoord1, v_texcoord0, v_color4, v_color3
+$output v_texcoord7, v_texcoord6, v_color0, v_depth, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2, v_bitangent, v_tangent, v_texcoord1, v_texcoord0, v_color4, v_color3, v_color2
 
 //includes
 #include <common.sh>
@@ -34,6 +34,7 @@ uniform vec4 u_screenDimensions;
 uniform vec4 u_params;
 uniform vec4 u_drawColor;
 uniform vec4 u_vectorFade;
+uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_nearFarPlane;
 
 //functions
@@ -168,6 +169,9 @@ float z2 = meshHeightAtPlanes(p2, u_MeshResolution.x);
 tileZ2 += z2 * u_tileSize.z;
 vec4 wp1 = vec4(tileP1, tileZ1, 1.0);
 vec4 wp2 = vec4(tileP2, tileZ2, 1.0);
+// write to this variable so fog works correctly
+vec3 worldPosition = mix(wp1.xyz, wp2.xyz, position.y);
+vec4 distFade = vec4(1.0 - smoothstep(u_TileLineOpacityTransition.x, u_TileLineOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y), 0.0, 0.0, 0.0);
 vec4 screen1 = mul(u_proj, mul(u_view, wp1));
 vec4 screen2 = mul(u_proj, mul(u_view, wp2));
 float origW = mix(screen1.w, screen2.w, position.y);
@@ -250,6 +254,7 @@ v_texcoord1 = line_size.xyzw;
 v_texcoord0 = line_endPointsScreen.xyzw;
 v_color4 = line_lengthTotal.xyzw;
 v_color3 = line_endFlags.xyzw;
+v_color2 = distFade.xyzw;
 
 }
 

@@ -1,23 +1,23 @@
 {
   "sortOrder": 6,
-  "requirements":    {
+  "requirements": {
     "position": true,
     "positionOutput": true,
     "transformPosition": true
   },
   "outputs": [
     {
-      "alias" : "fogDist",
-      "dataType" : "vec4"
+      "alias": "fogDist",
+      "dataType": "vec4"
     }
-  ],  
+  ],
   "chunks": [
     {
       "lines": [
-        "vec3 calcFogResult(vec3 color, float dist)",
+        "vec3 calcFogResult(vec3 color, vec2 transition, float t)",
         "{",
-        "\tfloat d = smoothstep(u_fogVars.x, 1.0, dist);",
-        "\treturn mix(color, u_fogColor.rgb, d);",
+        "\tfloat d = smoothstep(transition.x, transition.y, t);",
+        "\treturn mix(color, u_FogColor.rgb, d);",
         "}"
       ],
       "position": "Functions",
@@ -26,7 +26,7 @@
     },
     {
       "lines": [
-        "vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0,0.0,0.0);\n"
+        "vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);\n"
       ],
       "position": "Lighting",
       "positionOffset": 0,
@@ -34,10 +34,10 @@
     },
     {
       "lines": [
-        "fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);\n"
+        "fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);\n"
       ],
       "position": "Lighting",
-      "positionOffset": 0,
+      "positionOffset": 1,
       "type": "Pixel"
     }
   ],
@@ -45,23 +45,23 @@
   "shaderParameters": [
     {
       "componentName": "Fog",
-      "name": "u_fogVars",
-      "type": "vec3",
-      "vec3": {
+      "name": "u_FogTransition",
+      "type": "vec2",
+      "vec2": {
         "x": 0.65,
-        "y": 0.0,
-        "z": 0.0
+        "y": 1.0
       }
     },
     {
       "componentName": "Fog",
-      "name": "u_fogColor",
-      "type": "vec3",
-      "vec3": {
-        "x": 0.7,
-        "y": 0.8,
-        "z": 0.91
-     }
+      "name": "u_FogColor",
+      "type": "color",
+      "color": {
+        "r": 0.7,
+        "g": 0.8,
+        "b": 0.91,
+        "a": 1
+      }
     }
   ]
 }

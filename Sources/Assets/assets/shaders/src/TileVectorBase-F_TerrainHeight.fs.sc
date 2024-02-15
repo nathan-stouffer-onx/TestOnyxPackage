@@ -1,4 +1,4 @@
-$input v_texcoord4, v_bitangent, v_texcoord7, v_texcoord6, v_texcoord5
+$input v_texcoord4, v_bitangent, v_texcoord7, v_texcoord6, v_depth, v_texcoord5
 //includes
 #include <common.sh>
 #include "OnyxFunctions.sc"
@@ -29,6 +29,7 @@ uniform vec4 u_camForward;
 uniform vec4 u_camUp;
 uniform vec4 u_time;
 uniform vec4 u_tileMin;
+uniform vec4 u_TileVectorOpacityTransition;
 uniform vec4 u_vectorFade;
 uniform vec4 u_tileMax;
 uniform vec4 u_TileFragClip;
@@ -42,6 +43,7 @@ vec4 vecPattern = v_texcoord4.xyzw;
 vec3 worldPosition = v_bitangent.xyz;
 vec4 tilePosition = v_texcoord7.xyzw;
 vec4 depth = v_texcoord6.xyzw;
+float distFade = v_depth;
 vec4 vecColor = v_texcoord5.xyzw;
 //main start
 	float inX = inRange(tilePosition.x, u_TileFragClip.x, u_TileFragClip.z);
@@ -50,7 +52,7 @@ vec4 vecColor = v_texcoord5.xyzw;
 	{
 		discard;
 	}
-vec4 outColor = vecColor;
+vec4 fragColor = vecColor;
 
 //lighting
 
@@ -62,7 +64,7 @@ vec4 outColor = vecColor;
 	worldUV /= pow(2.0, vectorLevel);
 	vec2 uvOffset = vec2(mod(worldUV.x, vecPattern.z), mod(worldUV.y, vecPattern.w)) * s_patterns_Res.zw;
 	vec4 pattern = texture2DLod(s_patterns, vecPattern.xy + uvOffset, 0);
-	gl_FragData[0] = outColor * pattern;
+	gl_FragData[0] = fragColor * pattern * distFade;
 	gl_FragData[1] = vec4(0, 0, 0, 0);
 
 

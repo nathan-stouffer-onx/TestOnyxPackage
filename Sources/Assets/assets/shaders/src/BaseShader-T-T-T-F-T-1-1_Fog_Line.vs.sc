@@ -15,8 +15,8 @@ uniform vec4 u_screenDimensions;
 uniform vec4 u_lineWidth;
 uniform vec4 u_dashLength;
 uniform vec4 u_gapLength;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
@@ -61,7 +61,7 @@ clipPos.xy += clipNormal.xy * line_texcoord.x * (lineWidth / 2.0);
 mat4 viewMat = u_view;
 
 //lighting
-vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0,0.0,0.0);
+vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);
 
 
 //compose

@@ -2,6 +2,7 @@ precision highp int;
 precision highp float;
 out mediump vec4 bgfx_FragData[8];
 in vec3 v_bitangent;
+in float v_depth;
 in vec4 v_texcoord4;
 in vec4 v_texcoord5;
 in vec4 v_texcoord7;
@@ -27,7 +28,7 @@ void main ()
   tmpvar_4.y = (float(mod (worldUV_1.y, v_texcoord4.w)));
   vec4 tmpvar_5;
   tmpvar_5 = textureLod (s_patterns, (v_texcoord4.xy + (tmpvar_4 * s_patterns_Res.zw)), 0.0);
-  bgfx_FragData[0] = (v_texcoord5 * tmpvar_5);
+  bgfx_FragData[0] = ((v_texcoord5 * tmpvar_5) * v_depth);
   bgfx_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }
 

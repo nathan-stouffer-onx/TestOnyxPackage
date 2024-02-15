@@ -1,5 +1,4 @@
 {
-  "sortOrder": 13,
   "segments": [
     {
       "segment": "TileVectorBase",
@@ -23,6 +22,19 @@
         {
           "jsonComponent": {
             "name": "TerrainHeight"
+          }
+        }
+      ]
+    },
+    {
+      "segment": "fog",
+      "name": "Fog",
+      "combineType": "PickOne",
+      "includeNone": true,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "Fog"
           }
         }
       ]

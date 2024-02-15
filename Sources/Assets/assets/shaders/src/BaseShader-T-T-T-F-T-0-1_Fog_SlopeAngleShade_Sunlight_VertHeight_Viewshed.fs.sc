@@ -43,8 +43,8 @@ uniform mat4 u_sunShadowView;
 uniform mat4 u_sunShadowProj;
 uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_eyePos;
@@ -56,10 +56,10 @@ uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 
 //functions
-vec3 calcFogResult(vec3 color, float dist)
+vec3 calcFogResult(vec3 color, vec2 transition, float t)
 {
-	float d = smoothstep(u_fogVars.x, 1.0, dist);
-	return mix(color, u_fogColor.rgb, d);
+	float d = smoothstep(transition.x, transition.y, t);
+	return mix(color, u_FogColor.rgb, d);
 }
 float linstep(float low, float high, float v)
 {
@@ -174,10 +174,10 @@ vec4 angleTexel = texture2D(s_SlopeAngleShadeTexture, vec2(calcSlopeAngle(normal
 fragColor.rgb = mix(fragColor.rgb, angleTexel.rgb, angleTexel.a);
 
 //lighting
-fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
-
 fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);
 fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedRingTint0);
+fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
+
 
 //compose
 	gl_FragData[0] = fragColor;

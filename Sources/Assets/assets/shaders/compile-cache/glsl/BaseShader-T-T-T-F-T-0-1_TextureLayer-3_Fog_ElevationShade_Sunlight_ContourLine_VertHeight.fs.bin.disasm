@@ -20,6 +20,7 @@ uniform vec4 u_ContourParams0;
 uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
+uniform vec4 u_ContourFade;
 uniform vec4 u_SunMinStrength;
 uniform vec4 u_SunAmbient;
 uniform vec4 u_sunShadowBias;
@@ -27,8 +28,8 @@ uniform vec4 u_sunShadowStrength;
 uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
 uniform vec4 u_ElevationExtents;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
@@ -177,30 +178,32 @@ void main ()
   tmpvar_38 = texture2D (s_ElevationShadeTexture, tmpvar_36);
   fragColor_3.xyz = mix (fragColor_3.xyz, tmpvar_38.xyz, tmpvar_38.w);
   float tmpvar_39;
-  tmpvar_39 = ((1.0/(u_ContourParams0.x)) * tmpvar_37);
+  tmpvar_39 = clamp (((
+    (sqrt(dot (v_texcoord7.xyz, v_texcoord7.xyz)) / u_nearFarPlane.y)
+   - u_ContourFade.x) / (u_ContourFade.y - u_ContourFade.x)), 0.0, 1.0);
   float tmpvar_40;
-  tmpvar_40 = (0.5 * u_ContourParams0.x);
+  tmpvar_40 = (1.0 - (tmpvar_39 * (tmpvar_39 * 
+    (3.0 - (2.0 * tmpvar_39))
+  )));
   float tmpvar_41;
-  tmpvar_41 = (u_nearFarPlane.y / 3.0);
+  tmpvar_41 = ((1.0/(u_ContourParams0.x)) * tmpvar_37);
   float tmpvar_42;
-  tmpvar_42 = dot (v_texcoord7.xy, v_texcoord7.xy);
+  tmpvar_42 = (0.5 * u_ContourParams0.x);
   fragColor_3.xyz = mix (fragColor_3.xyz, mix (fragColor_3.xyz, u_ContourColor0.xyz, u_ContourColor0.w), (clamp (
     (pow (((
       (1.0 - min (((
         (1.0/(u_ContourParams0.w))
        * 
-        abs((fract((tmpvar_39 - 0.5)) - 0.5))
+        abs((fract((tmpvar_41 - 0.5)) - 0.5))
       ) / (
-        abs(dFdx(tmpvar_39))
+        abs(dFdx(tmpvar_41))
        + 
-        abs(dFdy(tmpvar_39))
+        abs(dFdy(tmpvar_41))
       )), 1.0))
      * 
-      (float(((u_ContourParams0.y - tmpvar_40) <= tmpvar_37)) * float((tmpvar_37 <= (u_ContourParams0.z + tmpvar_40))))
+      (float(((u_ContourParams0.y - tmpvar_42) <= tmpvar_37)) * float((tmpvar_37 <= (u_ContourParams0.z + tmpvar_42))))
     ) + 0.5), 3.0) - 0.5)
-  , 0.0, 1.0) * clamp (
-    pow ((1.0 - (sqrt(tmpvar_42) / tmpvar_41)), 3.0)
-  , 0.0, 1.0)));
+  , 0.0, 1.0) * tmpvar_40));
   float tmpvar_43;
   tmpvar_43 = ((1.0/(u_ContourParams1.x)) * tmpvar_37);
   float tmpvar_44;
@@ -219,12 +222,10 @@ void main ()
      * 
       (float(((u_ContourParams1.y - tmpvar_44) <= tmpvar_37)) * float((tmpvar_37 <= (u_ContourParams1.z + tmpvar_44))))
     ) + 0.5), 3.0) - 0.5)
-  , 0.0, 1.0) * clamp (
-    pow ((1.0 - (sqrt(tmpvar_42) / tmpvar_41)), 3.0)
-  , 0.0, 1.0)));
+  , 0.0, 1.0) * tmpvar_40));
   float tmpvar_45;
-  tmpvar_45 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_3.xyz = mix (fragColor_3.xyz, u_fogColor.xyz, (tmpvar_45 * (tmpvar_45 * 
+  tmpvar_45 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_3.xyz = mix (fragColor_3.xyz, u_FogColor.xyz, (tmpvar_45 * (tmpvar_45 * 
     (3.0 - (2.0 * tmpvar_45))
   )));
   gl_FragData[0] = fragColor_3;

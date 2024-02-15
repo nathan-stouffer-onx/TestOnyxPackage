@@ -204,7 +204,7 @@ mul r1.z, r0.w, r1.y
 sample_indexable(texture2d)(float,float,float,float) r1.xyzw, r1.zwzz, t0.xyzw, s0
 add r1.xyz, -r4.xyzx, r1.xyzx
 mad r1.xyz, r1.wwww, r1.xyzx, r4.xyzx
-add r0.w, -cb0[11].x, l(1.000000)
+add r0.w, -cb0[11].x, cb0[11].y
 add r1.w, v7.x, -cb0[11].x
 div r0.w, l(1.000000, 1.000000, 1.000000, 1.000000), r0.w
 mul_sat r0.w, r0.w, r1.w

@@ -10,8 +10,8 @@ uniform sampler2D s_texture0;
 uniform sampler2D s_texture1;
 uniform vec4 u_heightTileSize;
 uniform vec4 u_lightStrengthPow;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
@@ -92,8 +92,8 @@ void main ()
   color_19.w = max (color_19.w, tmpvar_21.w);
   fragColor_2.w = color_19.w;
   float tmpvar_22;
-  tmpvar_22 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_2.xyz = mix (color_19.xyz, u_fogColor.xyz, (tmpvar_22 * (tmpvar_22 * 
+  tmpvar_22 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_2.xyz = mix (color_19.xyz, u_FogColor.xyz, (tmpvar_22 * (tmpvar_22 * 
     (3.0 - (2.0 * tmpvar_22))
   )));
   gl_FragData[0] = fragColor_2;

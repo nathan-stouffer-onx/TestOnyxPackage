@@ -7,8 +7,8 @@ in vec4 v_texcoord4;
 in vec4 v_texcoord6;
 uniform vec4 u_dashLength;
 uniform vec4 u_gapLength;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 void main ()
 {
   float d_1;
@@ -20,8 +20,8 @@ void main ()
    <= u_dashLength.x)));
   fragColor_2.w = tmpvar_3.w;
   float tmpvar_4;
-  tmpvar_4 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_2.xyz = mix (v_texcoord2.xyz, u_fogColor.xyz, (tmpvar_4 * (tmpvar_4 * 
+  tmpvar_4 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_2.xyz = mix (v_texcoord2.xyz, u_FogColor.xyz, (tmpvar_4 * (tmpvar_4 * 
     (3.0 - (2.0 * tmpvar_4))
   )));
   bgfx_FragData[0] = fragColor_2;

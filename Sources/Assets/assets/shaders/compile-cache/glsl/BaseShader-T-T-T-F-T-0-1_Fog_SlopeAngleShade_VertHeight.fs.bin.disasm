@@ -9,8 +9,8 @@ uniform vec4 s_heightTexture_Res;
 uniform sampler2D s_SlopeAngleShadeTexture;
 uniform vec4 u_heightTileSize;
 uniform vec4 u_lightStrengthPow;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 void main ()
 {
@@ -96,8 +96,8 @@ void main ()
   tmpvar_20 = texture2D (s_SlopeAngleShadeTexture, tmpvar_19);
   fragColor_2.xyz = mix (u_BackgroundColor.xyz, tmpvar_20.xyz, tmpvar_20.w);
   float tmpvar_21;
-  tmpvar_21 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_2.xyz = mix (fragColor_2.xyz, u_fogColor.xyz, (tmpvar_21 * (tmpvar_21 * 
+  tmpvar_21 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_2.xyz = mix (fragColor_2.xyz, u_FogColor.xyz, (tmpvar_21 * (tmpvar_21 * 
     (3.0 - (2.0 * tmpvar_21))
   )));
   gl_FragData[0] = fragColor_2;

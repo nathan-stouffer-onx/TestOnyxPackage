@@ -34,6 +34,10 @@
         {
             "alias": "vecPattern",
             "dataType": "vec4"
+        },
+        {
+            "alias": "distFade",
+            "dataType": "float"
         }
     ],
 
@@ -67,6 +71,7 @@
     {
         "comment": "TODO figure out a way to have positionOffset = 0 so other components easily override base shader behavior",
         "lines": [
+            "\tfloat distFade = 1.0 - smoothstep(u_TileVectorOpacityTransition.x, u_TileVectorOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);",
             "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xy, tileZ, 1.0)));",
             "\tprojected.z -= (projected.w * 0.01);",
             "\t//projected.z -= (1.0 / 128.0);",
@@ -107,7 +112,7 @@
         "type" : "Vertex"
     },
     {
-        "data": "vec4 outColor = vecColor;",
+        "data": "vec4 fragColor = vecColor;",
         "position": "Main",
         "type": "Pixel"
     },
@@ -120,7 +125,7 @@
             "\tworldUV /= pow(2.0, vectorLevel);",
             "\tvec2 uvOffset = vec2(mod(worldUV.x, vecPattern.z), mod(worldUV.y, vecPattern.w)) * s_patterns_Res.zw;",
             "\tvec4 pattern = texture2DLod(s_patterns, vecPattern.xy + uvOffset, 0);",
-            "\tgl_FragData[0] = outColor * pattern;",
+            "\tgl_FragData[0] = fragColor * pattern * distFade;",
             "\tgl_FragData[1] = vec4(0, 0, 0, 0);"
         ],
         "position": "Compose",
@@ -309,6 +314,15 @@
                 "x": -10000.0,
                 "y": -10000.0,
                 "z": 0.0
+            }
+        },
+        {
+            "componentName": "TileVectorBase",
+            "name": "u_TileVectorOpacityTransition",
+            "type": "vec2",
+            "vec2": {
+                "x": 0.4,
+                "y": 0.55
             }
         },
         {

@@ -32,6 +32,7 @@ uniform vec4 u_ContourParams0;
 uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
+uniform vec4 u_ContourFade;
 uniform vec4 u_SunTimeData;
 uniform vec4 u_SunMinStrength;
 uniform vec4 u_SunAmbient;
@@ -47,8 +48,8 @@ uniform mat4 u_sunShadowProj;
 uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
 uniform vec4 u_MaxNormalZ;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
@@ -94,10 +95,10 @@ vec2 modUV = u_ScaleOffsetTex2.xy + uv * u_ScaleOffsetTex2.zw;
 }
 
 
-vec3 calcFogResult(vec3 color, float dist)
+vec3 calcFogResult(vec3 color, vec2 transition, float t)
 {
-	float d = smoothstep(u_fogVars.x, 1.0, dist);
-	return mix(color, u_fogColor.rgb, d);
+	float d = smoothstep(transition.x, transition.y, t);
+	return mix(color, u_FogColor.rgb, d);
 }
 vec3 slopeAspectShade(vec3 inputColor, vec3 normal)
 {
@@ -111,13 +112,13 @@ float linstep(float low, float high, float v)
 	return clamp((v-low)/(high-low), 0.0, 1.0);
 }
 // def unpacks to (period, min, max, width)
-vec3 calcContour(vec3 baseColor, vec4 color, vec4 def, float height, vec2 position)
+vec3 calcContour(vec3 baseColor, vec4 color, vec4 def, float height, float opacity)
 {
 	vec3 blended = mix(baseColor, color.rgb, color.a);
 	float t = levelSets(height, def.x, 0.0, def.y, def.z, def.w);
 	t = clamp(pow(t + 0.5, 3.0) - 0.5, 0.0, 1.0); // remove edge haze
-	float fade = clamp(pow(1.0 - length(position) / (u_nearFarPlane.y / 3.0), 3.0), 0.0, 1.0); // horizon fade
-	return mix(baseColor, blended, t * fade);
+	//float fade = clamp(pow(1.0 - length(position) / (u_nearFarPlane.y / 3.0), 3.0), 0.0, 1.0); // horizon fade
+	return mix(baseColor, blended, t * opacity);
 }
 // for pixel shader -  expects uv to be in tile coordinates
 float heightAt(vec2 uv, vec4 scaleOffset)
@@ -196,12 +197,12 @@ if(u_CascadeDebug.x > 0.5) fragColor.xyz = texture2D(s_sunShadowDepth, projected
 float PI_HALVES = PI_CONSTS.z;
 vec4 angleTexel = texture2D(s_SlopeAngleShadeTexture, vec2(calcSlopeAngle(normal.xyz) / PI_HALVES, 0.0));
 fragColor.rgb = mix(fragColor.rgb, angleTexel.rgb, angleTexel.a);
-float contourDist = length(worldPosition.xyz) / u_nearFarPlane.y;
-fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w + u_eyePos.z, worldPosition.xy);
-fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w + u_eyePos.z, worldPosition.xy);
+float contourFade = 1.0 - smoothstep(u_ContourFade.x, u_ContourFade.y, length(worldPosition.xyz) / u_nearFarPlane.y);
+fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w + u_eyePos.z, contourFade);
+fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w + u_eyePos.z, contourFade);
 
 //lighting
-fragColor.xyz = calcFogResult(fragColor.xyz, fogDist.x);
+fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
 
 
 //compose

@@ -20,8 +20,8 @@ uniform vec4 u_sunShadowStrength;
 uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
 uniform vec4 u_MaxNormalZ;
-uniform vec4 u_fogVars;
-uniform vec4 u_fogColor;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
 void main ()
 {
@@ -183,8 +183,8 @@ void main ()
     fragColor_3.xyz = texture2D (s_sunShadowDepth, projectedUV_2).xyz;
   };
   float tmpvar_38;
-  tmpvar_38 = clamp (((v_texcoord4.x - u_fogVars.x) / (1.0 - u_fogVars.x)), 0.0, 1.0);
-  fragColor_3.xyz = mix (fragColor_3.xyz, u_fogColor.xyz, (tmpvar_38 * (tmpvar_38 * 
+  tmpvar_38 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_3.xyz = mix (fragColor_3.xyz, u_FogColor.xyz, (tmpvar_38 * (tmpvar_38 * 
     (3.0 - (2.0 * tmpvar_38))
   )));
   gl_FragData[0] = fragColor_3;
