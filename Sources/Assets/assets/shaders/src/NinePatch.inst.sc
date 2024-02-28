@@ -1,5 +1,5 @@
-$input i_data3, a_tangent, a_normal, i_data0, i_data1, i_data2
-$output v_texcoord7
+$input i_data3, a_tangent, a_normal, i_data0, i_data1, i_data2, i_data4
+$output v_texcoord7, v_texcoord6
 
 //includes
 #include <../examples/common/common.sh>
@@ -27,6 +27,7 @@ vec4 normal = a_normal.xyzw;
 vec4 i_offsets0 = i_data0.xyzw;
 vec4 i_offsets1 = i_data1.xyzw;
 vec4 i_screenPosSize = i_data2.xyzw;
+vec4 i_opacity = i_data4.xyzw;
 //main start
 
 //lighting
@@ -93,9 +94,12 @@ vec4 i_screenPosSize = i_data2.xyzw;
 	float xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex_Res.z;
 	float yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex_Res.w;
 	//vec4 uv = vertXOffsets;
+	// Set outputs
+	vec4 opacity = i_opacity;
 	vec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);
 
 v_texcoord7 = uv.xyzw;
+v_texcoord6 = opacity.xyzw;
 
 }
 

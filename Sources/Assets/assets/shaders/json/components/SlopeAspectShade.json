@@ -20,7 +20,6 @@
     },
     {
       "lines": [
-        
         "fragColor.rgb = slopeAspectShade(fragColor.rgb, normal.xyz);"
       ],
       "position": "Main",

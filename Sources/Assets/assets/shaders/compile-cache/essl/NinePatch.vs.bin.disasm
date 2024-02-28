@@ -2,6 +2,7 @@ precision highp int;
 precision highp float;
 in highp vec4 a_normal;
 in highp vec4 a_tangent;
+out highp vec4 v_texcoord6;
 out highp vec4 v_texcoord7;
 uniform highp mat4 u_view;
 uniform highp vec4 s_spriteTex_Res;
@@ -10,6 +11,7 @@ uniform highp vec4 i_offsets0;
 uniform highp vec4 i_offsets1;
 uniform highp vec4 i_screenPosSize;
 uniform highp vec4 i_uvVpOriAngle;
+uniform highp vec4 i_opacity;
 void main ()
 {
   highp vec3 iconRgt_1;
@@ -148,5 +150,6 @@ void main ()
   tmpvar_32.z = tmpvar_13;
   tmpvar_32.w = tmpvar_14;
   v_texcoord7 = tmpvar_32;
+  v_texcoord6 = i_opacity;
 }
 

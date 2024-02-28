@@ -128,17 +128,11 @@ vec4 scaleOffsetHeight = v_texcoord2.xyzw;
 normal.xyz = normalAt(texcoords.xy, tileDistortion.xy, scaleOffsetHeight);
 vec4 fragColor = u_BackgroundColor;
 float elevation = worldPosition.w + u_eyePos.z;
-vec4 heightTexel = texture2D(s_ElevationShadeTexture, vec2(lerpInv(u_ElevationExtents.x, u_ElevationExtents.y, elevation), 0.0));
-fragColor.rgb = mix(fragColor.rgb, heightTexel.rgb, heightTexel.a);
-// subsequent lines are for debugging purposes
-//float levelMinor = levelSets(elevation, 0.001, 0, -10, 10, 1.0);
-//levelMinor = clamp(pow(levelMinor + 0.5, 3.0) - 0.5, 0.0, 1.0); //remove edge haze
-//vec3 minorColor = vec3(0, 1, 0) * levelMinor;
-//fragColor.rgb = mix(fragColor.rgb, minorColor, levelMinor);
-//float levelMajor = levelSets(elevation, 0.1, 0, -10, 10, 2.0);
-//levelMajor = clamp(pow(levelMajor + 0.5, 3.0) - 0.5, 0.0, 1.0); //remove edge haze
-//vec3 majorColor = vec3(1, 0, 0) * levelMajor;
-//fragColor.rgb = mix(fragColor.rgb, majorColor, levelMajor);
+float elevationIndex = lerpInv(u_ElevationExtents.x, u_ElevationExtents.y, elevation) * s_ElevationShadeTexture_Res.x * s_ElevationShadeTexture_Res.y;
+float i = mod(elevationIndex, s_ElevationShadeTexture_Res.x);
+float j = floor(elevationIndex / s_ElevationShadeTexture_Res.y);
+vec4 elevationTexel = texture2D(s_ElevationShadeTexture, vec2(i, j) / s_ElevationShadeTexture_Res.xy);
+fragColor.rgb = mix(fragColor.rgb, elevationTexel.rgb, elevationTexel.a);
 
 //lighting
 fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);

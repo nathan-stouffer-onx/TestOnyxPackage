@@ -4,6 +4,8 @@ attribute vec4 i_data0;
 attribute vec4 i_data1;
 attribute vec4 i_data2;
 attribute vec4 i_data3;
+attribute vec4 i_data4;
+varying vec4 v_texcoord6;
 varying vec4 v_texcoord7;
 uniform mat4 u_view;
 uniform vec4 s_spriteTex_Res;
@@ -146,5 +148,6 @@ void main ()
   tmpvar_32.z = tmpvar_13;
   tmpvar_32.w = tmpvar_14;
   v_texcoord7 = tmpvar_32;
+  v_texcoord6 = i_data4;
 }
 

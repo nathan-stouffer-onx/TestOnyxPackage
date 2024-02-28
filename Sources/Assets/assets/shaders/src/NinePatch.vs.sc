@@ -1,5 +1,5 @@
 $input a_tangent, a_normal
-$output v_texcoord7
+$output v_texcoord7, v_texcoord6
 
 //includes
 #include <../examples/common/common.sh>
@@ -19,6 +19,7 @@ uniform vec4 i_offsets0;
 uniform vec4 i_offsets1;
 uniform vec4 i_screenPosSize;
 uniform vec4 i_uvVpOriAngle;
+uniform vec4 i_opacity;
 
 //functions
 
@@ -93,9 +94,12 @@ vec4 normal = a_normal.xyzw;
 	float xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex_Res.z;
 	float yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex_Res.w;
 	//vec4 uv = vertXOffsets;
+	// Set outputs
+	vec4 opacity = i_opacity;
 	vec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);
 
 v_texcoord7 = uv.xyzw;
+v_texcoord6 = opacity.xyzw;
 
 }
 

@@ -1,5 +1,6 @@
 attribute vec4 a_normal;
 attribute vec4 a_tangent;
+varying vec4 v_texcoord6;
 varying vec4 v_texcoord7;
 uniform mat4 u_view;
 uniform vec4 s_spriteTex_Res;
@@ -8,6 +9,7 @@ uniform vec4 i_offsets0;
 uniform vec4 i_offsets1;
 uniform vec4 i_screenPosSize;
 uniform vec4 i_uvVpOriAngle;
+uniform vec4 i_opacity;
 void main ()
 {
   vec3 iconRgt_1;
@@ -146,5 +148,6 @@ void main ()
   tmpvar_32.z = tmpvar_13;
   tmpvar_32.w = tmpvar_14;
   v_texcoord7 = tmpvar_32;
+  v_texcoord6 = i_opacity;
 }
 

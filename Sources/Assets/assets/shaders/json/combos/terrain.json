@@ -111,11 +111,16 @@
       ]
     },
     {
-      "Segment": "Sunlight",
-      "name": "Sunlight",
-      "combineType": "Combinations",
+      "Segment": "Lighting",
+      "name": "Details",
+      "combineType": "PickOne",
       "includeNone": true,
       "components": [
+        {
+          "jsonComponent": {
+            "name": "Hillshade"
+          }
+        },
         {
           "jsonComponent": {
             "name": "Sunlight"

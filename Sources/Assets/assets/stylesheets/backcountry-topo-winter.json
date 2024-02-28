@@ -118,8 +118,7 @@
         {
             "id": "background$dark",
             "type": "background",
-            "layout": {
-            },
+            "layout": {},
             "paint": {
                 "background-color": [
                     "interpolate",
@@ -153,12 +152,79 @@
             }
         },
         {
-            "id": "hillshade$",
+            "id": "low$detail$hillshade",
             "type": "raster",
             "source": "hillshade",
             "minzoom": 0,
+            "maxzoom": 9,
+            "paint": {
+                "raster-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0.5,
+                    8.5,
+                    0
+                ]
+            }
+        },
+        {
+            "id": "raster$hillshade",
+            "type": "raster",
+            "source": "hillshade",
+            "minzoom": 0,
+            "layout": {
+                "visibility": "none"
+            },
             "paint": {
                 "raster-opacity": 0.5
+            }
+        },
+        {
+            "id": "dynamic$hillshade",
+            "type": "hillshade",
+            "source": "elevation",
+            "minzoom": 8,
+            "paint": {
+                "hillshade-azimuth": 315,
+                "hillshade-altitude": 50,
+                "hillshade-albedo": "rgb(255, 242, 225)",
+                "hillshade-ambient-intensity": 0,
+                "hillshade-exaggeration": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    1.5,
+                    9,
+                    2,
+                    10,
+                    3,
+                    15,
+                    1.5
+                ],
+                "hillshade-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0,
+                    8.5,
+                    0.5
+                ]
             }
         },
         {
@@ -1894,231 +1960,361 @@
                 ]
             }
         },
-		{
-			"id": "transportation_roads$hwy_shields$dark",
-			"source": "transportation",
-			"source-layer": "roads_us",
-			"type": "symbol",
-			"minzoom": 5,
-			"maxzoom": 22,
-			"filter": [
-				"step",
-				[ "zoom" ],
-				[
-					"all",
-					[
-						"match",
-						[ "get", "data:shield" ],
-						[ "interstate-highway", "us-highway", "provincial-highway", "mexico-highway" ],
-						true,
-						false
-					],
-					[
-						"match",
-						[ "get", "data:type" ],
-						[ "tertiary" ],
-						false,
-						true
-					]
-				],
-				9,
-				[
-					"match",
-					[ "get", "data:shield" ],
-					[ "interstate-highway", "us-highway", "county-highway", "state-highway", "provincial-highway", "mexico-highway" ],
-					true,
-					false
-				],
-				13,
-				[
-					"match",
-					[ "get", "data:shield" ],
-					[ "county-highway", "state-highway", "interstate-highway", "interstate-highway-business", "interstate-highway-truck", "us-highway", "us-highway-business", "us-highway-truck", "provincial-highway", "mexico-highway" ],
-					true,
-					false
-				]
-			],
-			"layout": {
-				"text-size": [
-					"interpolate",
-					[ "linear" ],
-					[ "zoom" ],
-					10,
-					8,
-					14,
-					10
-				],
-				"text-offset": [
-					"match",
-					[ "get", "data:shield" ],
-					[ "us-highway-business", "us-highway-truck", "interstate-highway-truck" ],
-					[
-						"literal",
-						[ 0, 0.55 ]
-					],
-					[
-						"literal",
-						[ 0, 0 ]
-					]
-				],
-				"symbol-placement": "line",
-				"icon-image": [
-					"match",
-					[ "get", "data:shield" ],
-					[ "county-highway", "provincial-highway", "mexico-highway" ],
-					[
-						"concat",
-						"highway-county-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					[ "state-highway" ],
-					[
-						"concat",
-						"highway-state-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					[ "interstate-highway" ],
-					[
-						"concat",
-						"highway-interstate-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					[ "interstate-highway-business" ],
-					[
-						"concat",
-						"highway-interstate-business-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					[ "interstate-highway-truck" ],
-					[
-						"concat",
-						"highway-interstate-truck-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					[ "us-highway" ],
-					[
-						"concat",
-						"highway-us-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					[ "us-highway-business" ],
-					[
-						"concat",
-						"highway-us-business-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					[ "us-highway-truck" ],
-					[
-						"concat",
-						"highway-us-truck-",
-						[
-							"to-string",
-							[
-								"length",
-								[ "get", "data:highway_number" ]
-							]
-						]
-					],
-					""
-				],
-				"icon-size": [
-					"interpolate",
-					[ "linear" ],
-					[ "zoom" ],
-					9,
-					0.7,
-					12,
-					0.8,
-					14,
-					0.9
-				],
-				"icon-rotation-alignment": "viewport",
-				"text-max-angle": 38,
-				"symbol-spacing": [
-					"interpolate",
-					[ "linear" ],
-					[ "zoom" ],
-					9,
-					300,
-					10,
-					300,
-					12,
-					300
-				],
-				"text-font": [
-					"match",
-					[ "get", "data:shield" ],
-					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
-					[
-						"literal",
-						[ "Open Sans Bold" ]
-					],
-					[
-						"literal",
-						[ "Open Sans SemiBold" ]
-					]
-				],
-				"text-rotation-alignment": "viewport",
-				"text-field": [
-					"to-string",
-					[ "get", "data:highway_number" ]
-				],
-				"text-letter-spacing": 0.05,
-				"visibility": "visible"
-			},
-			"paint": {
-				"text-color": [
-					"match",
-					[ "get", "data:shield" ],
-					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
-					"hsl(0, 0%, 100%)",
-					"hsl(0, 0%, 10%)"
-				],
-				"icon-opacity": 0.7
-			}
-		},
+        {
+            "id": "transportation_roads$hwy_shields$dark",
+            "source": "transportation",
+            "source-layer": "roads_us",
+            "type": "symbol",
+            "minzoom": 5,
+            "maxzoom": 22,
+            "filter": [
+                "step",
+                [
+                    "zoom"
+                ],
+                [
+                    "all",
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:shield"
+                        ],
+                        [
+                            "interstate-highway",
+                            "us-highway",
+                            "provincial-highway",
+                            "mexico-highway"
+                        ],
+                        true,
+                        false
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "tertiary"
+                        ],
+                        false,
+                        true
+                    ]
+                ],
+                9,
+                [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "interstate-highway",
+                        "us-highway",
+                        "county-highway",
+                        "state-highway",
+                        "provincial-highway",
+                        "mexico-highway"
+                    ],
+                    true,
+                    false
+                ],
+                13,
+                [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "county-highway",
+                        "state-highway",
+                        "interstate-highway",
+                        "interstate-highway-business",
+                        "interstate-highway-truck",
+                        "us-highway",
+                        "us-highway-business",
+                        "us-highway-truck",
+                        "provincial-highway",
+                        "mexico-highway"
+                    ],
+                    true,
+                    false
+                ]
+            ],
+            "layout": {
+                "text-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    8,
+                    14,
+                    10
+                ],
+                "text-offset": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "us-highway-business",
+                        "us-highway-truck",
+                        "interstate-highway-truck"
+                    ],
+                    [
+                        "literal",
+                        [
+                            0,
+                            0.55
+                        ]
+                    ],
+                    [
+                        "literal",
+                        [
+                            0,
+                            0
+                        ]
+                    ]
+                ],
+                "symbol-placement": "line",
+                "icon-image": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "county-highway",
+                        "provincial-highway",
+                        "mexico-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-county-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "state-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-state-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "interstate-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-interstate-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "interstate-highway-business"
+                    ],
+                    [
+                        "concat",
+                        "highway-interstate-business-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "interstate-highway-truck"
+                    ],
+                    [
+                        "concat",
+                        "highway-interstate-truck-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "us-highway"
+                    ],
+                    [
+                        "concat",
+                        "highway-us-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "us-highway-business"
+                    ],
+                    [
+                        "concat",
+                        "highway-us-business-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        "us-highway-truck"
+                    ],
+                    [
+                        "concat",
+                        "highway-us-truck-",
+                        [
+                            "to-string",
+                            [
+                                "length",
+                                [
+                                    "get",
+                                    "data:highway_number"
+                                ]
+                            ]
+                        ]
+                    ],
+                    ""
+                ],
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    0.7,
+                    12,
+                    0.8,
+                    14,
+                    0.9
+                ],
+                "icon-rotation-alignment": "viewport",
+                "text-max-angle": 38,
+                "symbol-spacing": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    300,
+                    10,
+                    300,
+                    12,
+                    300
+                ],
+                "text-font": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "interstate-highway",
+                        "interstate-highway-business",
+                        "interstate-highway-truck"
+                    ],
+                    [
+                        "literal",
+                        [
+                            "Open Sans Bold"
+                        ]
+                    ],
+                    [
+                        "literal",
+                        [
+                            "Open Sans SemiBold"
+                        ]
+                    ]
+                ],
+                "text-rotation-alignment": "viewport",
+                "text-field": [
+                    "to-string",
+                    [
+                        "get",
+                        "data:highway_number"
+                    ]
+                ],
+                "text-letter-spacing": 0.05,
+                "visibility": "visible"
+            },
+            "paint": {
+                "text-color": [
+                    "match",
+                    [
+                        "get",
+                        "data:shield"
+                    ],
+                    [
+                        "interstate-highway",
+                        "interstate-highway-business",
+                        "interstate-highway-truck"
+                    ],
+                    "hsl(0, 0%, 100%)",
+                    "hsl(0, 0%, 10%)"
+                ],
+                "icon-opacity": 0.7
+            }
+        },
         {
             "id": "avalanche_forecast$fill",
             "source": "conditions",

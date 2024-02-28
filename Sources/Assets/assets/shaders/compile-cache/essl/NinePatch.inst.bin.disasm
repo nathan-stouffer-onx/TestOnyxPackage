@@ -6,6 +6,8 @@ in highp vec4 i_data0;
 in highp vec4 i_data1;
 in highp vec4 i_data2;
 in highp vec4 i_data3;
+in highp vec4 i_data4;
+out highp vec4 v_texcoord6;
 out highp vec4 v_texcoord7;
 uniform highp mat4 u_view;
 uniform highp vec4 s_spriteTex_Res;
@@ -148,5 +150,6 @@ void main ()
   tmpvar_32.z = tmpvar_13;
   tmpvar_32.w = tmpvar_14;
   v_texcoord7 = tmpvar_32;
+  v_texcoord6 = i_data4;
 }
 

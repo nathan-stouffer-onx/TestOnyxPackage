@@ -1,0 +1,249 @@
+{
+    "name": "backcountry-satellite-summer",
+    "version": 8,
+    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/backcountry/1674677385/sprites",
+    "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
+    "sources": {
+        "elevation": {
+            "minzoom": 0,
+            "maxzoom": 15,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/elevation-v2/latest/{z}/{x}/{y}.png"
+            ],
+            "type": "raster-dem",
+            "encoding": "terrarium",
+            "tileSize": 256
+        },
+        "aerial": {
+            "minzoom": 0,
+            "maxzoom": 19,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/aerial/latest/{z}/{x}/{y}.jpg"
+            ],
+            "type": "raster",
+            "tileSize": 256
+        },
+        "base": {
+            "type": "vector",
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/base/v0/{z}/{x}/{y}.pbf"
+            ],
+            "minzoom": 2,
+            "maxzoom": 13
+        }
+    },
+    "expressions": {
+        "exaggeration-expr": {
+            "number": [
+                "interpolate",
+                [
+                    "linear"
+                ],
+                [
+                    "pitch"
+                ],
+                0,
+                0,
+                45,
+                2
+            ]
+        }
+    },
+    "layouts": {
+        "sym-layout": {
+            "symbol-layout": {
+                "text-field": [
+                    "get",
+                    "label"
+                ],
+                "text-size": 17.5,
+                "symbol-placement": "line",
+                "text-font": [
+                    "Open Sans SemiBold"
+                ],
+                "visibility": "none"
+            }
+        }
+    },
+    "paints": {
+        "sym-paint": {
+            "symbol-paint": {
+                "text-color": "hsl(291, 17%, 60%)",
+                "text-halo-color": "#FFFFFFFF",
+                "text-shadow-color": "#FFFFFF7F"
+            }
+        }
+    },
+    "terrain": {
+        "source": "elevation",
+        "exaggeration": [
+            "context",
+            "exaggeration-expr"
+        ]
+    },
+    "layers": [
+        {
+            "id": "tileserver_aerial",
+            "source": "aerial",
+            "type": "raster",
+            "minzoom": 0
+        },
+        {
+            "id": "dynamic$lighting",
+            "type": "intersect",
+            "source": "elevation",
+            "maxzoom": 15,
+            "layout": {},
+            "paint": {
+                "intersect-slope-aspect-mask": [
+                    [
+                        "range",
+                        [ "%", [ "-", [ "+", [ "heading" ], 360 ], 90 ], 360 ],
+                        [ "%", [ "+", [ "heading" ], 90 ], 360 ]
+                    ]
+                ],
+                "intersect-slope-angle-mask": [
+                    [
+                        "range",
+                        10,
+                        90
+                    ]
+                ],
+                "intersect-tint": "rgb(0, 0, 0)",
+                "intersect-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    0.4,
+                    15,
+                    0
+                ]
+            }
+        },
+        {
+            "id": "admin_bounds$country",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "line",
+            "minzoom": 2,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "country"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "hsl(0, 0%, 60%)",
+                "line-width": 2.5
+            }
+        },
+        {
+            "id": "admin_bounds$state",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "line",
+            "minzoom": 4,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "state"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    4,
+                    "hsl(0, 0%, 70%)",
+                    13,
+                    "hsl(0, 0%, 60%)"
+                ],
+                "line-width": 2.5,
+                "line-dasharray": [
+                    2,
+                    4
+                ]
+            }
+        },
+        {
+            "id": "admin_bounds$state_centroid_label$dark",
+            "type": "symbol",
+            "source": "base",
+            "source-layer": "admin_boundaries_label",
+            "minzoom": 4,
+            "maxzoom": 10,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "state"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "text-field": [
+                    "upcase",
+                    [
+                        "get",
+                        "label"
+                    ]
+                ],
+                "symbol-placement": "point",
+                "text-font": [
+                    "Open Sans SemiBold"
+                ],
+                "text-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    4,
+                    16,
+                    13,
+                    19
+                ]
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 50%)",
+                "text-halo-color": "hsl(0, 0%, 100%)"
+            }
+        }
+    ]
+}

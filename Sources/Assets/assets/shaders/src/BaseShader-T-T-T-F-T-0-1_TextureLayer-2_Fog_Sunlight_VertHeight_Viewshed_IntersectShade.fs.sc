@@ -174,7 +174,10 @@ vec3 calculateIntersection(vec3 inputColor, vec3 def, float inverted, vec4 tint)
 	float TWO_PI = PI_CONSTS.y;
 	float PI_HALVES = PI_CONSTS.z;
 	// compute whether values are in the ranges
-	float inElevation = texture2D(s_ElevationShadeTexture, vec2(lerpInv(u_ElevationExtents.x, u_ElevationExtents.y, def.x), 0.0)).r;
+	float elevationIndex = lerpInv(u_ElevationExtents.x, u_ElevationExtents.y, def.x) * s_ElevationShadeTexture_Res.x * s_ElevationShadeTexture_Res.y;
+	float i = mod(elevationIndex, s_ElevationShadeTexture_Res.x);
+	float j = floor(elevationIndex / s_ElevationShadeTexture_Res.y);
+	float inElevation = texture2D(s_ElevationShadeTexture, vec2(i, j) / s_ElevationShadeTexture_Res.xy).r;
 	float inAngle = texture2D(s_SlopeAngleShadeTexture, vec2(def.y / PI_HALVES, 0.0)).r;
 	float inAspect = texture2D(s_SlopeAspectShadeTexture, vec2(def.z / TWO_PI, 0.0)).r;
 	float inIntersection = inElevation * inAngle * inAspect;

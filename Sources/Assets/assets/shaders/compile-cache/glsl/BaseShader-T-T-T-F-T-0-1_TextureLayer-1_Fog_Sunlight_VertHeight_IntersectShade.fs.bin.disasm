@@ -8,6 +8,7 @@ varying vec4 v_texcoord5;
 varying vec4 v_texcoord6;
 varying vec4 v_texcoord7;
 uniform sampler2D s_ElevationShadeTexture;
+uniform vec4 s_ElevationShadeTexture_Res;
 uniform sampler2D s_SlopeAngleShadeTexture;
 uniform sampler2D s_SlopeAspectShadeTexture;
 uniform sampler2D s_heightTexture;
@@ -196,61 +197,61 @@ void main ()
   rad_35 = (6.283185 - rad_35);
   float tmpvar_40;
   tmpvar_40 = float((u_ElevationExtents.x != u_ElevationExtents.y));
-  vec2 tmpvar_41;
-  tmpvar_41.y = 0.0;
-  tmpvar_41.x = (tmpvar_40 * ((tmpvar_33 - u_ElevationExtents.x) / (
-    (tmpvar_40 * (u_ElevationExtents.y - u_ElevationExtents.x))
-   + 
-    (1.0 - tmpvar_40)
-  )));
+  float tmpvar_41;
+  tmpvar_41 = (((tmpvar_40 * 
+    ((tmpvar_33 - u_ElevationExtents.x) / ((tmpvar_40 * (u_ElevationExtents.y - u_ElevationExtents.x)) + (1.0 - tmpvar_40)))
+  ) * s_ElevationShadeTexture_Res.x) * s_ElevationShadeTexture_Res.y);
   vec2 tmpvar_42;
-  tmpvar_42.y = 0.0;
-  tmpvar_42.x = (tmpvar_34 / 1.570796);
+  tmpvar_42.x = (float(mod (tmpvar_41, s_ElevationShadeTexture_Res.x)));
+  tmpvar_42.y = floor((tmpvar_41 / s_ElevationShadeTexture_Res.y));
   vec2 tmpvar_43;
   tmpvar_43.y = 0.0;
-  tmpvar_43.x = (rad_35 / 6.283185);
+  tmpvar_43.x = (tmpvar_34 / 1.570796);
+  vec2 tmpvar_44;
+  tmpvar_44.y = 0.0;
+  tmpvar_44.x = (rad_35 / 6.283185);
   fragColor_3.xyz = mix (fragColor_3.xyz, ((
     ((fragColor_3.x + fragColor_3.y) + fragColor_3.z)
    / 3.0) * u_IntersectTint.xyz), (abs(
-    (u_IntersectInverted.x - ((texture2D (s_ElevationShadeTexture, tmpvar_41).x * texture2D (s_SlopeAngleShadeTexture, tmpvar_42).x) * texture2D (s_SlopeAspectShadeTexture, tmpvar_43).x))
+    (u_IntersectInverted.x - ((texture2D (s_ElevationShadeTexture, (tmpvar_42 / s_ElevationShadeTexture_Res.xy)).x * texture2D (s_SlopeAngleShadeTexture, tmpvar_43).x) * texture2D (s_SlopeAspectShadeTexture, tmpvar_44).x))
   ) * u_IntersectTint.w));
-  float tmpvar_44;
-  tmpvar_44 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
-  fragColor_3.xyz = mix (fragColor_3.xyz, u_FogColor.xyz, (tmpvar_44 * (tmpvar_44 * 
-    (3.0 - (2.0 * tmpvar_44))
+  float tmpvar_45;
+  tmpvar_45 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_3.xyz = mix (fragColor_3.xyz, u_FogColor.xyz, (tmpvar_45 * (tmpvar_45 * 
+    (3.0 - (2.0 * tmpvar_45))
   )));
   gl_FragData[0] = fragColor_3;
-  float tmpvar_45;
-  tmpvar_45 = (((
+  float tmpvar_46;
+  tmpvar_46 = (((
     (v_texcoord6.z / v_texcoord6.w)
    * 0.5) + 0.5) * 256.0);
-  float tmpvar_46;
-  tmpvar_46 = floor(tmpvar_45);
-  d_1 = ((tmpvar_45 - tmpvar_46) * 256.0);
   float tmpvar_47;
-  tmpvar_47 = floor(d_1);
-  d_1 = ((d_1 - tmpvar_47) * 256.0);
-  vec4 tmpvar_48;
-  tmpvar_48.w = 1.0;
-  tmpvar_48.x = (tmpvar_46 / 256.0);
-  tmpvar_48.y = (tmpvar_47 / 256.0);
-  tmpvar_48.z = (floor(d_1) / 256.0);
-  gl_FragData[1] = tmpvar_48;
-  vec3 tmpvar_49;
-  tmpvar_49 = normalize(-(v_texcoord7.xyz));
+  tmpvar_47 = floor(tmpvar_46);
+  d_1 = ((tmpvar_46 - tmpvar_47) * 256.0);
+  float tmpvar_48;
+  tmpvar_48 = floor(d_1);
+  d_1 = ((d_1 - tmpvar_48) * 256.0);
+  vec4 tmpvar_49;
+  tmpvar_49.w = 1.0;
+  tmpvar_49.x = (tmpvar_47 / 256.0);
+  tmpvar_49.y = (tmpvar_48 / 256.0);
+  tmpvar_49.z = (floor(d_1) / 256.0);
+  gl_FragData[1] = tmpvar_49;
   vec3 tmpvar_50;
-  tmpvar_50.x = (tmpvar_49.y * 0.5);
-  tmpvar_50.y = (-(tmpvar_49.x) * 0.5);
-  tmpvar_50.z = max ((0.7 * (1.0 - 
-    max (0.0, tmpvar_49.z)
+  tmpvar_50 = normalize(-(v_texcoord7.xyz));
+  vec3 tmpvar_51;
+  tmpvar_51.x = (tmpvar_50.y * 0.5);
+  tmpvar_51.y = (-(tmpvar_50.x) * 0.5);
+  tmpvar_51.z = max ((0.7 * (1.0 - 
+    max (0.0, tmpvar_50.z)
   )), 0.2);
   gl_FragData[0].xyz = (gl_FragData[0].xyz + ((
     (pow (min (max (
       dot (normalize(((
         (2.0 * normal_4)
        * 
-        dot (normal_4, tmpvar_50)
-      ) - tmpvar_50)), tmpvar_49)
+        dot (normal_4, tmpvar_51)
+      ) - tmpvar_51)), tmpvar_50)
     , 0.0), 1.0), u_lightStrengthPow.y) * u_lightStrengthPow.x)
    * 
     ((1.8 * (1.0 - max (0.0, normal_4.z))) + 0.1)

@@ -1,0 +1,574 @@
+{
+    "name": "backcountry-satellite-summer",
+    "version": 8,
+    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706133353/sprites",
+    "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
+    "sources": {
+        "elevation": {
+            "minzoom": 0,
+            "maxzoom": 15,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/elevation-v2/latest/{z}/{x}/{y}.png"
+            ],
+            "type": "raster-dem",
+            "encoding": "terrarium",
+            "tileSize": 256
+        },
+        "hillshade": {
+            "minzoom": 0,
+            "maxzoom": 12,
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/hillshade/latest/{z}/{x}/{y}.webp"
+            ],
+            "type": "raster",
+            "tileSize": 256
+        },
+        "base": {
+            "type": "vector",
+            "tiles": [
+                "https://tileserver.production.onxmaps.com/v1/base/v0/{z}/{x}/{y}.pbf"
+            ],
+            "minzoom": 2,
+            "maxzoom": 13
+        }
+    },
+    "expressions": {
+        "exaggeration-expr": {
+            "number": [
+                "interpolate",
+                [
+                    "linear"
+                ],
+                [
+                    "pitch"
+                ],
+                0,
+                0,
+                45,
+                2
+            ]
+        }
+    },
+    "layouts": {
+        "sym-layout": {
+            "symbol-layout": {
+                "text-field": [
+                    "get",
+                    "label"
+                ],
+                "text-size": 17.5,
+                "symbol-placement": "line",
+                "text-font": [
+                    "Open Sans SemiBold"
+                ],
+                "visibility": "none"
+            }
+        }
+    },
+    "paints": {
+        "sym-paint": {
+            "symbol-paint": {
+                "text-color": "hsl(291, 17%, 60%)",
+                "text-halo-color": "#FFFFFFFF",
+                "text-shadow-color": "#FFFFFF7F"
+            }
+        }
+    },
+    "terrain": {
+        "source": "elevation",
+        "exaggeration": [
+            "context",
+            "exaggeration-expr"
+        ]
+    },
+    "layers": [
+        {
+            "id": "background$dark",
+            "type": "background",
+            "layout": {},
+            "paint": {
+                "background-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    5,
+                    "rgba(237, 241, 215, 1)",
+                    6.5,
+                    "rgba(237, 241, 215, 1)",
+                    7.5,
+                    "rgba(197, 201, 159, 1)",
+                    8.5,
+                    "rgba(220, 220, 189, 1)",
+                    9.5,
+                    "rgba(192, 195, 153, 1)",
+                    10,
+                    "rgba(180, 178, 131, 1)",
+                    11,
+                    "rgba(178, 177, 139, 1)",
+                    12,
+                    "rgba(209, 205, 166, 1)",
+                    13,
+                    "rgba(225, 221, 185, 1)",
+                    14,
+                    "rgba(237, 235, 202, 1)"
+                ]
+            }
+        },
+        {
+            "id": "hillshade$",
+            "type": "raster",
+            "source": "hillshade",
+            "minzoom": 0,
+            "paint": {
+                "raster-opacity": 0.5
+            }
+        },
+        {
+            "id": "dynamic$lighting",
+            "type": "intersect",
+            "source": "elevation",
+            "maxzoom": 15,
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "intersect-slope-aspect-mask": [
+                    [
+                        "range",
+                        [ "%", [ "-", [ "+", [ "heading" ], 360 ], 90 ], 360 ],
+                        [ "%", [ "+", [ "heading" ], 90 ], 360 ]
+                    ]
+                ],
+                "intersect-slope-angle-mask": [
+                    [
+                        "range",
+                        10,
+                        90
+                    ]
+                ],
+                "intersect-tint": "rgb(0, 0, 0)",
+                "intersect-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    0.15,
+                    15,
+                    0
+                ]
+            }
+        },
+        {
+            "id": "elevation$shade",
+            "type": "elevation",
+            "source": "elevation",
+            "maxzoom": 12,
+            "layout": {
+                "elevation-gradient": [
+                    "gradient",
+                    [
+                        0,
+                        "#023020",
+                        1000,
+                        "#90EE90",
+                        2000,
+                        "#FFFFE0",
+                        3000,
+                        "#CC5500",
+                        4000,
+                        "#8B0000",
+                        5000,
+                        "#5C4033"
+                    ]
+                ]
+            },
+            "paint": {
+                "elevation-mask": [
+                    [
+                        "range",
+                        0,
+                        9000
+                    ]
+                ],
+                "elevation-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    0.2,
+                    12,
+                    0
+                ]
+            }
+        },
+        {
+            "id": "contour$line$dark",
+            "source": "base",
+            "source-layer": "contour_lines",
+            "type": "line",
+            "minzoom": 10,
+            "layout": {},
+            "paint": {
+                "line-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    0.4,
+                    11,
+                    0.4,
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "major"
+                        ],
+                        0.45,
+                        0.35
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "major"
+                        ],
+                        0.55,
+                        0.45
+                    ],
+                    17,
+                    0.6
+                ],
+                "line-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    "rgba(151, 159, 118, 1)",
+                    11,
+                    "rgba(158, 156, 118, 1)",
+                    11.99,
+                    "rgba(106, 115, 63, 0.5)",
+                    12,
+                    "rgba(137, 96, 40, 1)",
+                    13,
+                    "rgba(141, 108, 58, 1)",
+                    14,
+                    "rgba(132, 100, 44, 1)"
+                ],
+                "line-width": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "major"
+                        ],
+                        0.8,
+                        0.2
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "major"
+                        ],
+                        1,
+                        0.2
+                    ],
+                    12,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "major"
+                        ],
+                        1.2,
+                        0.7
+                    ],
+                    13,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "major"
+                        ],
+                        1.2,
+                        0.8
+                    ],
+                    14,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "major"
+                        ],
+                        1.7,
+                        1
+                    ]
+                ]
+            }
+        },
+        {
+            "id": "ocean$area_fill$dark",
+            "source": "base",
+            "source-layer": "water_areas",
+            "type": "fill",
+            "minzoom": 0,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    "ocean"
+                ],
+                [
+                    "!",
+                    [
+                        "has",
+                        "data:intermittent"
+                    ]
+                ],
+                [
+                    "!",
+                    [
+                        "has",
+                        "label"
+                    ]
+                ]
+            ],
+            "layout": {},
+            "paint": {
+                "fill-color": "rgba(184, 227, 247, 1)",
+                "fill-opacity": 1
+            }
+        },
+        {
+            "id": "water$area_fill$dark",
+            "source": "base",
+            "source-layer": "water_areas",
+            "type": "fill",
+            "minzoom": 2,
+            "filter": [
+                "all",
+                [
+                    "!",
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "glacier",
+                            "ocean",
+                            "river",
+                            "stream",
+                            "wetland",
+                            "basin",
+                            "dam"
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                [
+                    "!",
+                    [
+                        "has",
+                        "data:intermittent"
+                    ]
+                ]
+            ],
+            "layout": {},
+            "paint": {
+                "fill-color": "rgba(184, 227, 247, 1)",
+                "fill-opacity": 1
+            }
+        },
+        {
+            "id": "water$area_fill",
+            "source": "base",
+            "source-layer": "water_areas",
+            "type": "fill",
+            "minzoom": 2,
+            "paint": {
+                "fill-color": "#89BDF9",
+                "fill-opacity": 0.25
+            }
+        },
+        {
+            "id": "admin_bounds$country",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "line",
+            "minzoom": 2,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "country"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "hsl(0, 0%, 60%)",
+                "line-width": 2.5
+            }
+        },
+        {
+            "id": "admin_bounds$state",
+            "source": "base",
+            "source-layer": "admin_boundaries",
+            "type": "line",
+            "minzoom": 4,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "state"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    4,
+                    "hsl(0, 0%, 70%)",
+                    13,
+                    "hsl(0, 0%, 60%)"
+                ],
+                "line-width": 2.5,
+                "line-dasharray": [
+                    2,
+                    4
+                ]
+            }
+        },
+        {
+            "id": "admin_bounds$state_centroid_label$dark",
+            "type": "symbol",
+            "source": "base",
+            "source-layer": "admin_boundaries_label",
+            "minzoom": 4,
+            "maxzoom": 10,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:type"
+                ],
+                [
+                    "state"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "text-field": [
+                    "upcase",
+                    [
+                        "get",
+                        "label"
+                    ]
+                ],
+                "symbol-placement": "point",
+                "text-font": [
+                    "Open Sans SemiBold"
+                ],
+                "text-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    4,
+                    16,
+                    13,
+                    19
+                ]
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 50%)",
+                "text-halo-color": "hsl(0, 0%, 100%)"
+            }
+        }
+    ]
+}

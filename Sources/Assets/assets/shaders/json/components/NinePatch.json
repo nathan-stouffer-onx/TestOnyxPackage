@@ -22,6 +22,10 @@
         {
             "alias": "uv",
             "dataType": "vec4"
+        },
+        {
+            "alias": "opacity",
+            "dataType": "vec4"
         }
     ],
 
@@ -108,6 +112,9 @@
             "\tfloat xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex_Res.z;",
             "\tfloat yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex_Res.w;",
             "\t//vec4 uv = vertXOffsets;",
+
+            "\t// Set outputs",
+            "\tvec4 opacity = i_opacity;",
             "\tvec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);"
         ]
     },
@@ -124,7 +131,10 @@
         "type": "Pixel",
         "position": "Compose",
         "positionOffset": 10,
-        "data": "\tgl_FragColor = fragColor;"
+        "lines":[
+            "\tfragColor.w *= opacity.x;",
+            "\tgl_FragColor = fragColor;"
+        ]
     }
 ],
 
@@ -228,6 +238,21 @@
             },
             "comment1": "XY is the UV coordinate, z is a bool that orients to Viewport plane if true, or orients to map plane if false.",
             "comment2": "W is the CW angle in radians to rotate the icon"
+        },
+        {
+            "componentName": "IconBase",
+            "name": "i_opacity",
+            "realtimeUniform": false,
+            "instanced": true,
+            "type": "vec4",
+            "vec4": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+            },
+            "comment1": "Opacity is encoded in x member"
         }
+        
     ]
 }

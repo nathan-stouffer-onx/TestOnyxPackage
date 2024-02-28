@@ -44,6 +44,10 @@
         "filename": "components/ElevationShade.json"
     },
     {
+        "componentName": "Hillshade",
+        "filename": "components/Hillshade.json"
+    },
+    {
         "componentName": "SDF",
         "filename": "components/SDF.json"
     },

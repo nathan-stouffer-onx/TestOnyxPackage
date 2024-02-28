@@ -82,17 +82,17 @@
                     [
                         "zoom"
                     ],
-                    1000,
-                    10,
                     500,
+                    10,
+                    100,
                     11.5,
-                    250,
-                    14,
                     50,
+                    14,
+                    25,
                     16,
-                    25
+                    10
                 ],
-                "contour-line-units": "feet",
+                "contour-line-units": "meters",
                 "contour-line-color": "hsl(191, 100%, 70%)",
                 "contour-line-opacity": [
                     "interpolate",
@@ -122,17 +122,17 @@
                     [
                         "zoom"
                     ],
-                    4000,
+                    2500,
                     10,
-                    2000,
+                    500,
                     11.5,
-                    1000,
+                    250,
                     14,
-                    200,
+                    125,
                     16,
-                    100
+                    50
                 ],
-                "contour-line-units": "feet",
+                "contour-line-units": "meters",
                 "contour-line-color": "hsl(291, 100%, 70%)",
                 "contour-line-opacity": [
                     "interpolate",
@@ -1557,9 +1557,9 @@
                 "text-font": [
                     "Open Sans SemiBold"
                 ],
-                "contour-label-period": 1000,
-                "contour-label-units": "feet",
-                "contour-label-suffix": "ft"
+                "contour-label-period": 500,
+                "contour-label-units": "meters",
+                "contour-label-suffix": "m"
             },
             "paint": {
                 "text-color": "hsl(291, 100%, 70%)",
@@ -1578,10 +1578,10 @@
                 "text-font": [
                     "Open Sans SemiBold"
                 ],
-                "contour-label-period": 250,
-                "contour-label-skip-period": 1000,
-                "contour-label-units": "feet",
-                "contour-label-suffix": "ft"
+                "contour-label-period": 50,
+                "contour-label-skip-period": 500,
+                "contour-label-units": "meters",
+                "contour-label-suffix": "m"
             },
             "paint": {
                 "text-color": "hsl(191, 100%, 70%)",
