@@ -1,0 +1,27 @@
+precision highp int;
+precision highp float;
+in highp vec3 a_position;
+out vec3 v_bitangent;
+uniform highp mat4 u_viewProj;
+uniform sampler2D s_posLifeTex;
+uniform highp vec4 u_bbSize;
+uniform highp vec4 u_emitterPos;
+uniform highp vec4 u_camUp;
+uniform highp vec4 u_camRight;
+uniform highp vec4 i_uv;
+void main ()
+{
+  vec4 tmpvar_1;
+  tmpvar_1 = textureLod (s_posLifeTex, i_uv.xy, 0.0);
+  highp vec2 tmpvar_2;
+  tmpvar_2 = (u_bbSize.xy * a_position.xy);
+  vec4 tmpvar_3;
+  tmpvar_3.w = 1.0;
+  tmpvar_3.xyz = (((u_emitterPos.xyz + tmpvar_1.xyz) + (tmpvar_2.x * u_camRight.xyz)) + (tmpvar_2.y * u_camUp.xyz));
+  gl_Position = (u_viewProj * tmpvar_3);
+  vec3 tmpvar_4;
+  tmpvar_4.xy = a_position.xy;
+  tmpvar_4.z = tmpvar_1.w;
+  v_bitangent = tmpvar_4;
+}
+

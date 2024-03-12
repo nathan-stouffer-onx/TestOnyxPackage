@@ -1,0 +1,43 @@
+{
+  "segments": [
+    {
+      "segment": "TileFillBase",
+      "name": "TileFillBase",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "TileFillBase"
+          }
+        }
+      ]
+    },
+    {
+      "Segment": "terrainHeight",
+      "name": "TerrainHeight",
+      "combineType": "PickOne",
+      "includeNone": false,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "TerrainHeight"
+          }
+        }
+      ]
+    },
+    {
+      "segment": "fog",
+      "name": "Fog",
+      "combineType": "PickOne",
+      "includeNone": true,
+      "components": [
+        {
+          "jsonComponent": {
+            "name": "Fog"
+          }
+        }
+      ]
+    }
+  ]
+}

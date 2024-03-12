@@ -1,0 +1,150 @@
+{
+    "sortOrder": 0,
+    "inputs": [
+        {
+            "alias": "quadPos",
+            "dataType": "vec3"
+        }
+    ],
+    "outputs": [
+        {
+            "alias": "uv",
+            "dataType": "vec3"
+        }
+    ],
+    "chunks": [
+        {
+            "comment": "#include \"OnyxFunctions.sc\"",
+            "position": "Includes",
+            "type": "Vertex_and_Pixel",
+            "lines": [
+                "#include <../examples/common/common.sh>",
+                "#include \"OnyxFunctions.sc\""
+            ]
+        },
+        {
+            "type": "Vertex",
+            "position": "Main",
+            "lines": [
+                "\tgl_Position = vec4(2.f * quadPos.xy - 1.f, 0, 1.f);",
+                "\tvec3 uv = vec3(quadPos.xy, 0);"
+            ]
+        },
+        {
+            "type": "Pixel",
+            "position": "Functions",
+            "positionOffset": 2,
+            "lines": [
+                "// TODO: Replace with better, more well understood noise functions",
+                "float dirtyRand(float x)",
+                "{",
+                "\treturn 0.5f + 0.5 * sin(cos(x) * cos(x * x) / sin(12.321 * x)) * cos(cos(32.2121 * x));",
+                "}",
+                "",
+                "float dirtyRand(vec2 x)",
+                "{",
+                "\tfloat single = dot(x, vec2(13.9841, 4.2129));",
+                "\treturn dirtyRand(single);",
+                "}"
+            ]
+        },
+        {
+            "type": "Pixel",
+            "position": "Main",
+            "positionOffset": 2,
+            "lines": [
+                "\tfloat PI = PI_CONSTS.x;",
+                "\tvec2 uvCoords = uv.xy;",
+                "",
+                "\tvec4 posLife = texture2D(s_posLifeTex, uvCoords);",
+                "\t// Set life to 0 if first time initializing",
+                "\tfloat firstInit = u_initAccelDeltaProg.x;",
+                "\tposLife.w -= firstInit * posLife.w;",
+                "\tvec4 velocSeed = texture2D(s_velocSeedTex, uvCoords);",
+                "\t",
+                "\t/*----- INIT -----*/",
+                "\tif (posLife.w <= 0.f)",
+                "\t{",
+                "\t\t// Use random texture if first time initializing",
+                "\t\tfloat rand = firstInit * dirtyRand(uvCoords) + (1.f - firstInit) * velocSeed.w;",
+                "\t\tvec2 velMinMax = u_velLifeMinMax.xy;",
+                "\t\tfloat velocMag = mix(velMinMax.x, velMinMax.y, rand);",
+                "\t\t",
+                "\t\trand = dirtyRand(rand);",
+                "\t\tfloat velocRho = mix(0.f, 2.f * PI, uvCoords.x);",
+                "\t\t",
+                "\t\trand = dirtyRand(rand);",
+                "\t\tfloat velocTheta = mix (0, PI / 90.f, uvCoords.y);",
+                "\t\t",
+                "\t\tfloat sinVelocTheta = sin(velocTheta);",
+                "\t\tvec3 veloc = vec3(velocMag * sinVelocTheta * cos(velocRho), velocMag * sinVelocTheta * sin(velocRho), velocMag * cos(velocTheta));",
+                "\t\t",
+                "\t\trand = dirtyRand(rand);",
+                "\t\tvec2 lifeMinMax = u_velLifeMinMax.zw;",
+                "\t\tfloat life = mix(lifeMinMax.x, lifeMinMax.y, rand);",
+                "\t\tposLife = vec4(0, 0, 0, life);",
+                "",
+                "\t\tvelocSeed = vec4(veloc, rand);",
+                "\t}",
+                "\t/*----- UPDATE -----*/",
+                "\telse",
+                "\t{",
+                "\t\tfloat deltaT = u_initAccelDeltaProg.z;",
+                "\t\tposLife.xyz += deltaT * velocSeed.xyz;",
+                "\t\tfloat animProg = u_initAccelDeltaProg.w;",
+                "\t\tposLife.w = clamp(posLife.w - animProg, 0, posLife.w);",
+                "\t\tfloat accel = u_initAccelDeltaProg.y;",
+                "\t\tvelocSeed.z += (deltaT * accel);",
+                "\t}",
+                "\t",
+                "\tgl_FragData[0] = posLife;",
+                "\tgl_FragData[1] = velocSeed;",
+                "\t//gl_FragData[0] = u_velLifeMinMax.xyzw;",
+                "\t//gl_FragData[1] = u_initAccelDeltaProg.xyzw;"
+            ]
+         }
+    ],
+    "shaderParameters": [
+        {
+            "componentName": "ParticleUpdate",
+            "name": "s_posLifeTex",
+            "realtimeUniform": true,
+            "type": "texture",
+            "comment": "xyz - position, w - life. All components are 32-bit floats"
+        },
+        {
+            "componentName": "ParticleUpdate",
+            "name": "s_velocSeedTex",
+            "realtimeUniform": true,
+            "type": "texture",
+            "comment": "Texture full of random numbers"
+        },
+        {
+            "componentName": "ParticleUpdate",
+            "name": "u_velLifeMinMax",
+            "realtimeUniform": true,
+            "instanced": false,
+            "type": "vec4",
+            "vec4": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 0
+            }
+        },
+        {
+            "componentName": "ParticleUpdate",
+            "name": "u_initAccelDeltaProg",
+            "realtimeUniform": true,
+            "instanced": false,
+            "type": "vec4",
+            "vec4": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 0
+           },
+           "comment": "x - bool for first time init, y - acceleration (km/millisec^2), z - frametime MS, w, frametimeMS / animDuration"
+        }
+    ]
+}

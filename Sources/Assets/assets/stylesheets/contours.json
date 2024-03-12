@@ -1,5 +1,5 @@
 {
-    "name": "backcountry-satellite-summer",
+    "name": "contours",
     "version": 8,
     "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706133353/sprites",
     "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
@@ -1553,13 +1553,13 @@
             "maxzoom": 23,
             "layout": {
                 "text-size": 14,
+                "text-field": "m",
                 "symbol-placement": "point",
                 "text-font": [
                     "Open Sans SemiBold"
                 ],
                 "contour-label-period": 500,
-                "contour-label-units": "meters",
-                "contour-label-suffix": "m"
+                "contour-label-units": "meters"
             },
             "paint": {
                 "text-color": "hsl(291, 100%, 70%)",
@@ -1574,14 +1574,14 @@
             "maxzoom": 23,
             "layout": {
                 "text-size": 12,
+                "text-field": "m",
                 "symbol-placement": "point",
                 "text-font": [
                     "Open Sans SemiBold"
                 ],
                 "contour-label-period": 50,
                 "contour-label-skip-period": 500,
-                "contour-label-units": "meters",
-                "contour-label-suffix": "m"
+                "contour-label-units": "meters"
             },
             "paint": {
                 "text-color": "hsl(191, 100%, 70%)",

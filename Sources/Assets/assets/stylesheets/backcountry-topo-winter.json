@@ -1650,7 +1650,7 @@
             "source": "transportation",
             "source-layer": "roads_us",
             "type": "line",
-            "minzoom": 4,
+            "minzoom": 5,
             "filter": [
                 "match",
                 [
@@ -1729,7 +1729,7 @@
                 true,
                 false
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "paint": {
                 "line-color": "hsl(0, 0%, 60%)",
                 "line-width": [
@@ -1818,7 +1818,7 @@
                 true,
                 false
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "paint": {
                 "line-color": [
                     "step",
@@ -2952,7 +2952,7 @@
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 33%)",
-                "text-halo-color": "hsl(200, 100%, 37%)"
+                "text-halo-color": "hsl(0, 0%, 100%)"
             }
         },
         {

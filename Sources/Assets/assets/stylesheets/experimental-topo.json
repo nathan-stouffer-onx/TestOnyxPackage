@@ -1,5 +1,5 @@
 {
-    "name": "backcountry-satellite-summer",
+    "name": "experimental",
     "version": 8,
     "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706133353/sprites",
     "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",

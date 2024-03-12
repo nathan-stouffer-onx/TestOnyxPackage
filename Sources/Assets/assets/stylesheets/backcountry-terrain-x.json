@@ -214,7 +214,7 @@
                 "visibility": "none"
             },
             "paint": {
-                "hillshade-azimuth": 315,
+                "hillshade-azimuth": [ "%", [ "+", [ "heading" ], 315 ], 360 ],
                 "hillshade-altitude": 50,
                 "hillshade-albedo": "rgb(255, 242, 225)",
                 "hillshade-ambient-intensity": 0,
@@ -436,11 +436,19 @@
             "id": "land_cover$fill$dark",
             "source": "base",
             "source-layer": "land_cover",
+            "type": "fill",
+            "minzoom": 5,
+            "maxzoom": 22,
             "groups": [
                 "topo"
             ],
-            "type": "fill",
-            "minzoom": 4,
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "data:type"
+                ]
+            ],
             "layout": {
                 "visibility": "none"
             },
@@ -470,9 +478,9 @@
                     [
                         "zoom"
                     ],
-                    3,
-                    0.15,
                     5,
+                    0,
+                    7,
                     0.16,
                     8,
                     0.16,
@@ -484,7 +492,75 @@
                     0.2,
                     14,
                     0.15
-                ]
+                ],
+                "fill-antialias": false
+            }
+        },
+        {
+            "id": "land_cover$low_zoom_fill$dark",
+            "source": "base",
+            "source-layer": "land_cover",
+            "type": "fill",
+            "minzoom": 0,
+            "maxzoom": 7,
+            "groups": [
+                "topo"
+            ],
+            "filter": [
+                "has",
+                "data:type"
+            ],
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "fill-color": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    "crop",
+                    "rgba(135, 221, 34, 1)",
+                    "grass",
+                    "rgba(193, 223, 104, 1)",
+                    "trees",
+                    "rgba(66, 181, 16, 1)",
+                    "shrub",
+                    "rgba(205, 195, 55, 1)",
+                    "barren",
+                    "rgba(247, 231, 110, 1)",
+                    "urban",
+                    "rgba(220, 221, 224, 1)",
+                    "snow",
+                    "rgba(250, 252, 255, 1)",
+                    "rgba(0, 0, 0, 0)"
+                ],
+                "fill-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    4,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:type"
+                        ],
+                        [
+                            "snow"
+                        ],
+                        0.6,
+                        0.18
+                    ],
+                    7,
+                    0
+                ],
+                "fill-antialias": false
             }
         },
         {
@@ -1433,7 +1509,7 @@
             "groups": [
                 "aerial"
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "filter": [
                 "match",
                 [
@@ -2245,7 +2321,7 @@
             "groups": [
                 "topo"
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "filter": [
                 "match",
                 [
@@ -2328,7 +2404,7 @@
                 true,
                 false
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "layout": {
                 "visibility": "none"
             },
@@ -2423,7 +2499,7 @@
                 true,
                 false
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "layout": {
                 "visibility": "none"
             },

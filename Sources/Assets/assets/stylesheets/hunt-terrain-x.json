@@ -144,7 +144,7 @@
                 "visibility": "none"
             },
             "paint": {
-                "hillshade-azimuth": 315,
+                "hillshade-azimuth": [ "%", [ "+", [ "heading" ], 315 ], 360 ],
                 "hillshade-altitude": 50,
                 "hillshade-albedo": "rgb(255, 242, 225)",
                 "hillshade-ambient-intensity": 0,
@@ -1363,7 +1363,7 @@
             "groups": [
                 "aerial"
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "filter": [
                 "match",
                 [
@@ -2175,7 +2175,7 @@
             "groups": [
                 "topo"
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "filter": [
                 "match",
                 [
@@ -2258,7 +2258,7 @@
                 true,
                 false
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "layout": {
                 "visibility": "none"
             },
@@ -2353,7 +2353,7 @@
                 true,
                 false
             ],
-            "minzoom": 4,
+            "minzoom": 5,
             "layout": {
                 "visibility": "none"
             },

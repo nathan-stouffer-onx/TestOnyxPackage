@@ -521,7 +521,7 @@
             "source": "transportation",
             "source-layer": "roads_us",
             "type": "line",
-            "minzoom": 4,
+            "minzoom": 5,
             "filter": [
                 "match",
                 [
@@ -1149,7 +1149,7 @@
                 ]
             },
             "paint": {
-                "text-color": "#80FF80"
+                "text-color": "#C7C7C7"
             }
         },
         {

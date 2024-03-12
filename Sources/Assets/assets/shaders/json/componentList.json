@@ -16,8 +16,8 @@
         "filename": "components/TileLineBase.json"
     },
     {
-        "componentName": "TileVectorBase",
-        "filename": "components/TileVectorBase.json"
+        "componentName": "TileFillBase",
+        "filename": "components/TileFillBase.json"
     },
     {
         "componentName": "Billboard",
@@ -138,5 +138,13 @@
     {
         "componentName": "NinePatch",
         "filename": "components/NinePatch.json"
+    },
+    {
+        "componentName": "ParticleUpdate",
+        "filename": "components/ParticleUpdate.json"
+    },
+    {
+        "componentName": "ParticleDraw",
+        "filename": "components/ParticleDraw.json"
     }
 ]
