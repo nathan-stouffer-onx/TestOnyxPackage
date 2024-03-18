@@ -72,7 +72,8 @@ float smoothing = 16.0 * length(fwidth(sdf_tex0.xyz)) / sqrt(2.0) * u_distanceMu
 float outlineWidth = u_outlineWidth * smoothing;
 float outerEdgeCenter = 0.5 - outlineWidth;
 float alpha = smoothstep(outerEdgeCenter - smoothing, outerEdgeCenter + smoothing, distance);
-float border = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);
+float borderBlendCorrection = 0.47; //not sure why, but at 0.5 our text color was being blended with the border beyond the edges of the border, .47 seems to look a lot better so far
+float border = smoothstep(borderBlendCorrection - smoothing, borderBlendCorrection + smoothing, distance);
 vec4 sdfColor = vec4(mix(fontColor1.xyz, fontColor0.xyz, border), alpha * fontColor0.w);
 fragColor = sdfColor;
 

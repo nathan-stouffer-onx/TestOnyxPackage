@@ -78,10 +78,10 @@ void main ()
     (tmpvar_19 + tmpvar_18)
    - edge0_20)), 0.0, 1.0);
   float edge0_22;
-  edge0_22 = (0.5 - tmpvar_18);
+  edge0_22 = (0.47 - tmpvar_18);
   float tmpvar_23;
   tmpvar_23 = clamp (((tmpvar_16 - edge0_22) / (
-    (0.5 + tmpvar_18)
+    (0.47 + tmpvar_18)
    - edge0_22)), 0.0, 1.0);
   vec4 tmpvar_24;
   tmpvar_24.xyz = mix (v_texcoord4.xyz, v_texcoord5.xyz, (tmpvar_23 * (tmpvar_23 * 

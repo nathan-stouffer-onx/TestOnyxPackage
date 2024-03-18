@@ -146,5 +146,9 @@
     {
         "componentName": "ParticleDraw",
         "filename": "components/ParticleDraw.json"
+    },
+    {
+        "componentName": "Sharpen",
+        "filename": "components/Sharpen.json"
     }
 ]

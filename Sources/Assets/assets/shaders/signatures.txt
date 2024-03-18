@@ -444,9 +444,12 @@ BillboardBase-T-T-T-F-F-1-1_Billboard-F-T-F-F_BillboardGlyph-2
 LineBase-T-F-F-F-F-0-0
 LineBase-T-T-F-F-T-0-1_TerrainHeight
 NinePatch
-BaseShader-T-T-T-F-T-0-1_TextureLayer-1
-BaseShader-T-T-T-F-T-0-1_TextureLayer-2
-BaseShader-T-T-T-F-T-0-1_TextureLayer-3
+BaseShader-F-T-F-F-T-0-1_TextureLayer-1
+BaseShader-F-T-F-F-T-0-1_TextureLayer-1_Sharpen
+BaseShader-F-T-F-F-T-0-1_TextureLayer-2
+BaseShader-F-T-F-F-T-0-1_TextureLayer-3
+BaseShader-F-T-F-F-T-0-1_TextureLayer-2_Sharpen
+BaseShader-F-T-F-F-T-0-1_TextureLayer-3_Sharpen
 BaseShader-F-T-F-F-T-1-0_VertColor-0
 BaseShader-F-T-F-F-T-0-1_VertHeight
 ColorOnlyQuatBase-F-T-T-T-F-4-1_Billboard-T-T-F-F_BillboardGlyph

@@ -1,0 +1,44 @@
+{
+    "segments": [
+      {
+        "segment": "baseShader",
+        "name": "baseShader",
+        "combineType": "PickOne",
+        "includeNone": false,
+        "components": [
+          {
+            "jsonComponent": {
+              "name": "BaseShader"
+            }
+          }
+        ]
+      },
+      {
+        "segment": "textures",
+        "name": "textures",
+        "combineType": "PickOne",
+        "includeNone": false,
+        "components": [
+          {
+            "builtIn": {
+              "type": "TextureLayer",
+              "textureCount": 1
+            }
+          }
+        ]
+      },
+      {
+        "Segment": "sharpen",
+        "name": "Sharpen",
+        "combineType": "PickOne",
+        "includeNone": true,
+        "components": [
+          {
+            "jsonComponent": {
+              "name": "Sharpen"
+            }
+          }
+        ]
+      }
+    ]
+  }
