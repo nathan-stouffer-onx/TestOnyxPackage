@@ -9,147 +9,75 @@ in highp vec4 i_data3;
 in highp vec4 i_data4;
 out highp vec4 v_texcoord6;
 out highp vec4 v_texcoord7;
-uniform highp mat4 u_view;
 uniform highp vec4 s_spriteTex_Res;
 uniform highp vec4 u_screenRes;
 void main ()
 {
-  highp vec3 iconRgt_1;
-  highp vec3 iconDown_2;
-  highp vec2 tmpvar_3;
-  tmpvar_3 = i_data2.zw;
-  highp vec2 tmpvar_4;
-  tmpvar_4 = i_data2.xy;
-  highp float tmpvar_5;
-  tmpvar_5 = (i_data0.z - i_data0.y);
-  highp float tmpvar_6;
-  tmpvar_6 = floor(((i_data2.z * 0.5) - (tmpvar_5 * 0.5)));
-  highp vec4 tmpvar_7;
-  tmpvar_7.x = -(i_data0.x);
-  tmpvar_7.y = tmpvar_6;
-  tmpvar_7.z = floor((tmpvar_6 + tmpvar_5));
-  tmpvar_7.w = tmpvar_3.x;
-  highp vec4 tmpvar_8;
-  tmpvar_8.x = (((
+  highp vec2 tmpvar_1;
+  tmpvar_1 = i_data2.zw;
+  highp float tmpvar_2;
+  tmpvar_2 = (i_data0.z - i_data0.y);
+  highp float tmpvar_3;
+  tmpvar_3 = floor(((i_data2.z * 0.5) - (tmpvar_2 * 0.5)));
+  highp vec4 tmpvar_4;
+  tmpvar_4.x = -(i_data0.x);
+  tmpvar_4.y = tmpvar_3;
+  tmpvar_4.z = floor((tmpvar_3 + tmpvar_2));
+  tmpvar_4.w = tmpvar_1.x;
+  highp vec4 tmpvar_5;
+  tmpvar_5.x = (((
     ((1.0 - a_normal.x) - a_normal.y)
    - a_normal.z) - a_normal.w) - a_tangent.x);
-  tmpvar_8.yzw = a_normal.yzw;
-  highp float tmpvar_9;
-  tmpvar_9 = (dot (tmpvar_8, tmpvar_7) + (a_tangent.x * (
+  tmpvar_5.yzw = a_normal.yzw;
+  highp float tmpvar_6;
+  tmpvar_6 = (dot (tmpvar_5, tmpvar_4) + (a_tangent.x * (
     (i_data2.z + i_data1.x)
    - i_data0.w)));
+  highp vec3 tmpvar_7;
+  tmpvar_7.x = -(i_data1.y);
+  tmpvar_7.y = tmpvar_1.y;
+  tmpvar_7.z = ((i_data2.w + i_data1.w) - i_data1.z);
+  highp vec3 tmpvar_8;
+  tmpvar_8.x = (((1.0 - a_tangent.y) - a_tangent.z) - a_tangent.w);
+  tmpvar_8.y = a_tangent.z;
+  tmpvar_8.z = a_tangent.w;
+  highp float tmpvar_9;
+  tmpvar_9 = dot (tmpvar_8, tmpvar_7);
   highp vec3 tmpvar_10;
-  tmpvar_10.x = -(i_data1.y);
-  tmpvar_10.y = tmpvar_3.y;
-  tmpvar_10.z = ((i_data2.w + i_data1.w) - i_data1.z);
+  tmpvar_10.z = 0.0;
+  tmpvar_10.xy = i_data3.zw;
   highp vec3 tmpvar_11;
-  tmpvar_11.x = (((1.0 - a_tangent.y) - a_tangent.z) - a_tangent.w);
-  tmpvar_11.y = a_tangent.z;
-  tmpvar_11.z = a_tangent.w;
-  highp float tmpvar_12;
-  tmpvar_12 = dot (tmpvar_11, tmpvar_10);
-  highp float tmpvar_13;
-  tmpvar_13 = (i_data2.x + tmpvar_9);
-  highp float tmpvar_14;
-  tmpvar_14 = (i_data2.y + tmpvar_12);
-  highp vec3 tmpvar_15;
-  tmpvar_15.z = 0.0;
-  tmpvar_15.x = (((tmpvar_13 - 
-    (u_screenRes.x * 0.5)
-  ) * u_screenRes.z) * 2.0);
-  tmpvar_15.y = -(((
-    (tmpvar_14 - (u_screenRes.y * 0.5))
-   * u_screenRes.w) * 2.0));
+  tmpvar_11.z = 0.0;
+  tmpvar_11.xy = i_data4.xy;
+  highp vec3 tmpvar_12;
+  tmpvar_12.z = 0.0;
+  tmpvar_12.xy = i_data2.xy;
+  highp vec2 tmpvar_13;
+  tmpvar_13 = (((
+    ((tmpvar_6 * tmpvar_10) + (tmpvar_9 * tmpvar_11))
+   + tmpvar_12).xy - (0.5 * u_screenRes.xy)) * (2.0 * u_screenRes.zw));
+  highp vec4 tmpvar_14;
+  tmpvar_14.zw = vec2(0.0, 1.0);
+  tmpvar_14.x = tmpvar_13.x;
+  tmpvar_14.y = -(tmpvar_13.y);
+  gl_Position = tmpvar_14;
+  highp float _x_15;
+  _x_15 = i_data4.z;
   highp vec4 tmpvar_16;
-  tmpvar_16.zw = vec2(0.0, 1.0);
-  tmpvar_16.xy = tmpvar_15.xy;
-  gl_Position = tmpvar_16;
-  highp float tmpvar_17;
-  tmpvar_17 = cos(i_data3.w);
-  highp float tmpvar_18;
-  tmpvar_18 = sin(i_data3.w);
-  highp vec4 tmpvar_19;
-  tmpvar_19.w = 0.0;
-  tmpvar_19.x = tmpvar_17;
-  tmpvar_19.y = -(tmpvar_18);
-  tmpvar_19.z = 0.0;
-  highp vec4 tmpvar_20;
-  tmpvar_20.w = 0.0;
-  tmpvar_20.x = tmpvar_18;
-  tmpvar_20.y = tmpvar_17;
-  tmpvar_20.z = -0.0;
-  highp vec4 tmpvar_21;
-  tmpvar_21.w = 0.0;
-  tmpvar_21.x = -0.0;
-  tmpvar_21.y = 0.0;
-  tmpvar_21.z = (tmpvar_17 + (1.0 - tmpvar_17));
-  highp mat4 tmpvar_22;
-  tmpvar_22[0].x = tmpvar_19.x;
-  tmpvar_22[1].x = tmpvar_19.y;
-  tmpvar_22[2].x = tmpvar_19.z;
-  tmpvar_22[3].x = tmpvar_19.w;
-  tmpvar_22[0].y = tmpvar_20.x;
-  tmpvar_22[1].y = tmpvar_20.y;
-  tmpvar_22[2].y = tmpvar_20.z;
-  tmpvar_22[3].y = tmpvar_20.w;
-  tmpvar_22[0].z = tmpvar_21.x;
-  tmpvar_22[1].z = tmpvar_21.y;
-  tmpvar_22[2].z = tmpvar_21.z;
-  tmpvar_22[3].z = tmpvar_21.w;
-  tmpvar_22[0].w = 0.0;
-  tmpvar_22[1].w = 0.0;
-  tmpvar_22[2].w = 0.0;
-  tmpvar_22[3].w = 1.0;
-  highp vec3 tmpvar_23;
-  tmpvar_23 = (tmpvar_22 * vec4(0.0, 1.0, 0.0, 0.0)).xyz;
-  iconDown_2 = tmpvar_23;
-  highp vec3 tmpvar_24;
-  tmpvar_24 = (tmpvar_22 * vec4(1.0, 0.0, 0.0, 0.0)).xyz;
-  iconRgt_1 = tmpvar_24;
-  if ((i_data3.z != 1.0)) {
-    highp vec4 tmpvar_25;
-    tmpvar_25.w = 0.0;
-    tmpvar_25.xyz = tmpvar_23;
-    highp vec3 tmpvar_26;
-    tmpvar_26 = normalize((u_view * tmpvar_25).xyz);
-    iconDown_2.xz = tmpvar_26.xz;
-    iconDown_2.y = -(tmpvar_26.y);
-    highp vec4 tmpvar_27;
-    tmpvar_27.w = 0.0;
-    tmpvar_27.xyz = tmpvar_24;
-    highp vec3 tmpvar_28;
-    tmpvar_28 = normalize((u_view * tmpvar_27).xyz);
-    iconRgt_1.xz = tmpvar_28.xz;
-    iconRgt_1.y = -(tmpvar_28.y);
-  };
-  highp vec3 tmpvar_29;
-  tmpvar_29.z = 0.0;
-  tmpvar_29.xy = tmpvar_4;
-  highp vec2 tmpvar_30;
-  tmpvar_30 = (((
-    ((((tmpvar_9 * iconRgt_1) + (tmpvar_12 * iconDown_2)) - (0.5 * (
-      (i_data2.z * iconRgt_1)
-     + 
-      (i_data2.w * iconDown_2)
-    ))) + tmpvar_29)
-  .xy + 
-    (0.5 * i_data2.zw)
-  ) - (0.5 * u_screenRes.xy)) * (2.0 * u_screenRes.zw));
-  highp vec4 tmpvar_31;
-  tmpvar_31.zw = vec2(0.0, 1.0);
-  tmpvar_31.x = tmpvar_30.x;
-  tmpvar_31.y = -(tmpvar_30.y);
-  gl_Position = tmpvar_31;
-  highp vec4 tmpvar_32;
-  tmpvar_32.x = (i_data3.x + ((
+  tmpvar_16.x = _x_15;
+  tmpvar_16.y = _x_15;
+  tmpvar_16.z = _x_15;
+  tmpvar_16.w = _x_15;
+  highp vec4 tmpvar_17;
+  tmpvar_17.x = (i_data3.x + ((
     dot (a_normal, i_data0)
    + 
     (a_tangent.x * i_data1.x)
   ) * s_spriteTex_Res.z));
-  tmpvar_32.y = (i_data3.y + (dot (a_tangent.yzw, i_data1.yzw) * s_spriteTex_Res.w));
-  tmpvar_32.z = tmpvar_13;
-  tmpvar_32.w = tmpvar_14;
-  v_texcoord7 = tmpvar_32;
-  v_texcoord6 = i_data4;
+  tmpvar_17.y = (i_data3.y + (dot (a_tangent.yzw, i_data1.yzw) * s_spriteTex_Res.w));
+  tmpvar_17.z = (i_data2.x + tmpvar_6);
+  tmpvar_17.w = (i_data2.y + tmpvar_9);
+  v_texcoord7 = tmpvar_17;
+  v_texcoord6 = tmpvar_16;
 }
 

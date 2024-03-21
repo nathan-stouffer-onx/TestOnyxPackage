@@ -16,8 +16,8 @@ uniform vec4 u_oriAngle;
 uniform vec4 i_offsets0;
 uniform vec4 i_offsets1;
 uniform vec4 i_screenPosSize;
-uniform vec4 i_uvVpOriAngle;
-uniform vec4 i_opacity;
+uniform vec4 i_uvXAxis;
+uniform vec4 i_yAxisOpacity;
 
 //functions
 

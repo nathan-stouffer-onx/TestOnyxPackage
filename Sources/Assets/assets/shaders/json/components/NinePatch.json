@@ -64,10 +64,9 @@
             "\tfloat y0 = 1.0 - grid1.y - grid1.z - grid1.w; // for y0, all cells will be 0 so we'll get 1.0",
             "\tvec2 screenSize = i_screenPosSize.zw;",
             "\tvec2 screenPos = i_screenPosSize.xy;",
-            "\tvec2 uvIn = i_uvVpOriAngle.xy;",
+            "\tvec2 uvIn = i_uvXAxis.xy;",
             "\tfloat midPatchSizePx = i_offsets0.z - i_offsets0.y;",
             "\tfloat halfWidth = screenSize.x * 0.5f;",
-            "\tfloat rotAngle = i_uvVpOriAngle.w;",
             
             "\t// Compute x screen offsets",
             "\tfloat vert0xOfs = -i_offsets0.x;",
@@ -86,25 +85,10 @@
             "\tfloat heightOffset = dot(vec3(y0, grid1.z, grid1.w), vertYOffsets);",
 
             "\t// Compute screen position px/normalized",
-            "\tfloat xScreenPx = screenPos.x + widthOffset;",
-            "\tfloat yScreenPx = screenPos.y + heightOffset;",
-            "\tfloat xScreenN = (xScreenPx - (u_screenRes.x * 0.5)) * u_screenRes.z * 2.0;",
-            "\tfloat yScreenN = (yScreenPx - (u_screenRes.y * 0.5)) * u_screenRes.w * 2.0;",
-            "\tvec3 pos =  vec3(xScreenN, -yScreenN, 0);",
-            "\tgl_Position = vec4(pos.xy, 0, 1);",
-
-            "\tmat4 rotMat = getRotMat(vec3(0, 0, 1), rotAngle);",
-            "\tvec3 iconDown = mul(rotMat, vec4(0, 1, 0, 0)).xyz;",
-            "\tvec3 iconRgt = mul(rotMat, vec4(1, 0, 0, 0)).xyz;",
-            "\tif (i_uvVpOriAngle.z != 1.0) {",
-                "\t\ticonDown = normalize(mul(u_view, vec4(iconDown, 0)).xyz);",
-                "\t\ticonDown.y *= -1.0;",
-                "\t\ticonRgt = normalize(mul(u_view, vec4(iconRgt, 0)).xyz);",
-                "\t\ticonRgt.y *= -1.0;",
-            "\t}",
-            "\tvec3 midpoint = 0.5*(screenSize.x * iconRgt + screenSize.y * iconDown);",
+            "\tvec3 iconRgt = vec3(i_uvXAxis.zw, 0);",
+            "\tvec3 iconDown = vec3(i_yAxisOpacity.xy, 0);",
             "\tvec3 offset = widthOffset * iconRgt + heightOffset * iconDown;",
-            "\tvec2 finalPosScrSp = ((offset - midpoint + vec3(screenPos.xy, 0))).xy + (0.5*screenSize.xy);",
+            "\tvec2 finalPosScrSp = ((offset + vec3(screenPos.xy, 0))).xy;",
             "\tvec2 finalPosN = (finalPosScrSp - 0.5*u_screenRes.xy) * (2.0 * u_screenRes.zw);",
             "\tgl_Position = vec4(finalPosN.x, -finalPosN.y, 0, 1);",
 
@@ -114,7 +98,9 @@
             "\t//vec4 uv = vertXOffsets;",
 
             "\t// Set outputs",
-            "\tvec4 opacity = i_opacity;",
+            "\tvec4 opacity = vec4_splat(i_yAxisOpacity.z);",
+            "\tfloat xScreenPx = screenPos.x + widthOffset;",
+            "\tfloat yScreenPx = screenPos.y + heightOffset;",
             "\tvec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);"
         ]
     },
@@ -226,7 +212,7 @@
         },
         {
             "componentName": "IconBase",
-            "name": "i_uvVpOriAngle",
+            "name": "i_uvXAxis",
             "realtimeUniform": false,
             "instanced": true,
             "type": "vec4",
@@ -236,23 +222,21 @@
                 "z": 0.0,
                 "w": 0.0
             },
-            "comment1": "XY is the UV coordinate, z is a bool that orients to Viewport plane if true, or orients to map plane if false.",
-            "comment2": "W is the CW angle in radians to rotate the icon"
+            "comment": "xy - uv coordinates, yz - icon's x-axis in screen space"
         },
         {
             "componentName": "IconBase",
-            "name": "i_opacity",
+            "name": "i_yAxisOpacity",
             "realtimeUniform": false,
             "instanced": true,
             "type": "vec4",
             "vec4": {
-                "x": 1.0,
+                "x": 0.0,
                 "y": 0.0,
                 "z": 0.0,
                 "w": 0.0
             },
-            "comment1": "Opacity is encoded in x member"
+            "comment": "xy - icon's y-axis in screen space, z - icon opacity, w - unused"
         }
-        
     ]
 }
