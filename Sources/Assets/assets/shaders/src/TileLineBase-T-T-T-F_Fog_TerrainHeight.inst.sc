@@ -31,7 +31,6 @@ uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 uniform vec4 u_TileFragClip;
 uniform vec4 u_screenDimensions;
-uniform vec4 u_drawColor;
 uniform vec4 u_vectorFade;
 uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_nearFarPlane;
@@ -231,7 +230,7 @@ vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0)
 	 vec4 lineCenter = vec4(1,1,1,1);// vec4(pixelLength * position.y + (lineWidth * 0.5f * position.z), 0.0, 0.0, 0.0);
 	 vec4 screenPosition = vec4(screenPos.xyz, 1.0);// vec4(screenPos.xy + screenOffset, screenPos.z, 1.0);
 	 vec4 linePosition = vec4(position.x, position.z, 0, lineWidth.x);
-	 vec4 color = vec4(mix(vecColor.rgb, u_drawColor.rgb, u_drawColor.a), vecColor.a);
+	 vec4 color = vecColor;
 //	 screenPosition.w = sqrt(dot(u_screenDimensions.xy, u_screenDimensions.xy)) * lineEdgeOffsetDist * 0.5;
 	 vec4 dashUV = vec4(position.xyz, 1.0);
 	 float zBias = (1.0 / 2500.0) * max(1.0,widthExpansion*2.0) * pow(max(1.0, 1.0 + (u_nearFarPlane.y - u_nearFarPlane.x - 500.0) / 100.0),2.5);

@@ -32,7 +32,7 @@
 //
 vs_5_0
 dcl_globalFlags refactoringAllowed
-dcl_constantbuffer CB0[21], immediateIndexed
+dcl_constantbuffer CB0[20], immediateIndexed
 dcl_sampler s0, mode_default
 dcl_sampler s2, mode_default
 dcl_sampler s3, mode_default
@@ -191,7 +191,7 @@ sqrt r5.w, r5.w
 mul r8.xy, r2.xyxx, cb0[0].xyxx
 mov o12.xy, r2.xyxx
 mad r8.xy, r8.xyxx, l(2.000000, 2.000000, 0.000000, 0.000000), l(-1.000000, -1.000000, 0.000000, 0.000000)
-add r2.x, -cb0[20].x, cb0[20].y
+add r2.x, -cb0[19].x, cb0[19].y
 add r2.x, r2.x, l(-500.000000)
 mad r2.x, r2.x, l(0.010000), l(1.000000)
 max r2.x, r2.x, l(1.000000)
@@ -206,19 +206,16 @@ mov o12.z, r8.z
 mov o1.xyz, r7.xyzx
 sample_l_indexable(texture2d)(float,float,float,float) r0.w, cb0[17].zwzz, t0.yzwx, s0, l(0.000000)
 mov o1.w, r0.w
-sample_l_indexable(texture2d)(float,float,float,float) r8.xyzw, cb0[17].zwzz, t2.xyzw, s2, l(0.000000)
-add r2.xyz, -r8.xyzx, cb0[18].xyzx
-mad o2.xyz, cb0[18].wwww, r2.xyzx, r8.xyzx
-mov o2.w, r8.w
+sample_l_indexable(texture2d)(float,float,float,float) o2.xyzw, cb0[17].zwzz, t2.xyzw, s2, l(0.000000)
 mov r1.xy, r3.zwzz
 mov r0.xy, r3.xyxx
 add r1.xyz, -r0.xyzx, r1.xyzx
 mad r0.xyz, v0.yyyy, r1.xyzx, r0.xyzx
 dp3 r0.x, r0.xyzx, r0.xyzx
 sqrt r0.x, r0.x
-div r0.x, r0.x, cb0[20].y
-add r0.x, r0.x, -cb0[19].x
-add r0.y, -cb0[19].x, cb0[19].y
+div r0.x, r0.x, cb0[19].y
+add r0.x, r0.x, -cb0[18].x
+add r0.y, -cb0[18].x, cb0[18].y
 div r0.y, l(1.000000, 1.000000, 1.000000, 1.000000), r0.y
 mul_sat r0.x, r0.y, r0.x
 mad r0.y, r0.x, l(-2.000000), l(3.000000)

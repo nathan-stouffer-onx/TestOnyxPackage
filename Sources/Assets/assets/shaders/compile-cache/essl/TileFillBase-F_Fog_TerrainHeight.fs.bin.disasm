@@ -11,8 +11,9 @@ uniform sampler2D s_patterns;
 uniform vec4 s_patterns_Res;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
-uniform vec4 u_tileVectorData;
+uniform vec4 u_TileFillData;
 uniform vec4 u_eyePos;
+uniform vec4 u_vectorFade;
 uniform vec4 u_TileFragClip;
 void main ()
 {
@@ -32,13 +33,15 @@ void main ()
     (3.0 - (2.0 * tmpvar_5))
   )));
   worldUV_1 = ((v_bitangent.xy + u_eyePos.xy) * 1000.0);
-  worldUV_1 = (worldUV_1 / exp2((20.0 - u_tileVectorData.x)));
+  worldUV_1 = (worldUV_1 / exp2((20.0 - u_TileFillData.x)));
   vec2 tmpvar_6;
   tmpvar_6.x = (float(mod (worldUV_1.x, v_texcoord4.z)));
   tmpvar_6.y = (float(mod (worldUV_1.y, v_texcoord4.w)));
+  fragColor_2 = (fragColor_2 * textureLod (s_patterns, (v_texcoord4.xy + (tmpvar_6 * s_patterns_Res.zw)), 0.0));
   vec4 tmpvar_7;
-  tmpvar_7 = textureLod (s_patterns, (v_texcoord4.xy + (tmpvar_6 * s_patterns_Res.zw)), 0.0);
-  bgfx_FragData[0] = ((fragColor_2 * tmpvar_7) * v_depth);
+  tmpvar_7.xyz = fragColor_2.xyz;
+  tmpvar_7.w = ((fragColor_2.w * u_vectorFade.x) * v_depth);
+  bgfx_FragData[0] = tmpvar_7;
   bgfx_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }
 

@@ -33,7 +33,6 @@ uniform vec4 u_endAngles;
 uniform vec4 u_p1p2;
 uniform vec4 u_screenDimensions;
 uniform vec4 u_params;
-uniform vec4 u_drawColor;
 uniform vec4 u_vectorFade;
 uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_nearFarPlane;

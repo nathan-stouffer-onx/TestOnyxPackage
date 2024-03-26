@@ -17,7 +17,7 @@ uniform vec4 u_tileDistortion;
 uniform vec4 u_MeshResolution;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_tileMin;
-uniform vec4 u_TileVectorOpacityTransition;
+uniform vec4 u_TileFillOpacityTransition;
 uniform vec4 u_tileMax;
 uniform vec4 u_TileVertClip;
 void main ()
@@ -91,7 +91,7 @@ void main ()
   float tmpvar_27;
   tmpvar_27 = clamp (((
     (sqrt(dot (tmpvar_6, tmpvar_6)) / u_nearFarPlane.y)
-   - u_TileVectorOpacityTransition.x) / (u_TileVectorOpacityTransition.y - u_TileVectorOpacityTransition.x)), 0.0, 1.0);
+   - u_TileFillOpacityTransition.x) / (u_TileFillOpacityTransition.y - u_TileFillOpacityTransition.x)), 0.0, 1.0);
   float tmpvar_28;
   tmpvar_28 = (1.0 - (tmpvar_27 * (tmpvar_27 * 
     (3.0 - (2.0 * tmpvar_27))

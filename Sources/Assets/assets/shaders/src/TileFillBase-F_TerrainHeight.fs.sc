@@ -20,7 +20,7 @@ uniform vec4 u_tileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_MeshResolution;
-uniform vec4 u_tileVectorData;
+uniform vec4 u_TileFillData;
 uniform vec4 u_nearFarPlane;
 uniform vec4 u_screenResolution;
 uniform vec4 u_eyePos;
@@ -29,7 +29,7 @@ uniform vec4 u_camForward;
 uniform vec4 u_camUp;
 uniform vec4 u_time;
 uniform vec4 u_tileMin;
-uniform vec4 u_TileVectorOpacityTransition;
+uniform vec4 u_TileFillOpacityTransition;
 uniform vec4 u_vectorFade;
 uniform vec4 u_tileMax;
 uniform vec4 u_TileVertClip;
@@ -60,12 +60,13 @@ vec4 fragColor = vecColor;
 //compose
 	vec2 normalized = (depth.xy / depth.w) * 0.5f + 0.5f;
 	vec2 worldUV = worldPosition.xy + u_eyePos.xy;
-	float vectorLevel = 20.0 - u_tileVectorData.x;
+	float vectorLevel = 20.0 - u_TileFillData.x;
 	worldUV *= 1000.0;
 	worldUV /= pow(2.0, vectorLevel);
 	vec2 uvOffset = vec2(mod(worldUV.x, vecPattern.z), mod(worldUV.y, vecPattern.w)) * s_patterns_Res.zw;
 	vec4 pattern = texture2DLod(s_patterns, vecPattern.xy + uvOffset, 0);
-	gl_FragData[0] = fragColor * pattern * distFade;
+	fragColor *= pattern;
+	gl_FragData[0] = vec4(fragColor.xyz, fragColor.a * u_vectorFade.r * distFade);
 	gl_FragData[1] = vec4(0, 0, 0, 0);
 
 

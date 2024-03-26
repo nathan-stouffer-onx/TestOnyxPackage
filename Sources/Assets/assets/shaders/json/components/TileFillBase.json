@@ -64,7 +64,7 @@
         {
             "comment": "TODO figure out a way to have positionOffset = 0 so other components easily override base shader behavior",
             "lines": [
-                "\tfloat distFade = 1.0 - smoothstep(u_TileVectorOpacityTransition.x, u_TileVectorOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);",
+                "\tfloat distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);",
                 "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xy, tileZ, 1.0)));",
                 "\tprojected.z -= (projected.w * 0.01);",
                 "\t//projected.z -= (1.0 / 128.0);",
@@ -116,12 +116,13 @@
             "lines": [
                 "\tvec2 normalized = (depth.xy / depth.w) * 0.5f + 0.5f;",
                 "\tvec2 worldUV = worldPosition.xy + u_eyePos.xy;",
-                "\tfloat vectorLevel = 20.0 - u_tileVectorData.x;",
+                "\tfloat vectorLevel = 20.0 - u_TileFillData.x;",
                 "\tworldUV *= 1000.0;",
                 "\tworldUV /= pow(2.0, vectorLevel);",
                 "\tvec2 uvOffset = vec2(mod(worldUV.x, vecPattern.z), mod(worldUV.y, vecPattern.w)) * s_patterns_Res.zw;",
                 "\tvec4 pattern = texture2DLod(s_patterns, vecPattern.xy + uvOffset, 0);",
-                "\tgl_FragData[0] = fragColor * pattern * distFade;",
+                "\tfragColor *= pattern;",
+                "\tgl_FragData[0] = vec4(fragColor.xyz, fragColor.a * u_vectorFade.r * distFade);",
                 "\tgl_FragData[1] = vec4(0, 0, 0, 0);"
             ],
             "position": "Compose",
@@ -188,7 +189,7 @@
         {
             "comment": "x is the tile level, y/z unused so far",
             "componentName": "TileFillBase",
-            "name": "u_tileVectorData",
+            "name": "u_TileFillData",
             "realtimeUniform": true,
             "type": "vec3",
             "shaderType": "Vertex_and_Pixel",
@@ -313,7 +314,7 @@
         },
         {
             "componentName": "TileFillBase",
-            "name": "u_TileVectorOpacityTransition",
+            "name": "u_TileFillOpacityTransition",
             "type": "vec2",
             "vec2": {
                 "x": 0.4,
