@@ -379,7 +379,6 @@
             "source-layer": "land_cover",
             "type": "fill",
             "minzoom": 5,
-            "maxzoom": 22,
             "filter": [
                 "!",
                 [

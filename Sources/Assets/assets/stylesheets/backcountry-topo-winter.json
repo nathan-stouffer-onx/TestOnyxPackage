@@ -2739,6 +2739,10 @@
                 "line-cap": "round"
             },
             "paint": {
+                "line-dasharray": [
+                    2,
+                    1
+                ],
                 "line-color": "hsl(300, 100%, 25%)",
                 "line-width": [
                     "interpolate",
