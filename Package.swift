@@ -9,7 +9,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "OnyxCore",
-            targets: [ "Assets", "apiLibPackage", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", /* "sqlite3Package" ,*/ "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ])
+            targets: [ "Assets", "apiLibPackage", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", /* "sqlite3Package" */, "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ])
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
