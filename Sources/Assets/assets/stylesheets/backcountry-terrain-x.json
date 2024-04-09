@@ -214,7 +214,17 @@
                 "visibility": "none"
             },
             "paint": {
-                "hillshade-azimuth": [ "%", [ "+", [ "heading" ], 315 ], 360 ],
+                "hillshade-azimuth": [
+                    "%",
+                    [
+                        "+",
+                        [
+                            "heading"
+                        ],
+                        315
+                    ],
+                    360
+                ],
                 "hillshade-altitude": 50,
                 "hillshade-albedo": "rgb(255, 242, 225)",
                 "hillshade-ambient-intensity": 0,
@@ -438,7 +448,6 @@
             "source-layer": "land_cover",
             "type": "fill",
             "minzoom": 5,
-            "maxzoom": 22,
             "groups": [
                 "topo"
             ],
@@ -818,7 +827,7 @@
             }
         },
         {
-            "id": "ocean$area_fill$dark",
+            "id": "water$area_fill$dark",
             "source": "base",
             "source-layer": "water_areas",
             "type": "fill",
@@ -829,12 +838,21 @@
             "filter": [
                 "all",
                 [
-                    "==",
+                    "match",
                     [
                         "get",
                         "data:type"
                     ],
-                    "ocean"
+                    [
+                        "glacier",
+                        "river",
+                        "stream",
+                        "wetland",
+                        "basin",
+                        "dam"
+                    ],
+                    false,
+                    true
                 ],
                 [
                     "!",
@@ -842,69 +860,102 @@
                         "has",
                         "data:intermittent"
                     ]
-                ],
-                [
-                    "!",
-                    [
-                        "has",
-                        "label"
-                    ]
                 ]
             ],
             "layout": {
                 "visibility": "none"
             },
             "paint": {
-                "fill-color": "rgba(184, 227, 247, 1)",
-                "fill-opacity": 1
+                "fill-color": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    "ocean",
+                    "rgba(194, 232, 249, 1)",
+                    "rgba(184, 227, 247, 1)"
+                ]
             }
         },
         {
-            "id": "water$area_fill$dark",
+            "id": "ocean$bathymetry$dark",
             "source": "base",
-            "source-layer": "water_areas",
+            "source-layer": "water_bathymetry",
             "type": "fill",
             "groups": [
                 "topo"
             ],
-            "minzoom": 2,
+            "minzoom": 0,
             "filter": [
                 "all",
                 [
-                    "!",
+                    ">",
                     [
-                        "match",
+                        "to-number",
                         [
                             "get",
-                            "data:type"
-                        ],
-                        [
-                            "glacier",
-                            "ocean",
-                            "river",
-                            "stream",
-                            "wetland",
-                            "basin",
-                            "dam"
-                        ],
-                        true,
-                        false
-                    ]
-                ],
-                [
-                    "!",
-                    [
-                        "has",
-                        "data:intermittent"
-                    ]
+                            "data:depth_m"
+                        ]
+                    ],
+                    100
                 ]
             ],
             "layout": {
+                "fill-sort-key": [
+                    "to-number",
+                    [
+                        "get",
+                        "data:depth_m"
+                    ]
+                ],
                 "visibility": "none"
             },
             "paint": {
-                "fill-color": "rgba(184, 227, 247, 1)",
-                "fill-opacity": 1
+                "fill-color": [
+                    "case",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [
+                                "get",
+                                "data:depth_m"
+                            ]
+                        ],
+                        200
+                    ],
+                    "rgba(184, 227, 247, 1)",
+                    "rgba(72, 140, 169, 1)"
+                ],
+                "fill-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    [
+                        "case",
+                        [
+                            "==",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:depth_m"
+                                ]
+                            ],
+                            200
+                        ],
+                        1,
+                        0.08
+                    ],
+                    12,
+                    0
+                ]
             }
         },
         {
@@ -2650,6 +2701,9 @@
             "source-layer": "osm_ski",
             "type": "line",
             "minzoom": 13,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "has",
                 "data:run_type"
@@ -2683,6 +2737,9 @@
             "source-layer": "osm_ski",
             "type": "line",
             "minzoom": 13,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "all",
                 [
@@ -2741,6 +2798,9 @@
             "source-layer": "osm_ski",
             "type": "line",
             "minzoom": 12,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "all",
                 [
@@ -2777,6 +2837,9 @@
             "source-layer": "osm_ski",
             "type": "line",
             "minzoom": 12,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "all",
                 [
@@ -2813,6 +2876,9 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "all",
                 [
@@ -2858,6 +2924,9 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "all",
                 [
@@ -2921,6 +2990,9 @@
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
             "minzoom": 7,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "all",
                 [
@@ -3002,6 +3074,9 @@
             "source-layer": "osm_ski",
             "type": "symbol",
             "minzoom": 13,
+            "groups": [
+                "extraneous"
+            ],
             "filter": [
                 "has",
                 "data:run_type"

@@ -210,7 +210,8 @@ mul r2.x, r2.x, l(2.500000)
 exp r2.x, r2.x
 mul r2.x, r2.x, r4.z
 div r2.x, r2.x, r0.w
-add r8.z, -r2.x, r2.z
+add r2.x, -r2.x, r2.z
+max r8.z, r2.x, l(-1.000000)
 mul o0.xyz, r0.wwww, r8.xyzx
 mov o14.z, r8.z
 mov r1.xy, r3.zwzz

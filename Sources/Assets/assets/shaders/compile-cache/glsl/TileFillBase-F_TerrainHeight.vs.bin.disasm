@@ -103,7 +103,7 @@ void main ()
   vec4 tmpvar_30;
   tmpvar_30 = (u_proj * (u_view * tmpvar_29));
   projected_2.xyw = tmpvar_30.xyw;
-  projected_2.z = (tmpvar_30.z - (tmpvar_30.w * 0.01));
+  projected_2.z = (tmpvar_30.z - (tmpvar_30.w * 0.001));
   depth_1 = projected_2;
   vec4 tmpvar_31;
   tmpvar_31.zw = vec2(0.0, 0.0);
