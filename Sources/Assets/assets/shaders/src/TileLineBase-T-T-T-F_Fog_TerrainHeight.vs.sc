@@ -30,8 +30,8 @@ uniform vec4 u_time;
 uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 uniform vec4 u_TileFragClip;
-uniform vec4 u_endAngles;
 uniform vec4 u_p1p2;
+uniform vec4 u_PrevNext;
 uniform vec4 u_screenDimensions;
 uniform vec4 u_params;
 uniform vec4 u_vectorFade;
@@ -39,6 +39,21 @@ uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_nearFarPlane;
 
 //functions
+vec4 toScreenCoords(vec4 projected, vec2 viewTexel)
+{
+	 vec4 screen = projected / projected.w;
+	 screen.xy = screen.xy * 0.5 + 0.5;
+	 screen.xy /= viewTexel;
+	 return screen;
+}
+// we assume u and v to be normal vectors
+vec2 jointBisector(vec2 u, vec2 v)
+{
+	float theta = atan2(u.y, u.x);
+	float phi = atan2(v.y, v.x);
+	float alpha = 0.5 * (theta + phi);
+	return vec2(cos(alpha), sin(alpha));
+}
 // expects uv to be in tile coordinates
 float heightAt(vec2 uv)
 {
@@ -138,7 +153,7 @@ void main()
 
 vec3 position = a_position.xyz;
 //main start
-	 float cMaxLineWidth = 16.0; // analogous value in LineStyleAtlas.cpp
+	 float cMaxLineWidth = 64.0; // analogous value in LineStyleAtlas.cpp
 	 vec2 texParams = u_params.zw;
 	 vec4 vecColor = texture2DLod(s_VectorColors, texParams, 0);
 	 vec4 lineWidth = texture2DLod(s_VectorWidths, texParams, 0) * cMaxLineWidth;
@@ -176,50 +191,51 @@ vec4 distFade = vec4(1.0 - smoothstep(u_TileLineOpacityTransition.x, u_TileLineO
 vec4 screen1 = mul(u_proj, mul(u_view, wp1));
 vec4 screen2 = mul(u_proj, mul(u_view, wp2));
 float origW = mix(screen1.w, screen2.w, position.y);
-screen1 /= screen1.w;
-screen2 /= screen2.w;
-screen1.xy = screen1.xy * 0.5 + 0.5;
-screen2.xy = screen2.xy * 0.5 + 0.5;
-screen1.xy /= u_viewTexel.xy;
-screen2.xy /= u_viewTexel.xy;
+screen1 = toScreenCoords(screen1, u_viewTexel.xy);
+screen2 = toScreenCoords(screen2, u_viewTexel.xy);
 vec4 line_endPointsScreen = vec4(screen1.xy, screen2.xy);
 vec4 transformPosition = mix(screen1, screen2, position.y);
-	 vec3 screenPos = transformPosition.xyz / transformPosition.w;
+vec3 screenPos = transformPosition.xyz / transformPosition.w;
 //float wPos = transformPosition.w / abs(transformPosition.w);
-vec3 line_dir = screen2.xyz - screen1.xyz; //should this be screen or world distance?
-float lineLen = length(line_dir);
-line_dir /= lineLen;
-vec3 line_side = vec3(normalize(vec2(-line_dir.y, line_dir.x)),0);
-screenPos.xyz += line_side.xyz * texcoords.x * widthExpansion;
+vec2 lineDirection = screen2.xy - screen1.xy;
+float lineLength = length(lineDirection);
+lineDirection /= lineLength;
+vec2 lineSide = normalize(vec2(-lineDirection.y, lineDirection.x));
+screenPos.xy += lineSide * texcoords.x * widthExpansion;
 //overlap ends for the pixel miter
-vec2 endExpansion = (-line_dir.xy * endA * widthExpansion + line_dir.xy * endB * widthExpansion);
+vec2 endExpansion = (-lineDirection * endA * widthExpansion + lineDirection * endB * widthExpansion);
 screenPos.xy += endExpansion;
 //move for miters
-vec4 line_endFlags = vec4(u_endAngles.xz,0,0);
-vec2 prevTP = mix(u_tileMin.xy, u_tileMax.xy, u_endAngles.xy);
-vec2 nextTP = mix(u_tileMin.xy, u_tileMax.xy, u_endAngles.zw);
-vec3 prevPos = vec3(prevTP, u_tileMin.z + meshHeightAtPlanes(u_endAngles.xy, u_MeshResolution.x) * u_tileSize.z);
-vec3 nextPos = vec3(nextTP, u_tileMin.z + meshHeightAtPlanes(u_endAngles.zw, u_MeshResolution.x) * u_tileSize.z);
-vec4 screenPrev = mul(u_proj, mul(u_view, vec4(prevPos,1.0)));
-vec4 screenNext = mul(u_proj, mul(u_view, vec4(nextPos,1.0)));
-screenPrev /= screenPrev.w;
-screenNext /= screenNext.w;
-screenPrev.xy = screenPrev.xy * 0.5 + 0.5;
-screenNext.xy = screenNext.xy * 0.5 + 0.5;
-screenPrev.xy /= u_viewTexel.xy;
-screenNext.xy /= u_viewTexel.xy;
-vec3 prevDir = normalize(screenPrev.xyz - screen1.xyz);
-vec3 nextDir = normalize(screenNext.xyz - screen2.xyz);
-if(u_endAngles.x < -9999.0) prevDir = line_dir;
-if(u_endAngles.z < -9999.0) nextDir = -line_dir;
-vec3 endADir = normalize(prevDir + line_dir);
-vec3 endBDir = normalize(-line_dir + nextDir);
-//pass over the xy vectors for the mitered ends
-vec4 line_endAngles = vec4(endADir.xy * sign(length(u_endAngles.xy)), endBDir.xy * sign(length(u_endAngles.zw))); //angle goes to 0 if theres no connecting segment to indicate its an end point
+vec4 line_endFlags = vec4(u_PrevNext.xz,0,0);
+vec2 prevTP = mix(u_tileMin.xy, u_tileMax.xy, u_PrevNext.xy);
+vec2 nextTP = mix(u_tileMin.xy, u_tileMax.xy, u_PrevNext.zw);
+vec3 prevPos = vec3(prevTP, u_tileMin.z + meshHeightAtPlanes(u_PrevNext.xy, u_MeshResolution.x) * u_tileSize.z);
+vec3 nextPos = vec3(nextTP, u_tileMin.z + meshHeightAtPlanes(u_PrevNext.zw, u_MeshResolution.x) * u_tileSize.z);
+vec2 screenPrev = toScreenCoords(mul(u_proj, mul(u_view, vec4(prevPos,1.0))), u_viewTexel.xy).xy;
+vec2 screenNext = toScreenCoords(mul(u_proj, mul(u_view, vec4(nextPos,1.0))), u_viewTexel.xy).xy;
+vec2 prevDir = normalize(screenPrev.xy - screen1.xy);
+vec2 nextDir = normalize(screenNext.xy - screen2.xy);
+if(u_PrevNext.x < -9999.0) prevDir = lineDirection;
+if(u_PrevNext.z < -9999.0) nextDir = -lineDirection;
+vec2 jointADir = jointBisector(prevDir, lineDirection);
+vec2 jointBDir = jointBisector(-lineDirection, nextDir);
+// bias the joint normals in opposite directions
+vec2 jointANormal = vec2(-jointADir.y, jointADir.x);
+vec2 jointBNormal = vec2(jointBDir.y, -jointBDir.x);
+// compute similarity between normals and the appropriate line direction
+float similarityA = dot(jointANormal, lineDirection);
+float similarityB = dot(jointBNormal, -lineDirection);
+// calculate if the normals are facing towards the center of the line (with some floating point error), and flip if not
+float flipA = sign(similarityA) * float(abs(similarityA) > 0.001);
+float flipB = sign(similarityB) * float(abs(similarityB) > 0.001);
+// pass over the joint normal vectors for the mitered ends
+vec4 jointNormals = vec4(flipA * jointANormal, flipB * jointBNormal);
 float end = texcoords.y;
-texcoords.y *= lineLen / widthExpansion;
+texcoords.y *= lineLength / widthExpansion;
 texcoords.y += sign(end - 0.5) * length(endExpansion) / widthExpansion;
-texcoords.z = lineLen / widthExpansion;
+texcoords.z = lineLength / widthExpansion;
+vec3 line_dir = vec3(lineDirection, 0.0);
+vec3 line_side = vec3(lineSide, 0.0);
 
 //lighting
 vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);
@@ -234,7 +250,7 @@ vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0)
 //	 screenPosition.w = sqrt(dot(u_screenDimensions.xy, u_screenDimensions.xy)) * lineEdgeOffsetDist * 0.5;
 	 vec4 dashUV = vec4(position.xyz, 1.0);
 	 float zBias = (1.0 / 2500.0) * max(1.0,widthExpansion*2.0) * pow(max(1.0, 1.0 + (u_nearFarPlane.y - u_nearFarPlane.x - 500.0) / 100.0),2.5);
-	 screenPosition.z -= zBias / origW;
+	 screenPosition.z = max(-1.0, screenPosition.z - zBias / origW);
 	vec4 tilePosition = vec4(tilePos, 0.0, 0.0);
 vec4 glPos = vec4(screenPosition.xyz, 1.0);
 glPos.xy *= u_viewTexel.xy;
@@ -251,7 +267,7 @@ v_color0 = color.xyzw;
 v_depth = dashRow;
 v_texcoord5 = screenPosition.xyzw;
 v_texcoord3 = texcoords.xyzw;
-v_texcoord2 = line_endAngles.xyzw;
+v_texcoord2 = jointNormals.xyzw;
 v_tangent = line_dir.xyz;
 v_normal = line_side.xyz;
 v_texcoord1 = line_size.xyzw;

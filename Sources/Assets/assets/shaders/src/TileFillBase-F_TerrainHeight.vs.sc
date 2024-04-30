@@ -151,10 +151,12 @@ mat4 viewMat = u_view;
 //lighting
 
 //compose
+	worldPosition.z = tileZ;
 	float distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);
-	vec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xy, tileZ, 1.0)));
-	projected.z -= (projected.w * 0.01);
-	//projected.z -= (1.0 / 128.0);
+	float biasKm = max(0.010, 0.002 * u_nearFarPlane.z);
+	float biasScalar = max(0.5, 1.0 - biasKm / length(worldPosition));
+	worldPosition *= biasScalar;
+	vec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xyz, 1.0)));
 	vec4 depth = projected;
 	vec4 tilePosition = vec4(tilePos, 0.0, 0.0);
 	float inX = inRange(tilePosition.x, u_TileVertClip.x, u_TileVertClip.z);

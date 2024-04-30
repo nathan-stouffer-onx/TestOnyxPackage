@@ -728,7 +728,7 @@
             }
         },
         {
-            "id": "ocean$area_fill$dark",
+            "id": "water$area_fill$dark",
             "source": "base",
             "source-layer": "water_areas",
             "type": "fill",
@@ -736,12 +736,21 @@
             "filter": [
                 "all",
                 [
-                    "==",
+                    "match",
                     [
                         "get",
                         "data:type"
                     ],
-                    "ocean"
+                    [
+                        "glacier",
+                        "river",
+                        "stream",
+                        "wetland",
+                        "basin",
+                        "dam"
+                    ],
+                    false,
+                    true
                 ],
                 [
                     "!",
@@ -749,62 +758,96 @@
                         "has",
                         "data:intermittent"
                     ]
-                ],
-                [
-                    "!",
-                    [
-                        "has",
-                        "label"
-                    ]
                 ]
             ],
             "layout": {},
             "paint": {
-                "fill-color": "rgba(184, 227, 247, 1)",
-                "fill-opacity": 1
+                "fill-color": [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    "ocean",
+                    "rgba(194, 232, 249, 1)",
+                    "rgba(184, 227, 247, 1)"
+                ]
             }
         },
         {
-            "id": "water$area_fill$dark",
+            "id": "ocean$bathymetry$dark",
             "source": "base",
-            "source-layer": "water_areas",
+            "source-layer": "water_bathymetry",
             "type": "fill",
-            "minzoom": 2,
+            "minzoom": 0,
             "filter": [
                 "all",
                 [
-                    "!",
+                    ">",
                     [
-                        "match",
+                        "to-number",
                         [
                             "get",
-                            "data:type"
-                        ],
-                        [
-                            "glacier",
-                            "ocean",
-                            "river",
-                            "stream",
-                            "wetland",
-                            "basin",
-                            "dam"
-                        ],
-                        true,
-                        false
-                    ]
-                ],
-                [
-                    "!",
-                    [
-                        "has",
-                        "data:intermittent"
-                    ]
+                            "data:depth_m"
+                        ]
+                    ],
+                    100
                 ]
             ],
-            "layout": {},
+            "layout": {
+                "fill-sort-key": [
+                    "to-number",
+                    [
+                        "get",
+                        "data:depth_m"
+                    ]
+                ]
+            },
             "paint": {
-                "fill-color": "rgba(184, 227, 247, 1)",
-                "fill-opacity": 1
+                "fill-color": [
+                    "case",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [
+                                "get",
+                                "data:depth_m"
+                            ]
+                        ],
+                        200
+                    ],
+                    "rgba(184, 227, 247, 1)",
+                    "rgba(72, 140, 169, 1)"
+                ],
+                "fill-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    [
+                        "case",
+                        [
+                            "==",
+                            [
+                                "to-number",
+                                [
+                                    "get",
+                                    "data:depth_m"
+                                ]
+                            ],
+                            200
+                        ],
+                        1,
+                        0.08
+                    ],
+                    12,
+                    0
+                ]
             }
         },
         {

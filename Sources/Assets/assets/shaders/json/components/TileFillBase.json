@@ -64,10 +64,12 @@
         {
             "comment": "TODO figure out a way to have positionOffset = 0 so other components easily override base shader behavior",
             "lines": [
+                "\tworldPosition.z = tileZ;",
                 "\tfloat distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);",
-                "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xy, tileZ, 1.0)));",
-                "\tprojected.z -= (projected.w * 0.01);",
-                "\t//projected.z -= (1.0 / 128.0);",
+                "\tfloat biasKm = max(0.010, 0.002 * u_nearFarPlane.z);",
+                "\tfloat biasScalar = max(0.5, 1.0 - biasKm / length(worldPosition));",
+                "\tworldPosition *= biasScalar;",
+                "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xyz, 1.0)));",
                 "\tvec4 depth = projected;"
             ],
             "position": "Compose",

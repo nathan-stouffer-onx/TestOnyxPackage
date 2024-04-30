@@ -27,8 +27,8 @@ uniform vec4 u_time;
 uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 uniform vec4 u_TileFragClip;
-uniform vec4 u_endAngles;
 uniform vec4 u_p1p2;
+uniform vec4 u_PrevNext;
 uniform vec4 u_screenDimensions;
 uniform vec4 u_params;
 uniform vec4 u_vectorFade;
@@ -36,7 +36,7 @@ uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_nearFarPlane;
 
 //functions
-	float repeat(float x) { return abs(fract(x*0.5+0.5)-0.5)*2.0; }
+float repeat(float x) { return abs(fract(x*0.5+0.5)-0.5)*2.0; }
 float LineDistField(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded, float dashOn, float time)
 {
 	// Don't let it get more round than circular.
@@ -91,7 +91,7 @@ float FillLine(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded)
 	float dist = df;
 	vec2 ddist = vec2(dFdx(dist), dFdy(dist));
 	float pixelDist = dist / length(ddist);
-	return saturate(0.5 - pixelDist);
+	return saturate(-pixelDist);
 }
 // This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.
 float DashLine(vec3 uv, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)
@@ -99,20 +99,18 @@ float DashLine(vec3 uv, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, ve
 	float dashLenCount = floor(texture2D(s_DashSampler, vec2(0.0, dashId)).x * (s_DashSampler_Res.x - 1.0) + 0.5);
 	float worldLineLen = totalLen.y - totalLen.x;
 	float screenLineLen = length(screenEndpoints.xy - screenEndpoints.zw);
-	float worldToScreenLengthScale = screenLineLen / worldLineLen;
+	float worldToScreenLengthScale = screenLineLen / worldLineLen * 0.5;
 	float lengthOffset = totalLen.x * worldToScreenLengthScale +  uv.x * thick.y; //find our position along the dashing
 	lengthOffset /= thick.y; //put in scale of line widths per dash unit
-	float dashScale = 1.0; //magic number to fix scaling - may not be needed, converted to zoom controlled, or...?
-	float dashPosition = mod(dashScale * lengthOffset + u_time.x / 500.0, dashLenCount); //tile by the number of dash units we have per pattern 
+	float dashScale = 0.25; //magic number to fix scaling - may not be needed, converted to zoom controlled, or...?
+	float dashPosition = mod(dashScale * lengthOffset , dashLenCount); //tile by the number of dash units we have per pattern 
 	float dashUVx = (dashPosition + 1.0) / s_DashSampler_Res.x;
 	float dashOnOff = texture2D(s_DashSampler, vec2(dashUVx, dashId)).x;
 	float dashDf = LineDistField(uv, pA, pB, thick, 0.0, 0.0, 0.0) * dashOnOff;
-	float dashLine = smoothStep((-dashDf), 0.0, 0.01);
 	float dist = -dashDf;
 	vec2 ddist = vec2(dFdx(dist), dFdy(dist));
 	float pixelDist = dist / length(ddist);
-//	return saturate(0.5 - pixelDist);
-	 return dashLine;
+	return saturate(pixelDist);
 }
 // This makes an outlined line in UV units. A 1.0 thick outline will span 0..1 in UV space.
 float DrawOutline(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded, float outlineThick)
@@ -136,7 +134,7 @@ float dashRow = v_depth;
 vec4 screenPosition = v_texcoord5.xyzw;
 vec4 lineCenter = v_texcoord4.xyzw;
 vec4 texcoords = v_texcoord3.xyzw;
-vec4 line_endAngles = v_texcoord2.xyzw;
+vec4 jointNormals = v_texcoord2.xyzw;
 vec3 line_dir = v_bitangent.xyz;
 vec3 line_side = v_tangent.xyz;
 vec4 line_size = v_texcoord1.xyzw;
@@ -156,21 +154,15 @@ vec4 distFade = v_color2.xyzw;
 	 float cMaxDashArrayLength = 16.0;
 	 vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;
 	 float dashV = dashRow + 0.5 * dashPixelWidth.y;
-//clip off the ends of the corners to make the mitered joints
-vec2 toEndA = normalize(screenPosition.xy - line_endPointsScreen.xy);//normalize(texcoords.xy - vec2(0,0)) * u_viewTexel.xy;
-vec2 toEndB = normalize(screenPosition.xy - line_endPointsScreen.zw);//normalize(texcoords.xy - vec2(0,texcoords.z)) * u_viewTexel.xy;
-//spin the miters 90 deg so they're 90 deg to the miter angle
-vec2 angleAUV = line_endAngles.xy;
-vec2 angleBUV = line_endAngles.zw;
-vec2 endADir = vec2(-angleAUV.y, angleAUV.x);
-vec2 endBDir = vec2(-angleBUV.y, angleBUV.x);
-//calculate if the directions are facing towards the center of the line like we expect, and flip if not
-float flipA = sign(dot(endADir, line_dir.xy));//vec2(0,1)));
-float flipB = sign(dot(endBDir, -line_dir.xy));//vec2(0,-1)));
-float clipA = -flipA * dot(toEndA, endADir); //see which side of the end we're on
-float clipB = flipB * dot(toEndB, endBDir);
-if( ((clipA * abs(line_endAngles.x)) > 0.0 && line_endFlags.x > -9999.0) || ((clipB * abs(line_endAngles.z)) < 0.0 && line_endFlags.y > -9999.0) )
-	discard;
+// clip off the ends of the corners to make the mitered joints
+vec2 fromEndA = screenPosition.xy - line_endPointsScreen.xy;
+vec2 fromEndB = screenPosition.xy - line_endPointsScreen.zw;
+bool clipA = dot(fromEndA, jointNormals.xy) < 0.0; // see which side of the end we're on
+bool clipB = dot(fromEndB, jointNormals.zw) < 0.0;
+if ((clipA && line_endFlags.x > -9999.0) || (clipB && line_endFlags.y > -9999.0))
+	{
+		discard;
+	}
 
 //lighting
 float ends = texcoords.z;
@@ -186,7 +178,7 @@ float alpha = min(1.0, max(dashLine + solid + solidOuterOutline,0));
 vec4 fragColor = vec4(solid*1.0, -solid*1.0, 0.0,1.0);
 //temp variables for color, need to hook up to cpu access
 vec4 u_lineOuterOutlineColor = vec4(0,0,1,1);
-vec4 dashColor = vec4(1,0,0,1);
+vec4 dashColor = color.xyzw;//TODO - pass in dash color separate from solid vec4(1,0,0,1);
 vec3 solidDashBlend = mix(color.xyz, dashLine * dashColor.xyz, dashLine);
 fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutline), alpha);
 //float df = LineDistField(lineCoords, start, end, vec2(1.0,1.0), 0.0, 0.0, 0.0);

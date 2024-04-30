@@ -7,7 +7,6 @@ in vec4 v_color2;
 in vec4 v_color3;
 in vec4 v_color4;
 in float v_depth;
-in vec3 v_tangent;
 in vec4 v_texcoord0;
 in vec4 v_texcoord1;
 in vec4 v_texcoord2;
@@ -18,7 +17,6 @@ uniform sampler2D s_DashSampler;
 uniform vec4 s_DashSampler_Res;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
-uniform vec4 u_time;
 uniform vec4 u_TileFragClip;
 uniform vec4 u_vectorFade;
 void main ()
@@ -34,265 +32,242 @@ void main ()
   };
   float tmpvar_5;
   tmpvar_5 = (v_depth + (0.5 * (1.0/(s_DashSampler_Res.xy)).y));
-  vec2 tmpvar_6;
-  tmpvar_6.x = -(v_texcoord2.y);
-  tmpvar_6.y = v_texcoord2.x;
-  vec2 tmpvar_7;
-  tmpvar_7.x = -(v_texcoord2.w);
-  tmpvar_7.y = v_texcoord2.z;
-  float tmpvar_8;
-  tmpvar_8 = (-(sign(
-    dot (tmpvar_6, v_tangent.xy)
-  )) * dot (normalize(
-    (v_texcoord5.xy - v_texcoord0.xy)
-  ), tmpvar_6));
-  float tmpvar_9;
-  tmpvar_9 = (sign(dot (tmpvar_7, 
-    -(v_tangent.xy)
-  )) * dot (normalize(
-    (v_texcoord5.xy - v_texcoord0.zw)
-  ), tmpvar_7));
-  float tmpvar_10;
-  tmpvar_10 = abs(v_texcoord2.x);
-  bool tmpvar_11;
-  if ((((tmpvar_8 * tmpvar_10) > 0.0) && (v_color3.x > -9999.0))) {
-    tmpvar_11 = bool(1);
-  } else {
-    tmpvar_11 = (((tmpvar_9 * 
-      abs(v_texcoord2.z)
-    ) < 0.0) && (v_color3.y > -9999.0));
-  };
-  if (tmpvar_11) {
+  bool tmpvar_6;
+  tmpvar_6 = (dot ((v_texcoord5.xy - v_texcoord0.xy), v_texcoord2.xy) < 0.0);
+  bool tmpvar_7;
+  tmpvar_7 = (dot ((v_texcoord5.xy - v_texcoord0.zw), v_texcoord2.zw) < 0.0);
+  if (((tmpvar_6 && (v_color3.x > -9999.0)) || (tmpvar_7 && (v_color3.y > -9999.0)))) {
     discard;
   };
-  vec2 tmpvar_12;
-  tmpvar_12.y = 0.0;
-  tmpvar_12.x = v_texcoord3.z;
+  vec2 tmpvar_8;
+  tmpvar_8.y = 0.0;
+  tmpvar_8.x = v_texcoord3.z;
   widthExpansion_2 = (((
     (max (v_texcoord1.x, v_texcoord1.y) + v_texcoord1.z)
    + v_texcoord1.w) + 2.0) / 2.0);
+  vec2 tmpvar_9;
+  float tmpvar_10;
+  tmpvar_10 = (v_texcoord1.x * 0.5);
+  tmpvar_9.x = (tmpvar_10 / widthExpansion_2);
+  tmpvar_9.y = (tmpvar_10 / widthExpansion_2);
+  vec2 unit_11;
+  float tmpvar_12;
+  tmpvar_12 = min (tmpvar_9.y, 0.0);
   vec2 tmpvar_13;
+  tmpvar_13 = (tmpvar_8 * 0.5);
   float tmpvar_14;
-  tmpvar_14 = (v_texcoord1.x * 0.5);
-  tmpvar_13.x = (tmpvar_14 / widthExpansion_2);
-  tmpvar_13.y = (tmpvar_14 / widthExpansion_2);
-  vec2 unit_15;
-  float tmpvar_16;
-  tmpvar_16 = min (tmpvar_13.y, 0.0);
-  vec2 tmpvar_17;
-  tmpvar_17 = (tmpvar_12 * 0.5);
-  float tmpvar_18;
-  tmpvar_18 = sqrt(dot (tmpvar_12, tmpvar_12));
-  unit_15 = (tmpvar_12 / tmpvar_18);
-  if ((tmpvar_18 < 0.0001)) {
-    unit_15 = vec2(1.0, 0.0);
+  tmpvar_14 = sqrt(dot (tmpvar_8, tmpvar_8));
+  unit_11 = (tmpvar_8 / tmpvar_14);
+  if ((tmpvar_14 < 0.0001)) {
+    unit_11 = vec2(1.0, 0.0);
   };
-  float tmpvar_19;
-  tmpvar_19 = dot (unit_15, (v_texcoord3.yx - tmpvar_17));
-  float tmpvar_20;
-  tmpvar_20 = ((abs(
-    dot ((unit_15.yx * vec2(-1.0, 1.0)), (v_texcoord3.yx - tmpvar_17))
-  ) - tmpvar_13.y) + tmpvar_16);
-  float tmpvar_21;
-  tmpvar_21 = (((
-    abs(tmpvar_19)
+  float tmpvar_15;
+  tmpvar_15 = dot (unit_11, (v_texcoord3.yx - tmpvar_13));
+  float tmpvar_16;
+  tmpvar_16 = ((abs(
+    dot ((unit_11.yx * vec2(-1.0, 1.0)), (v_texcoord3.yx - tmpvar_13))
+  ) - tmpvar_9.y) + tmpvar_12);
+  float tmpvar_17;
+  tmpvar_17 = (((
+    abs(tmpvar_15)
    - 
-    (tmpvar_18 * 0.5)
-  ) - tmpvar_13.x) + tmpvar_16);
-  vec2 tmpvar_22;
-  tmpvar_22.x = max (0.0, tmpvar_21);
-  tmpvar_22.y = max (0.0, tmpvar_20);
-  float tmpvar_23;
-  tmpvar_23 = (2.0 * tmpvar_13.y);
-  vec2 x_24;
-  x_24 = -(v_texcoord3.yx);
-  vec2 x_25;
-  x_25 = (tmpvar_12 - v_texcoord3.yx);
-  float tmpvar_26;
-  tmpvar_26 = mix (max (min (
-    (sqrt(dot (tmpvar_22, tmpvar_22)) - tmpvar_16)
+    (tmpvar_14 * 0.5)
+  ) - tmpvar_9.x) + tmpvar_12);
+  vec2 tmpvar_18;
+  tmpvar_18.x = max (0.0, tmpvar_17);
+  tmpvar_18.y = max (0.0, tmpvar_16);
+  float tmpvar_19;
+  tmpvar_19 = (2.0 * tmpvar_9.y);
+  vec2 x_20;
+  x_20 = -(v_texcoord3.yx);
+  vec2 x_21;
+  x_21 = (tmpvar_8 - v_texcoord3.yx);
+  float tmpvar_22;
+  tmpvar_22 = mix (max (min (
+    (sqrt(dot (tmpvar_18, tmpvar_18)) - tmpvar_12)
   , 
-    max (tmpvar_21, tmpvar_20)
+    max (tmpvar_17, tmpvar_16)
   ), (
     (((abs(
       (fract(((
-        (tmpvar_19 / tmpvar_23)
+        (tmpvar_15 / tmpvar_19)
        * 0.5) + 0.5)) - 0.5)
-    ) * 2.0) - 0.5) * tmpvar_23)
+    ) * 2.0) - 0.5) * tmpvar_19)
    - 10000.0)), min ((
-    sqrt(dot (x_24, x_24))
-   - tmpvar_13.y), (
-    sqrt(dot (x_25, x_25))
-   - tmpvar_13.y)), (max (0.0, 
+    sqrt(dot (x_20, x_20))
+   - tmpvar_9.y), (
+    sqrt(dot (x_21, x_21))
+   - tmpvar_9.y)), (max (0.0, 
     -(sign(v_texcoord3.y))
   ) + max (0.0, 
     sign((v_texcoord3.y - v_texcoord3.z))
   )));
-  vec2 tmpvar_27;
-  tmpvar_27.x = dFdx(tmpvar_26);
-  tmpvar_27.y = dFdy(tmpvar_26);
-  float tmpvar_28;
-  tmpvar_28 = clamp ((0.5 - (tmpvar_26 / 
-    sqrt(dot (tmpvar_27, tmpvar_27))
+  vec2 tmpvar_23;
+  tmpvar_23.x = dFdx(tmpvar_22);
+  tmpvar_23.y = dFdy(tmpvar_22);
+  float tmpvar_24;
+  tmpvar_24 = clamp (-((tmpvar_22 / 
+    sqrt(dot (tmpvar_23, tmpvar_23))
   )), 0.0, 1.0);
-  vec2 tmpvar_29;
+  vec2 tmpvar_25;
+  float tmpvar_26;
+  tmpvar_26 = max (v_texcoord1.x, v_texcoord1.y);
+  tmpvar_25.x = (((
+    (tmpvar_26 + v_texcoord1.z)
+   + v_texcoord1.w) * 0.5) / widthExpansion_2);
+  tmpvar_25.y = (((
+    (tmpvar_26 + v_texcoord1.z)
+   + v_texcoord1.w) * 0.5) / widthExpansion_2);
+  float tmpvar_27;
+  float outlineThick_28;
+  outlineThick_28 = ((v_texcoord1.w * 0.5) / widthExpansion_2);
+  vec2 unit_29;
   float tmpvar_30;
-  tmpvar_30 = max (v_texcoord1.x, v_texcoord1.y);
-  tmpvar_29.x = (((
-    (tmpvar_30 + v_texcoord1.z)
-   + v_texcoord1.w) * 0.5) / widthExpansion_2);
-  tmpvar_29.y = (((
-    (tmpvar_30 + v_texcoord1.z)
-   + v_texcoord1.w) * 0.5) / widthExpansion_2);
-  float tmpvar_31;
-  float outlineThick_32;
-  outlineThick_32 = ((v_texcoord1.w * 0.5) / widthExpansion_2);
-  vec2 unit_33;
-  float tmpvar_34;
-  tmpvar_34 = min (tmpvar_29.y, 0.0);
-  vec2 tmpvar_35;
-  tmpvar_35 = (tmpvar_12 * 0.5);
-  float tmpvar_36;
-  tmpvar_36 = sqrt(dot (tmpvar_12, tmpvar_12));
-  unit_33 = (tmpvar_12 / tmpvar_36);
-  if ((tmpvar_36 < 0.0001)) {
-    unit_33 = vec2(1.0, 0.0);
+  tmpvar_30 = min (tmpvar_25.y, 0.0);
+  vec2 tmpvar_31;
+  tmpvar_31 = (tmpvar_8 * 0.5);
+  float tmpvar_32;
+  tmpvar_32 = sqrt(dot (tmpvar_8, tmpvar_8));
+  unit_29 = (tmpvar_8 / tmpvar_32);
+  if ((tmpvar_32 < 0.0001)) {
+    unit_29 = vec2(1.0, 0.0);
   };
-  float tmpvar_37;
-  tmpvar_37 = dot (unit_33, (v_texcoord3.yx - tmpvar_35));
-  float tmpvar_38;
-  tmpvar_38 = ((abs(
-    dot ((unit_33.yx * vec2(-1.0, 1.0)), (v_texcoord3.yx - tmpvar_35))
-  ) - tmpvar_29.y) + tmpvar_34);
-  float tmpvar_39;
-  tmpvar_39 = (((
-    abs(tmpvar_37)
+  float tmpvar_33;
+  tmpvar_33 = dot (unit_29, (v_texcoord3.yx - tmpvar_31));
+  float tmpvar_34;
+  tmpvar_34 = ((abs(
+    dot ((unit_29.yx * vec2(-1.0, 1.0)), (v_texcoord3.yx - tmpvar_31))
+  ) - tmpvar_25.y) + tmpvar_30);
+  float tmpvar_35;
+  tmpvar_35 = (((
+    abs(tmpvar_33)
    - 
-    (tmpvar_36 * 0.5)
-  ) - tmpvar_29.x) + tmpvar_34);
-  vec2 tmpvar_40;
-  tmpvar_40.x = max (0.0, tmpvar_39);
-  tmpvar_40.y = max (0.0, tmpvar_38);
-  float tmpvar_41;
-  tmpvar_41 = (2.0 * tmpvar_29.y);
-  vec2 x_42;
-  x_42 = -(v_texcoord3.yx);
-  vec2 x_43;
-  x_43 = (tmpvar_12 - v_texcoord3.yx);
-  float tmpvar_44;
-  tmpvar_44 = (abs((
+    (tmpvar_32 * 0.5)
+  ) - tmpvar_25.x) + tmpvar_30);
+  vec2 tmpvar_36;
+  tmpvar_36.x = max (0.0, tmpvar_35);
+  tmpvar_36.y = max (0.0, tmpvar_34);
+  float tmpvar_37;
+  tmpvar_37 = (2.0 * tmpvar_25.y);
+  vec2 x_38;
+  x_38 = -(v_texcoord3.yx);
+  vec2 x_39;
+  x_39 = (tmpvar_8 - v_texcoord3.yx);
+  float tmpvar_40;
+  tmpvar_40 = (abs((
     mix (max (min ((
-      sqrt(dot (tmpvar_40, tmpvar_40))
-     - tmpvar_34), max (tmpvar_39, tmpvar_38)), ((
+      sqrt(dot (tmpvar_36, tmpvar_36))
+     - tmpvar_30), max (tmpvar_35, tmpvar_34)), ((
       ((abs((
-        fract((((tmpvar_37 / tmpvar_41) * 0.5) + 0.5))
+        fract((((tmpvar_33 / tmpvar_37) * 0.5) + 0.5))
        - 0.5)) * 2.0) - 0.5)
-     * tmpvar_41) - 10000.0)), min ((sqrt(
-      dot (x_42, x_42)
-    ) - tmpvar_29.y), (sqrt(
-      dot (x_43, x_43)
-    ) - tmpvar_29.y)), (max (0.0, -(
+     * tmpvar_37) - 10000.0)), min ((sqrt(
+      dot (x_38, x_38)
+    ) - tmpvar_25.y), (sqrt(
+      dot (x_39, x_39)
+    ) - tmpvar_25.y)), (max (0.0, -(
       sign(v_texcoord3.y)
     )) + max (0.0, sign(
       (v_texcoord3.y - v_texcoord3.z)
     ))))
    + 
-    (outlineThick_32 * 0.5)
-  )) - (outlineThick_32 * 0.5));
-  vec2 tmpvar_45;
-  tmpvar_45.x = dFdx(tmpvar_44);
-  tmpvar_45.y = dFdy(tmpvar_44);
-  tmpvar_31 = (clamp ((0.5 - 
-    (tmpvar_44 / sqrt(dot (tmpvar_45, tmpvar_45)))
-  ), 0.0, 1.0) * abs(sign(outlineThick_32)));
+    (outlineThick_28 * 0.5)
+  )) - (outlineThick_28 * 0.5));
+  vec2 tmpvar_41;
+  tmpvar_41.x = dFdx(tmpvar_40);
+  tmpvar_41.y = dFdy(tmpvar_40);
+  tmpvar_27 = (clamp ((0.5 - 
+    (tmpvar_40 / sqrt(dot (tmpvar_41, tmpvar_41)))
+  ), 0.0, 1.0) * abs(sign(outlineThick_28)));
+  vec2 tmpvar_42;
+  float tmpvar_43;
+  tmpvar_43 = (v_texcoord1.y * 0.5);
+  tmpvar_42.x = (tmpvar_43 / widthExpansion_2);
+  tmpvar_42.y = (tmpvar_43 / widthExpansion_2);
+  vec2 tmpvar_44;
+  tmpvar_44.x = 0.0;
+  tmpvar_44.y = tmpvar_5;
+  vec2 x_45;
+  x_45 = (v_texcoord0.xy - v_texcoord0.zw);
   vec2 tmpvar_46;
-  float tmpvar_47;
-  tmpvar_47 = (v_texcoord1.y * 0.5);
-  tmpvar_46.x = (tmpvar_47 / widthExpansion_2);
-  tmpvar_46.y = (tmpvar_47 / widthExpansion_2);
-  vec2 tmpvar_48;
-  tmpvar_48.x = 0.0;
-  tmpvar_48.y = tmpvar_5;
-  vec2 x_49;
-  x_49 = (v_texcoord0.xy - v_texcoord0.zw);
-  vec2 tmpvar_50;
-  tmpvar_50.x = (((float(mod (
-    ((((v_color4.x * 
-      (sqrt(dot (x_49, x_49)) / (v_color4.y - v_color4.x))
-    ) + (v_texcoord3.y * tmpvar_46.y)) / tmpvar_46.y) + (u_time.x / 500.0))
+  tmpvar_46.x = (((float(mod (
+    (0.25 * (((v_color4.x * 
+      ((sqrt(dot (x_45, x_45)) / (v_color4.y - v_color4.x)) * 0.5)
+    ) + (v_texcoord3.y * tmpvar_42.y)) / tmpvar_42.y))
   , 
-    floor(((texture (s_DashSampler, tmpvar_48).x * (s_DashSampler_Res.x - 1.0)) + 0.5))
+    floor(((texture (s_DashSampler, tmpvar_44).x * (s_DashSampler_Res.x - 1.0)) + 0.5))
   ))) + 1.0) / s_DashSampler_Res.x);
-  tmpvar_50.y = tmpvar_5;
-  vec4 tmpvar_51;
-  tmpvar_51 = texture (s_DashSampler, tmpvar_50);
-  vec2 unit_52;
-  float tmpvar_53;
-  tmpvar_53 = min (tmpvar_46.y, 0.0);
-  vec2 tmpvar_54;
-  tmpvar_54 = (tmpvar_12 * 0.5);
-  float tmpvar_55;
-  tmpvar_55 = sqrt(dot (tmpvar_12, tmpvar_12));
-  unit_52 = (tmpvar_12 / tmpvar_55);
-  if ((tmpvar_55 < 0.0001)) {
-    unit_52 = vec2(1.0, 0.0);
+  tmpvar_46.y = tmpvar_5;
+  vec4 tmpvar_47;
+  tmpvar_47 = texture (s_DashSampler, tmpvar_46);
+  vec2 unit_48;
+  float tmpvar_49;
+  tmpvar_49 = min (tmpvar_42.y, 0.0);
+  vec2 tmpvar_50;
+  tmpvar_50 = (tmpvar_8 * 0.5);
+  float tmpvar_51;
+  tmpvar_51 = sqrt(dot (tmpvar_8, tmpvar_8));
+  unit_48 = (tmpvar_8 / tmpvar_51);
+  if ((tmpvar_51 < 0.0001)) {
+    unit_48 = vec2(1.0, 0.0);
   };
-  float tmpvar_56;
-  tmpvar_56 = dot (unit_52, (v_texcoord3.yx - tmpvar_54));
-  float tmpvar_57;
-  tmpvar_57 = ((abs(
-    dot ((unit_52.yx * vec2(-1.0, 1.0)), (v_texcoord3.yx - tmpvar_54))
-  ) - tmpvar_46.y) + tmpvar_53);
-  float tmpvar_58;
-  tmpvar_58 = (((
-    abs(tmpvar_56)
+  float tmpvar_52;
+  tmpvar_52 = dot (unit_48, (v_texcoord3.yx - tmpvar_50));
+  float tmpvar_53;
+  tmpvar_53 = ((abs(
+    dot ((unit_48.yx * vec2(-1.0, 1.0)), (v_texcoord3.yx - tmpvar_50))
+  ) - tmpvar_42.y) + tmpvar_49);
+  float tmpvar_54;
+  tmpvar_54 = (((
+    abs(tmpvar_52)
    - 
-    (tmpvar_55 * 0.5)
-  ) - tmpvar_46.x) + tmpvar_53);
-  vec2 tmpvar_59;
-  tmpvar_59.x = max (0.0, tmpvar_58);
-  tmpvar_59.y = max (0.0, tmpvar_57);
-  float tmpvar_60;
-  tmpvar_60 = (2.0 * tmpvar_46.y);
-  vec2 x_61;
-  x_61 = -(v_texcoord3.yx);
-  vec2 x_62;
-  x_62 = (tmpvar_12 - v_texcoord3.yx);
+    (tmpvar_51 * 0.5)
+  ) - tmpvar_42.x) + tmpvar_49);
+  vec2 tmpvar_55;
+  tmpvar_55.x = max (0.0, tmpvar_54);
+  tmpvar_55.y = max (0.0, tmpvar_53);
+  float tmpvar_56;
+  tmpvar_56 = (2.0 * tmpvar_42.y);
+  vec2 x_57;
+  x_57 = -(v_texcoord3.yx);
+  vec2 x_58;
+  x_58 = (tmpvar_8 - v_texcoord3.yx);
+  float tmpvar_59;
+  tmpvar_59 = -((mix (
+    max (min ((sqrt(
+      dot (tmpvar_55, tmpvar_55)
+    ) - tmpvar_49), max (tmpvar_54, tmpvar_53)), (((
+      (abs((fract(
+        (((tmpvar_52 / tmpvar_56) * 0.5) + 0.5)
+      ) - 0.5)) * 2.0)
+     - 0.5) * tmpvar_56) - 10000.0))
+  , 
+    min ((sqrt(dot (x_57, x_57)) - tmpvar_42.y), (sqrt(dot (x_58, x_58)) - tmpvar_42.y))
+  , 
+    (max (0.0, -(sign(v_texcoord3.y))) + max (0.0, sign((v_texcoord3.y - v_texcoord3.z))))
+  ) * tmpvar_47.x));
+  vec2 tmpvar_60;
+  tmpvar_60.x = dFdx(tmpvar_59);
+  tmpvar_60.y = dFdy(tmpvar_59);
+  float tmpvar_61;
+  tmpvar_61 = clamp ((tmpvar_59 / sqrt(
+    dot (tmpvar_60, tmpvar_60)
+  )), 0.0, 1.0);
+  vec4 tmpvar_62;
+  tmpvar_62.xyz = mix (mix (v_color0.xyz, (tmpvar_61 * v_color0.xyz), tmpvar_61), vec3(0.0, 0.0, 1.0), tmpvar_27);
+  tmpvar_62.w = min (max ((
+    (tmpvar_61 + tmpvar_24)
+   + tmpvar_27), 0.0), 1.0);
+  fragColor_1.w = tmpvar_62.w;
   float tmpvar_63;
-  tmpvar_63 = min (max ((
-    -((mix (max (
-      min ((sqrt(dot (tmpvar_59, tmpvar_59)) - tmpvar_53), max (tmpvar_58, tmpvar_57))
-    , 
-      ((((
-        abs((fract((
-          ((tmpvar_56 / tmpvar_60) * 0.5)
-         + 0.5)) - 0.5))
-       * 2.0) - 0.5) * tmpvar_60) - 10000.0)
-    ), min (
-      (sqrt(dot (x_61, x_61)) - tmpvar_46.y)
-    , 
-      (sqrt(dot (x_62, x_62)) - tmpvar_46.y)
-    ), (
-      max (0.0, -(sign(v_texcoord3.y)))
-     + 
-      max (0.0, sign((v_texcoord3.y - v_texcoord3.z)))
-    )) * tmpvar_51.x))
-   / 0.01), 0.0), 1.0);
-  vec4 tmpvar_64;
-  tmpvar_64.xyz = mix (mix (v_color0.xyz, (tmpvar_63 * vec3(1.0, 0.0, 0.0)), tmpvar_63), vec3(0.0, 0.0, 1.0), tmpvar_31);
-  tmpvar_64.w = min (max ((
-    (tmpvar_63 + tmpvar_28)
-   + tmpvar_31), 0.0), 1.0);
-  fragColor_1.w = tmpvar_64.w;
-  float tmpvar_65;
-  tmpvar_65 = clamp (((v_color1.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
-  fragColor_1.xyz = mix (tmpvar_64.xyz, u_FogColor.xyz, (tmpvar_65 * (tmpvar_65 * 
-    (3.0 - (2.0 * tmpvar_65))
+  tmpvar_63 = clamp (((v_color1.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_1.xyz = mix (tmpvar_62.xyz, u_FogColor.xyz, (tmpvar_63 * (tmpvar_63 * 
+    (3.0 - (2.0 * tmpvar_63))
   )));
-  mediump vec4 tmpvar_66;
-  tmpvar_66.xyz = fragColor_1.xyz;
-  tmpvar_66.w = ((tmpvar_64.w * v_color0.w) * (u_vectorFade.x * v_color2.x));
-  bgfx_FragData[0] = tmpvar_66;
+  mediump vec4 tmpvar_64;
+  tmpvar_64.xyz = fragColor_1.xyz;
+  tmpvar_64.w = ((tmpvar_62.w * v_color0.w) * (u_vectorFade.x * v_color2.x));
+  bgfx_FragData[0] = tmpvar_64;
   bgfx_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }
 

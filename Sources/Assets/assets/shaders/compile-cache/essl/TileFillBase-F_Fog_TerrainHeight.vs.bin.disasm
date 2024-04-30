@@ -1,9 +1,9 @@
 precision highp int;
 precision highp float;
 in highp vec4 a_texcoord7;
-out highp vec3 v_bitangent;
-out highp float v_depth;
-out highp vec4 v_texcoord3;
+out vec3 v_bitangent;
+out float v_depth;
+out vec4 v_texcoord3;
 out vec4 v_texcoord4;
 out vec4 v_texcoord5;
 out vec4 v_texcoord6;
@@ -25,20 +25,21 @@ uniform highp vec4 u_tileMax;
 uniform highp vec4 u_TileVertClip;
 void main ()
 {
-  vec4 depth_1;
-  vec4 projected_2;
-  vec4 vecPattern_3;
+  vec4 projected_1;
+  vec4 vecPattern_2;
+  vec3 worldPosition_3;
   float tileZ_4;
   highp vec2 tmpvar_5;
   tmpvar_5 = a_texcoord7.xy;
   tileZ_4 = u_tileMin.z;
-  highp vec3 tmpvar_6;
+  vec3 tmpvar_6;
   tmpvar_6.xy = mix (u_tileMin.xy, u_tileMax.xy, a_texcoord7.xy);
   tmpvar_6.z = u_tileMin.z;
+  worldPosition_3 = tmpvar_6;
   vec4 tmpvar_7;
   tmpvar_7 = textureLod (s_vectorPatterns, a_texcoord7.zw, 0.0);
-  vecPattern_3.xy = tmpvar_7.xy;
-  vecPattern_3.zw = (tmpvar_7.zw * s_patterns_Res.xy);
+  vecPattern_2.xy = tmpvar_7.xy;
+  vecPattern_2.zw = (tmpvar_7.zw * s_patterns_Res.xy);
   vec4 tmpvar_8;
   tmpvar_8 = textureLod (s_vectorColors, a_texcoord7.zw, 0.0);
   highp vec2 tmpvar_9;
@@ -91,26 +92,27 @@ void main ()
   tileZ_4 = (u_tileMin.z + ((
     (dot (tmpvar_24, tmpvar_21) - dot (tmpvar_24.xy, mix (u_tileMin.xy, u_tileMax.xy, a_texcoord7.xy)))
    / tmpvar_24.z) * u_tileSize.z));
-  highp vec4 tmpvar_27;
+  vec4 tmpvar_27;
   tmpvar_27.yzw = vec3(0.0, 0.0, 0.0);
   tmpvar_27.x = (sqrt(dot (tmpvar_6, tmpvar_6)) / u_nearFarPlane.y);
-  highp float tmpvar_28;
+  worldPosition_3.z = tileZ_4;
+  float tmpvar_28;
   tmpvar_28 = clamp (((
-    (sqrt(dot (tmpvar_6, tmpvar_6)) / u_nearFarPlane.y)
+    (sqrt(dot (worldPosition_3, worldPosition_3)) / u_nearFarPlane.y)
    - u_TileFillOpacityTransition.x) / (u_TileFillOpacityTransition.y - u_TileFillOpacityTransition.x)), 0.0, 1.0);
-  highp float tmpvar_29;
+  float tmpvar_29;
   tmpvar_29 = (1.0 - (tmpvar_28 * (tmpvar_28 * 
     (3.0 - (2.0 * tmpvar_28))
   )));
+  worldPosition_3 = (worldPosition_3 * max (0.5, (1.0 - 
+    (max (0.01, (0.002 * u_nearFarPlane.z)) / sqrt(dot (worldPosition_3, worldPosition_3)))
+  )));
   vec4 tmpvar_30;
   tmpvar_30.w = 1.0;
-  tmpvar_30.xy = tmpvar_6.xy;
-  tmpvar_30.z = tileZ_4;
+  tmpvar_30.xyz = worldPosition_3;
   vec4 tmpvar_31;
   tmpvar_31 = (u_proj * (u_view * tmpvar_30));
-  projected_2.xyw = tmpvar_31.xyw;
-  projected_2.z = (tmpvar_31.z - (tmpvar_31.w * 0.01));
-  depth_1 = projected_2;
+  projected_1 = tmpvar_31;
   highp vec4 tmpvar_32;
   tmpvar_32.zw = vec2(0.0, 0.0);
   tmpvar_32.xy = tmpvar_5;
@@ -119,13 +121,13 @@ void main ()
   highp float tmpvar_34;
   tmpvar_34 = (float((u_TileVertClip.y <= a_texcoord7.y)) * float((a_texcoord7.y <= u_TileVertClip.w)));
   if (((tmpvar_33 * tmpvar_34) == 0.0)) {
-    projected_2 = vec4(0.0, 0.0, 0.0, 0.0);
+    projected_1 = vec4(0.0, 0.0, 0.0, 0.0);
   };
-  gl_Position = projected_2;
-  v_texcoord4 = vecPattern_3;
-  v_bitangent = tmpvar_6;
+  gl_Position = projected_1;
+  v_texcoord4 = vecPattern_2;
+  v_bitangent = worldPosition_3;
   v_texcoord7 = tmpvar_32;
-  v_texcoord6 = depth_1;
+  v_texcoord6 = tmpvar_31;
   v_depth = tmpvar_29;
   v_texcoord5 = tmpvar_8;
   v_texcoord3 = tmpvar_27;
