@@ -66,7 +66,8 @@
             "lines": [
                 "\tfloat distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);",
                 "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xy, tileZ, 1.0)));",
-                "\tprojected.z -= (projected.w * 0.001);",
+                "\tprojected.z -= (projected.w * 0.01);",
+                "\t//projected.z -= (1.0 / 128.0);",
                 "\tvec4 depth = projected;"
             ],
             "position": "Compose",

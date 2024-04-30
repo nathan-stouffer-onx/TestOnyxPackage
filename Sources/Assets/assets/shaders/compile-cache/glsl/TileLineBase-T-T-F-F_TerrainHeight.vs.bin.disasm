@@ -390,11 +390,13 @@ void main ()
   tmpvar_123.x = tmpvar_23.x;
   tmpvar_123.y = tmpvar_23.z;
   tmpvar_123.w = tmpvar_16.x;
-  screenPosition_2.z = max (-1.0, (screenPos_8.z - (
-    ((0.0004 * max (1.0, (widthExpansion_13 * 2.0))) * pow (max (1.0, (1.0 + 
-      (((u_nearFarPlane.y - u_nearFarPlane.x) - 500.0) / 100.0)
-    )), 2.5))
-   / tmpvar_68)));
+  screenPosition_2.z = (screenPos_8.z - ((
+    (0.0004 * max (1.0, (widthExpansion_13 * 2.0)))
+   * 
+    pow (max (1.0, (1.0 + (
+      ((u_nearFarPlane.y - u_nearFarPlane.x) - 500.0)
+     / 100.0))), 2.5)
+  ) / tmpvar_68));
   vec4 tmpvar_124;
   tmpvar_124.zw = vec2(0.0, 0.0);
   tmpvar_124.xy = tmpvar_21;

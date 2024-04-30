@@ -157,7 +157,8 @@ vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0)
 //compose
 	float distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y);
 	vec4 projected = mul(u_proj, mul(viewMat, vec4(worldPosition.xy, tileZ, 1.0)));
-	projected.z -= (projected.w * 0.001);
+	projected.z -= (projected.w * 0.01);
+	//projected.z -= (1.0 / 128.0);
 	vec4 depth = projected;
 	vec4 tilePosition = vec4(tilePos, 0.0, 0.0);
 	float inX = inRange(tilePosition.x, u_TileVertClip.x, u_TileVertClip.z);

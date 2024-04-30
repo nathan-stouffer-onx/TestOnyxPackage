@@ -9,13 +9,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "OnyxCore",
-            targets: [
-                "Assets", "apiLibPackage", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage",
-                "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package",
-                "protobufPackage", "shaderPackage", /* "sqlite3Package" ,*/ "sslPackage", "stylingPackage",
-                "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage"
-            ]
-        )
+            targets: [ "Assets", "apiLibPackage", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage", "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "nghttp2Package", "protobufPackage", "shaderPackage", /* "sqlite3Package" */, "sslPackage", "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage", "webpdecoderPackage", "zPackage" ])
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -74,7 +68,7 @@ let package = Package(
             name: "shaderPackage",
             path: "shader.xcframework.zip"
         ),
-        // disabled because the iOS app already links this
+        // TODO possibly re-enable this to get sqlite stuff working in our local apps (it works in iOS repo because they already have this)
         // .binaryTarget(
         //    name: "sqlite3Package",
         //    path: "sqlite3.xcframework.zip"
