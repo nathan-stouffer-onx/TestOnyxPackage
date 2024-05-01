@@ -22,6 +22,7 @@ uniform vec4 s_DashSampler_Res;
 uniform vec4 u_tileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_tileDistortion;
+uniform vec4 u_heightTileSize;
 uniform vec4 u_MeshResolution;
 uniform vec4 u_time;
 uniform vec4 u_tileMin;

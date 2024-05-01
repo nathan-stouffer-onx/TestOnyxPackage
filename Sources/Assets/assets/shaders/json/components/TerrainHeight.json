@@ -14,9 +14,9 @@
     {
       "lines":[
         "// expects uv to be in tile coordinates",
-        "float heightAt(vec2 uv)",
+        "float heightAt(vec2 uv, vec4 scaleOffset)",
         "{",
-        "\tvec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;",
+        "\tvec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;",
         "\treturn texture2DLod(s_heightTexture, scaledUV, 0).r;",
         "}"
       ],
@@ -26,11 +26,11 @@
     {
       "lines":[
         "// expects uv to be in tile coordinates",
-        "float distortedHeightAt(vec2 uv)",
+        "float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)",
         "{",
-        "\tfloat z = heightAt(uv);",
-        "\tfloat distortion = mix(u_tileDistortion.x, u_tileDistortion.y, uv.y);",
-        "\treturn z * distortion;",
+        "\tfloat z = heightAt(uv, scaleOffset);",
+        "\tfloat distort = mix(distortion.x, distortion.y, uv.y);",
+        "\treturn z * distort;",
         "}"
       ],
       "position": "Functions",
@@ -52,7 +52,7 @@
         "// be part of the triangle. and then we just compute which of v0 and v3 is closer to p to",
         "// determine the final point. then we compute the heights at the triangle vertices and",
         "// use barycentric interpolation to compute the final height value",
-        "float meshHeightAtBarycentric(vec2 uv, float meshRes)",
+        "float meshHeightAtBarycentric(vec2 uv, vec2 distortion, vec4 scaleOffset, float meshRes)",
         "{",
         "\tvec3 p = vec3(uv, 0.0);",
         "\t// compute the top left corner of the quad that contains p -- clamp to [eps, 1 - eps] to avoid problems at 0 and 1",
@@ -62,7 +62,7 @@
 	      "\tvec3 b = vec3(v0.x, v0.y + 1.0, 0.0) / meshRes; // v2",
         "\tvec3 c = closer(p, vec3(b.x, a.y, 0.0), vec3(a.x, b.y, 0.0)); // choose between v0 and v3",
         "\t// compute heights at the three triangle vertices",
-        "\tvec3 heights = vec3(distortedHeightAt(a.xy), distortedHeightAt(b.xy), distortedHeightAt(c.xy));",
+        "\tvec3 heights = vec3(distortedHeightAt(a.xy, distortion, scaleOffset), distortedHeightAt(b.xy, distortion, scaleOffset), distortedHeightAt(c.xy, distortion, scaleOffset));",
         "\t// compute subtriangle A",
         "\tTriangle triA;",
         "\ttriA.p0 = p;",
@@ -105,7 +105,7 @@
         "// be part of the triangle. and then we just compute which of v0 and v3 is closer to p to",
         "// determine the final point. then we compute the plane of the triangle and evaluate the",
         "// function to determine the height",
-        "float meshHeightAtPlanes(vec2 uv, float meshRes)",
+        "float meshHeightAtPlanes(vec2 uv, vec2 distortion, vec4 scaleOffset, float meshRes)",
         "{",
         "\t// compute the top left corner of the quad that contains p -- clamp to [eps, 1 - eps] to avoid problems at 0 and 1",
         "\tfloat eps = 1.0 / 256.0;",
@@ -116,9 +116,9 @@
         "\t// compute the world coordinates of the vertex ",
         "\tvec2 vertex = mix(u_tileMin.xy, u_tileMax.xy, uv);",
         "\t// compute the world coordinates of the three points that define the plane of this triangle",
-        "\tvec3 p = vec3(mix(u_tileMin.xy, u_tileMax.xy, a.xy), distortedHeightAt(a.xy));",
-        "\tvec3 q = vec3(mix(u_tileMin.xy, u_tileMax.xy, b.xy), distortedHeightAt(b.xy));",
-        "\tvec3 r = vec3(mix(u_tileMin.xy, u_tileMax.xy, c.xy), distortedHeightAt(c.xy));",
+        "\tvec3 p = vec3(mix(u_tileMin.xy, u_tileMax.xy, a.xy), distortedHeightAt(a.xy, distortion, scaleOffset));",
+        "\tvec3 q = vec3(mix(u_tileMin.xy, u_tileMax.xy, b.xy), distortedHeightAt(b.xy, distortion, scaleOffset));",
+        "\tvec3 r = vec3(mix(u_tileMin.xy, u_tileMax.xy, c.xy), distortedHeightAt(c.xy, distortion, scaleOffset));",
         "\t// compute plane normal",
         "\tvec3 normal = cross(q - p, r - p);",
         "\tfloat z = -(dot(normal.xy, vertex.xy) - dot(normal, p)) / normal.z;",
@@ -129,10 +129,38 @@
       "type": "Vertex"
     },
     {
+      "lines": [
+        "// expects uv to be in tile coordinates",
+        "vec3 normalAt(vec2 uv, vec2 distortion, vec4 scaleOffset)",
+        "{",
+        "\tvec2 pixelWidth = s_heightTexture_Res.zw;",
+        "\tvec2 tileDelta = pixelWidth / scaleOffset.z;",
+        "\tvec2 westUV = uv - vec2(tileDelta.x, 0);",
+        "\tvec2 eastUV = uv + vec2(tileDelta.x, 0);",
+        "\tvec2 northUV = uv - vec2(0, tileDelta.y);",
+        "\tvec2 southUV = uv + vec2(0, tileDelta.y);",
+        "\tfloat z = distortedHeightAt(uv, distortion, scaleOffset);",
+        "\tfloat westZ = distortedHeightAt(westUV, distortion, scaleOffset) - z;",
+        "\tfloat eastZ = distortedHeightAt(eastUV, distortion, scaleOffset) - z;",
+        "\tfloat northZ = distortedHeightAt(northUV, distortion, scaleOffset) - z;",
+        "\tfloat southZ = distortedHeightAt(southUV, distortion, scaleOffset) - z;",
+        "\tvec2 worldStep = u_heightTileSize.xy / 256.0;",
+        "\tvec3 westDelta = vec3(-worldStep.x, 0, westZ);",
+        "\tvec3 eastDelta = vec3(worldStep.x, 0, eastZ);",
+        "\tvec3 northDelta = vec3(0, -worldStep.y, northZ);",
+        "\tvec3 southDelta = vec3(0, worldStep.y, southZ);",
+        "\tvec3 normal = cross(westDelta, northDelta) + cross(northDelta, eastDelta) + cross(eastDelta, southDelta) + cross(southDelta, westDelta);",
+        "\treturn normalize(normal);",
+        "}"
+      ],
+      "position": "Functions",
+      "type": "Vertex"
+    },
+    {
       "lines":
       [
         "\t// compute height at the actual mesh",
-        "\tfloat z = meshHeightAtPlanes(tilePos, u_MeshResolution.x);",
+        "\tfloat z = meshHeightAtPlanes(tilePos, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x);",
         "\ttileZ += z * u_tileSize.z;"
       ],
       "position": "Main",
@@ -177,6 +205,16 @@
         "x": 1.0,
         "y": 1.0,
         "z": 0.0
+      }
+    },
+    {
+      "componentName": "TerrainHeight",
+      "name": "u_heightTileSize",
+      "type": "vec3",
+      "vec3": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
       }
     },
     {

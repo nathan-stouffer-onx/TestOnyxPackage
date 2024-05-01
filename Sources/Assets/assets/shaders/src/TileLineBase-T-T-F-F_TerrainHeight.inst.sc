@@ -23,6 +23,7 @@ uniform vec4 s_DashSampler_Res;
 uniform vec4 u_tileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_tileDistortion;
+uniform vec4 u_heightTileSize;
 uniform vec4 u_MeshResolution;
 uniform vec4 u_time;
 uniform vec4 u_tileMin;
@@ -50,17 +51,17 @@ vec2 jointBisector(vec2 u, vec2 v)
 	return vec2(cos(alpha), sin(alpha));
 }
 // expects uv to be in tile coordinates
-float heightAt(vec2 uv)
+float heightAt(vec2 uv, vec4 scaleOffset)
 {
-	vec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;
+	vec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;
 	return texture2DLod(s_heightTexture, scaledUV, 0).r;
 }
 // expects uv to be in tile coordinates
-float distortedHeightAt(vec2 uv)
+float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
 {
-	float z = heightAt(uv);
-	float distortion = mix(u_tileDistortion.x, u_tileDistortion.y, uv.y);
-	return z * distortion;
+	float z = heightAt(uv, scaleOffset);
+	float distort = mix(distortion.x, distortion.y, uv.y);
+	return z * distort;
 }
 // computes the height of the triangle mesh at the specified uv coordinate
 //
@@ -76,7 +77,7 @@ float distortedHeightAt(vec2 uv)
 // be part of the triangle. and then we just compute which of v0 and v3 is closer to p to
 // determine the final point. then we compute the heights at the triangle vertices and
 // use barycentric interpolation to compute the final height value
-float meshHeightAtBarycentric(vec2 uv, float meshRes)
+float meshHeightAtBarycentric(vec2 uv, vec2 distortion, vec4 scaleOffset, float meshRes)
 {
 	vec3 p = vec3(uv, 0.0);
 	// compute the top left corner of the quad that contains p -- clamp to [eps, 1 - eps] to avoid problems at 0 and 1
@@ -86,7 +87,7 @@ float meshHeightAtBarycentric(vec2 uv, float meshRes)
 	vec3 b = vec3(v0.x, v0.y + 1.0, 0.0) / meshRes; // v2
 	vec3 c = closer(p, vec3(b.x, a.y, 0.0), vec3(a.x, b.y, 0.0)); // choose between v0 and v3
 	// compute heights at the three triangle vertices
-	vec3 heights = vec3(distortedHeightAt(a.xy), distortedHeightAt(b.xy), distortedHeightAt(c.xy));
+	vec3 heights = vec3(distortedHeightAt(a.xy, distortion, scaleOffset), distortedHeightAt(b.xy, distortion, scaleOffset), distortedHeightAt(c.xy, distortion, scaleOffset));
 	// compute subtriangle A
 	Triangle triA;
 	triA.p0 = p;
@@ -123,7 +124,7 @@ float meshHeightAtBarycentric(vec2 uv, float meshRes)
 // be part of the triangle. and then we just compute which of v0 and v3 is closer to p to
 // determine the final point. then we compute the plane of the triangle and evaluate the
 // function to determine the height
-float meshHeightAtPlanes(vec2 uv, float meshRes)
+float meshHeightAtPlanes(vec2 uv, vec2 distortion, vec4 scaleOffset, float meshRes)
 {
 	// compute the top left corner of the quad that contains p -- clamp to [eps, 1 - eps] to avoid problems at 0 and 1
 	float eps = 1.0 / 256.0;
@@ -134,13 +135,35 @@ float meshHeightAtPlanes(vec2 uv, float meshRes)
 	// compute the world coordinates of the vertex 
 	vec2 vertex = mix(u_tileMin.xy, u_tileMax.xy, uv);
 	// compute the world coordinates of the three points that define the plane of this triangle
-	vec3 p = vec3(mix(u_tileMin.xy, u_tileMax.xy, a.xy), distortedHeightAt(a.xy));
-	vec3 q = vec3(mix(u_tileMin.xy, u_tileMax.xy, b.xy), distortedHeightAt(b.xy));
-	vec3 r = vec3(mix(u_tileMin.xy, u_tileMax.xy, c.xy), distortedHeightAt(c.xy));
+	vec3 p = vec3(mix(u_tileMin.xy, u_tileMax.xy, a.xy), distortedHeightAt(a.xy, distortion, scaleOffset));
+	vec3 q = vec3(mix(u_tileMin.xy, u_tileMax.xy, b.xy), distortedHeightAt(b.xy, distortion, scaleOffset));
+	vec3 r = vec3(mix(u_tileMin.xy, u_tileMax.xy, c.xy), distortedHeightAt(c.xy, distortion, scaleOffset));
 	// compute plane normal
 	vec3 normal = cross(q - p, r - p);
 	float z = -(dot(normal.xy, vertex.xy) - dot(normal, p)) / normal.z;
 	return z;
+}
+// expects uv to be in tile coordinates
+vec3 normalAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
+{
+	vec2 pixelWidth = s_heightTexture_Res.zw;
+	vec2 tileDelta = pixelWidth / scaleOffset.z;
+	vec2 westUV = uv - vec2(tileDelta.x, 0);
+	vec2 eastUV = uv + vec2(tileDelta.x, 0);
+	vec2 northUV = uv - vec2(0, tileDelta.y);
+	vec2 southUV = uv + vec2(0, tileDelta.y);
+	float z = distortedHeightAt(uv, distortion, scaleOffset);
+	float westZ = distortedHeightAt(westUV, distortion, scaleOffset) - z;
+	float eastZ = distortedHeightAt(eastUV, distortion, scaleOffset) - z;
+	float northZ = distortedHeightAt(northUV, distortion, scaleOffset) - z;
+	float southZ = distortedHeightAt(southUV, distortion, scaleOffset) - z;
+	vec2 worldStep = u_heightTileSize.xy / 256.0;
+	vec3 westDelta = vec3(-worldStep.x, 0, westZ);
+	vec3 eastDelta = vec3(worldStep.x, 0, eastZ);
+	vec3 northDelta = vec3(0, -worldStep.y, northZ);
+	vec3 southDelta = vec3(0, worldStep.y, southZ);
+	vec3 normal = cross(westDelta, northDelta) + cross(northDelta, eastDelta) + cross(eastDelta, southDelta) + cross(southDelta, westDelta);
+	return normalize(normal);
 }
 
 void main()
@@ -173,21 +196,27 @@ widthExpansion /= 2.0; //account for x uv being -1 to both side so need to cut w
 float endA = 1.0 - texcoords.y; //uv.y is 0 for this one, so make it 1.0
 float endB = texcoords.y; //uv.y is 1 for this one
 	// compute height at the actual mesh
-	float z = meshHeightAtPlanes(tilePos, u_MeshResolution.x);
+	float z = meshHeightAtPlanes(tilePos, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x);
 	tileZ += z * u_tileSize.z;
 float tileZ1 = u_tileMin.z;
-float z1 = meshHeightAtPlanes(p1, u_MeshResolution.x);
+float z1 = meshHeightAtPlanes(p1, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x);
 tileZ1 += z1 * u_tileSize.z;
 float tileZ2 = u_tileMin.z;
-float z2 = meshHeightAtPlanes(p2, u_MeshResolution.x);
+float z2 = meshHeightAtPlanes(p2, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x);
 tileZ2 += z2 * u_tileSize.z;
-vec4 wp1 = vec4(tileP1, tileZ1, 1.0);
-vec4 wp2 = vec4(tileP2, tileZ2, 1.0);
-// write to this variable so fog works correctly
+vec3 wp1 = vec3(tileP1, tileZ1);
+vec3 wp2 = vec3(tileP2, tileZ2);
 vec3 worldPosition = mix(wp1.xyz, wp2.xyz, position.y);
 vec4 distFade = vec4(1.0 - smoothstep(u_TileLineOpacityTransition.x, u_TileLineOpacityTransition.y, length(worldPosition.xyz) / u_nearFarPlane.y), 0.0, 0.0, 0.0);
-vec4 screen1 = mul(u_proj, mul(u_view, wp1));
-vec4 screen2 = mul(u_proj, mul(u_view, wp2));
+// write to this variable so fog works correctly
+vec3 fromEye = normalize(worldPosition);
+widthExpansion *= min(1.0, u_nearFarPlane.z / length(worldPosition.xyz)); // scale based on distance
+widthExpansion = max(1.5, widthExpansion);
+float biasKm = max(0.020, 0.004 * u_nearFarPlane.z);
+wp1 *= max(0.5, 1.0 - biasKm / length(wp1));
+wp2 *= max(0.5, 1.0 - biasKm / length(wp2));
+vec4 screen1 = mul(u_viewProj, vec4(wp1, 1.0));
+vec4 screen2 = mul(u_viewProj, vec4(wp2, 1.0));
 float origW = mix(screen1.w, screen2.w, position.y);
 screen1 = toScreenCoords(screen1, u_viewTexel.xy);
 screen2 = toScreenCoords(screen2, u_viewTexel.xy);
@@ -200,21 +229,24 @@ float lineLength = length(lineDirection);
 lineDirection /= lineLength;
 vec2 lineSide = normalize(vec2(-lineDirection.y, lineDirection.x));
 screenPos.xy += lineSide * texcoords.x * widthExpansion;
-//overlap ends for the pixel miter
+// overlap ends for the pixel miter
 vec2 endExpansion = (-lineDirection * endA * widthExpansion + lineDirection * endB * widthExpansion);
 screenPos.xy += endExpansion;
-//move for miters
+float deltaZ = screen2.z - screen1.z;
+float depthAdjustment = widthExpansion * deltaZ / lineLength;
+screenPos.z -= endA * depthAdjustment;
+screenPos.z += endB * depthAdjustment;
 vec4 line_endFlags = vec4(u_PrevNext.xz,0,0);
 vec2 prevTP = mix(u_tileMin.xy, u_tileMax.xy, u_PrevNext.xy);
 vec2 nextTP = mix(u_tileMin.xy, u_tileMax.xy, u_PrevNext.zw);
-vec3 prevPos = vec3(prevTP, u_tileMin.z + meshHeightAtPlanes(u_PrevNext.xy, u_MeshResolution.x) * u_tileSize.z);
-vec3 nextPos = vec3(nextTP, u_tileMin.z + meshHeightAtPlanes(u_PrevNext.zw, u_MeshResolution.x) * u_tileSize.z);
-vec2 screenPrev = toScreenCoords(mul(u_proj, mul(u_view, vec4(prevPos,1.0))), u_viewTexel.xy).xy;
-vec2 screenNext = toScreenCoords(mul(u_proj, mul(u_view, vec4(nextPos,1.0))), u_viewTexel.xy).xy;
+vec3 prevPos = vec3(prevTP, u_tileMin.z + meshHeightAtPlanes(u_PrevNext.xy, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x) * u_tileSize.z);
+vec3 nextPos = vec3(nextTP, u_tileMin.z + meshHeightAtPlanes(u_PrevNext.zw, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x) * u_tileSize.z);
+vec2 screenPrev = toScreenCoords(mul(u_viewProj, vec4(prevPos, 1.0)), u_viewTexel.xy).xy;
+vec2 screenNext = toScreenCoords(mul(u_viewProj, vec4(nextPos, 1.0)), u_viewTexel.xy).xy;
 vec2 prevDir = normalize(screenPrev.xy - screen1.xy);
 vec2 nextDir = normalize(screenNext.xy - screen2.xy);
-if(u_PrevNext.x < -9999.0) prevDir = lineDirection;
-if(u_PrevNext.z < -9999.0) nextDir = -lineDirection;
+if (u_PrevNext.x < -9999.0) prevDir = lineDirection;
+if (u_PrevNext.z < -9999.0) nextDir = -lineDirection;
 vec2 jointADir = jointBisector(prevDir, lineDirection);
 vec2 jointBDir = jointBisector(-lineDirection, nextDir);
 // bias the joint normals in opposite directions
@@ -240,13 +272,11 @@ vec3 line_side = vec3(lineSide, 0.0);
 //compose
 	 float lineEdgeOffsetDist = lineWidth.x * 0.5;
 	 vec4 lineCenter = vec4(1,1,1,1);// vec4(pixelLength * position.y + (lineWidth * 0.5f * position.z), 0.0, 0.0, 0.0);
-	 vec4 screenPosition = vec4(screenPos.xyz, 1.0);// vec4(screenPos.xy + screenOffset, screenPos.z, 1.0);
+	 vec4 screenPosition = vec4(screenPos.xyz, 1.0);
 	 vec4 linePosition = vec4(position.x, position.z, 0, lineWidth.x);
 	 vec4 color = vecColor;
 //	 screenPosition.w = sqrt(dot(u_screenDimensions.xy, u_screenDimensions.xy)) * lineEdgeOffsetDist * 0.5;
 	 vec4 dashUV = vec4(position.xyz, 1.0);
-	 float zBias = (1.0 / 2500.0) * max(1.0,widthExpansion*2.0) * pow(max(1.0, 1.0 + (u_nearFarPlane.y - u_nearFarPlane.x - 500.0) / 100.0),2.5);
-	 screenPosition.z = max(-1.0, screenPosition.z - zBias / origW);
 	vec4 tilePosition = vec4(tilePos, 0.0, 0.0);
 vec4 glPos = vec4(screenPosition.xyz, 1.0);
 glPos.xy *= u_viewTexel.xy;

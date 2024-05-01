@@ -17,6 +17,7 @@ uniform vec4 s_DashSampler_Res;
 uniform vec4 u_tileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_tileDistortion;
+uniform vec4 u_heightTileSize;
 uniform vec4 u_MeshResolution;
 uniform vec4 u_dashUV;
 uniform vec4 u_nearFarPlane;
@@ -36,17 +37,17 @@ uniform vec4 u_endCaps;
 
 //functions
 // expects uv to be in tile coordinates
-float heightAt(vec2 uv)
+float heightAt(vec2 uv, vec4 scaleOffset)
 {
-	vec2 scaledUV = u_ScaleOffsetHeight.zw * uv + u_ScaleOffsetHeight.xy;
+	vec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;
 	return texture2DLod(s_heightTexture, scaledUV, 0).r;
 }
 // expects uv to be in tile coordinates
-float distortedHeightAt(vec2 uv)
+float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
 {
-	float z = heightAt(uv);
-	float distortion = mix(u_tileDistortion.x, u_tileDistortion.y, uv.y);
-	return z * distortion;
+	float z = heightAt(uv, scaleOffset);
+	float distort = mix(distortion.x, distortion.y, uv.y);
+	return z * distort;
 }
 // computes the height of the triangle mesh at the specified uv coordinate
 //
@@ -62,7 +63,7 @@ float distortedHeightAt(vec2 uv)
 // be part of the triangle. and then we just compute which of v0 and v3 is closer to p to
 // determine the final point. then we compute the heights at the triangle vertices and
 // use barycentric interpolation to compute the final height value
-float meshHeightAtBarycentric(vec2 uv, float meshRes)
+float meshHeightAtBarycentric(vec2 uv, vec2 distortion, vec4 scaleOffset, float meshRes)
 {
 	vec3 p = vec3(uv, 0.0);
 	// compute the top left corner of the quad that contains p -- clamp to [eps, 1 - eps] to avoid problems at 0 and 1
@@ -72,7 +73,7 @@ float meshHeightAtBarycentric(vec2 uv, float meshRes)
 	vec3 b = vec3(v0.x, v0.y + 1.0, 0.0) / meshRes; // v2
 	vec3 c = closer(p, vec3(b.x, a.y, 0.0), vec3(a.x, b.y, 0.0)); // choose between v0 and v3
 	// compute heights at the three triangle vertices
-	vec3 heights = vec3(distortedHeightAt(a.xy), distortedHeightAt(b.xy), distortedHeightAt(c.xy));
+	vec3 heights = vec3(distortedHeightAt(a.xy, distortion, scaleOffset), distortedHeightAt(b.xy, distortion, scaleOffset), distortedHeightAt(c.xy, distortion, scaleOffset));
 	// compute subtriangle A
 	Triangle triA;
 	triA.p0 = p;
@@ -109,7 +110,7 @@ float meshHeightAtBarycentric(vec2 uv, float meshRes)
 // be part of the triangle. and then we just compute which of v0 and v3 is closer to p to
 // determine the final point. then we compute the plane of the triangle and evaluate the
 // function to determine the height
-float meshHeightAtPlanes(vec2 uv, float meshRes)
+float meshHeightAtPlanes(vec2 uv, vec2 distortion, vec4 scaleOffset, float meshRes)
 {
 	// compute the top left corner of the quad that contains p -- clamp to [eps, 1 - eps] to avoid problems at 0 and 1
 	float eps = 1.0 / 256.0;
@@ -120,13 +121,35 @@ float meshHeightAtPlanes(vec2 uv, float meshRes)
 	// compute the world coordinates of the vertex 
 	vec2 vertex = mix(u_tileMin.xy, u_tileMax.xy, uv);
 	// compute the world coordinates of the three points that define the plane of this triangle
-	vec3 p = vec3(mix(u_tileMin.xy, u_tileMax.xy, a.xy), distortedHeightAt(a.xy));
-	vec3 q = vec3(mix(u_tileMin.xy, u_tileMax.xy, b.xy), distortedHeightAt(b.xy));
-	vec3 r = vec3(mix(u_tileMin.xy, u_tileMax.xy, c.xy), distortedHeightAt(c.xy));
+	vec3 p = vec3(mix(u_tileMin.xy, u_tileMax.xy, a.xy), distortedHeightAt(a.xy, distortion, scaleOffset));
+	vec3 q = vec3(mix(u_tileMin.xy, u_tileMax.xy, b.xy), distortedHeightAt(b.xy, distortion, scaleOffset));
+	vec3 r = vec3(mix(u_tileMin.xy, u_tileMax.xy, c.xy), distortedHeightAt(c.xy, distortion, scaleOffset));
 	// compute plane normal
 	vec3 normal = cross(q - p, r - p);
 	float z = -(dot(normal.xy, vertex.xy) - dot(normal, p)) / normal.z;
 	return z;
+}
+// expects uv to be in tile coordinates
+vec3 normalAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
+{
+	vec2 pixelWidth = s_heightTexture_Res.zw;
+	vec2 tileDelta = pixelWidth / scaleOffset.z;
+	vec2 westUV = uv - vec2(tileDelta.x, 0);
+	vec2 eastUV = uv + vec2(tileDelta.x, 0);
+	vec2 northUV = uv - vec2(0, tileDelta.y);
+	vec2 southUV = uv + vec2(0, tileDelta.y);
+	float z = distortedHeightAt(uv, distortion, scaleOffset);
+	float westZ = distortedHeightAt(westUV, distortion, scaleOffset) - z;
+	float eastZ = distortedHeightAt(eastUV, distortion, scaleOffset) - z;
+	float northZ = distortedHeightAt(northUV, distortion, scaleOffset) - z;
+	float southZ = distortedHeightAt(southUV, distortion, scaleOffset) - z;
+	vec2 worldStep = u_heightTileSize.xy / 256.0;
+	vec3 westDelta = vec3(-worldStep.x, 0, westZ);
+	vec3 eastDelta = vec3(worldStep.x, 0, eastZ);
+	vec3 northDelta = vec3(0, -worldStep.y, northZ);
+	vec3 southDelta = vec3(0, worldStep.y, southZ);
+	vec3 normal = cross(westDelta, northDelta) + cross(northDelta, eastDelta) + cross(eastDelta, southDelta) + cross(southDelta, westDelta);
+	return normalize(normal);
 }
 
 void main()
@@ -145,7 +168,7 @@ vec3 position = a_position.xyz;
 	 vec2 tilePos = mix(tileP1, tileP2, position.y);
 	 float tileZ = u_tileMin.z;
 	// compute height at the actual mesh
-	float z = meshHeightAtPlanes(tilePos, u_MeshResolution.x);
+	float z = meshHeightAtPlanes(tilePos, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x);
 	tileZ += z * u_tileSize.z;
 	 vec4 screenP1 = mul(u_proj, mul(u_view, vec4(tileP1, tileZ, 1.0)));
 	 vec4 screenP2 = mul(u_proj, mul(u_view, vec4(tileP2, tileZ, 1.0)));

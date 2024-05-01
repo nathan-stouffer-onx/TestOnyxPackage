@@ -19,6 +19,7 @@ uniform vec4 s_patterns_Res;
 uniform vec4 u_tileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_tileDistortion;
+uniform vec4 u_heightTileSize;
 uniform vec4 u_MeshResolution;
 uniform vec4 u_TileFillData;
 uniform vec4 u_nearFarPlane;
