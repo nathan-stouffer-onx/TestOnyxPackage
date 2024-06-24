@@ -1,8 +1,9 @@
 $input v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
-#include "OnyxFragFunctions.sc"
+#include "layers.sc"
+#include "derivatives.sc"
+#include "terrain.sc"
 
 //samplers
 SAMPLER2D(s_heightTexture, 0);
@@ -13,11 +14,10 @@ uniform vec4 s_heightTexture_Res;
 //definitions
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
-uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;
@@ -27,19 +27,6 @@ uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 
 //functions
-// for pixel shader -  expects uv to be in tile coordinates
-float heightAt(vec2 uv, vec4 scaleOffset)
-{
-	vec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;
-	return texture2D(s_heightTexture, scaledUV).r;
-}
-// expects uv to be in tile coordinates
-float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
-{
-	float z = heightAt(uv, scaleOffset);
-	float distort = mix(distortion.x, distortion.y, uv.y);
-	return z * distort;
-}
 
 void main()
 {

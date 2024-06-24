@@ -1,8 +1,8 @@
 $input v_texcoord7, v_texcoord6, v_color0
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
-#include "OnyxFragFunctions.sc"
+#include "layers.sc"
+#include "derivatives.sc"
 
 //samplers
 
@@ -11,7 +11,7 @@ $input v_texcoord7, v_texcoord6, v_color0
 //definitions
 uniform vec4 u_overrideColor;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;

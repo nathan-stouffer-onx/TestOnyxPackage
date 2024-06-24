@@ -1,7 +1,7 @@
 $input v_position, v_texcoord0, v_texcoord7
 //includes
 #include <../examples/common/common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 SAMPLER2D(s_spriteTex, 0);
@@ -28,7 +28,7 @@ vec4 scaleOffsetTex = v_texcoord7.xyzw;
 	// Get sprite texture color
 	vec4 fragColor = vec4_splat(0.f);
 	vec2 texcoords = texcoord0.xy;
-	fragColor = sampleTextureFunc(s_spriteTex, texcoords, scaleOffsetTex);
+	fragColor = read(s_spriteTex, texcoords, scaleOffsetTex);
 
 //lighting
 

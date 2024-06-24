@@ -84,9 +84,13 @@
         "filename": "components/VertHeight.json"
     },
     {
-        "componentName": "TerrainHeight",
-        "filename": "components/TerrainHeight.json"
-    },    
+        "componentName": "FillHeight",
+        "filename": "components/FillHeight.json"
+    },
+    {
+        "componentName": "LineHeight",
+        "filename": "components/LineHeight.json"
+    }, 
     {
         "componentName": "Fog",
         "filename": "components/Fog.json"

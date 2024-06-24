@@ -1,0 +1,132 @@
+attribute vec4 a_texcoord7;
+varying vec3 v_bitangent;
+varying float v_depth;
+varying vec4 v_texcoord3;
+varying vec4 v_texcoord4;
+varying vec4 v_texcoord5;
+varying vec4 v_texcoord6;
+varying vec4 v_texcoord7;
+uniform mat4 u_view;
+uniform mat4 u_proj;
+uniform sampler2D s_heightTexture;
+uniform sampler2D s_vectorColors;
+uniform sampler2D s_vectorPatterns;
+uniform vec4 s_patterns_Res;
+uniform vec4 u_tileSize;
+uniform vec4 u_ScaleOffsetHeight;
+uniform vec4 u_tileDistortion;
+uniform vec4 u_MeshResolution;
+uniform vec4 u_NearFarFocus;
+uniform vec4 u_tileMin;
+uniform vec4 u_TileFillOpacityTransition;
+uniform vec4 u_tileMax;
+uniform vec4 u_TileVertClip;
+void main ()
+{
+  vec4 projected_1;
+  vec4 vecPattern_2;
+  vec3 worldPosition_3;
+  float tileZ_4;
+  vec2 tmpvar_5;
+  tmpvar_5 = a_texcoord7.xy;
+  tileZ_4 = u_tileMin.z;
+  vec3 tmpvar_6;
+  tmpvar_6.xy = mix (u_tileMin.xy, u_tileMax.xy, a_texcoord7.xy);
+  tmpvar_6.z = u_tileMin.z;
+  worldPosition_3 = tmpvar_6;
+  vec4 tmpvar_7;
+  tmpvar_7 = texture2DLod (s_vectorPatterns, a_texcoord7.zw, 0.0);
+  vecPattern_2.xy = tmpvar_7.xy;
+  vecPattern_2.zw = (tmpvar_7.zw * s_patterns_Res.xy);
+  vec4 tmpvar_8;
+  tmpvar_8 = texture2DLod (s_vectorColors, a_texcoord7.zw, 0.0);
+  vec2 tmpvar_9;
+  tmpvar_9 = floor((u_MeshResolution.x * clamp (a_texcoord7.xy, vec2(0.00390625, 0.00390625), vec2(0.9960938, 0.9960938))));
+  vec2 tmpvar_10;
+  tmpvar_10.x = (tmpvar_9.x + 1.0);
+  tmpvar_10.y = tmpvar_9.y;
+  vec2 tmpvar_11;
+  tmpvar_11 = (tmpvar_10 / u_MeshResolution.x);
+  vec2 tmpvar_12;
+  tmpvar_12.x = tmpvar_9.x;
+  tmpvar_12.y = (tmpvar_9.y + 1.0);
+  vec2 tmpvar_13;
+  tmpvar_13 = (tmpvar_12 / u_MeshResolution.x);
+  vec2 tmpvar_14;
+  tmpvar_14.x = tmpvar_13.x;
+  tmpvar_14.y = tmpvar_11.y;
+  vec2 tmpvar_15;
+  tmpvar_15.x = tmpvar_11.x;
+  tmpvar_15.y = tmpvar_13.y;
+  float tmpvar_16;
+  vec2 x_17;
+  x_17 = (tmpvar_14 - a_texcoord7.xy);
+  tmpvar_16 = sqrt(dot (x_17, x_17));
+  float tmpvar_18;
+  vec2 x_19;
+  x_19 = (tmpvar_15 - a_texcoord7.xy);
+  tmpvar_18 = sqrt(dot (x_19, x_19));
+  vec2 tmpvar_20;
+  if ((tmpvar_16 <= tmpvar_18)) {
+    tmpvar_20 = tmpvar_14;
+  } else {
+    tmpvar_20 = tmpvar_15;
+  };
+  vec3 tmpvar_21;
+  tmpvar_21.xy = tmpvar_11;
+  tmpvar_21.z = (texture2DLod (s_heightTexture, ((u_ScaleOffsetHeight.zw * tmpvar_11) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_11.y));
+  vec3 tmpvar_22;
+  tmpvar_22.xy = tmpvar_13;
+  tmpvar_22.z = (texture2DLod (s_heightTexture, ((u_ScaleOffsetHeight.zw * tmpvar_13) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_13.y));
+  vec3 tmpvar_23;
+  tmpvar_23.xy = tmpvar_20;
+  tmpvar_23.z = (texture2DLod (s_heightTexture, ((u_ScaleOffsetHeight.zw * tmpvar_20) + u_ScaleOffsetHeight.xy), 0.0).x * mix (u_tileDistortion.x, u_tileDistortion.y, tmpvar_20.y));
+  vec3 tmpvar_24;
+  vec3 a_25;
+  a_25 = (tmpvar_22 - tmpvar_21);
+  vec3 b_26;
+  b_26 = (tmpvar_23 - tmpvar_21);
+  tmpvar_24 = ((a_25.yzx * b_26.zxy) - (a_25.zxy * b_26.yzx));
+  tileZ_4 = (u_tileMin.z + ((
+    (dot (tmpvar_24, tmpvar_21) - dot (tmpvar_24.xy, a_texcoord7.xy))
+   / tmpvar_24.z) * u_tileSize.z));
+  vec4 tmpvar_27;
+  tmpvar_27.yzw = vec3(0.0, 0.0, 0.0);
+  tmpvar_27.x = sqrt(dot (tmpvar_6, tmpvar_6));
+  worldPosition_3.z = tileZ_4;
+  float tmpvar_28;
+  tmpvar_28 = clamp (((
+    sqrt(dot (worldPosition_3, worldPosition_3))
+   - u_TileFillOpacityTransition.x) / (u_TileFillOpacityTransition.y - u_TileFillOpacityTransition.x)), 0.0, 1.0);
+  float tmpvar_29;
+  tmpvar_29 = (1.0 - (tmpvar_28 * (tmpvar_28 * 
+    (3.0 - (2.0 * tmpvar_28))
+  )));
+  vec4 tmpvar_30;
+  tmpvar_30.w = 1.0;
+  tmpvar_30.xyz = (worldPosition_3 * max (0.5, (1.0 - 
+    (max (0.01, (0.002 * u_NearFarFocus.z)) / sqrt(dot (worldPosition_3, worldPosition_3)))
+  )));
+  vec4 tmpvar_31;
+  tmpvar_31 = (u_proj * (u_view * tmpvar_30));
+  projected_1 = tmpvar_31;
+  vec4 tmpvar_32;
+  tmpvar_32.zw = vec2(0.0, 0.0);
+  tmpvar_32.xy = tmpvar_5;
+  float tmpvar_33;
+  tmpvar_33 = (float((u_TileVertClip.x <= a_texcoord7.x)) * float((a_texcoord7.x <= u_TileVertClip.z)));
+  float tmpvar_34;
+  tmpvar_34 = (float((u_TileVertClip.y <= a_texcoord7.y)) * float((a_texcoord7.y <= u_TileVertClip.w)));
+  if (((tmpvar_33 * tmpvar_34) == 0.0)) {
+    projected_1 = vec4(0.0, 0.0, 0.0, 0.0);
+  };
+  gl_Position = projected_1;
+  v_texcoord4 = vecPattern_2;
+  v_bitangent = worldPosition_3;
+  v_texcoord7 = tmpvar_32;
+  v_texcoord6 = tmpvar_31;
+  v_depth = tmpvar_29;
+  v_texcoord5 = tmpvar_8;
+  v_texcoord3 = tmpvar_27;
+}
+

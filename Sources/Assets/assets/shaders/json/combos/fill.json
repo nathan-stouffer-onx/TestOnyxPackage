@@ -14,14 +14,14 @@
       ]
     },
     {
-      "Segment": "terrainHeight",
-      "name": "TerrainHeight",
+      "Segment": "FillHeight",
+      "name": "FillHeight",
       "combineType": "PickOne",
       "includeNone": false,
       "components": [
         {
           "jsonComponent": {
-            "name": "TerrainHeight"
+            "name": "FillHeight"
           }
         }
       ]

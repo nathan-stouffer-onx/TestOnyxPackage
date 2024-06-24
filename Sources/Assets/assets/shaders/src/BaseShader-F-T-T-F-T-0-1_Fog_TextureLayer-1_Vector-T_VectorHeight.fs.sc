@@ -1,8 +1,9 @@
 $input v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
-#include "OnyxFragFunctions.sc"
+#include "layers.sc"
+#include "derivatives.sc"
+#include "terrain.sc"
 
 //samplers
 SAMPLER2D(s_heightTexture, 0);
@@ -18,13 +19,12 @@ uniform vec4 s_texture0_Res;
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_ScaleOffsetHeight;
-uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;
@@ -34,10 +34,10 @@ uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 
 //functions
-vec3 calcFogResult(vec3 color, vec2 transition, float t)
+vec3 fog(vec3 underneath, vec4 color, vec2 transition, float d)
 {
-	float d = smoothstep(transition.x, transition.y, t);
-	return mix(color, u_FogColor.rgb, d);
+	float strength = smoothstep(transition.x, transition.y, d);
+	return mix(underneath, color.rgb, strength * color.a);
 }
 vec4 BlendTextures(vec4 color, vec2 uv)
 {
@@ -67,8 +67,7 @@ fragColor = BlendTextures(fragColor, texcoords.xy);
 	fragColor = vec4(1.0, 1.0, 0.0, 1.0);
 
 //lighting
-fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
-
+fragColor.rgb = fog(fragColor.rgb, u_FogColor, u_FogTransition.xy, fogDist.x);
 
 //compose
 	gl_FragData[0] = fragColor;

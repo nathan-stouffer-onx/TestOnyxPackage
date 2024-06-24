@@ -23,12 +23,12 @@
   "bools": {},
   "chunks": [
     {
-      "comment" : "#include \"OnyxFunctions.sc\"",
+      "comment" : "#include \"layers.sc\"",
 
       "lines":
       [
           "#include <common.sh>"
-          , "#include \"OnyxFunctions.sc\""
+          , "#include \"layers.sc\""
       ],
       "position": "Includes",
       "type": "Vertex_and_Pixel"

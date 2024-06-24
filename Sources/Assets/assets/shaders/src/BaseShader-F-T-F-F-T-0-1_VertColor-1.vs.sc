@@ -3,7 +3,7 @@ $output v_texcoord7, v_texcoord6, v_color0
 
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 
@@ -12,7 +12,7 @@ $output v_texcoord7, v_texcoord6, v_color0
 //definitions
 uniform vec4 u_overrideColor;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;
@@ -32,7 +32,7 @@ vec4 color = a_color0.xyzw;
 //main start
 	vec2 tileCoord = mix(u_tileMin.xy, u_tileMax.xy, position.xy);
 	float baseHeight = u_tileMin.z + (position.z * u_tileMax.z);
-	vec4 worldPosition = vec4(tileCoord, baseHeight, baseHeight);
+	vec4 worldPosition = vec4(tileCoord, baseHeight, 0.0);
 	vec3 vertexPosition = worldPosition.xyz;
 mat4 viewMat = u_view;
 

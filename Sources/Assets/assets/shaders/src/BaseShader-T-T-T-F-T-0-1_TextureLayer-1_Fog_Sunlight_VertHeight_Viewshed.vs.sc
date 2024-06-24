@@ -3,7 +3,8 @@ $output v_normal, v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4, v_texcoord
 
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
+#include "terrain.sc"
 
 //samplers
 SAMPLER2D(s_heightTexture, 1);
@@ -27,7 +28,6 @@ uniform vec4 u_viewshedInverted0;
 uniform vec4 u_viewshedBias0;
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
-uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_SunTimeData;
@@ -49,7 +49,7 @@ uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_OpacityTex0;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;
@@ -59,19 +59,6 @@ uniform vec4 u_tileMin;
 uniform vec4 u_tileMax;
 
 //functions
-// expects uv to be in tile coordinates
-float heightAt(vec2 uv, vec4 scaleOffset)
-{
-	vec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;
-	return texture2DLod(s_heightTexture, scaledUV, 0).r;
-}
-// expects uv to be in tile coordinates
-float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
-{
-	float z = heightAt(uv, scaleOffset);
-	float distort = mix(distortion.x, distortion.y, uv.y);
-	return z * distort;
-}
 
 void main()
 {
@@ -82,21 +69,21 @@ vec4 texcoords = a_texcoord7.xyzw;
 //main start
 	vec2 tileCoord = mix(u_tileMin.xy, u_tileMax.xy, position.xy);
 	float baseHeight = u_tileMin.z + (position.z * u_tileMax.z);
-	vec4 worldPosition = vec4(tileCoord, baseHeight, baseHeight);
+	vec4 worldPosition = vec4(tileCoord, baseHeight, 0.0);
 	vec3 vertexPosition = worldPosition.xyz;
 normal = mul(u_model[0], vec4(normal.xyz, 0.0));
 	vec4 sunUV = vec4(u_sunTileMin.xy + (u_sunTileMax.xy - u_sunTileMin.xy) * texcoords.xy, 0,0);
 	vec4 sunDir = vec4(calcSunDir(u_SunTimeData.x, u_SunTimeData.y), 0);
 mat4 viewMat = u_view;
-	float z = distortedHeightAt(texcoords.xy, u_tileDistortion.xy, u_ScaleOffsetHeight);
-	worldPosition.zw += vec2(z, heightAt(texcoords.xy, u_ScaleOffsetHeight));
+	worldPosition.w = elevationAtVS(texcoords.xy, u_ScaleOffsetHeight, s_heightTexture);
+	float z = distort(worldPosition.w, texcoords.xy, u_tileDistortion.xy);
+	worldPosition.z += z;
 	vertexPosition.z += z * u_tileSize.z;
 	vec4 tileDistortion = u_tileDistortion;
 	vec4 scaleOffsetHeight = u_ScaleOffsetHeight;
 
 //lighting
-vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);
-
+vec4 fogDist = vec4(length(worldPosition.xyz), 0.0, 0.0, 0.0);
 	vec2 shadowTileCoord = mix(u_sunShadowTileMin.xy, u_sunShadowTileMax.xy, position.xy);
 	float shadowBaseHeight = u_sunShadowTileMin.z + (position.z * u_sunShadowTileMax.z);
 	vec4 shadowWorldPosition = vec4(shadowTileCoord, shadowBaseHeight, shadowBaseHeight);

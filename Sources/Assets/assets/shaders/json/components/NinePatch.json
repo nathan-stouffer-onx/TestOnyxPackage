@@ -26,18 +26,22 @@
         {
             "alias": "opacity",
             "dataType": "vec4"
+        },
+        {
+            "alias": "texId",
+            "dataType": "float"
         }
     ],
 
     "chunks": [
     {
-        "comment" : "#include \"OnyxFunctions.sc\"",
+        "comment" : "#include \"layers.sc\"",
         "position": "Includes",
         "type": "Vertex_and_Pixel",
         "lines":
         [
             "#include <../examples/common/common.sh>",
-            "#include \"OnyxFunctions.sc\""
+            "#include \"layers.sc\""
         ]
     },
     {
@@ -86,22 +90,25 @@
 
             "\t// Compute screen position px/normalized",
             "\tvec3 iconRgt = vec3(i_uvXAxis.zw, 0);",
-            "\tvec3 iconDown = vec3(i_yAxisOpacity.xy, 0);",
+            "\tvec2 screenYAxis = i_yAxisOpacityTexId.xy;",
+            "\tvec3 iconDown = vec3(screenYAxis, 0);",
             "\tvec3 offset = widthOffset * iconRgt + heightOffset * iconDown;",
             "\tvec2 finalPosScrSp = ((offset + vec3(screenPos.xy, 0))).xy;",
             "\tvec2 finalPosN = (finalPosScrSp - 0.5*u_screenRes.xy) * (2.0 * u_screenRes.zw);",
             "\tgl_Position = vec4(finalPosN.x, -finalPosN.y, 0, 1);",
 
             "\t// Compute UV offset",
-            "\tfloat xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex_Res.z;",
-            "\tfloat yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex_Res.w;",
+            "\t// Assumes both sprite textures are the same res",
+            "\tfloat xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex1_Res.z;",
+            "\tfloat yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex1_Res.w;",
             "\t//vec4 uv = vertXOffsets;",
 
             "\t// Set outputs",
-            "\tvec4 opacity = vec4_splat(i_yAxisOpacity.z);",
+            "\tvec4 opacity = vec4_splat(i_yAxisOpacityTexId.z);",
             "\tfloat xScreenPx = screenPos.x + widthOffset;",
             "\tfloat yScreenPx = screenPos.y + heightOffset;",
-            "\tvec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);"
+            "\tvec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);",
+            "\tfloat texId = i_yAxisOpacityTexId.w;"
         ]
     },
     {
@@ -110,7 +117,7 @@
         "position": "Main",
         "lines": [
             "\t// Get sprite texture color",
-            "\tvec4 fragColor = texture2D(s_spriteTex, uv.xy);"
+            "\tvec4 fragColor = (texId == 0.f) ? texture2D(s_spriteTex1, uv.xy) : texture2D(s_spriteTex2, uv.xy);"
         ]
     },
     {
@@ -127,7 +134,13 @@
     "shaderParameters": [
         {
             "componentName": "IconBase",
-            "name": "s_spriteTex",
+            "name": "s_spriteTex1",
+            "realtimeUniform": true,
+            "type": "texture"
+        },
+        {
+            "componentName": "IconBase",
+            "name": "s_spriteTex2",
             "realtimeUniform": true,
             "type": "texture"
         },
@@ -143,19 +156,6 @@
                 "z": 0.0,
                 "w": 0.0
             }
-        },
-        {
-            "componentName": "NinePatch",
-            "name": "u_orientToMap",
-            "realtimeUniform": true,
-            "instanced": false,
-            "type": "vec3",
-            "vec3": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "comment": "x is a bool toggle where 0 is orient to viewport and 1 is orient to map"
         },
         {
             "componentName": "NinePatch",
@@ -226,7 +226,7 @@
         },
         {
             "componentName": "IconBase",
-            "name": "i_yAxisOpacity",
+            "name": "i_yAxisOpacityTexId",
             "realtimeUniform": false,
             "instanced": true,
             "type": "vec4",
@@ -236,7 +236,7 @@
                 "z": 0.0,
                 "w": 0.0
             },
-            "comment": "xy - icon's y-axis in screen space, z - icon opacity, w - unused"
+            "comment": "xy - icon's y-axis in screen space, z - icon opacity, w - texture id"
         }
     ]
 }

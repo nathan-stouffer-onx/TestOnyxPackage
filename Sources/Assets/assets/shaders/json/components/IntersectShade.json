@@ -31,7 +31,7 @@
     {
       "lines": [
         "// store height, angle, and aspect in local variables",
-        "float height = worldPosition.w + u_eyePos.z;",
+        "float height = worldPosition.w;",
         "float angle = calcSlopeAngle(normal.xyz);",
         "float aspect = calcSlopeDir(normal.xyz);",
         "fragColor.rgb = calculateIntersection(fragColor.rgb, vec3(height, angle, aspect), u_IntersectInverted.x, u_IntersectTint);"

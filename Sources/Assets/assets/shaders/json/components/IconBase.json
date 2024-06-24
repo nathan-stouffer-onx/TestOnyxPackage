@@ -49,13 +49,13 @@
 
     "chunks": [
     {
-        "comment" : "#include \"OnyxFunctions.sc\"",
+        "comment" : "#include \"layers.sc\"",
         "position": "Includes",
         "type": "Vertex_and_Pixel",
         "lines":
         [
             "#include <../examples/common/common.sh>",
-            "#include \"OnyxFunctions.sc\""
+            "#include \"layers.sc\""
         ]
     },
     {
@@ -124,7 +124,7 @@
             "\t// Get sprite texture color",
             "\tvec4 fragColor = vec4_splat(0.f);",
             "\tvec2 texcoords = texcoord0.xy;",
-            "\tfragColor = sampleTextureFunc(s_spriteTex, texcoords, scaleOffsetTex);"
+            "\tfragColor = read(s_spriteTex, texcoords, scaleOffsetTex);"
         ]
     },
     {

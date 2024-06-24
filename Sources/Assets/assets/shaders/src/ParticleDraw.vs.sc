@@ -3,7 +3,7 @@ $output v_bitangent
 
 //includes
 #include <../examples/common/common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 SAMPLER2D(s_posLifeTex, 0);

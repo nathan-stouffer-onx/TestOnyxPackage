@@ -3,7 +3,7 @@ $output v_color2, v_position, v_normal, v_color1, v_texcoord0, v_color0, v_color
 
 //includes
 #include <../examples/common/common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 SAMPLER2D(s_texture0, 0);
@@ -16,7 +16,7 @@ uniform vec4 u_ScaleOffsetTex0;
 uniform vec4 u_bbOffset;
 uniform vec4 u_billboardSize;
 uniform vec4 u_pivot;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;

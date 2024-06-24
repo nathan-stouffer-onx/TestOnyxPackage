@@ -16,7 +16,7 @@
   ],
   "chunks": [
     {
-      "data": "\tdepth.xyz = vec3(length(worldPosition.xyz) / u_nearFarPlane.y, 0, 0);",
+      "data": "\tdepth.xyz = vec3(length(worldPosition.xyz) / u_NearFarFocus.y, 0, 0);",
       "position": "Compose",
       "positionOffset": 6,
       "type": "Vertex"

@@ -5,9 +5,10 @@ attribute vec4 i_data1;
 attribute vec4 i_data2;
 attribute vec4 i_data3;
 attribute vec4 i_data4;
+varying float v_depth;
 varying vec4 v_texcoord6;
 varying vec4 v_texcoord7;
-uniform vec4 s_spriteTex_Res;
+uniform vec4 s_spriteTex1_Res;
 uniform vec4 u_screenRes;
 void main ()
 {
@@ -71,11 +72,12 @@ void main ()
     dot (a_normal, i_data0)
    + 
     (a_tangent.x * i_data1.x)
-  ) * s_spriteTex_Res.z));
-  tmpvar_17.y = (i_data3.y + (dot (a_tangent.yzw, i_data1.yzw) * s_spriteTex_Res.w));
+  ) * s_spriteTex1_Res.z));
+  tmpvar_17.y = (i_data3.y + (dot (a_tangent.yzw, i_data1.yzw) * s_spriteTex1_Res.w));
   tmpvar_17.z = (i_data2.x + tmpvar_6);
   tmpvar_17.w = (i_data2.y + tmpvar_9);
   v_texcoord7 = tmpvar_17;
   v_texcoord6 = tmpvar_16;
+  v_depth = i_data4.w;
 }
 

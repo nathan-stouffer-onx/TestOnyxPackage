@@ -1,27 +1,14 @@
 {
   "segments": [
     {
-      "segment": "lineBase",
-      "name": "lineBase",
+      "segment": "LineBase",
+      "name": "LineBase",
       "combineType": "PickOne",
       "includeNone": false,
       "components": [
         {
           "jsonComponent": {
             "name": "LineBase"
-          }
-        }
-      ]
-    },
-    {
-      "Segment": "terrainHeight",
-      "name": "TerrainHeight",
-      "combineType": "PickOne",
-      "includeNone": true,
-      "components": [
-        {
-          "jsonComponent": {
-            "name": "TerrainHeight"
           }
         }
       ]

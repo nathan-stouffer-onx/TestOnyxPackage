@@ -14,10 +14,10 @@
   "chunks": [
     {
       "lines": [
-        "vec3 calcFogResult(vec3 color, vec2 transition, float t)",
+        "vec3 fog(vec3 underneath, vec4 color, vec2 transition, float d)",
         "{",
-        "\tfloat d = smoothstep(transition.x, transition.y, t);",
-        "\treturn mix(color, u_FogColor.rgb, d);",
+        "\tfloat strength = smoothstep(transition.x, transition.y, d);",
+        "\treturn mix(underneath, color.rgb, strength * color.a);",
         "}"
       ],
       "position": "Functions",
@@ -26,7 +26,7 @@
     },
     {
       "lines": [
-        "vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);\n"
+        "vec4 fogDist = vec4(length(worldPosition.xyz), 0.0, 0.0, 0.0);"
       ],
       "position": "Lighting",
       "positionOffset": 0,
@@ -34,7 +34,7 @@
     },
     {
       "lines": [
-        "fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);\n"
+        "fragColor.rgb = fog(fragColor.rgb, u_FogColor, u_FogTransition.xy, fogDist.x);"
       ],
       "position": "Lighting",
       "positionOffset": 1,
@@ -48,8 +48,8 @@
       "name": "u_FogTransition",
       "type": "vec2",
       "vec2": {
-        "x": 0.65,
-        "y": 1.0
+        "x": 50.0,
+        "y": 100.0
       }
     },
     {

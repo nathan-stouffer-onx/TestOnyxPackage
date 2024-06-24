@@ -103,14 +103,14 @@
         {
             "lines": [
                 "#include <common.sh>",
-                "#include \"OnyxFunctions.sc\""
+                "#include \"layers.sc\""
             ],
             "position": "Includes",
             "type": "Vertex_and_Pixel"
         },
         {
             "lines": [
-                "#include \"OnyxFragFunctions.sc\""
+                "#include \"derivatives.sc\""
             ],
             "position": "Includes",
             "type": "Pixel"
@@ -120,7 +120,7 @@
             "lines": [
                 "\tvec2 tileCoord = mix(u_tileMin.xy, u_tileMax.xy, position.xy);",
                 "\tfloat baseHeight = u_tileMin.z + (position.z * u_tileMax.z);",
-                "\tvec4 worldPosition = vec4(tileCoord, baseHeight, baseHeight);",
+                "\tvec4 worldPosition = vec4(tileCoord, baseHeight, 0.0);",
                 "\tvec3 vertexPosition = worldPosition.xyz;"
             ],
             "position": "Main",
@@ -226,7 +226,7 @@
             "imguiRate": 0.009999999776482582,
             "max": -1.0,
             "min": -1.0,
-            "name": "u_nearFarPlane",
+            "name": "u_NearFarFocus",
             "realtimeUniform": true,
             "type": "vec3",
             "shaderType": "Vertex_and_Pixel",

@@ -1,8 +1,9 @@
 $input v_normal, v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2, v_texcoord1, v_texcoord0, v_color4
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
-#include "OnyxFragFunctions.sc"
+#include "layers.sc"
+#include "derivatives.sc"
+#include "terrain.sc"
 
 //samplers
 SAMPLER2D(s_heightTexture, 2);
@@ -23,7 +24,6 @@ uniform vec4 s_texture1_Res;
 //definitions
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
-uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_ContourParams0;
@@ -53,7 +53,7 @@ uniform vec4 u_OpacityTex0;
 uniform vec4 u_ScaleOffsetTex1;
 uniform vec4 u_OpacityTex1;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;
@@ -84,58 +84,24 @@ vec2 modUV = u_ScaleOffsetTex1.xy + uv * u_ScaleOffsetTex1.zw;
 }
 
 
-vec3 calcFogResult(vec3 color, vec2 transition, float t)
+vec3 fog(vec3 underneath, vec4 color, vec2 transition, float d)
 {
-	float d = smoothstep(transition.x, transition.y, t);
-	return mix(color, u_FogColor.rgb, d);
+	float strength = smoothstep(transition.x, transition.y, d);
+	return mix(underneath, color.rgb, strength * color.a);
 }
 float linstep(float low, float high, float v)
 {
 	return clamp((v-low)/(high-low), 0.0, 1.0);
 }
 // def unpacks to (period, min, max, width)
-vec3 calcContour(vec3 baseColor, vec4 color, vec4 def, float height, float opacity)
+vec3 calcContour(vec3 baseColor, vec4 color, vec4 def, float height, float opacity, float focus, float dist)
 {
-	vec3 blended = mix(baseColor, color.rgb, color.a);
-	float t = levelSets(height, def.x, 0.0, def.y, def.z, def.w);
+	float width = def.w * min(1.0, max(focus, 1.5) / dist); // thin lines beyond the focus distance (as long as focus is larger than 1.5 km)
+	vec3 blended = mix(baseColor, color.rgb, color.a * min(width, 1.0)); // compute line color (reduce opacity if line width is smaller than 1)
+	width = max(1.5, width); // minimum width for anti-aliasing
+	float t = levelSets(height, def.x, 0.0, def.y, def.z, width);
 	t = clamp(pow(t + 0.5, 3.0) - 0.5, 0.0, 1.0); // remove edge haze
-	//float fade = clamp(pow(1.0 - length(position) / (u_nearFarPlane.y / 3.0), 3.0), 0.0, 1.0); // horizon fade
 	return mix(baseColor, blended, t * opacity);
-}
-// for pixel shader -  expects uv to be in tile coordinates
-float heightAt(vec2 uv, vec4 scaleOffset)
-{
-	vec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;
-	return texture2D(s_heightTexture, scaledUV).r;
-}
-// expects uv to be in tile coordinates
-float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
-{
-	float z = heightAt(uv, scaleOffset);
-	float distort = mix(distortion.x, distortion.y, uv.y);
-	return z * distort;
-}
-// expects uv to be in tile coordinates
-vec3 normalAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
-{
-	vec2 pixelWidth = s_heightTexture_Res.zw;
-	vec2 tileDelta = pixelWidth / scaleOffset.z;
-	vec2 westUV = uv - vec2(tileDelta.x, 0);
-	vec2 eastUV = uv + vec2(tileDelta.x, 0);
-	vec2 northUV = uv - vec2(0, tileDelta.y);
-	vec2 southUV = uv + vec2(0, tileDelta.y);
-	float z = distortedHeightAt(uv, distortion, scaleOffset);
-	float westZ = distortedHeightAt(westUV, distortion, scaleOffset) - z;
-	float eastZ = distortedHeightAt(eastUV, distortion, scaleOffset) - z;
-	float northZ = distortedHeightAt(northUV, distortion, scaleOffset) - z;
-	float southZ = distortedHeightAt(southUV, distortion, scaleOffset) - z;
-	vec2 worldStep = u_heightTileSize.xy / 256.0;
-	vec3 westDelta = vec3(-worldStep.x, 0, westZ);
-	vec3 eastDelta = vec3(worldStep.x, 0, eastZ);
-	vec3 northDelta = vec3(0, -worldStep.y, northZ);
-	vec3 southDelta = vec3(0, worldStep.y, southZ);
-	vec3 normal = cross(westDelta, northDelta) + cross(northDelta, eastDelta) + cross(eastDelta, southDelta) + cross(southDelta, westDelta);
-	return normalize(normal);
 }
 
 void main()
@@ -152,7 +118,7 @@ vec4 sunShadowUV = v_texcoord1.xyzw;
 vec4 tileDistortion = v_texcoord0.xyzw;
 vec4 scaleOffsetHeight = v_color4.xyzw;
 //main start
-normal.xyz = normalAt(texcoords.xy, tileDistortion.xy, scaleOffsetHeight);
+normal.xyz = normalAt(texcoords.xy, u_tileSize.x, tileDistortion.xy, s_heightTexture, scaleOffsetHeight, s_heightTexture_Res.z);
 vec4 fragColor = u_BackgroundColor;
 fragColor = BlendTextures(fragColor, texcoords.xy);
 	float hillshade = calcSunlightTangent(sunUV.xy, vec3(normal.x, normal.y, normal.z), sunDir.xyz);//dot(normalize(normal.xyz * 2.0 - 1.0), normalize(sunDir.xyz));
@@ -175,8 +141,7 @@ fragColor = BlendTextures(fragColor, texcoords.xy);
 	fragColor.xyz = mix(fragColor.xyz, vec3(shadow, shadow, shadow), u_sunShadowStrength.x);
 if(u_CascadeDebug.x > 0.5) fragColor.xyz = texture2D(s_sunShadowDepth, projectedUV.xy).xyz;
 //fragColor.xyz = vec3(texture2D(s_sunShadowDepth, projectedUV.xy).x);
-float elevation = worldPosition.w + u_eyePos.z;
-float elevationIndex = lerpInv(u_ElevationExtents.x, u_ElevationExtents.y, elevation) * s_ElevationShadeTexture_Res.x * s_ElevationShadeTexture_Res.y;
+float elevationIndex = lerpInv(u_ElevationExtents.x, u_ElevationExtents.y, worldPosition.w) * s_ElevationShadeTexture_Res.x * s_ElevationShadeTexture_Res.y;
 float i = mod(elevationIndex, s_ElevationShadeTexture_Res.x);
 float j = floor(elevationIndex / s_ElevationShadeTexture_Res.y);
 vec4 elevationTexel = texture2D(s_ElevationShadeTexture, vec2(i, j) / s_ElevationShadeTexture_Res.xy);
@@ -184,13 +149,12 @@ fragColor.rgb = mix(fragColor.rgb, elevationTexel.rgb, elevationTexel.a);
 float PI_HALVES = PI_CONSTS.z;
 vec4 angleTexel = texture2D(s_SlopeAngleShadeTexture, vec2(calcSlopeAngle(normal.xyz) / PI_HALVES, 0.0));
 fragColor.rgb = mix(fragColor.rgb, angleTexel.rgb, angleTexel.a);
-float contourFade = 1.0 - smoothstep(u_ContourFade.x, u_ContourFade.y, length(worldPosition.xyz) / u_nearFarPlane.y);
-fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w + u_eyePos.z, contourFade);
-fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w + u_eyePos.z, contourFade);
+float contourFade = 1.0 - smoothstep(u_ContourFade.x, u_ContourFade.y, length(worldPosition.xyz));
+fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w, contourFade, u_NearFarFocus.z, length(worldPosition));
+fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w, contourFade, u_NearFarFocus.z, length(worldPosition));
 
 //lighting
-fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
-
+fragColor.rgb = fog(fragColor.rgb, u_FogColor, u_FogTransition.xy, fogDist.x);
 
 //compose
 	gl_FragData[0] = fragColor;

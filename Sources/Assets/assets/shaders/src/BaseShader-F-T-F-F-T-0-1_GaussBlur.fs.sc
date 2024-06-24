@@ -1,8 +1,8 @@
 $input v_texcoord7, v_texcoord6
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
-#include "OnyxFragFunctions.sc"
+#include "layers.sc"
+#include "derivatives.sc"
 
 //samplers
 SAMPLER2D(s_BlurTex, 0);
@@ -13,7 +13,7 @@ uniform vec4 s_BlurTex_Res;
 //definitions
 uniform vec4 u_GaussBlurScale;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;

@@ -1,19 +1,20 @@
 $input i_data3, a_tangent, a_normal, i_data0, i_data1, i_data2, i_data4
-$output v_texcoord7, v_texcoord6
+$output v_texcoord7, v_texcoord6, v_depth
 
 //includes
 #include <../examples/common/common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
-SAMPLER2D(s_spriteTex, 0);
-uniform vec4 s_spriteTex_Res;
+SAMPLER2D(s_spriteTex1, 0);
+uniform vec4 s_spriteTex1_Res;
+SAMPLER2D(s_spriteTex2, 1);
+uniform vec4 s_spriteTex2_Res;
 
 //cubeSamplers
 
 //definitions
 uniform vec4 u_screenRes;
-uniform vec4 u_orientToMap;
 uniform vec4 u_oriAngle;
 
 //functions
@@ -27,7 +28,7 @@ vec4 normal = a_normal.xyzw;
 vec4 i_offsets0 = i_data0.xyzw;
 vec4 i_offsets1 = i_data1.xyzw;
 vec4 i_screenPosSize = i_data2.xyzw;
-vec4 i_yAxisOpacity = i_data4.xyzw;
+vec4 i_yAxisOpacityTexId = i_data4.xyzw;
 //main start
 
 //lighting
@@ -70,23 +71,27 @@ vec4 i_yAxisOpacity = i_data4.xyzw;
 	float heightOffset = dot(vec3(y0, grid1.z, grid1.w), vertYOffsets);
 	// Compute screen position px/normalized
 	vec3 iconRgt = vec3(i_uvXAxis.zw, 0);
-	vec3 iconDown = vec3(i_yAxisOpacity.xy, 0);
+	vec2 screenYAxis = i_yAxisOpacityTexId.xy;
+	vec3 iconDown = vec3(screenYAxis, 0);
 	vec3 offset = widthOffset * iconRgt + heightOffset * iconDown;
 	vec2 finalPosScrSp = ((offset + vec3(screenPos.xy, 0))).xy;
 	vec2 finalPosN = (finalPosScrSp - 0.5*u_screenRes.xy) * (2.0 * u_screenRes.zw);
 	gl_Position = vec4(finalPosN.x, -finalPosN.y, 0, 1);
 	// Compute UV offset
-	float xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex_Res.z;
-	float yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex_Res.w;
+	// Assumes both sprite textures are the same res
+	float xofs = (dot(grid0, i_offsets0) + (grid1.x * i_offsets1.x)) * s_spriteTex1_Res.z;
+	float yofs = (dot(grid1.yzw, i_offsets1.yzw)) * s_spriteTex1_Res.w;
 	//vec4 uv = vertXOffsets;
 	// Set outputs
-	vec4 opacity = vec4_splat(i_yAxisOpacity.z);
+	vec4 opacity = vec4_splat(i_yAxisOpacityTexId.z);
 	float xScreenPx = screenPos.x + widthOffset;
 	float yScreenPx = screenPos.y + heightOffset;
 	vec4 uv = vec4(uvIn.x + xofs, uvIn.y + yofs, xScreenPx, yScreenPx);  // xScreenPx, yScreenPx, xScreenN, yScreenN);
+	float texId = i_yAxisOpacityTexId.w;
 
 v_texcoord7 = uv.xyzw;
 v_texcoord6 = opacity.xyzw;
+v_depth = texId;
 
 }
 

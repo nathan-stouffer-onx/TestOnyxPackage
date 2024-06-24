@@ -3,7 +3,7 @@ $output v_position, v_texcoord0, v_texcoord7
 
 //includes
 #include <../examples/common/common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 SAMPLER2D(s_spriteTex, 0);

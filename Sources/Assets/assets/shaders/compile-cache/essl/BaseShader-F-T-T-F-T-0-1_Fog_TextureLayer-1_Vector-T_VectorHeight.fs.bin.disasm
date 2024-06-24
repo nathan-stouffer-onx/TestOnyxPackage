@@ -12,9 +12,9 @@ void main ()
   fragColor_2.w = 1.0;
   float tmpvar_3;
   tmpvar_3 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
-  fragColor_2.xyz = mix (vec3(1.0, 1.0, 0.0), u_FogColor.xyz, (tmpvar_3 * (tmpvar_3 * 
-    (3.0 - (2.0 * tmpvar_3))
-  )));
+  fragColor_2.xyz = mix (vec3(1.0, 1.0, 0.0), u_FogColor.xyz, ((tmpvar_3 * 
+    (tmpvar_3 * (3.0 - (2.0 * tmpvar_3)))
+  ) * u_FogColor.w));
   bgfx_FragData[0] = fragColor_2;
   float tmpvar_4;
   tmpvar_4 = (((

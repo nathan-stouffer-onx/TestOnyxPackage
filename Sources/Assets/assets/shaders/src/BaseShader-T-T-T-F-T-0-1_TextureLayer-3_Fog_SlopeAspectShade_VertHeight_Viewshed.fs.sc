@@ -1,8 +1,9 @@
 $input v_normal, v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
-#include "OnyxFragFunctions.sc"
+#include "layers.sc"
+#include "derivatives.sc"
+#include "terrain.sc"
 
 //samplers
 SAMPLER2D(s_heightTexture, 2);
@@ -30,7 +31,6 @@ uniform vec4 u_viewshedInverted0;
 uniform vec4 u_viewshedBias0;
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
-uniform vec4 u_heightTileSize;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_MaxNormalZ;
@@ -43,7 +43,7 @@ uniform vec4 u_OpacityTex1;
 uniform vec4 u_ScaleOffsetTex2;
 uniform vec4 u_OpacityTex2;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;
@@ -81,10 +81,10 @@ vec2 modUV = u_ScaleOffsetTex2.xy + uv * u_ScaleOffsetTex2.zw;
 }
 
 
-vec3 calcFogResult(vec3 color, vec2 transition, float t)
+vec3 fog(vec3 underneath, vec4 color, vec2 transition, float d)
 {
-	float d = smoothstep(transition.x, transition.y, t);
-	return mix(color, u_FogColor.rgb, d);
+	float strength = smoothstep(transition.x, transition.y, d);
+	return mix(underneath, color.rgb, strength * color.a);
 }
 vec3 slopeAspectShade(vec3 inputColor, vec3 normal)
 {
@@ -92,41 +92,6 @@ vec3 slopeAspectShade(vec3 inputColor, vec3 normal)
 	vec4 aspectTexel = texture2D(s_SlopeAspectShadeTexture, vec2(calcSlopeDir(normal.xyz) / TWO_PI, 0.0));
 	float strength = aspectTexel.a * float(abs(normal.z) <= u_MaxNormalZ.x);
 	return mix(inputColor, aspectTexel.rgb, strength);
-}
-// for pixel shader -  expects uv to be in tile coordinates
-float heightAt(vec2 uv, vec4 scaleOffset)
-{
-	vec2 scaledUV = scaleOffset.zw * uv + scaleOffset.xy;
-	return texture2D(s_heightTexture, scaledUV).r;
-}
-// expects uv to be in tile coordinates
-float distortedHeightAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
-{
-	float z = heightAt(uv, scaleOffset);
-	float distort = mix(distortion.x, distortion.y, uv.y);
-	return z * distort;
-}
-// expects uv to be in tile coordinates
-vec3 normalAt(vec2 uv, vec2 distortion, vec4 scaleOffset)
-{
-	vec2 pixelWidth = s_heightTexture_Res.zw;
-	vec2 tileDelta = pixelWidth / scaleOffset.z;
-	vec2 westUV = uv - vec2(tileDelta.x, 0);
-	vec2 eastUV = uv + vec2(tileDelta.x, 0);
-	vec2 northUV = uv - vec2(0, tileDelta.y);
-	vec2 southUV = uv + vec2(0, tileDelta.y);
-	float z = distortedHeightAt(uv, distortion, scaleOffset);
-	float westZ = distortedHeightAt(westUV, distortion, scaleOffset) - z;
-	float eastZ = distortedHeightAt(eastUV, distortion, scaleOffset) - z;
-	float northZ = distortedHeightAt(northUV, distortion, scaleOffset) - z;
-	float southZ = distortedHeightAt(southUV, distortion, scaleOffset) - z;
-	vec2 worldStep = u_heightTileSize.xy / 256.0;
-	vec3 westDelta = vec3(-worldStep.x, 0, westZ);
-	vec3 eastDelta = vec3(worldStep.x, 0, eastZ);
-	vec3 northDelta = vec3(0, -worldStep.y, northZ);
-	vec3 southDelta = vec3(0, worldStep.y, southZ);
-	vec3 normal = cross(westDelta, northDelta) + cross(northDelta, eastDelta) + cross(eastDelta, southDelta) + cross(southDelta, westDelta);
-	return normalize(normal);
 }
 float cubemapRayTo(vec3 lightSource, vec3 pixelPos)
 {
@@ -172,7 +137,7 @@ vec4 fogDist = v_texcoord4.xyzw;
 vec4 tileDistortion = v_texcoord3.xyzw;
 vec4 scaleOffsetHeight = v_texcoord2.xyzw;
 //main start
-normal.xyz = normalAt(texcoords.xy, tileDistortion.xy, scaleOffsetHeight);
+normal.xyz = normalAt(texcoords.xy, u_tileSize.x, tileDistortion.xy, s_heightTexture, scaleOffsetHeight, s_heightTexture_Res.z);
 vec4 fragColor = u_BackgroundColor;
 fragColor = BlendTextures(fragColor, texcoords.xy);
 fragColor.rgb = slopeAspectShade(fragColor.rgb, normal.xyz);
@@ -180,8 +145,7 @@ fragColor.rgb = slopeAspectShade(fragColor.rgb, normal.xyz);
 //lighting
 fragColor.rgb = calcViewshed(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedInverted0.x, u_viewshedRange0.x, u_viewshedTint0);
 fragColor.rgb = calcViewshedRings(fragColor.rgb, u_viewshedPos0.xyz, worldPosition.xyz, u_viewshedRange0.x, u_viewshedRingTint0);
-fragColor.rgb = calcFogResult(fragColor.rgb, u_FogTransition.xy, fogDist.x);
-
+fragColor.rgb = fog(fragColor.rgb, u_FogColor, u_FogTransition.xy, fogDist.x);
 
 //compose
 	gl_FragData[0] = fragColor;

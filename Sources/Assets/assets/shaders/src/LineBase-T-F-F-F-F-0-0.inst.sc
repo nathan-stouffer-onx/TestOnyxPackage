@@ -3,7 +3,7 @@ $output v_texcoord7, v_color0, v_texcoord6, v_texcoord5
 
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 SAMPLER2D(s_DashSampler, 0);
@@ -13,7 +13,7 @@ uniform vec4 s_DashSampler_Res;
 
 //definitions
 uniform vec4 u_dashUV;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;

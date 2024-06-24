@@ -1,0 +1,47 @@
+precision highp int;
+precision highp float;
+out mediump vec4 bgfx_FragData[8];
+in vec3 v_bitangent;
+in float v_depth;
+in vec4 v_texcoord3;
+in vec4 v_texcoord4;
+in vec4 v_texcoord5;
+in vec4 v_texcoord7;
+uniform sampler2D s_patterns;
+uniform vec4 s_patterns_Res;
+uniform vec4 u_FogTransition;
+uniform vec4 u_FogColor;
+uniform vec4 u_TileFillData;
+uniform vec4 u_eyePos;
+uniform vec4 u_vectorFade;
+uniform vec4 u_TileFragClip;
+void main ()
+{
+  vec2 worldUV_1;
+  vec4 fragColor_2;
+  float tmpvar_3;
+  tmpvar_3 = (float((u_TileFragClip.x <= v_texcoord7.x)) * float((v_texcoord7.x <= u_TileFragClip.z)));
+  float tmpvar_4;
+  tmpvar_4 = (float((u_TileFragClip.y <= v_texcoord7.y)) * float((v_texcoord7.y <= u_TileFragClip.w)));
+  if (((tmpvar_3 * tmpvar_4) == 0.0)) {
+    discard;
+  };
+  fragColor_2.w = v_texcoord5.w;
+  float tmpvar_5;
+  tmpvar_5 = clamp (((v_texcoord3.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);
+  fragColor_2.xyz = mix (v_texcoord5.xyz, u_FogColor.xyz, ((tmpvar_5 * 
+    (tmpvar_5 * (3.0 - (2.0 * tmpvar_5)))
+  ) * u_FogColor.w));
+  worldUV_1 = ((v_bitangent.xy + u_eyePos.xy) * 1000.0);
+  worldUV_1 = (worldUV_1 / exp2((20.0 - u_TileFillData.x)));
+  vec2 tmpvar_6;
+  tmpvar_6.x = (float(mod (worldUV_1.x, v_texcoord4.z)));
+  tmpvar_6.y = (float(mod (worldUV_1.y, v_texcoord4.w)));
+  fragColor_2 = (fragColor_2 * textureLod (s_patterns, (v_texcoord4.xy + (tmpvar_6 * s_patterns_Res.zw)), 0.0));
+  vec4 tmpvar_7;
+  tmpvar_7.xyz = fragColor_2.xyz;
+  tmpvar_7.w = ((fragColor_2.w * u_vectorFade.x) * v_depth);
+  bgfx_FragData[0] = tmpvar_7;
+  bgfx_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
+}
+

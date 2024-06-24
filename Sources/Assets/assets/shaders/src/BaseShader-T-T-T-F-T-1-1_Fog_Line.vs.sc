@@ -3,7 +3,7 @@ $output v_normal, v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4, v_texcoord
 
 //includes
 #include <common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 
@@ -18,7 +18,7 @@ uniform vec4 u_gapLength;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;
@@ -47,7 +47,7 @@ vec4 line_texcoord = a_texcoord6.xyzw;
 //main start
 	vec2 tileCoord = mix(u_tileMin.xy, u_tileMax.xy, position.xy);
 	float baseHeight = u_tileMin.z + (position.z * u_tileMax.z);
-	vec4 worldPosition = vec4(tileCoord, baseHeight, baseHeight);
+	vec4 worldPosition = vec4(tileCoord, baseHeight, 0.0);
 	vec3 vertexPosition = worldPosition.xyz;
 normal = mul(u_model[0], vec4(normal.xyz, 0.0));
 vec4 clipPos = mul(u_viewProj, vec4(position.xyz, 1.0));
@@ -61,8 +61,7 @@ clipPos.xy += clipNormal.xy * line_texcoord.x * (lineWidth / 2.0);
 mat4 viewMat = u_view;
 
 //lighting
-vec4 fogDist = vec4(length(worldPosition.xyz) / u_nearFarPlane.y, 0.0, 0.0, 0.0);
-
+vec4 fogDist = vec4(length(worldPosition.xyz), 0.0, 0.0, 0.0);
 
 //compose
 	vec4 projected = mul(u_proj, mul(viewMat, vec4(vertexPosition.xyz, 1.0)));

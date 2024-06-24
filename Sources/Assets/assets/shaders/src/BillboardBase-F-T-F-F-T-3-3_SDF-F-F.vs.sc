@@ -3,7 +3,7 @@ $output v_texcoord7, v_texcoord6, v_texcoord5, v_texcoord4
 
 //includes
 #include <../examples/common/common.sh>
-#include "OnyxFunctions.sc"
+#include "layers.sc"
 
 //samplers
 
@@ -14,7 +14,7 @@ uniform vec4 s_fontAtlas_Res;
 //definitions
 uniform vec4 u_sdfParams;
 uniform vec4 u_dropShadowColor;
-uniform vec4 u_nearFarPlane;
+uniform vec4 u_NearFarFocus;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;

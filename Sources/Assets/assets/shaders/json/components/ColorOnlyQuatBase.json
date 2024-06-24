@@ -56,11 +56,11 @@
 
     "chunks": [
     {
-        "comment" : "#include \"OnyxFunctions.sc\"",
+        "comment" : "#include \"layers.sc\"",
         "lines":
         [
-            "#include <../examples/common/common.sh>"
-            , "#include \"OnyxFunctions.sc\""
+            "#include <../examples/common/common.sh>",
+            "#include \"layers.sc\""
         ],
         "position": "Includes",
         "type": "Vertex_and_Pixel"
@@ -228,7 +228,7 @@
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
-            "name": "u_nearFarPlane",
+            "name": "u_NearFarFocus",
             "realtimeUniform": true,
             "type": "vec3",
             "vec3": {
