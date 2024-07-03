@@ -94,16 +94,12 @@ float FillLine(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded)
 	return saturate(-pixelDist);
 }
 // This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.
-float DashLine(vec3 uv, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)
+float DashLine(vec3 uv, float t, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)
 {
-	float dashLenCount = floor(texture2D(s_DashSampler, vec2(0.0, dashId)).x * (s_DashSampler_Res.x - 1.0) + 0.5);
-	float worldLineLen = totalLen.y - totalLen.x;
-	float screenLineLen = length(screenEndpoints.xy - screenEndpoints.zw);
-	float worldToScreenLengthScale = screenLineLen / worldLineLen * 0.5;
-	float lengthOffset = totalLen.x * worldToScreenLengthScale +  uv.x * thick.y; //find our position along the dashing
-	lengthOffset /= thick.y; //put in scale of line widths per dash unit
-	float dashScale = 0.25; //magic number to fix scaling - may not be needed, converted to zoom controlled, or...?
-	float dashPosition = mod(dashScale * lengthOffset , dashLenCount); //tile by the number of dash units we have per pattern 
+	float period = floor(texture2D(s_DashSampler, vec2(0.0, dashId)).x * (s_DashSampler_Res.x - 1.0) + 0.5);
+	float l = mix(totalLen.x, totalLen.y, t);
+	float rasterized = l * 256.0;
+	float dashPosition = mod(rasterized, period);
 	float dashUVx = (dashPosition + 1.0) / s_DashSampler_Res.x;
 	float dashOnOff = texture2D(s_DashSampler, vec2(dashUVx, dashId)).x;
 	float dashDf = LineDistField(uv, pA, pB, thick, 0.0, 0.0, 0.0) * dashOnOff;
@@ -146,11 +142,6 @@ vec4 distFade = v_color2.xyzw;
 float inX = inRange(tilePosition.x, u_TileFragClip.x, u_TileFragClip.z);
 float inY = inRange(tilePosition.y, u_TileFragClip.y, u_TileFragClip.w);
 if (inX * inY == 0.0) { discard; }
-vec2 d = abs(linePosition.xy);
-float pos = dot(d, d);
-float cMaxDashArrayLength = 31.0; // NOTE: there is an identical constant in Styling::DashArray
-vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;
-float dashV = dashRow + 0.5 * dashPixelWidth.y;
 // clip off the ends of the corners to make the mitered joints
 vec2 fromEndA = screenPosition.xy - line_endPointsScreen.xy;
 vec2 fromEndB = screenPosition.xy - line_endPointsScreen.zw;
@@ -165,9 +156,11 @@ vec2 start = vec2(0,0);
 vec2 end = vec2(ends, 0);
 float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0;
 widthExpansion /= 2.0; // account for x uv being -1 to both side so need to cut width in half to get proper pixel count
+vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;
+float dashV = dashRow + 0.5 * dashPixelWidth.y;
 float solid = FillLine(lineCoords, start, end, vec2((line_size.x * 0.5) / widthExpansion, (line_size.x * 0.5) / widthExpansion), 0.0);
 float solidOuterOutline = DrawOutline(lineCoords, start, end, vec2( ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion, ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion), 0.0, line_size.w * 0.5 / widthExpansion);
-float dashLine = DashLine(lineCoords, dashV, start, end, line_endPointsScreen, line_lengthTotal.xy, vec2((line_size.y * 0.5) / widthExpansion,(line_size.y * 0.5) / widthExpansion));
+float dashLine = DashLine(lineCoords, linePosition.y, dashV, start, end, line_endPointsScreen, line_lengthTotal.xy, vec2((line_size.y * 0.5) / widthExpansion,(line_size.y * 0.5) / widthExpansion));
 float alpha = min(1.0, max(dashLine + solid + solidOuterOutline,0));
 vec4 fragColor = vec4(solid*1.0, -solid*1.0, 0.0,1.0);
 //temp variables for color, need to hook up to cpu access
@@ -175,9 +168,6 @@ vec4 u_lineOuterOutlineColor = vec4(0,0,1,1);
 vec4 dashColor = color.xyzw; // TODO - pass in dash color separate from solid vec4(1,0,0,1);
 vec3 solidDashBlend = mix(color.xyz, dashLine * dashColor.xyz, dashLine);
 fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutline), alpha);
-//float df = LineDistField(lineCoords, start, end, vec2(1.0,1.0), 0.0, 0.0, 0.0);
-//fragColor.xyzw = vec4(df, -df,0,1.0);
-//fragColor.xyzw = vec4(1.0, 0.0,1.0,1.0);
 
 //compose
 gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * color.a * u_vectorFade.r * distFade.x);

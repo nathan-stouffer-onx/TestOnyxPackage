@@ -6,7 +6,7 @@
 //
 // Name                 Index   Mask Register SysValue  Format   Used
 // -------------------- ----- ------ -------- -------- ------- ------
-// POSITION                 0   xyz         0     NONE   float   xy  
+// POSITION                 0   xyz         0     NONE   float   xyz 
 // TEXCOORD                 7   xyzw        1     NONE   float   xyzw
 // TEXCOORD                 6   xyzw        2     NONE   float   xyzw
 // TEXCOORD                 5   xyzw        3     NONE   float   xyzw
@@ -46,7 +46,7 @@ dcl_resource_texture2d (float,float,float,float) t0
 dcl_resource_texture2d (float,float,float,float) t2
 dcl_resource_texture2d (float,float,float,float) t3
 dcl_resource_texture2d (float,float,float,float) t4
-dcl_input v0.xy
+dcl_input v0.xyz
 dcl_input v1.xyzw
 dcl_input v2.xyzw
 dcl_input v3.xyzw
@@ -448,7 +448,7 @@ mov o12.x, v0.x
 mov o12.w, l(0)
 mov o13.xyzw, l(1.000000,1.000000,1.000000,1.000000)
 mov o14.w, l(1.000000)
-mov o15.xyz, l(0,0,0,0)
+mov o15.xyz, v0.xyzx
 add r0.xy, -v1.xyxx, v1.zwzz
 mad o16.xy, v0.yyyy, r0.xyxx, v1.xyxx
 mov o16.zw, l(0,0,0,0)

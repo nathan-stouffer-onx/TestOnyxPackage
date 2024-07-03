@@ -224,16 +224,12 @@
         {
             "lines": [
                 "// This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.",
-                "float DashLine(vec3 uv, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)",
+                "float DashLine(vec3 uv, float t, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)",
                 "{",
-                "\tfloat dashLenCount = floor(texture2D(s_DashSampler, vec2(0.0, dashId)).x * (s_DashSampler_Res.x - 1.0) + 0.5);",
-                "\tfloat worldLineLen = totalLen.y - totalLen.x;",
-                "\tfloat screenLineLen = length(screenEndpoints.xy - screenEndpoints.zw);",
-                "\tfloat worldToScreenLengthScale = screenLineLen / worldLineLen * 0.5;",
-                "\tfloat lengthOffset = totalLen.x * worldToScreenLengthScale +  uv.x * thick.y; //find our position along the dashing",
-                "\tlengthOffset /= thick.y; //put in scale of line widths per dash unit",
-                "\tfloat dashScale = 0.25; //magic number to fix scaling - may not be needed, converted to zoom controlled, or...?",
-                "\tfloat dashPosition = mod(dashScale * lengthOffset , dashLenCount); //tile by the number of dash units we have per pattern ",
+                "\tfloat period = floor(texture2D(s_DashSampler, vec2(0.0, dashId)).x * (s_DashSampler_Res.x - 1.0) + 0.5);",
+                "\tfloat l = mix(totalLen.x, totalLen.y, t);",
+                "\tfloat rasterized = l * 256.0;",
+                "\tfloat dashPosition = mod(rasterized, period);",
                 "\tfloat dashUVx = (dashPosition + 1.0) / s_DashSampler_Res.x;",
                 "\tfloat dashOnOff = texture2D(s_DashSampler, vec2(dashUVx, dashId)).x;",
                 "\tfloat dashDf = LineDistField(uv, pA, pB, thick, 0.0, 0.0, 0.0) * dashOnOff;",
@@ -300,7 +296,6 @@
             "lines": [
                 "vec4 texcoords = vec4(position.xy,0,0);",
                 "float lineLengthSoFar = position.z;",
-                "position.xyz = vec3(0, position.y, 0); //repacking to match the previous pos/uv setup, but with all data just in pos",
                 "vec4 line_size = lineWidth; //override lineWidth here to use debug values for line dimensions",
                 "float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0; // x is solid width, y is dash width, zw are outline gap and width params, constant on the end is excess padding so we have room for AA",
                 "widthExpansion /= 2.0; //account for x uv being -1 to both side so need to cut width in half to get proper pixel count",
@@ -382,9 +377,8 @@
                 "float lineEdgeOffsetDist = lineWidth.x * 0.5;",
                 "vec4 lineCenter = vec4(1,1,1,1); // vec4(pixelLength * position.y + (lineWidth * 0.5f * position.z), 0.0, 0.0, 0.0);",
                 "vec4 screenPosition = vec4(screenPos.xyz, 1.0);",
-                "vec4 linePosition = vec4(position.x, position.z, 0, lineWidth.x);",
-                "vec4 color = vecColor;",
-                "vec4 dashUV = vec4(position.xyz, 1.0);"
+                "vec4 linePosition = vec4(position, lineWidth.x);",
+                "vec4 color = vecColor;"
             ],
             "position": "Compose",
             "type": "Vertex"
@@ -415,17 +409,6 @@
         },
         {
             "lines": [
-                "vec2 d = abs(linePosition.xy);",
-                "float pos = dot(d, d);",
-                "float cMaxDashArrayLength = 31.0; // NOTE: there is an identical constant in Styling::DashArray",
-                "vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;",
-                "float dashV = dashRow + 0.5 * dashPixelWidth.y;"
-            ],
-            "position": "Main",
-            "type": "Pixel"
-        },
-        {
-            "lines": [
                 "// clip off the ends of the corners to make the mitered joints",
                 "vec2 fromEndA = screenPosition.xy - line_endPointsScreen.xy;",
                 "vec2 fromEndB = screenPosition.xy - line_endPointsScreen.zw;",
@@ -445,19 +428,18 @@
                 "vec2 end = vec2(ends, 0);",
                 "float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0;",
                 "widthExpansion /= 2.0; // account for x uv being -1 to both side so need to cut width in half to get proper pixel count",
+                "vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;",
+                "float dashV = dashRow + 0.5 * dashPixelWidth.y;",
                 "float solid = FillLine(lineCoords, start, end, vec2((line_size.x * 0.5) / widthExpansion, (line_size.x * 0.5) / widthExpansion), 0.0);",
                 "float solidOuterOutline = DrawOutline(lineCoords, start, end, vec2( ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion, ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion), 0.0, line_size.w * 0.5 / widthExpansion);",
-                "float dashLine = DashLine(lineCoords, dashV, start, end, line_endPointsScreen, line_lengthTotal.xy, vec2((line_size.y * 0.5) / widthExpansion,(line_size.y * 0.5) / widthExpansion));",
+                "float dashLine = DashLine(lineCoords, linePosition.y, dashV, start, end, line_endPointsScreen, line_lengthTotal.xy, vec2((line_size.y * 0.5) / widthExpansion,(line_size.y * 0.5) / widthExpansion));",
                 "float alpha = min(1.0, max(dashLine + solid + solidOuterOutline,0));",
                 "vec4 fragColor = vec4(solid*1.0, -solid*1.0, 0.0,1.0);",
                 "//temp variables for color, need to hook up to cpu access",
                 "vec4 u_lineOuterOutlineColor = vec4(0,0,1,1);",
                 "vec4 dashColor = color.xyzw; // TODO - pass in dash color separate from solid vec4(1,0,0,1);",
                 "vec3 solidDashBlend = mix(color.xyz, dashLine * dashColor.xyz, dashLine);",
-                "fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutline), alpha);",
-                "//float df = LineDistField(lineCoords, start, end, vec2(1.0,1.0), 0.0, 0.0, 0.0);",
-                "//fragColor.xyzw = vec4(df, -df,0,1.0);",
-                "//fragColor.xyzw = vec4(1.0, 0.0,1.0,1.0);"
+                "fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutline), alpha);"
             ],
             "position": "Lighting",
             "type": "Pixel"
