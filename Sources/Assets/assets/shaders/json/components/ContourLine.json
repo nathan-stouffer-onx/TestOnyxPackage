@@ -1,4 +1,5 @@
 {
+  "name": "ContourLine",
   "sortOrder": 15,
   "requirements": {
     "position": true,

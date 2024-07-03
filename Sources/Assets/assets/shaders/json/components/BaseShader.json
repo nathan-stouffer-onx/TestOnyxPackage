@@ -1,4 +1,5 @@
 {
+    "name": "BaseShader",
     "sortOrder": 0,
     "requirements": {
         "position": true,
@@ -211,7 +212,6 @@
     ],
     "shaderParameters": [
         {
-            "componentName": "BaseShader",
             "name": "u_BackgroundColor",
             "type" : "color",
             "color": {
@@ -222,7 +222,6 @@
             }
           },
         {
-            "componentName": "BaseShader",
             "imguiRate": 0.009999999776482582,
             "max": -1.0,
             "min": -1.0,
@@ -237,7 +236,6 @@
             }
         },
         {
-            "componentName": "BaseShader",
             "imguiRate": 0.009999999776482582,
             "max": -1.0,
             "min": -1.0,
@@ -251,7 +249,6 @@
             }
         },
         {
-            "componentName": "BaseShader",
             "imguiRate": 0.009999999776482582,
             "max": -1.0,
             "min": -1.0,
@@ -265,7 +262,6 @@
             }
         },
         {
-            "componentName": "BaseShader",
             "imguiRate": 0.009999999776482582,
             "max": -1.0,
             "min": -1.0,
@@ -279,7 +275,6 @@
             }
         },
         {
-            "componentName": "BaseShader",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -293,7 +288,6 @@
             }
         },
         {
-            "componentName": "BaseShader",
             "max": -1.0,
             "min": -1.0,
             "name": "u_time",
@@ -306,7 +300,6 @@
             }
         },
         {
-            "componentName": "BaseShader",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -320,7 +313,6 @@
             }
         },
         {
-            "componentName": "BaseShader",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,

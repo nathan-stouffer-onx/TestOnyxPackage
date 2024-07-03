@@ -1,4 +1,5 @@
 {
+    "name": "ColorOnlyQuatBase",
     "TODO": "This shader component should be deprecated once the Icon implementation takes over Trackers/Billboards",
     
     "sortOrder" : 1,

@@ -1,4 +1,5 @@
 {
+  "name": "Fog",
   "sortOrder": 6,
   "requirements": {
     "position": true,

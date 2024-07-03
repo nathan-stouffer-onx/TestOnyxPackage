@@ -1,4 +1,5 @@
 {
+    "name": "FixedSize",
     "mainComment": "Assuming position is the vertex position centered at the origin, keep size fixed regardless of cam distance",
     "mainComment2": "Assumes that midpoint is already declared as a vec3 and is filled in unless u_midpoint is being used",
     "InputComment1": "vec3 midpoint - midpoint of the given quad", 

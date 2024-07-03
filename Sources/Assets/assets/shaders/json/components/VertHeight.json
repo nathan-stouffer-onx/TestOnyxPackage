@@ -1,4 +1,5 @@
 {
+  "name": "VertHeight",
   "sortOrder": 17,
   "requirements": {
     "position": true,

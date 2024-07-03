@@ -1,4 +1,5 @@
 {
+  "name": "Viewshed",
   "sortOrder": 18,
   "requirements": {
     "positionOutput": true,
@@ -70,7 +71,6 @@
   ],
   "shaderParameters": [
     {
-      "componentName": "Viewshed",
       "name": "u_viewshedTint0",
       "type" : "color",
       "color": {
@@ -81,7 +81,6 @@
       }
     },
     {
-      "componentName": "Viewshed",
       "name": "u_viewshedRingTint0",
       "type" : "color",
       "color": {
@@ -92,13 +91,11 @@
       }
     },
     {
-      "componentName": "Viewshed",
       "name": "u_viewshedRange0",
       "type": "float",
       "float": 10.0
     },
     {
-      "componentName": "Viewshed",
       "name": "u_viewshedPos0",
       "type": "vec3",
       "vec3": {
@@ -108,28 +105,24 @@
       }
     },
     {
-      "componentName": "Viewshed",
       "name": "s_cubeDepth0",
       "realtimeUniform": true,
       "type": "cubeSampler",
       "anisoFilter": true
     },
     {
-      "componentName": "Viewshed",
       "name": "u_viewshedFarPlane0",
       "realtimeUniform": true,
       "type": "float",
       "float": 40000.0
     },
     {
-      "componentName": "Viewshed",
       "name": "u_viewshedInverted0",
       "realtimeUniform": true,
       "type": "float",
       "float": 0.0
     },
     {
-      "componentName": "Viewshed",
       "name": "u_viewshedBias0",
       "type": "vec3",
       "vec3": {

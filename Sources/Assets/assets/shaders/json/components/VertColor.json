@@ -1,4 +1,5 @@
 {
+  "name": "VertColor",
   "sortOrder": 16,
   "requirements": {
     "color0": true,

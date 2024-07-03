@@ -1,4 +1,5 @@
 {
+  "name": "Line",
   "sortOrder": 8,
   "requirements": {
     "position": true,

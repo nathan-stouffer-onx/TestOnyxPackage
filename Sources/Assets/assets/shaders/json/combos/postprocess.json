@@ -14,20 +14,6 @@
         ]
       },
       {
-        "segment": "textures",
-        "name": "textures",
-        "combineType": "PickOne",
-        "includeNone": false,
-        "components": [
-          {
-            "builtIn": {
-              "type": "TextureLayer",
-              "textureCount": 1
-            }
-          }
-        ]
-      },
-      {
         "Segment": "sharpen",
         "name": "Sharpen",
         "combineType": "PickOne",
@@ -36,6 +22,11 @@
           {
             "jsonComponent": {
               "name": "Sharpen"
+            }
+          },
+          {
+            "jsonComponent": {
+              "name": "Blit"
             }
           }
         ]

@@ -1,4 +1,5 @@
 {
+  "name": "VectorHeight",
   "sortOrder": 17,
   "requirements": {
     "position": true,

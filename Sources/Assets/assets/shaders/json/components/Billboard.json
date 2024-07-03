@@ -1,4 +1,5 @@
 {
+  "name": "Billboard",
   "sortOrder": 2,
   "requirements": {
     "position": true,
@@ -109,9 +110,8 @@
   ],
   "shaderParameters": [
     {
-      "componentName": "Billboard",
       "float": 0.0,
-      "imguiRate": 0.009999999776482582,
+      "imguiRate": 0.01,
       "max": -1.0,
       "min": -1.0,
       "name": "u_bbOffset",
@@ -119,8 +119,7 @@
       "type": "float"
     },
     {
-      "componentName": "Billboard",
-      "imguiRate": 0.009999999776482582,
+      "imguiRate": 0.01,
       "max": -1.0,
       "min": -1.0,
       "name": "u_billboardSize",
@@ -133,8 +132,7 @@
       }
     },
   {
-      "componentName": "Billboard",
-      "imguiRate": 0.009999999776482582,
+      "imguiRate": 0.01,
       "max": -1.0,
       "min": -1.0,
       "name": "u_pivot",
@@ -147,7 +145,6 @@
       }
     },
     {
-      "componentName": "Billboard",
       "name": "u_bbHeightUV",
       "type": "vec3",
       "vec3": {
@@ -160,7 +157,6 @@
       }
     },
     {
-      "componentName": "Billboard",
       "name": "s_bbHeightTexture",
       "type": "texture",
       "conditional": {

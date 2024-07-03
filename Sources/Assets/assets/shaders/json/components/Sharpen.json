@@ -1,12 +1,13 @@
 {
+  "name" : "Sharpen",
   "sortOrder": 6,
   "chunks": [
     {
       "lines": [
         "vec3 texSample(const int x, const int y, vec2 origUV)",
         "{",
-          "vec2 uv = origUV.xy + vec2(x,y) * s_texture0_Res.zw;",
-          "  return texture2D(s_texture0, uv).xyz;",
+          "vec2 uv = origUV.xy + vec2(x,y) * s_FrameTexture_Res.zw;",
+          "  return texture2D(s_FrameTexture, uv).xyz;",
         "}"
       ],
       "position": "Functions",
@@ -15,9 +16,10 @@
     },
     {
       "lines": [
-        "vec2 pixelStep = vec2(1.0, 1.0) * s_texture0_Res.zw;",
-        "vec2 modUV = u_ScaleOffsetTex0.xy + texcoords.xy * u_ScaleOffsetTex0.zw;",
-        "vec3 result = texSample(-1,-1, modUV) * -1. + texSample(0,-1, modUV) * -1. + texSample(1,-1, modUV) * -1. + texSample(-1,0, modUV) * -1. + texSample(0,0, modUV) * 9. + texSample(1,0, modUV) * -1. + texSample(-1,1, modUV) * -1. + texSample(0,1, modUV) * -1. + texSample(1,1, modUV) * -1.;",
+        "vec2 pixelStep = vec2(1.0, 1.0) * s_FrameTexture_Res.zw;",
+        "vec2 modUV = texcoords.xy;",
+        "fragColor.xyz = texture2D(s_FrameTexture, modUV).xyz;",
+        "vec3 result = texSample(-1,-1, modUV) * -1. + texSample(0,-1, modUV) * -1. + texSample(1,-1, modUV) * -1. + texSample(-1,0, modUV) * -1. + fragColor.xyz * 9. + texSample(1,0, modUV) * -1. + texSample(-1,1, modUV) * -1. + texSample(0,1, modUV) * -1. + texSample(1,1, modUV) * -1.;",
         "fragColor.rgb = mix(fragColor.xyz, result, u_SharpenStrength.x);"
       ],
       "position": "Main",
@@ -27,7 +29,6 @@
   ],
   "shaderParameters": [
     {
-      "componentName": "Sharpen",
       "name": "u_SharpenStrength",
       "type": "vec4",
       "vec2": {
@@ -36,6 +37,10 @@
         "z": 1.0,
         "w": 1.0
       }
+    },
+    {
+      "name": "s_FrameTexture",
+      "type": "texture"
     }
   ]
 }

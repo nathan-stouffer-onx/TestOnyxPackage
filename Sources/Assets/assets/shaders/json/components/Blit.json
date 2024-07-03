@@ -1,0 +1,21 @@
+{
+  "name" : "Blit",
+  "sortOrder": 6,
+  "chunks": [
+    {
+      "lines": [
+        "vec2 modUV = texcoords.xy;",
+        "fragColor.rgb = texture2D(s_FrameTexture, modUV).rgb;"
+      ],
+      "position": "Main",
+      "positionOffset": 1,
+      "type": "Pixel"
+    }
+  ],
+  "shaderParameters": [
+    {
+      "name": "s_FrameTexture",
+      "type": "texture"
+    }
+  ]
+}

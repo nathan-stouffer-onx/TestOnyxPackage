@@ -1,4 +1,5 @@
 {
+  "name": "DirectionalLight",
   "sortOrder": 5,
   "requirements": {
     "normal": true

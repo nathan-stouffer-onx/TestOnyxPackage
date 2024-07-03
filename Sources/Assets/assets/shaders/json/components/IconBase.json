@@ -1,4 +1,5 @@
 {
+    "name": "IconBase",
     "ComponentCompatibleComment" : "IconBillboard, DepthBias, FixedSize",
 
     "sortOrder" : 1,

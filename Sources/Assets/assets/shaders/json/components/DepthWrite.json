@@ -1,4 +1,5 @@
 {
+  "name": "DepthWrite",
   "sortOrder": 4,
   "requirements": {
     "position": true,

@@ -1,4 +1,5 @@
 {
+  "name": "LineHeight",
   "InputComment1": "float tileZ - starting tile height value",
   "InputComment2": "vec2 tilePos - xy tile coordinates between 0 and 1",
   "sortOrder": 17,

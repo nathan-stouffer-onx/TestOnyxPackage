@@ -1,4 +1,5 @@
 {
+  "name": "SlopeAspectShade",
   "sortOrder": 10,
   "requirements": {
     "normal": true

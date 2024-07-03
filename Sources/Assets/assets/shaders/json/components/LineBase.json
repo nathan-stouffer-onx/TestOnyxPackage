@@ -1,4 +1,5 @@
 {
+    "name": "LineBase",
     "sortOrder": 0,
     "requirements": {
         "position": false,

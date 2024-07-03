@@ -156,7 +156,7 @@ float inY = inRange(tilePosition.y, u_TileFragClip.y, u_TileFragClip.w);
 if (inX * inY == 0.0) { discard; }
 vec2 d = abs(linePosition.xy);
 float pos = dot(d, d);
-float cMaxDashArrayLength = 16.0;
+float cMaxDashArrayLength = 31.0; // NOTE: there is an identical constant in Styling::DashArray
 vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;
 float dashV = dashRow + 0.5 * dashPixelWidth.y;
 // clip off the ends of the corners to make the mitered joints

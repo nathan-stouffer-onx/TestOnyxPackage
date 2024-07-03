@@ -1,4 +1,5 @@
 {
+    "name": "IconBillboard",
     "InputComment1": "vec3 midpoint - icon's midpoint",
     "InputComment2": "vec2 pixelSize - icon's pixel size",
     "InputComment3": "float uniformScale - uniform icon scaling",

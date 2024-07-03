@@ -1,158 +1,125 @@
 [
     {
-        "componentName": "BaseShader",
         "filename": "components/BaseShader.json"
     },
     {
-        "componentName": "BillboardBase",
         "filename": "components/BillboardBase.json"
     },
     {
-        "componentName": "LineBase",
         "filename": "components/LineBase.json"
     },
     {
-        "componentName": "TileLineBase",
         "filename": "components/TileLineBase.json"
     },
     {
-        "componentName": "TileFillBase",
         "filename": "components/TileFillBase.json"
     },
     {
-        "componentName": "Billboard",
         "filename": "components/Billboard.json"
     },
     {
-        "componentName": "DepthWrite",
         "filename": "components/DepthWrite.json"
     },
     {
-        "componentName": "DirectionalLight",
         "filename": "components/DirectionalLight.json"
     },
     {
-        "componentName": "IntersectShade",
         "filename": "components/IntersectShade.json"
     },
     {
-        "componentName": "Line",
         "filename": "components/Line.json"
     },
     {
-        "componentName": "ElevationShade",
         "filename": "components/ElevationShade.json"
     },
     {
-        "componentName": "Hillshade",
         "filename": "components/Hillshade.json"
     },
     {
-        "componentName": "SDF",
         "filename": "components/SDF.json"
     },
     {
-        "componentName": "Skydome",
         "filename": "components/Skydome.json"
     },
     {
-        "componentName": "SlopeAngleShade",
         "filename": "components/SlopeAngleShade.json"
     },
     {
-        "componentName": "Sunlight",
         "filename": "components/Sunlight.json"
     },
     {
-        "componentName": "TextureLayer",
+        "type": "TextureLayer",
         "filename": ""
     },
     {
-        "componentName": "BillboardGlyph",
+        "type": "BillboardGlyph",
         "filename": ""
     },
     {
-        "componentName": "ContourLine",
         "filename": "components/ContourLine.json"
     },
     {
-        "componentName": "VertColor",
         "filename": "components/VertColor.json"
     },
     {
-        "componentName": "VertHeight",
         "filename": "components/VertHeight.json"
     },
     {
-        "componentName": "FillHeight",
         "filename": "components/FillHeight.json"
     },
     {
-        "componentName": "LineHeight",
         "filename": "components/LineHeight.json"
     }, 
     {
-        "componentName": "Fog",
         "filename": "components/Fog.json"
     },
     {
-        "componentName": "SlopeAspectShade",
         "filename": "components/SlopeAspectShade.json"
     },
     {
-        "componentName": "Viewshed",
         "filename": "components/Viewshed.json"
     },
     {
-        "componentName": "Vector",
+        "comment" : "is this in use?",
         "filename": "components/Vector.json"
     },
     {
-        "componentName": "VectorHeight",
         "filename": "components/VectorHeight.json"
     },
     {
-        "componentName": "FixedSize",
         "filename": "components/FixedSize.json"
     },
     {
-        "componentName": "TransformSRT",
         "filename": "components/TransformSRT.json"
     },
     {
-        "componentName": "GaussBlur",
         "filename": "components/GaussBlur.json"
     },
     {
-        "componentName": "ColorOnlyQuatBase",
         "filename": "components/ColorOnlyQuatBase.json"
     },
     {
-        "componentName": "DepthBias",
         "filename": "components/DepthBias.json"
     },
     {
-        "componentName": "IconBase",
         "filename": "components/IconBase.json"
     },
     {
-        "componentName": "IconBillboard",
         "filename": "components/IconBillboard.json"
     },
     {
-        "componentName": "NinePatch",
         "filename": "components/NinePatch.json"
     },
     {
-        "componentName": "ParticleUpdate",
         "filename": "components/ParticleUpdate.json"
     },
     {
-        "componentName": "ParticleDraw",
         "filename": "components/ParticleDraw.json"
     },
     {
-        "componentName": "Sharpen",
         "filename": "components/Sharpen.json"
+    },
+    {
+        "filename": "components/Blit.json"
     }
 ]
