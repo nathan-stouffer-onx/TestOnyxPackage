@@ -121,5 +121,9 @@
     },
     {
         "filename": "components/Blit.json"
+    },
+    {
+        "componentName": "DOF",
+        "filename": "components/DOF.json"
     }
 ]

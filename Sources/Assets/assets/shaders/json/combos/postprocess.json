@@ -14,14 +14,19 @@
         ]
       },
       {
-        "Segment": "sharpen",
-        "name": "Sharpen",
+        "Segment": "process",
+        "name": "PostProcess",
         "combineType": "PickOne",
         "includeNone": true,
         "components": [
           {
             "jsonComponent": {
               "name": "Sharpen"
+            }
+          },
+          {
+            "jsonComponent": {
+              "name": "DOF"
             }
           },
           {

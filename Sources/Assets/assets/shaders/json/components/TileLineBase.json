@@ -43,15 +43,15 @@
             "dataType": "vec4"
         },
         {
-            "alias": "color",
+            "alias": "lineColor",
+            "dataType": "vec4"
+        },
+        {
+            "alias": "casingColor",
             "dataType": "vec4"
         },
         {
             "alias": "screenPosition",
-            "dataType": "vec4"
-        },
-        {
-            "alias": "lineCenter",
             "dataType": "vec4"
         },
         {
@@ -75,7 +75,7 @@
             "dataType": "vec3"
         },
         {
-            "alias": "line_size",
+            "alias": "line_width",
             "dataType": "vec4"
         },
         {
@@ -113,22 +113,16 @@
         },
         {
             "lines": [
-                "vec4 toScreenCoords(vec4 projected, vec2 viewTexel)",
+                "vec4 toScreenCoords(vec4 projected, vec2 dimensions)",
                 "{",
                 "\tvec4 screen = projected / projected.w;",
                 "\tscreen.xy = screen.xy * 0.5 + 0.5;",
-                "\tscreen.xy /= viewTexel;",
+                "\tscreen.xy *= dimensions;",
                 "\treturn screen;",
                 "}"
             ],
             "position": "Functions",
             "type": "Vertex"
-        },
-        {
-            "data": "float repeat(float x) { return abs(fract(x*0.5+0.5)-0.5)*2.0; }",
-            "position": "Functions",
-            "positionOffset": 0,
-            "type": "Pixel"
         },
         {
             "lines": [
@@ -146,47 +140,17 @@
         },
         {
             "lines": [
-                "float LineDistField(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded, float dashOn, float time)",
+                "float LineStrength(vec2 p, vec2 a, vec2 b, float w)",
                 "{",
-                "\t// Don't let it get more round than circular.",
-                "\trounded = min(thick.y, rounded);",
-                "\t// midpoint",
-                "\tvec2 mid = (pB + pA) * 0.5;",
-                "\t// vector from point A to B",
-                "\tvec2 delta = pB - pA;",
-                "\t// Distance between endpoints",
-                "\tfloat lenD = length(delta);",
-                "\t// unit vector pointing in the line's direction",
-                "\tvec2 unit = delta / lenD;",
-                "\t// Check for when line endpoints are the same",
-                "\tif (lenD < 0.0001) unit = vec2(1.0, 0.0);",
-                "\t// Perpendicular vector to unit - also length 1.0",
-                "\tvec2 perp = unit.yx * vec2(-1.0, 1.0);",
-                "\t// position along line from midpoint",
-                "\tfloat dpx = dot(unit, uv.xy - mid);",
-                "\t// distance away from line at a right angle",
-                "\tfloat dpy = dot(perp, uv.xy - mid);",
-                "\t// Make a distance function that is 0 at the transition from black to white",
-                "\tfloat disty = abs(dpy) - thick.y + rounded;",
-                "\tfloat distx = abs(dpx) - lenD * 0.5 - thick.x + rounded;",
-                "\t// Too tired to remember what this does. Something like rounded endpoints for distance function.",
-                "\tfloat dist = length(vec2(max(0.0, distx), max(0.0,disty))) - rounded;",
-                "\tdist = min(dist, max(distx, disty));",
-                "\t// This is for animated dashed lines. Delete if you don't like dashes.",
-                "\tfloat dashScale = 2.0*thick.y;",
-                "\t// Make a distance function for the dashes",
-                "\tfloat dash = (repeat(dpx/dashScale + time)-0.5)*dashScale;",
-                "\t// Combine this distance function with the line's.",
-                "\tdist = max(dist, dash-(1.0-dashOn*1.0)*10000.0);",
-                "\t//distance from endpoint",
-                "\t//need to account for width and endcap size here to scale it so its not stretched",
-                "\tfloat distPa = length(pA - uv.xy) - thick.y;",
-                "\tfloat distPb = length(pB - uv.xy)- thick.y;",
-                "\tfloat endA = max(0.0, -sign(uv.x));",
-                "\tfloat endB = max(0.0,sign(uv.x - uv.z));",
-                "\tfloat endMask = endA + endB;",
-                "\treturn mix(dist, min(distPa, distPb), endMask);",
-                "\t//return dist;",
+                "\tfloat d_max = 0.5 * (w + 1.0); // furthest distance from the line that should have any strength",
+                "\tfloat window = 2.0; // number of pixels used to transition from full strength to no strength",
+                "\tSegment seg = segment(a, b);",
+                "\tfloat d = distanceTo(seg, p); // compute distance from pixel position to line segment",
+                "\t// compute strength -- use different functions based on line width",
+                "\tfloat s = 1.0;",
+                "\tif (w < 1.0) { s = w - max(0.0, d + 0.5 * (w - 1.0)); }",
+                "\telse { s = lerpInv(d_max, max(0.0, d_max - window), d); }",
+                "\treturn clamp(s, 0.0, 1.0);",
                 "}"
             ],
             "position": "Functions",
@@ -195,66 +159,17 @@
         },
         {
             "lines": [
-                "float smoothStep(float val, float low, float high)",
+                "float DashStrength(float v, vec2 length, float t, float width)",
                 "{",
-                "\tfloat f = (val - low) / (high - low);",
-                "\treturn min(max(f, 0.0), 1.0);",
-                "}"
-            ],
-            "position": "Functions",
-            "positionOffset": 0,
-            "type": "Pixel"
-        },
-        {
-            "lines": [
-                "// This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.",
-                "float FillLine(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded)",
-                "{",
-                "\tfloat df = LineDistField(uv, pA, pB, thick, rounded, 0.0, 0.0);",
-                "\tfloat dist = df;",
-                "\tvec2 ddist = vec2(dFdx(dist), dFdy(dist));",
-                "\tfloat pixelDist = dist / length(ddist);",
-                "\treturn saturate(-pixelDist);",
-                "}"
-            ],
-            "position": "Functions",
-            "positionOffset": 0,
-            "type": "Pixel"
-        },
-        {
-            "lines": [
-                "// This makes a line in UV units. A 1.0 thick line will span a whole 0..1 in UV space.",
-                "float DashLine(vec3 uv, float t, float dashId, vec2 pA, vec2 pB, vec4 screenEndpoints, vec2 totalLen, vec2 thick)",
-                "{",
-                "\tfloat period = floor(texture2D(s_DashSampler, vec2(0.0, dashId)).x * (s_DashSampler_Res.x - 1.0) + 0.5);",
-                "\tfloat l = mix(totalLen.x, totalLen.y, t);",
-                "\tfloat rasterized = l * 256.0;",
-                "\tfloat dashPosition = mod(rasterized, period);",
-                "\tfloat dashUVx = (dashPosition + 1.0) / s_DashSampler_Res.x;",
-                "\tfloat dashOnOff = texture2D(s_DashSampler, vec2(dashUVx, dashId)).x;",
-                "\tfloat dashDf = LineDistField(uv, pA, pB, thick, 0.0, 0.0, 0.0) * dashOnOff;",
-                "\tfloat dist = -dashDf;",
-                "\tvec2 ddist = vec2(dFdx(dist), dFdy(dist));",
-                "\tfloat pixelDist = dist / length(ddist);",
-                "\treturn saturate(pixelDist);",
-                "}"
-            ],
-            "position": "Functions",
-            "positionOffset": 0,
-            "type": "Pixel"
-        },
-        {
-            "lines": [
-                "// This makes an outlined line in UV units. A 1.0 thick outline will span 0..1 in UV space.",
-                "float DrawOutline(vec3 uv, vec2 pA, vec2 pB, vec2 thick, float rounded, float outlineThick)",
-                "{",
-                "\tfloat df = LineDistField(uv, pA, pB, vec2(thick), rounded, 0.0, 0.0);",
-                "\tfloat outlineDf = ((abs(df + outlineThick*0.5) - outlineThick * 0.5));",
-                "\tfloat dist = outlineDf;",
-                "\tvec2 ddist = vec2(dFdx(dist), dFdy(dist));",
-                "\tfloat pixelDist = dist / length(ddist);",
-                "\treturn saturate(0.5 - pixelDist) * abs(sign(outlineThick));",
-                "//\treturn smoothStep(saturate(-((abs(df + outlineThick*0.5) - outlineThick * 0.5))), 0.0, 0.001);",
+                "\tvec2 pixelWidth = 1.0 / s_DashSampler_Res.xy;",
+                "\tv += 0.5 * pixelWidth.y;",
+                "\tfloat period = floor(texture2D(s_DashSampler, vec2(0.0, v)).x * (s_DashSampler_Res.x - 1.0) + 0.5);",
+                "\tfloat l = mix(length.x, length.y, t);",
+                "\tfloat rasterized = l * 256.0 / max(1.0, floor(width));",
+                "\tfloat position = mod(rasterized, period);",
+                "\tfloat u = (position + 1.0) / s_DashSampler_Res.x;",
+                "\tfloat strength = texture2D(s_DashSampler, vec2(u, v)).x;",
+                "\treturn strength;",
                 "}"
             ],
             "position": "Functions",
@@ -265,8 +180,9 @@
             "lines": [
                 "float cMaxLineWidth = 64.0; // analogous value in LineStyleAtlas.cpp",
                 "vec2 texParams = u_params.zw;",
-                "vec4 vecColor = texture2DLod(s_VectorColors, texParams, 0);",
-                "vec4 lineWidth = texture2DLod(s_VectorWidths, texParams, 0) * cMaxLineWidth;",
+                "vec4 lineColor = texture2DLod(s_LineColors, texParams, 0);",
+                "vec4 casingColor = texture2DLod(s_CasingColors, texParams, 0);",
+                "vec4 lineWidth = texture2DLod(s_Widths, texParams, 0) * cMaxLineWidth;",
                 "float dashRow = texture2DLod(s_DashCoords, texParams, 0).r;",
                 "vec4 line_lengthTotal = vec4(u_params.xy,0,0);",
                 "vec2 p1 = u_p1p2.xy;",
@@ -296,9 +212,6 @@
             "lines": [
                 "vec4 texcoords = vec4(position.xy,0,0);",
                 "float lineLengthSoFar = position.z;",
-                "vec4 line_size = lineWidth; //override lineWidth here to use debug values for line dimensions",
-                "float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0; // x is solid width, y is dash width, zw are outline gap and width params, constant on the end is excess padding so we have room for AA",
-                "widthExpansion /= 2.0; //account for x uv being -1 to both side so need to cut width in half to get proper pixel count",
                 "float endA = 1.0 - texcoords.y; //uv.y is 0 for this one, so make it 1.0",
                 "float endB = texcoords.y; //uv.y is 1 for this one"
             ],
@@ -314,16 +227,14 @@
                 "vec3 worldPosition = mix(wp1.xyz, wp2.xyz, position.y); // write to this variable so fog works correctly",
                 "vec4 distFade = vec4(1.0 - smoothstep(u_TileLineOpacityTransition.x, u_TileLineOpacityTransition.y, length(worldPosition.xyz)), 0.0, 0.0, 0.0);",
                 "vec3 fromEye = normalize(worldPosition);",
-                "widthExpansion *= min(1.0, u_NearFarFocus.z / length(worldPosition.xyz)); // scale based on distance",
-                "widthExpansion = max(1.5, widthExpansion);",
                 "float biasKm = max(0.020, 0.004 * u_NearFarFocus.z);",
                 "wp1 *= max(0.5, 1.0 - biasKm / length(wp1));",
                 "wp2 *= max(0.5, 1.0 - biasKm / length(wp2));",
                 "vec4 screen1 = mul(u_viewProj, vec4(wp1, 1.0));",
                 "vec4 screen2 = mul(u_viewProj, vec4(wp2, 1.0));",
                 "float origW = mix(screen1.w, screen2.w, position.y);",
-                "screen1 = toScreenCoords(screen1, u_viewTexel.xy);",
-                "screen2 = toScreenCoords(screen2, u_viewTexel.xy);",
+                "screen1 = toScreenCoords(screen1, u_viewRect.zw);",
+                "screen2 = toScreenCoords(screen2, u_viewRect.zw);",
                 "vec4 line_endPointsScreen = vec4(screen1.xy, screen2.xy);",
                 "vec4 transformPosition = mix(screen1, screen2, position.y);",
                 "vec3 screenPos = transformPosition.xyz / transformPosition.w;",
@@ -331,19 +242,28 @@
                 "float lineLength = length(lineDirection);",
                 "lineDirection /= lineLength;",
                 "vec2 lineSide = normalize(vec2(-lineDirection.y, lineDirection.x));",
+                "vec4 line_width = lineWidth;",
+                "line_width *= min(1.0, u_NearFarFocus.z / length(worldPosition.xyz)); // scale based on distance",
+                "float widthExpansion = 0.5 * (max(line_width.x, line_width.y) + 2.0); // compute expansion factor",
                 "screenPos.xy += lineSide * texcoords.x * widthExpansion;",
                 "// overlap ends for the pixel miter",
                 "vec2 endExpansion = (-lineDirection * endA * widthExpansion + lineDirection * endB * widthExpansion);",
                 "screenPos.xy += endExpansion;",
+                "// adjust depth because we expand the vertex from it's true location in screen space",
                 "float deltaZ = screen2.z - screen1.z;",
                 "float depthAdjustment = widthExpansion * deltaZ / lineLength;",
                 "screenPos.z -= endA * depthAdjustment;",
                 "screenPos.z += endB * depthAdjustment;",
+                "// adjust line length because we expand the vertex from it's true location in screen space",
+                "float deltaPhase = line_lengthTotal.y - line_lengthTotal.x;",
+                "float phaseAdjustment = widthExpansion * deltaPhase / lineLength;",
+                "line_lengthTotal.x -= phaseAdjustment;",
+                "line_lengthTotal.y += phaseAdjustment;",
                 "vec4 line_endFlags = vec4(u_PrevNext.xz,0,0);",
                 "vec3 prevPos = vec3(prevTP, prevZ);",
                 "vec3 nextPos = vec3(nextTP, nextZ);",
-                "vec2 screenPrev = toScreenCoords(mul(u_viewProj, vec4(prevPos, 1.0)), u_viewTexel.xy).xy;",
-                "vec2 screenNext = toScreenCoords(mul(u_viewProj, vec4(nextPos, 1.0)), u_viewTexel.xy).xy;",
+                "vec2 screenPrev = toScreenCoords(mul(u_viewProj, vec4(prevPos, 1.0)), u_viewRect.zw).xy;",
+                "vec2 screenNext = toScreenCoords(mul(u_viewProj, vec4(nextPos, 1.0)), u_viewRect.zw).xy;",
                 "vec2 prevDir = normalize(screenPrev.xy - screen1.xy);",
                 "vec2 nextDir = normalize(screenNext.xy - screen2.xy);",
                 "if (u_PrevNext.x < -9999.0) prevDir = lineDirection;",
@@ -375,10 +295,8 @@
         {
             "lines": [
                 "float lineEdgeOffsetDist = lineWidth.x * 0.5;",
-                "vec4 lineCenter = vec4(1,1,1,1); // vec4(pixelLength * position.y + (lineWidth * 0.5f * position.z), 0.0, 0.0, 0.0);",
                 "vec4 screenPosition = vec4(screenPos.xyz, 1.0);",
-                "vec4 linePosition = vec4(position, lineWidth.x);",
-                "vec4 color = vecColor;"
+                "vec4 linePosition = vec4(position, lineWidth.x);"
             ],
             "position": "Compose",
             "type": "Vertex"
@@ -400,6 +318,7 @@
         },
         {
             "lines": [
+                "// discard fragments that are outside the tile",
                 "float inX = inRange(tilePosition.x, u_TileFragClip.x, u_TileFragClip.z);",
                 "float inY = inRange(tilePosition.y, u_TileFragClip.y, u_TileFragClip.w);",
                 "if (inX * inY == 0.0) { discard; }"
@@ -412,9 +331,11 @@
                 "// clip off the ends of the corners to make the mitered joints",
                 "vec2 fromEndA = screenPosition.xy - line_endPointsScreen.xy;",
                 "vec2 fromEndB = screenPosition.xy - line_endPointsScreen.zw;",
-                "bool clipA = dot(fromEndA, jointNormals.xy) < 0.0; // see which side of the end we're on",
+                "bool clipA = dot(fromEndA, jointNormals.xy) < 0.0;",
                 "bool clipB = dot(fromEndB, jointNormals.zw) < 0.0;",
-                "if ((clipA && line_endFlags.x > -9999.0) || (clipB && line_endFlags.y > -9999.0)) { discard; }"
+                "bool isEndA = line_endFlags.x > -999999.0;",
+                "bool isEndB = line_endFlags.y > -999999.0;",
+                "if ((clipA && isEndA) || (clipB && isEndB)) { discard; }"
             ],
             "position": "Main",
             "positionOffset": 0,
@@ -422,31 +343,22 @@
         },
         {
             "lines": [
-                "float ends = texcoords.z;",
-                "vec3 lineCoords = vec3(texcoords.yx, texcoords.z);",
-                "vec2 start = vec2(0,0);",
-                "vec2 end = vec2(ends, 0);",
-                "float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0;",
-                "widthExpansion /= 2.0; // account for x uv being -1 to both side so need to cut width in half to get proper pixel count",
-                "vec2 dashPixelWidth = 1.0 / s_DashSampler_Res.xy;",
-                "float dashV = dashRow + 0.5 * dashPixelWidth.y;",
-                "float solid = FillLine(lineCoords, start, end, vec2((line_size.x * 0.5) / widthExpansion, (line_size.x * 0.5) / widthExpansion), 0.0);",
-                "float solidOuterOutline = DrawOutline(lineCoords, start, end, vec2( ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion, ((max(line_size.x, line_size.y) + line_size.z + line_size.w) * 0.5) / widthExpansion), 0.0, line_size.w * 0.5 / widthExpansion);",
-                "float dashLine = DashLine(lineCoords, linePosition.y, dashV, start, end, line_endPointsScreen, line_lengthTotal.xy, vec2((line_size.y * 0.5) / widthExpansion,(line_size.y * 0.5) / widthExpansion));",
-                "float alpha = min(1.0, max(dashLine + solid + solidOuterOutline,0));",
-                "vec4 fragColor = vec4(solid*1.0, -solid*1.0, 0.0,1.0);",
-                "//temp variables for color, need to hook up to cpu access",
-                "vec4 u_lineOuterOutlineColor = vec4(0,0,1,1);",
-                "vec4 dashColor = color.xyzw; // TODO - pass in dash color separate from solid vec4(1,0,0,1);",
-                "vec3 solidDashBlend = mix(color.xyz, dashLine * dashColor.xyz, dashLine);",
-                "fragColor = vec4(mix(solidDashBlend, u_lineOuterOutlineColor.xyz, solidOuterOutline), alpha);"
+                "// compute line color",
+                "float dashStrength = DashStrength(dashRow, line_lengthTotal.xy, linePosition.y, line_width.x);",
+                "float strength = LineStrength(screenPosition.xy, line_endPointsScreen.xy, line_endPointsScreen.zw, line_width.x);",
+                "lineColor.a *= strength * dashStrength;",
+                "// compute line casing",
+                "float casingStrength = LineStrength(screenPosition.xy, line_endPointsScreen.xy, line_endPointsScreen.zw, line_width.y);",
+                "casingColor.a *= casingStrength;",
+                "// compute fragment color",
+                "vec4 fragColor = (casingColor.a == 0.0) ? lineColor : vec4(mix(casingColor.rgb, lineColor.rgb, lineColor.a), min(1.0, casingColor.a + lineColor.a));"
             ],
             "position": "Lighting",
             "type": "Pixel"
         },
         {
             "lines": [
-                "gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * color.a * u_vectorFade.r * distFade.x);",
+                "gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * u_vectorFade.r * distFade.x);",
                 "gl_FragData[1] = vec4(0, 0, 0, 0);"
             ],
             "position": "Compose",
@@ -473,13 +385,19 @@
     "shaderParameters": [
         {
             "componentName": "TileLineBase",
-            "name": "s_VectorColors",
+            "name": "s_LineColors",
             "type": "texture",
             "anisoFilter": false
         },
         {
             "componentName": "TileLineBase",
-            "name": "s_VectorWidths",
+            "name": "s_CasingColors",
+            "type": "texture",
+            "anisoFilter": false
+        },
+        {
+            "componentName": "TileLineBase",
+            "name": "s_Widths",
             "type": "texture",
             "anisoFilter": false
         },

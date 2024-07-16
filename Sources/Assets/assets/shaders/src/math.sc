@@ -100,6 +100,29 @@ vec2 closer(vec2 p, vec2 a, vec2 b)
     return (distA <= distB) ? a : b;
 }
 
+struct Segment
+{
+    vec2 a;
+    vec2 b;
+};
+
+Segment segment(vec2 a, vec2 b)
+{
+    Segment seg;
+    seg.a = a;
+    seg.b = b;
+    return seg;
+}
+
+float distanceTo(Segment seg, vec2 p)
+{
+    vec2 diff = seg.b - seg.a;
+    float scalar = dot(p - seg.a, diff) / dot(diff, diff);
+    float t = clamp(scalar, 0.0, 1.0);
+    vec2 proj = seg.a + t * diff;
+    return length(p - proj);
+}
+
 struct Triangle
 {
     vec3 p0;

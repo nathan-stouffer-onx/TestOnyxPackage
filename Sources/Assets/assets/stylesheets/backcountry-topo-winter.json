@@ -2481,39 +2481,6 @@
             }
         },
         {
-            "id": "osm_ski$run_casing",
-            "source": "backcountry",
-            "source-layer": "osm_ski",
-            "type": "line",
-            "minzoom": 13,
-            "filter": [
-                "has",
-                "data:run_type"
-            ],
-            "layout": {
-                "line-cap": "round",
-                "line-join": "round"
-            },
-            "paint": {
-                "line-color": "hsl(0, 0%, 100%)",
-                "line-width": [
-                    "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
-                    12,
-                    4,
-                    15,
-                    8,
-                    17,
-                    12
-                ]
-            }
-        },
-        {
             "id": "osm_ski$run_line",
             "source": "backcountry",
             "source-layer": "osm_ski",
@@ -2531,6 +2498,21 @@
                 "line-join": "round"
             },
             "paint": {
+                "line-casing-width": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    12,
+                    4,
+                    15,
+                    8,
+                    17,
+                    12
+                ],
                 "line-color": [
                     "match",
                     [
@@ -2733,7 +2715,7 @@
             "paint": {
                 "line-dasharray": [
                     2,
-                    1
+                    1.5
                 ],
                 "line-color": "hsl(300, 100%, 25%)",
                 "line-width": [

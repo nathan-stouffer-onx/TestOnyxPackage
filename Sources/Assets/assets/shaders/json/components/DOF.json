@@ -1,0 +1,174 @@
+{
+  "name": "DOF",
+  "sortOrder": 6,
+  "chunks": [
+    {
+      "lines": [
+        "vec3 texSample(const int x, const int y, vec2 origUV)",
+        "{",
+          "vec2 uv = origUV.xy + vec2(x,y) * s_FrameTexture_Res.zw;",
+          "\treturn texture2D(s_FrameTexture, uv).xyz;",
+        "}"
+      ],
+      "position": "Functions",
+      "positionOffset": 0,
+      "type": "Pixel"
+    },
+    {
+      "lines": [
+        "float dbsize = 1.25; // depth blur size",
+        "const float CoC = 0.03; //circle of confusion size in mm (35mm film = 0.03mm)",
+        "const int rings = 2;",
+        "const int samples = 4;",
+        "const int maxringsamples = 3 * 4;",
+        "",
+        "// generating noise / pattern texture for dithering",
+        "vec2 rand(vec2 coord)",
+          "{",
+          "\t//float noiseX = ((fract(1.0 - coord.x * s_FrameTexture_Res.x * 0.5) * 0.125) + (fract(coord.y * s_FrameTexture_Res.y * 0.5) * 0.875)) * 2.0 - 1.0;",
+          "\t//float noiseY = ((fract(1.0 - coord.x * s_FrameTexture_Res.x * 0.5) * 0.875) + (fract(coord.y * s_FrameTexture_Res.y * 0.5) * 0.125)) * 2.0 - 1.0;",
+          "",
+          "\t//if (noise) {",
+          "\t\tfloat noiseX = clamp(fract(sin(dot(coord, vec2(12.9898, 78.233)) + u_time.x) * 43758.5453), 0.0, 1.0) * 2.0 - 1.0;",
+          "\t\tfloat noiseY = clamp(fract(sin(dot(coord, vec2(12.9898, 78.233) * 2.0) + u_time.x) * 43758.5453), 0.0, 1.0) * 2.0 - 1.0;",
+          "\t//}",
+          "",
+          "\treturn vec2(noiseX,noiseY);",
+        "}",
+        "",
+        "// processing the sample ------------------------",
+        "vec3 color(vec2 coords, float blur) {",
+          "\tvec3 col = vec3(0, 0, 0);",
+          "",
+          "\t// read from the render buffer at an offset",
+          "\tcol.r = texture2D(s_FrameTexture, coords + vec2(0.0, 1.0) * s_DepthTexture_Res.zw * u_BlurParams.x /* fringe */ * blur).r;",
+          "\tcol.g = texture2D(s_FrameTexture, coords + vec2(-0.866, -0.5) * s_DepthTexture_Res.zw * u_BlurParams.x /* fringe */ * blur).g;",
+          "\tcol.b = texture2D(s_FrameTexture, coords + vec2(0.866, -0.5) * s_DepthTexture_Res.zw * u_BlurParams.x /* fringe */ * blur).b;",
+          "",
+          "\tvec3 lumcoeff = vec3(0.299, 0.587, 0.114); // arbitrary numbers???",
+          "\tfloat lum = dot(col.rgb, lumcoeff);",
+          "\tfloat thresh = max((lum - u_BlurParams.y /* threshold */) * u_BlurParams.z /* gain*/, 0.0);",
+          "\treturn col + mix(vec3(0, 0, 0), col, thresh * blur);",
+        "}",
+        "//----------------------------------------------",
+        "float gather(float i, float j, int ringsamples, inout vec3 col, float w, float h, float blur, vec2 modUV) {",
+          "\tfloat rings2 = float(rings);",
+          "\tfloat step = PI_CONSTS.y / float(ringsamples);",
+          "\tfloat pw = cos(j * step) * i;",
+          "\tfloat ph = sin(j * step) * i;",
+          "\tfloat p = 1.0;",
+          "\tcol += color(modUV + vec2(pw * w, ph * h), blur) * mix(1.0, i / rings2, u_BlurParams.w /* bias */) * p;",
+          "\treturn 1.0 * mix(1.0, i / rings2, u_BlurParams.w /* bias */) * p;",
+        "}",
+        "",
+        "float linearize(float depth, float znear, float zfar) {",
+          "\treturn -zfar * znear / (depth * (zfar - znear) - zfar);",
+        "}",
+        "//----------------------------------------------",
+        "vec4 blur(vec2 modUV, float amount)",
+        "{",
+		      "\tvec4 result = vec4(0, 0, 0, 1);",
+		      "\tvec2 spread = s_FrameTexture_Res.zw * amount;",
+          "//\t// calculation of pattern for dithering",
+          "//\tvec2 noise = rand(modUV) * amount;",
+		      "//result.rg = noise;",
+          "//\t// getting blur x and y step factor",
+          "//\t// calculation of final color,",
+          "\tvec3 col = texture2D(s_FrameTexture, modUV).rgb;",
+          "\tif (amount >= 0.05) {",
+            "\t\t\tfloat totalSamples = 3.0;",
+            "\t\t\tcol *= totalSamples;",
+            "\t\t\tfor (float i = -2.0; i <= 2.0; i++) {",
+              "\t\t\t\tfor (float j = -2.0; j <= 2.0; j++) {",
+				        "\t\t\t\t\tfloat scale = abs(i) + abs(j);",
+                "\t\t\t\t\tfloat factor = 1.0 / (1.0 + (scale * scale));",
+                "\t\t\t\t\ttotalSamples += factor;",
+                "\t\t\t\t\tcol += (texture2D(s_FrameTexture, modUV + (vec2(i, j) * spread)) * factor).rgb;",
+              "\t\t\t\t}",
+            "\t\t\t}",
+            "\t\t\tcol /= totalSamples; // divide by sample count",
+          "\t}",
+		      "\tresult.rgb = col.rgb;",
+          "\treturn result;",
+        "}"
+      ],
+      "position": "Functions",
+      "positionOffset": 0,
+      "type": "Pixel"
+    },
+    {
+      "lines": [
+        "vec2 modUV = texcoords.xy;",
+        "fragColor = texture2D(s_FrameTexture, modUV);",
+        "//vec3 result = (fragColor.rgb * 9) - (texSample(-1,-1, modUV) + texSample(0,-1, modUV) + texSample(1,-1, modUV) + texSample(-1,0, modUV) + texSample(1,0, modUV) + texSample(-1,1, modUV) + texSample(0,1, modUV) + texSample(1,1, modUV));",
+        "vec4 depthPx = texture2D(s_DepthTexture, modUV);",
+
+        "float depthDist = abs(u_DOFParams.x - depthPx.r);",
+		"float blurDist = smoothstep(u_DOFParams.y * 0.5, 1.0, abs(u_DOFParams.x - depthPx.r));",
+        "float focus = step(u_DOFParams.y, depthDist);",
+        "//vec4 blur(vec2 modUV, float focalLength, float focalDepth, float fstop, float dithering, float maxblur)",
+		"float spread = u_DOFParams.z;",
+        "vec4 blurred = blur(modUV, spread * clamp(blurDist * 1000.0, 0.0, 1.0));",
+        "fragColor.rgb = mix(fragColor.rgb, blurred.rgb, u_DOFParams.w /* * focus */);",
+
+        "// uncomment these 2 lines to show DOF params",
+        "//fragColor.r = mix(depthPx.r, fragColor.r, u_DOFParams.w);",
+        "//fragColor.b = mix(blurDist, fragColor.b, u_DOFParams.w);"
+      ],
+      "position": "Main",
+      "positionOffset": 1,
+      "type": "Pixel"
+    }
+  ],
+  "shaderParameters": [
+    {
+      "componentName": "DOF",
+      "name": "u_SharpenStrength",
+      "type": "vec4",
+      "vec4": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+      }
+    },
+    {
+      "componentName": "DOF",
+      "name": "u_DOFParams",
+      "type": "vec4",
+      "vec4": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+      }
+    },
+    {
+      "componentName": "DOF",
+      "name": "s_FrameTexture",
+      "type": "texture"
+    },
+    {
+      "componentName": "DOF",
+      "name": "s_DepthTexture",
+      "type": "texture"
+    },
+    {
+      "componentName": "DOF",
+      "name": "u_BlurParams",
+      "type": "vec4"
+    },
+    {
+      "componentName": "DOF",
+      "name": "u_CameraParams",
+      "type": "vec4",
+      "comment": "x = zNear, y = zFar, z = spread, w = debug",
+      "vec4" :{
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+      }
+    }
+  ]
+}

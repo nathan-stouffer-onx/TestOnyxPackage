@@ -1,5 +1,5 @@
 $input a_position, i_data0, i_data1, i_data2
-$output v_texcoord7, v_texcoord6, v_color0, v_depth, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2, v_bitangent, v_tangent, v_texcoord1, v_texcoord0, v_color4, v_color3, v_color2, v_color1
+$output v_texcoord7, v_texcoord6, v_depth, v_texcoord5, v_texcoord4, v_texcoord3, v_texcoord2, v_texcoord1, v_bitangent, v_tangent, v_texcoord0, v_color4, v_color3, v_color2, v_color1, v_color0
 
 //includes
 #include <common.sh>
@@ -7,15 +7,17 @@ $output v_texcoord7, v_texcoord6, v_color0, v_depth, v_texcoord5, v_texcoord4, v
 #include "terrain.sc"
 
 //samplers
-SAMPLER2D(s_heightTexture, 4);
+SAMPLER2D(s_heightTexture, 5);
 uniform vec4 s_heightTexture_Res;
-SAMPLER2D(s_VectorColors, 2);
-uniform vec4 s_VectorColors_Res;
-SAMPLER2D(s_VectorWidths, 3);
-uniform vec4 s_VectorWidths_Res;
-SAMPLER2D(s_DashCoords, 0);
+SAMPLER2D(s_LineColors, 3);
+uniform vec4 s_LineColors_Res;
+SAMPLER2D(s_CasingColors, 0);
+uniform vec4 s_CasingColors_Res;
+SAMPLER2D(s_Widths, 4);
+uniform vec4 s_Widths_Res;
+SAMPLER2D(s_DashCoords, 1);
 uniform vec4 s_DashCoords_Res;
-SAMPLER2D(s_DashSampler, 1);
+SAMPLER2D(s_DashSampler, 2);
 uniform vec4 s_DashSampler_Res;
 
 //cubeSamplers
@@ -37,11 +39,11 @@ uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_NearFarFocus;
 
 //functions
-vec4 toScreenCoords(vec4 projected, vec2 viewTexel)
+vec4 toScreenCoords(vec4 projected, vec2 dimensions)
 {
 	vec4 screen = projected / projected.w;
 	screen.xy = screen.xy * 0.5 + 0.5;
-	screen.xy /= viewTexel;
+	screen.xy *= dimensions;
 	return screen;
 }
 // we assume u and v to be normal vectors
@@ -63,8 +65,9 @@ vec4 u_params = i_data2;
 //main start
 float cMaxLineWidth = 64.0; // analogous value in LineStyleAtlas.cpp
 vec2 texParams = u_params.zw;
-vec4 vecColor = texture2DLod(s_VectorColors, texParams, 0);
-vec4 lineWidth = texture2DLod(s_VectorWidths, texParams, 0) * cMaxLineWidth;
+vec4 lineColor = texture2DLod(s_LineColors, texParams, 0);
+vec4 casingColor = texture2DLod(s_CasingColors, texParams, 0);
+vec4 lineWidth = texture2DLod(s_Widths, texParams, 0) * cMaxLineWidth;
 float dashRow = texture2DLod(s_DashCoords, texParams, 0).r;
 vec4 line_lengthTotal = vec4(u_params.xy,0,0);
 vec2 p1 = u_p1p2.xy;
@@ -81,9 +84,6 @@ float nextZ = u_tileMin.z;
 vec2 tilePos = mix(p1, p2, position.y);
 vec4 texcoords = vec4(position.xy,0,0);
 float lineLengthSoFar = position.z;
-vec4 line_size = lineWidth; //override lineWidth here to use debug values for line dimensions
-float widthExpansion = max(line_size.x, line_size.y) + line_size.z + line_size.w + 2.0; // x is solid width, y is dash width, zw are outline gap and width params, constant on the end is excess padding so we have room for AA
-widthExpansion /= 2.0; //account for x uv being -1 to both side so need to cut width in half to get proper pixel count
 float endA = 1.0 - texcoords.y; //uv.y is 0 for this one, so make it 1.0
 float endB = texcoords.y; //uv.y is 1 for this one
 // add heights to vertices
@@ -97,16 +97,14 @@ vec3 wp2 = vec3(tileP2, tileZ2);
 vec3 worldPosition = mix(wp1.xyz, wp2.xyz, position.y); // write to this variable so fog works correctly
 vec4 distFade = vec4(1.0 - smoothstep(u_TileLineOpacityTransition.x, u_TileLineOpacityTransition.y, length(worldPosition.xyz)), 0.0, 0.0, 0.0);
 vec3 fromEye = normalize(worldPosition);
-widthExpansion *= min(1.0, u_NearFarFocus.z / length(worldPosition.xyz)); // scale based on distance
-widthExpansion = max(1.5, widthExpansion);
 float biasKm = max(0.020, 0.004 * u_NearFarFocus.z);
 wp1 *= max(0.5, 1.0 - biasKm / length(wp1));
 wp2 *= max(0.5, 1.0 - biasKm / length(wp2));
 vec4 screen1 = mul(u_viewProj, vec4(wp1, 1.0));
 vec4 screen2 = mul(u_viewProj, vec4(wp2, 1.0));
 float origW = mix(screen1.w, screen2.w, position.y);
-screen1 = toScreenCoords(screen1, u_viewTexel.xy);
-screen2 = toScreenCoords(screen2, u_viewTexel.xy);
+screen1 = toScreenCoords(screen1, u_viewRect.zw);
+screen2 = toScreenCoords(screen2, u_viewRect.zw);
 vec4 line_endPointsScreen = vec4(screen1.xy, screen2.xy);
 vec4 transformPosition = mix(screen1, screen2, position.y);
 vec3 screenPos = transformPosition.xyz / transformPosition.w;
@@ -114,19 +112,28 @@ vec2 lineDirection = screen2.xy - screen1.xy;
 float lineLength = length(lineDirection);
 lineDirection /= lineLength;
 vec2 lineSide = normalize(vec2(-lineDirection.y, lineDirection.x));
+vec4 line_width = lineWidth;
+line_width *= min(1.0, u_NearFarFocus.z / length(worldPosition.xyz)); // scale based on distance
+float widthExpansion = 0.5 * (max(line_width.x, line_width.y) + 2.0); // compute expansion factor
 screenPos.xy += lineSide * texcoords.x * widthExpansion;
 // overlap ends for the pixel miter
 vec2 endExpansion = (-lineDirection * endA * widthExpansion + lineDirection * endB * widthExpansion);
 screenPos.xy += endExpansion;
+// adjust depth because we expand the vertex from it's true location in screen space
 float deltaZ = screen2.z - screen1.z;
 float depthAdjustment = widthExpansion * deltaZ / lineLength;
 screenPos.z -= endA * depthAdjustment;
 screenPos.z += endB * depthAdjustment;
+// adjust line length because we expand the vertex from it's true location in screen space
+float deltaPhase = line_lengthTotal.y - line_lengthTotal.x;
+float phaseAdjustment = widthExpansion * deltaPhase / lineLength;
+line_lengthTotal.x -= phaseAdjustment;
+line_lengthTotal.y += phaseAdjustment;
 vec4 line_endFlags = vec4(u_PrevNext.xz,0,0);
 vec3 prevPos = vec3(prevTP, prevZ);
 vec3 nextPos = vec3(nextTP, nextZ);
-vec2 screenPrev = toScreenCoords(mul(u_viewProj, vec4(prevPos, 1.0)), u_viewTexel.xy).xy;
-vec2 screenNext = toScreenCoords(mul(u_viewProj, vec4(nextPos, 1.0)), u_viewTexel.xy).xy;
+vec2 screenPrev = toScreenCoords(mul(u_viewProj, vec4(prevPos, 1.0)), u_viewRect.zw).xy;
+vec2 screenNext = toScreenCoords(mul(u_viewProj, vec4(nextPos, 1.0)), u_viewRect.zw).xy;
 vec2 prevDir = normalize(screenPrev.xy - screen1.xy);
 vec2 nextDir = normalize(screenNext.xy - screen2.xy);
 if (u_PrevNext.x < -9999.0) prevDir = lineDirection;
@@ -156,10 +163,8 @@ vec4 fogDist = vec4(length(worldPosition.xyz), 0.0, 0.0, 0.0);
 
 //compose
 float lineEdgeOffsetDist = lineWidth.x * 0.5;
-vec4 lineCenter = vec4(1,1,1,1); // vec4(pixelLength * position.y + (lineWidth * 0.5f * position.z), 0.0, 0.0, 0.0);
 vec4 screenPosition = vec4(screenPos.xyz, 1.0);
 vec4 linePosition = vec4(position, lineWidth.x);
-vec4 color = vecColor;
 vec4 tilePosition = vec4(tilePos, 0.0, 0.0);
 // convert from screen position back to clip space position
 vec4 glPos = vec4(screenPos.xyz, 1.0);
@@ -171,20 +176,20 @@ gl_Position = glPos;
 
 v_texcoord7 = tilePosition.xyzw;
 v_texcoord6 = linePosition.xyzw;
-v_color0 = color.xyzw;
 v_depth = dashRow;
-v_texcoord5 = screenPosition.xyzw;
-v_texcoord4 = lineCenter.xyzw;
-v_texcoord3 = texcoords.xyzw;
-v_texcoord2 = jointNormals.xyzw;
+v_texcoord5 = lineColor.xyzw;
+v_texcoord4 = casingColor.xyzw;
+v_texcoord3 = screenPosition.xyzw;
+v_texcoord2 = texcoords.xyzw;
+v_texcoord1 = jointNormals.xyzw;
 v_bitangent = line_dir.xyz;
 v_tangent = line_side.xyz;
-v_texcoord1 = line_size.xyzw;
-v_texcoord0 = line_endPointsScreen.xyzw;
-v_color4 = line_lengthTotal.xyzw;
-v_color3 = line_endFlags.xyzw;
-v_color2 = distFade.xyzw;
-v_color1 = fogDist.xyzw;
+v_texcoord0 = line_width.xyzw;
+v_color4 = line_endPointsScreen.xyzw;
+v_color3 = line_lengthTotal.xyzw;
+v_color2 = line_endFlags.xyzw;
+v_color1 = distFade.xyzw;
+v_color0 = fogDist.xyzw;
 
 }
 

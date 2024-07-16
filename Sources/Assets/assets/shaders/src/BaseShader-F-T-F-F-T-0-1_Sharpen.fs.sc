@@ -36,7 +36,7 @@ vec4 depth = v_texcoord7.xyzw;
 vec4 texcoords = v_texcoord6.xyzw;
 //main start
 vec4 fragColor = u_BackgroundColor;
-vec2 pixelStep = vec2(1.0, 1.0) * s_FrameTexture_Res.zw;
+vec2 pixelStep = s_FrameTexture_Res.zw;
 vec2 modUV = texcoords.xy;
 fragColor.xyz = texture2D(s_FrameTexture, modUV).xyz;
 vec3 result = texSample(-1,-1, modUV) * -1. + texSample(0,-1, modUV) * -1. + texSample(1,-1, modUV) * -1. + texSample(-1,0, modUV) * -1. + fragColor.xyz * 9. + texSample(1,0, modUV) * -1. + texSample(-1,1, modUV) * -1. + texSample(0,1, modUV) * -1. + texSample(1,1, modUV) * -1.;

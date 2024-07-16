@@ -445,6 +445,7 @@ LineBase-T-F-F-F-F-0-0
 NinePatch
 BaseShader-F-T-F-F-T-0-0
 BaseShader-F-T-F-F-T-0-0_Sharpen
+BaseShader-F-T-F-F-T-0-0_DOF
 BaseShader-F-T-F-F-T-0-0_Blit
 BaseShader-F-T-F-F-T-0-1_TextureLayer-1
 BaseShader-F-T-F-F-T-0-1_TextureLayer-2
