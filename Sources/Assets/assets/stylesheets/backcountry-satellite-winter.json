@@ -662,6 +662,92 @@
             }
         },
         {
+            "id": "avalanche_ates$fill",
+            "source": "backcountry",
+            "source-layer": "avalanche_ates",
+            "type": "fill",
+            "minzoom": 11,
+            "maxzoom": 22,
+            "filter": [
+                "match",
+                [
+                    "get",
+                    "data:status"
+                ],
+                [
+                    "released"
+                ],
+                true,
+                false
+            ],
+            "layout": {},
+            "paint": {
+                "fill-color": [
+                    "match",
+                    [
+                        "get",
+                        "data:ates_rating"
+                    ],
+                    [
+                        "Non-avalanche"
+                    ],
+                    "hsl(0, 0%, 60%)",
+                    [
+                        "Simple"
+                    ],
+                    "hsl(87, 100%, 30%)",
+                    [
+                        "Challenging"
+                    ],
+                    "hsl(212, 100%, 37%)",
+                    [
+                        "Complex"
+                    ],
+                    "hsl(0, 0%, 10%)",
+                    [
+                        "Extreme"
+                    ],
+                    "hsl(0, 100%, 37%)",
+                    "hsla(0, 0%, 0%, 0)"
+                ],
+                "fill-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    11,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ates_rating"
+                        ],
+                        [
+                            "Complex"
+                        ],
+                        0.7,
+                        0.5
+                    ],
+                    15,
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ates_rating"
+                        ],
+                        [
+                            "Complex"
+                        ],
+                        0.5,
+                        0.3
+                    ]
+                ]
+            }
+        },
+        {
             "id": "transportation_roads$hwy_shields$light",
             "source": "transportation",
             "source-layer": "roads_us",
