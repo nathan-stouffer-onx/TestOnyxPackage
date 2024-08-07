@@ -138,6 +138,9 @@ lt r2.x, r0.z, l(0.000000)
 and r2.x, r2.x, l(0x40c90fdb)
 add r0.z, r0.z, r2.x
 add r0.z, -r0.z, l(6.283185)
+mul r2.x, r0.z, l(0.159168)
+round_ni r2.x, r2.x
+mad r0.z, -r2.x, l(6.282685), r0.z
 mul r2.z, r0.z, l(0.159155)
 sample_indexable(texture2d)(float,float,float,float) r2.xyzw, r2.zwzz, t0.xyzw, s0
 ge r0.z, cb0[8].x, |r1.w|

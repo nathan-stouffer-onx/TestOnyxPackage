@@ -16,6 +16,7 @@ uniform vec4 s_heightTexture_Res;
 uniform vec4 u_IntersectTint;
 uniform vec4 u_IntersectInverted;
 uniform vec4 u_ElevationExtents;
+uniform vec4 u_IntersectSlopeAspectMaxNormalZ;
 uniform vec4 u_tileSize;
 uniform vec4 u_lightStrengthPow;
 uniform vec4 u_FogTransition;
@@ -122,11 +123,13 @@ void main ()
   tmpvar_24.x = (tmpvar_15 / 1.570796);
   vec2 tmpvar_25;
   tmpvar_25.y = 0.0;
-  tmpvar_25.x = (rad_16 / 6.283185);
+  tmpvar_25.x = ((float(mod (rad_16, 6.282685))) / 6.283185);
   fragColor_3.xyz = mix (u_BackgroundColor.xyz, ((
     ((u_BackgroundColor.x + u_BackgroundColor.y) + u_BackgroundColor.z)
    / 3.0) * u_IntersectTint.xyz), (abs(
-    (u_IntersectInverted.x - ((texture (s_ElevationShadeTexture, (tmpvar_23 / s_ElevationShadeTexture_Res.xy)).x * texture (s_SlopeAngleShadeTexture, tmpvar_24).x) * texture (s_SlopeAspectShadeTexture, tmpvar_25).x))
+    (u_IntersectInverted.x - ((texture (s_ElevationShadeTexture, (tmpvar_23 / s_ElevationShadeTexture_Res.xy)).x * texture (s_SlopeAngleShadeTexture, tmpvar_24).x) * (texture (s_SlopeAspectShadeTexture, tmpvar_25).x * float(
+      (abs(normal_4.z) <= u_IntersectSlopeAspectMaxNormalZ.x)
+    ))))
   ) * u_IntersectTint.w));
   float tmpvar_26;
   tmpvar_26 = clamp (((v_texcoord4.x - u_FogTransition.x) / (u_FogTransition.y - u_FogTransition.x)), 0.0, 1.0);

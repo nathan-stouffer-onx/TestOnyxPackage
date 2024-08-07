@@ -64,7 +64,7 @@ vec4 fogDist = vec4(length(worldPosition.xyz), 0.0, 0.0, 0.0);
 //compose
 	worldPosition.z = tileZ;
 	float distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz));
-	float biasKm = max(0.010, 0.002 * u_NearFarFocus.z);
+	float biasKm = max(0.010, max((2.0 / 256.0) * (u_tileMax.x - u_tileMin.x), 0.002 * u_NearFarFocus.z));
 	float biasScalar = max(0.5, 1.0 - biasKm / length(worldPosition));
 	vec3 biasedPosition = worldPosition * biasScalar;
 	vec4 projected = mul(u_proj, mul(viewMat, vec4(biasedPosition.xyz, 1.0)));

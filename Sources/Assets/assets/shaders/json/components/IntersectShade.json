@@ -7,7 +7,7 @@
     {
       "lines": [
         "// def unpacks to (elevation, slope angle, slope aspect)",
-        "vec3 calculateIntersection(vec3 inputColor, vec3 def, float inverted, vec4 tint)",
+        "vec3 calculateIntersection(vec3 inputColor, vec3 normal, vec3 def, float inverted, vec4 tint)",
         "{",
         "\tfloat TWO_PI = PI_CONSTS.y;",
         "\tfloat PI_HALVES = PI_CONSTS.z;",
@@ -17,7 +17,7 @@
         "\tfloat j = floor(elevationIndex / s_ElevationShadeTexture_Res.y);",
         "\tfloat inElevation = texture2D(s_ElevationShadeTexture, vec2(i, j) / s_ElevationShadeTexture_Res.xy).r;",
         "\tfloat inAngle = texture2D(s_SlopeAngleShadeTexture, vec2(def.y / PI_HALVES, 0.0)).r;",
-        "\tfloat inAspect = texture2D(s_SlopeAspectShadeTexture, vec2(def.z / TWO_PI, 0.0)).r;",
+        "\tfloat inAspect = texture2D(s_SlopeAspectShadeTexture, vec2(def.z / TWO_PI, 0.0)).r * float(abs(normal.z) <= u_IntersectSlopeAspectMaxNormalZ.x);",
         "\tfloat inIntersection = inElevation * inAngle * inAspect;",
         "\tfloat grey = (inputColor.x + inputColor.y + inputColor.z) / 3.0;",
         "\tvec3 color = grey * tint.rgb;",
@@ -35,7 +35,7 @@
         "float height = worldPosition.w;",
         "float angle = calcSlopeAngle(normal.xyz);",
         "float aspect = calcSlopeDir(normal.xyz);",
-        "fragColor.rgb = calculateIntersection(fragColor.rgb, vec3(height, angle, aspect), u_IntersectInverted.x, u_IntersectTint);"
+        "fragColor.rgb = calculateIntersection(fragColor.rgb, normal.xyz, vec3(height, angle, aspect), u_IntersectInverted.x, u_IntersectTint);"
       ],
       "position": "Main",
       "positionOffset": 1,
@@ -86,6 +86,15 @@
       "name": "s_SlopeAspectShadeTexture",
       "type": "texture",
       "anisoFilter": false
+    },
+    {
+      "componentName": "IntersectShade",
+      "max": 1.0,
+      "min": 0.0,
+      "name": "u_IntersectSlopeAspectMaxNormalZ",
+      "realtimeUniform": true,
+      "type": "float",
+      "float": 0.0
     }
   ],
   "requirements": {

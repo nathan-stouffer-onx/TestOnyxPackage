@@ -44,7 +44,7 @@ uniform mat4 u_sunShadowView;
 uniform mat4 u_sunShadowProj;
 uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_ElevationExtents;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;

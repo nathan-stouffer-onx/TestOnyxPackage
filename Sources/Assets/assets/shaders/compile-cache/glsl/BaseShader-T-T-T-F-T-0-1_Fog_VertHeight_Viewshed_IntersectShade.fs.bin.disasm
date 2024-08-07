@@ -14,6 +14,7 @@ uniform samplerCube s_cubeDepth0;
 uniform vec4 u_IntersectTint;
 uniform vec4 u_IntersectInverted;
 uniform vec4 u_ElevationExtents;
+uniform vec4 u_IntersectSlopeAspectMaxNormalZ;
 uniform vec4 u_viewshedTint0;
 uniform vec4 u_viewshedRingTint0;
 uniform vec4 u_viewshedRange0;
@@ -126,11 +127,13 @@ void main ()
   tmpvar_23.x = (tmpvar_14 / 1.570796);
   vec2 tmpvar_24;
   tmpvar_24.y = 0.0;
-  tmpvar_24.x = (rad_15 / 6.283185);
+  tmpvar_24.x = ((float(mod (rad_15, 6.282685))) / 6.283185);
   fragColor_2.xyz = mix (u_BackgroundColor.xyz, ((
     ((u_BackgroundColor.x + u_BackgroundColor.y) + u_BackgroundColor.z)
    / 3.0) * u_IntersectTint.xyz), (abs(
-    (u_IntersectInverted.x - ((texture2D (s_ElevationShadeTexture, (tmpvar_22 / s_ElevationShadeTexture_Res.xy)).x * texture2D (s_SlopeAngleShadeTexture, tmpvar_23).x) * texture2D (s_SlopeAspectShadeTexture, tmpvar_24).x))
+    (u_IntersectInverted.x - ((texture2D (s_ElevationShadeTexture, (tmpvar_22 / s_ElevationShadeTexture_Res.xy)).x * texture2D (s_SlopeAngleShadeTexture, tmpvar_23).x) * (texture2D (s_SlopeAspectShadeTexture, tmpvar_24).x * float(
+      (abs(normal_3.z) <= u_IntersectSlopeAspectMaxNormalZ.x)
+    ))))
   ) * u_IntersectTint.w));
   float tmpvar_25;
   vec3 tmpvar_26;

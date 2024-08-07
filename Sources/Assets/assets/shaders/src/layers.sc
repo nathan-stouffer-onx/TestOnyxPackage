@@ -38,16 +38,11 @@ float calcSlopeDir(vec3 normal)
     float TWO_PI = PI_CONSTS.y;
     float PI_HALVES = PI_CONSTS.z;
 
-    // compute the arctangent of the ray (x, -y) -- negative y to flip north to being positive
-    float rad = atan2(-normal.y, normal.x);
-    // rotate so zero is north
-    rad -= PI_HALVES;
-    // if radians is negative, just add 2 * pi to get into positive radians
-    rad += float(rad < 0.0) * TWO_PI;
-    // flip so the angle goes clockwise
-    rad = TWO_PI - rad;
-        
-    return rad;
+    float rad = atan2(-normal.y, normal.x); // compute the arctangent of the ray (x, -y) -- negative y to flip north to being positive
+    rad -= PI_HALVES;                       // rotate so zero is north
+    rad += float(rad < 0.0) * TWO_PI;       // if radians is negative, just add 2 * pi to get into positive radians
+    rad = TWO_PI - rad;                     // flip so the angle goes clockwise
+    return mod(rad, TWO_PI - 0.0005);       // intentionally alias slope aspect at the boundary between 0 and 2pi
 }
 
 float calcCompassMask(vec3 normal, int compassDir, float compassClip)

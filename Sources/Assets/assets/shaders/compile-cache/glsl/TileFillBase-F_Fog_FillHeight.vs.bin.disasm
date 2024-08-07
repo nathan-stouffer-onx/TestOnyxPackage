@@ -105,7 +105,9 @@ void main ()
   vec4 tmpvar_30;
   tmpvar_30.w = 1.0;
   tmpvar_30.xyz = (worldPosition_3 * max (0.5, (1.0 - 
-    (max (0.01, (0.002 * u_NearFarFocus.z)) / sqrt(dot (worldPosition_3, worldPosition_3)))
+    (max (0.01, max ((0.0078125 * 
+      (u_tileMax.x - u_tileMin.x)
+    ), (0.002 * u_NearFarFocus.z))) / sqrt(dot (worldPosition_3, worldPosition_3)))
   )));
   vec4 tmpvar_31;
   tmpvar_31 = (u_proj * (u_view * tmpvar_30));

@@ -30,6 +30,7 @@ uniform vec4 s_cubeDepth0_Res;
 uniform vec4 u_IntersectTint;
 uniform vec4 u_IntersectInverted;
 uniform vec4 u_ElevationExtents;
+uniform vec4 u_IntersectSlopeAspectMaxNormalZ;
 uniform vec4 u_viewshedTint0;
 uniform vec4 u_viewshedRingTint0;
 uniform vec4 u_viewshedRange0;

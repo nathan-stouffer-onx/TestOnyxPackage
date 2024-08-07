@@ -23,6 +23,7 @@ uniform vec4 s_sunShadowDepth_Res;
 uniform vec4 u_IntersectTint;
 uniform vec4 u_IntersectInverted;
 uniform vec4 u_ElevationExtents;
+uniform vec4 u_IntersectSlopeAspectMaxNormalZ;
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_ScaleOffsetHeight;
@@ -79,7 +80,7 @@ vec3 calcContour(vec3 baseColor, vec4 color, vec4 def, float height, float opaci
 	return mix(baseColor, blended, t * opacity);
 }
 // def unpacks to (elevation, slope angle, slope aspect)
-vec3 calculateIntersection(vec3 inputColor, vec3 def, float inverted, vec4 tint)
+vec3 calculateIntersection(vec3 inputColor, vec3 normal, vec3 def, float inverted, vec4 tint)
 {
 	float TWO_PI = PI_CONSTS.y;
 	float PI_HALVES = PI_CONSTS.z;
@@ -89,7 +90,7 @@ vec3 calculateIntersection(vec3 inputColor, vec3 def, float inverted, vec4 tint)
 	float j = floor(elevationIndex / s_ElevationShadeTexture_Res.y);
 	float inElevation = texture2D(s_ElevationShadeTexture, vec2(i, j) / s_ElevationShadeTexture_Res.xy).r;
 	float inAngle = texture2D(s_SlopeAngleShadeTexture, vec2(def.y / PI_HALVES, 0.0)).r;
-	float inAspect = texture2D(s_SlopeAspectShadeTexture, vec2(def.z / TWO_PI, 0.0)).r;
+	float inAspect = texture2D(s_SlopeAspectShadeTexture, vec2(def.z / TWO_PI, 0.0)).r * float(abs(normal.z) <= u_IntersectSlopeAspectMaxNormalZ.x);
 	float inIntersection = inElevation * inAngle * inAspect;
 	float grey = (inputColor.x + inputColor.y + inputColor.z) / 3.0;
 	vec3 color = grey * tint.rgb;
@@ -141,7 +142,7 @@ fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, wo
 float height = worldPosition.w;
 float angle = calcSlopeAngle(normal.xyz);
 float aspect = calcSlopeDir(normal.xyz);
-fragColor.rgb = calculateIntersection(fragColor.rgb, vec3(height, angle, aspect), u_IntersectInverted.x, u_IntersectTint);
+fragColor.rgb = calculateIntersection(fragColor.rgb, normal.xyz, vec3(height, angle, aspect), u_IntersectInverted.x, u_IntersectTint);
 
 //lighting
 fragColor.rgb = fog(fragColor.rgb, u_FogColor, u_FogTransition.xy, fogDist.x);

@@ -28,7 +28,7 @@ uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
 uniform vec4 u_ContourFade;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
@@ -135,11 +135,11 @@ void main ()
   rad_19 = (6.283185 - rad_19);
   vec2 tmpvar_24;
   tmpvar_24.y = 0.0;
-  tmpvar_24.x = (rad_19 / 6.283185);
+  tmpvar_24.x = ((float(mod (rad_19, 6.282685))) / 6.283185);
   vec4 tmpvar_25;
   tmpvar_25 = texture (s_SlopeAspectShadeTexture, tmpvar_24);
   fragColor_3.xyz = mix (color_15.xyz, tmpvar_25.xyz, (tmpvar_25.w * float(
-    (abs(normal_4.z) <= u_MaxNormalZ.x)
+    (abs(normal_4.z) <= u_SlopeAspectMaxNormalZ.x)
   )));
   float tmpvar_26;
   tmpvar_26 = clamp (((

@@ -24,7 +24,7 @@ uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
 uniform vec4 u_ContourFade;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;

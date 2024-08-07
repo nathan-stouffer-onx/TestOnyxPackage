@@ -23,7 +23,7 @@ uniform vec4 u_viewshedInverted0;
 uniform vec4 u_viewshedBias0;
 uniform vec4 u_tileSize;
 uniform vec4 u_lightStrengthPow;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_ElevationExtents;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
@@ -118,11 +118,11 @@ void main ()
   rad_17 = (6.283185 - rad_17);
   vec2 tmpvar_22;
   tmpvar_22.y = 0.0;
-  tmpvar_22.x = (rad_17 / 6.283185);
+  tmpvar_22.x = ((float(mod (rad_17, 6.282685))) / 6.283185);
   vec4 tmpvar_23;
   tmpvar_23 = texture (s_SlopeAspectShadeTexture, tmpvar_22);
   fragColor_3.xyz = mix (color_15.xyz, tmpvar_23.xyz, (tmpvar_23.w * float(
-    (abs(normal_4.z) <= u_MaxNormalZ.x)
+    (abs(normal_4.z) <= u_SlopeAspectMaxNormalZ.x)
   )));
   float tmpvar_24;
   tmpvar_24 = float((u_ElevationExtents.x != u_ElevationExtents.y));

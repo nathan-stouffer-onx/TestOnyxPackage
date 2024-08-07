@@ -24,6 +24,7 @@ uniform vec4 s_texture0_Res;
 uniform vec4 u_IntersectTint;
 uniform vec4 u_IntersectInverted;
 uniform vec4 u_ElevationExtents;
+uniform vec4 u_IntersectSlopeAspectMaxNormalZ;
 uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_ScaleOffsetHeight;

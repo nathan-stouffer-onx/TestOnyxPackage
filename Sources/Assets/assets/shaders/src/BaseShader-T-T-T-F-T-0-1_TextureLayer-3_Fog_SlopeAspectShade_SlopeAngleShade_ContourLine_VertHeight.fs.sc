@@ -31,7 +31,7 @@ uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
 uniform vec4 u_ContourFade;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
@@ -88,7 +88,7 @@ vec3 slopeAspectShade(vec3 inputColor, vec3 normal)
 {
 	float TWO_PI = PI_CONSTS.y;
 	vec4 aspectTexel = texture2D(s_SlopeAspectShadeTexture, vec2(calcSlopeDir(normal.xyz) / TWO_PI, 0.0));
-	float strength = aspectTexel.a * float(abs(normal.z) <= u_MaxNormalZ.x);
+	float strength = aspectTexel.a * float(abs(normal.z) <= u_SlopeAspectMaxNormalZ.x);
 	return mix(inputColor, aspectTexel.rgb, strength);
 }
 // def unpacks to (period, min, max, width)

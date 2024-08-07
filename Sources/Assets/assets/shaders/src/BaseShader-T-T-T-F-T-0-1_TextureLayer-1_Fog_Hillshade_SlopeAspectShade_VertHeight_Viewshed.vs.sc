@@ -30,7 +30,7 @@ uniform vec4 u_tileSize;
 uniform vec4 u_tileDistortion;
 uniform vec4 u_ScaleOffsetHeight;
 uniform vec4 u_lightStrengthPow;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_HillshadeLightDir;
 uniform vec4 u_HillshadeAlbedo;
 uniform vec4 u_HillshadeParams;

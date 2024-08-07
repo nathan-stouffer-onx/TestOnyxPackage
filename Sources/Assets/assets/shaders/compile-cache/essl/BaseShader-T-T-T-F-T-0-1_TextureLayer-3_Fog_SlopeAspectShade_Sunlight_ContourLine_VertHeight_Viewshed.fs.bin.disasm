@@ -38,7 +38,7 @@ uniform vec4 u_sunShadowBias;
 uniform vec4 u_sunShadowStrength;
 uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_ScaleOffsetTex0;
@@ -146,11 +146,11 @@ void main ()
   rad_20 = (6.283185 - rad_20);
   vec2 tmpvar_25;
   tmpvar_25.y = 0.0;
-  tmpvar_25.x = (rad_20 / 6.283185);
+  tmpvar_25.x = ((float(mod (rad_20, 6.282685))) / 6.283185);
   vec4 tmpvar_26;
   tmpvar_26 = texture (s_SlopeAspectShadeTexture, tmpvar_25);
   fragColor_4.xyz = mix (color_16.xyz, tmpvar_26.xyz, (tmpvar_26.w * float(
-    (abs(normal_5.z) <= u_MaxNormalZ.x)
+    (abs(normal_5.z) <= u_SlopeAspectMaxNormalZ.x)
   )));
   vec3 tangentSun_27;
   vec3 planetNormal_28;

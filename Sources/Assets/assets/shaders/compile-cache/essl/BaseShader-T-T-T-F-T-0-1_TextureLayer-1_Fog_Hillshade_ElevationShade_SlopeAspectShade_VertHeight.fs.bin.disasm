@@ -15,7 +15,7 @@ uniform vec4 s_ElevationShadeTexture_Res;
 uniform sampler2D s_texture0;
 uniform vec4 u_tileSize;
 uniform vec4 u_lightStrengthPow;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_ElevationExtents;
 uniform vec4 u_HillshadeLightDir;
 uniform vec4 u_HillshadeAlbedo;
@@ -123,11 +123,11 @@ void main ()
   rad_18 = (6.283185 - rad_18);
   vec2 tmpvar_23;
   tmpvar_23.y = 0.0;
-  tmpvar_23.x = (rad_18 / 6.283185);
+  tmpvar_23.x = ((float(mod (rad_18, 6.282685))) / 6.283185);
   vec4 tmpvar_24;
   tmpvar_24 = texture (s_SlopeAspectShadeTexture, tmpvar_23);
   fragColor_3.xyz = mix (fragColor_3.xyz, tmpvar_24.xyz, (tmpvar_24.w * float(
-    (abs(normal_4.z) <= u_MaxNormalZ.x)
+    (abs(normal_4.z) <= u_SlopeAspectMaxNormalZ.x)
   )));
   float tmpvar_25;
   tmpvar_25 = float((u_ElevationExtents.x != u_ElevationExtents.y));

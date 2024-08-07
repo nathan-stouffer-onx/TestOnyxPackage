@@ -34,7 +34,7 @@ uniform mat4 u_sunShadowView;
 uniform mat4 u_sunShadowProj;
 uniform vec4 u_sunShadowVSMParams;
 uniform vec4 u_CascadeDebug;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_BackgroundColor;
@@ -57,7 +57,7 @@ vec3 slopeAspectShade(vec3 inputColor, vec3 normal)
 {
 	float TWO_PI = PI_CONSTS.y;
 	vec4 aspectTexel = texture2D(s_SlopeAspectShadeTexture, vec2(calcSlopeDir(normal.xyz) / TWO_PI, 0.0));
-	float strength = aspectTexel.a * float(abs(normal.z) <= u_MaxNormalZ.x);
+	float strength = aspectTexel.a * float(abs(normal.z) <= u_SlopeAspectMaxNormalZ.x);
 	return mix(inputColor, aspectTexel.rgb, strength);
 }
 float linstep(float low, float high, float v)

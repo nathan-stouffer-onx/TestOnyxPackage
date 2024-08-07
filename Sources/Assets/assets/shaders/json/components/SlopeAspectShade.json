@@ -12,7 +12,7 @@
         "{",
         "\tfloat TWO_PI = PI_CONSTS.y;",
         "\tvec4 aspectTexel = texture2D(s_SlopeAspectShadeTexture, vec2(calcSlopeDir(normal.xyz) / TWO_PI, 0.0));",
-        "\tfloat strength = aspectTexel.a * float(abs(normal.z) <= u_MaxNormalZ.x);",
+        "\tfloat strength = aspectTexel.a * float(abs(normal.z) <= u_SlopeAspectMaxNormalZ.x);",
         "\treturn mix(inputColor, aspectTexel.rgb, strength);",
         "}"
       ],
@@ -37,7 +37,7 @@
     },
     {
       "componentName": "SlopeAspectShade",
-      "name": "u_MaxNormalZ",
+      "name": "u_SlopeAspectMaxNormalZ",
       "type": "float",
       "float": 1.0
     }

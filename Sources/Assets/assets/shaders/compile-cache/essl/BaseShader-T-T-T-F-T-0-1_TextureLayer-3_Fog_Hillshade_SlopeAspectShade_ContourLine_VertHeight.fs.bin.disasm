@@ -20,7 +20,7 @@ uniform vec4 u_ContourColor0;
 uniform vec4 u_ContourParams1;
 uniform vec4 u_ContourColor1;
 uniform vec4 u_ContourFade;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_HillshadeLightDir;
 uniform vec4 u_HillshadeAlbedo;
 uniform vec4 u_HillshadeParams;
@@ -140,11 +140,11 @@ void main ()
   rad_20 = (6.283185 - rad_20);
   vec2 tmpvar_25;
   tmpvar_25.y = 0.0;
-  tmpvar_25.x = (rad_20 / 6.283185);
+  tmpvar_25.x = ((float(mod (rad_20, 6.282685))) / 6.283185);
   vec4 tmpvar_26;
   tmpvar_26 = texture (s_SlopeAspectShadeTexture, tmpvar_25);
   fragColor_3.xyz = mix (fragColor_3.xyz, tmpvar_26.xyz, (tmpvar_26.w * float(
-    (abs(normal_4.z) <= u_MaxNormalZ.x)
+    (abs(normal_4.z) <= u_SlopeAspectMaxNormalZ.x)
   )));
   float tmpvar_27;
   tmpvar_27 = clamp (((

@@ -12,7 +12,7 @@ uniform sampler2D s_texture0;
 uniform sampler2D s_texture1;
 uniform vec4 u_tileSize;
 uniform vec4 u_lightStrengthPow;
-uniform vec4 u_MaxNormalZ;
+uniform vec4 u_SlopeAspectMaxNormalZ;
 uniform vec4 u_HillshadeLightDir;
 uniform vec4 u_HillshadeAlbedo;
 uniform vec4 u_HillshadeParams;
@@ -124,11 +124,11 @@ void main ()
   rad_18 = (6.283185 - rad_18);
   vec2 tmpvar_23;
   tmpvar_23.y = 0.0;
-  tmpvar_23.x = (rad_18 / 6.283185);
+  tmpvar_23.x = ((float(mod (rad_18, 6.282685))) / 6.283185);
   vec4 tmpvar_24;
   tmpvar_24 = texture2D (s_SlopeAspectShadeTexture, tmpvar_23);
   fragColor_2.xyz = mix (fragColor_2.xyz, tmpvar_24.xyz, (tmpvar_24.w * float(
-    (abs(normal_3.z) <= u_MaxNormalZ.x)
+    (abs(normal_3.z) <= u_SlopeAspectMaxNormalZ.x)
   )));
   vec2 tmpvar_25;
   tmpvar_25.y = 0.0;
