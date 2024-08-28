@@ -19,13 +19,11 @@
   ],
   "shaderParameters": [
     {
-      "componentName": "ElevationShade",
       "name": "s_ElevationShadeTexture",
       "type": "texture",
       "anisoFilter": false
     },
     {
-      "componentName": "ElevationShade",
       "name": "u_ElevationExtents",
       "type": "vec2"
     }

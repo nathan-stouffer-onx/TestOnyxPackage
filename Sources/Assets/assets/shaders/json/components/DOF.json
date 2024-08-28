@@ -122,7 +122,6 @@
   ],
   "shaderParameters": [
     {
-      "componentName": "DOF",
       "name": "u_SharpenStrength",
       "type": "vec4",
       "vec4": {
@@ -133,7 +132,6 @@
       }
     },
     {
-      "componentName": "DOF",
       "name": "u_DOFParams",
       "type": "vec4",
       "vec4": {
@@ -144,22 +142,18 @@
       }
     },
     {
-      "componentName": "DOF",
       "name": "s_FrameTexture",
       "type": "texture"
     },
     {
-      "componentName": "DOF",
       "name": "s_DepthTexture",
       "type": "texture"
     },
     {
-      "componentName": "DOF",
       "name": "u_BlurParams",
       "type": "vec4"
     },
     {
-      "componentName": "DOF",
       "name": "u_CameraParams",
       "type": "vec4",
       "comment": "x = zNear, y = zFar, z = spread, w = debug",

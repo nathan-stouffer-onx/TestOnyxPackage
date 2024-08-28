@@ -45,7 +45,6 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "Fog",
       "name": "u_FogTransition",
       "type": "vec2",
       "vec2": {
@@ -54,7 +53,6 @@
       }
     },
     {
-      "componentName": "Fog",
       "name": "u_FogColor",
       "type": "color",
       "color": {

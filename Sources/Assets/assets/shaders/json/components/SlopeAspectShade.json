@@ -30,13 +30,11 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "SlopeAspectShade",
       "name": "s_SlopeAspectShadeTexture",
       "type": "texture",
       "anisoFilter":  false
     },
     {
-      "componentName": "SlopeAspectShade",
       "name": "u_SlopeAspectMaxNormalZ",
       "type": "float",
       "float": 1.0

@@ -139,7 +139,6 @@
 
     "shaderParameters": [
         {
-            "componentName": "IconBase",
             "name": "u_tileMin",
             "realtimeUniform": true,
             "type": "vec3",
@@ -153,7 +152,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "name": "u_tileMax",
             "realtimeUniform": true,
             "type": "vec3",
@@ -167,7 +165,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "imguiRate": 0.01,
             "min": -99999.0,
             "max": 99999.0,
@@ -181,7 +178,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "name": "s_spriteTex",
             "realtimeUniform": true,
             "type": "texture"
@@ -189,7 +185,6 @@
 
         {
             "comment": "Icon position relative to camera",
-            "componentName": "IconBase",
             "name": "i_iconPos",
             "realtimeUniform": false,
             "instanced": true,
@@ -202,7 +197,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "imguiRate": 0.01,
             "min": -1.0,
             "max": 1.0,
@@ -218,7 +212,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "name": "i_scaleOffsetTex",
             "realtimeUniform": false,
             "instanced": true,

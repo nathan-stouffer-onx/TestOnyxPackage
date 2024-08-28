@@ -95,6 +95,7 @@
             "\tvec3 iconDown = vec3(screenYAxis, 0);",
             "\tvec3 offset = widthOffset * iconRgt + heightOffset * iconDown;",
             "\tvec2 finalPosScrSp = ((offset + vec3(screenPos.xy, 0))).xy;",
+            "\tfinalPosScrSp = floor(finalPosScrSp);",
             "\tvec2 finalPosN = (finalPosScrSp - 0.5*u_screenRes.xy) * (2.0 * u_screenRes.zw);",
             "\tgl_Position = vec4(finalPosN.x, -finalPosN.y, 0, 1);",
 
@@ -134,19 +135,19 @@
 
     "shaderParameters": [
         {
-            "componentName": "IconBase",
             "name": "s_spriteTex1",
             "realtimeUniform": true,
-            "type": "texture"
+            "type": "texture",
+            "anisoFilter": true,
+            "comment": "Using aniso filtering for better resized icon appearance vs point sampling"
         },
         {
-            "componentName": "IconBase",
             "name": "s_spriteTex2",
             "realtimeUniform": true,
-            "type": "texture"
+            "type": "texture",
+            "anisoFilter": true
         },
         {
-            "componentName": "IconBase",
             "name": "u_screenRes",
             "realtimeUniform": true,
             "instanced": false,
@@ -159,7 +160,6 @@
             }
         },
         {
-            "componentName": "NinePatch",
             "name": "u_oriAngle",
             "realtimeUniform": true,
             "instanced": false,
@@ -172,7 +172,6 @@
             "comment": "This is in radians"
         },
         {
-            "componentName": "IconBase",
             "imguiRate": 0.01,
             "name": "i_offsets0",
             "realtimeUniform": false,
@@ -186,7 +185,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "name": "i_offsets1",
             "realtimeUniform": false,
             "instanced": true,
@@ -199,7 +197,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "name": "i_screenPosSize",
             "realtimeUniform": false,
             "instanced": true,
@@ -212,7 +209,6 @@
             }
         },
         {
-            "componentName": "IconBase",
             "name": "i_uvXAxis",
             "realtimeUniform": false,
             "instanced": true,
@@ -226,7 +222,6 @@
             "comment": "xy - uv coordinates, yz - icon's x-axis in screen space"
         },
         {
-            "componentName": "IconBase",
             "name": "i_yAxisOpacityTexId",
             "realtimeUniform": false,
             "instanced": true,

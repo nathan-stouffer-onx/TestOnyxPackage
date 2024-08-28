@@ -46,7 +46,6 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "ContourLine",
       "name": "u_ContourParams0",
       "realtimeUniform": true,
       "shaderType": "Pixel",
@@ -59,7 +58,6 @@
       }
     },
     {
-      "componentName": "ContourLine",
       "imguiRate": 0.009999999776482582,
       "max": -1.0,
       "min": -1.0,
@@ -75,7 +73,6 @@
     }
     },
     {
-      "componentName": "ContourLine",
       "name": "u_ContourParams1",
       "realtimeUniform": true,
       "shaderType": "Pixel",
@@ -88,7 +85,6 @@
       }
     },
     {
-      "componentName": "ContourLine",
       "imguiRate": 0.009999999776482582,
       "max": -1.0,
       "min": -1.0,
@@ -105,7 +101,6 @@
     }
     ,
     {
-      "componentName": "ContourLine",
       "name": "u_ContourFade",
       "shaderType": "Pixel",
       "type": "vec2",

@@ -197,13 +197,11 @@
     ],
     "shaderParameters": [
         {
-            "componentName": "LineBase",
             "name": "s_DashSampler",
             "type": "texture",
             "samplerFlags": 320
         },
         {
-            "componentName": "LineBase",
             "name": "u_dashUV",
             "type": "vec3",
             "vec3": {
@@ -213,7 +211,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -227,7 +224,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -241,7 +237,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -255,7 +250,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -269,7 +263,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -283,7 +276,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "max": -1.0,
             "min": -1.0,
             "name": "u_time",
@@ -296,7 +288,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -310,7 +301,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -324,7 +314,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -340,7 +329,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -357,7 +345,6 @@
         },
         {
             "comment": ".xy = normalized pixel height/width; zw = screen dimensions in pixels",
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -372,7 +359,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -388,7 +374,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -403,7 +388,6 @@
             }
         },
         {
-            "componentName": "LineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,

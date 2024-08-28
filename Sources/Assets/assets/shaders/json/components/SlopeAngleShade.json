@@ -20,7 +20,6 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "SlopeAngleShade",
       "name": "s_SlopeAngleShadeTexture",
       "type": "texture",
       "anisoFilter":  false

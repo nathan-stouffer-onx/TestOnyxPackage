@@ -1,2 +1,2 @@
-#include <../examples/common/common.sh>
+#include <common.sh>
 void main() {}

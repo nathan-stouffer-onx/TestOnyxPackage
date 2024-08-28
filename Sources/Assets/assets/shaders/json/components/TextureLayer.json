@@ -32,7 +32,6 @@
   "shaderParameters": [
     {
       "bool": false,
-      "componentName": "TextureLayer",
       "imguiRate": 0.009999999776482582,
       "max": -1.0,
       "min": -1.0,
@@ -42,7 +41,6 @@
     },
     {
       "bool": false,
-      "componentName": "TextureLayer",
       "imguiRate": 0.009999999776482582,
       "max": -1.0,
       "min": -1.0,
@@ -51,7 +49,6 @@
       "type": "bool"
     },
     {
-      "componentName": "TextureLayer",
       "imguiRate": 0.009999999776482582,
       "int": 1,
       "max": -1.0,
@@ -61,7 +58,6 @@
       "type": "int"
     },
     {
-      "componentName": "TextureLayer",
       "imguiRate": 0.009999999776482582,
       "max": -1.0,
       "min": -1.0,
@@ -70,7 +66,6 @@
       "type": "texture"
     },
     {
-      "componentName": "TextureLayer",
       "imguiRate": 0.009999999776482582,
       "max": -1.0,
       "min": -1.0,

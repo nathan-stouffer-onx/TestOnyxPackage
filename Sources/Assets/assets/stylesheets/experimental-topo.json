@@ -1,7 +1,7 @@
 {
     "name": "experimental",
     "version": 8,
-    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706133353/sprites",
+	"sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1720207609/sprites",
     "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
     "sources": {
         "elevation": {
@@ -565,55 +565,110 @@
                 ]
             }
         },
-        {
-            "id": "admin_bounds$state_centroid_label$dark",
-            "type": "symbol",
-            "source": "base",
-            "source-layer": "admin_boundaries_label",
-            "minzoom": 4,
-            "maxzoom": 10,
-            "filter": [
-                "match",
-                [
-                    "get",
-                    "data:type"
-                ],
-                [
-                    "state"
-                ],
-                true,
-                false
-            ],
-            "layout": {
-                "text-field": [
-                    "upcase",
-                    [
-                        "get",
-                        "label"
-                    ]
-                ],
-                "symbol-placement": "point",
-                "text-font": [
-                    "Open Sans SemiBold"
-                ],
-                "text-size": [
-                    "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
-                    4,
-                    16,
-                    13,
-                    19
-                ]
-            },
-            "paint": {
-                "text-color": "hsl(0, 0%, 50%)",
-                "text-halo-color": "hsl(0, 0%, 100%)"
-            }
-        }
+		{
+			"filter": [
+				"match",
+				[ "get", "data:type" ],
+				[ "state" ],
+				true,
+				false
+			],
+			"groups": [ "topo" ],
+			"id": "admin_bounds$state_centroid_label$dark",
+			"layout": {
+				"symbol-placement": "point",
+				"symbol-sort-key": [
+					"*",
+					-1,
+					[
+						"to-number",
+						[ "get", "data:acreage_calculated" ]
+					]
+				],
+				"text-field": [
+					"step",
+					[ "zoom" ],
+					[
+						"case",
+						[
+							">",
+							[
+								"to-number",
+								[ "get", "data:acreage_calculated" ]
+							],
+							174000000
+						],
+						[ "get", "label" ],
+						[
+							"coalesce",
+							[ "get", "data:short_name" ],
+							[ "get", "label" ]
+						]
+					],
+					4,
+					[
+						"case",
+						[
+							">",
+							[
+								"to-number",
+								[ "get", "data:acreage_calculated" ]
+							],
+							30000000
+						],
+						[ "get", "label" ],
+						[
+							"coalesce",
+							[ "get", "data:short_name" ],
+							[ "get", "label" ]
+						]
+					],
+					5,
+					[ "get", "label" ]
+				],
+				"text-font": [
+					"step",
+					[ "zoom" ],
+					[
+						"literal",
+						[ "Open Sans SemiBold" ]
+					],
+					6,
+					[
+						"literal",
+						[ "Open Sans Bold" ]
+					]
+				],
+				"text-letter-spacing": 0.2,
+				"text-max-angle": 30,
+				"text-max-width": 5,
+				"text-padding": 1,
+				"text-pitch-alignment": "viewport",
+				"text-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					3,
+					9,
+					4,
+					11,
+					5,
+					13,
+					8,
+					17
+				],
+				"text-transform": "uppercase"
+			},
+			"maxzoom": 10,
+			"minzoom": 3.4,
+			"paint": {
+				"text-color": "rgba(127, 127, 127, 1)",
+				"text-halo-color": "rgba(237, 239, 220, 1)",
+				"text-halo-width": 1.5
+			},
+			"source": "base",
+			"source-layer": "admin_boundaries_label",
+			"type": "symbol"
+		}
     ]
 }

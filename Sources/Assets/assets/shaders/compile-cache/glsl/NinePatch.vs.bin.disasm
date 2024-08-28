@@ -52,9 +52,9 @@ void main ()
   tmpvar_12.z = 0.0;
   tmpvar_12.xy = i_screenPosSize.xy;
   vec2 tmpvar_13;
-  tmpvar_13 = (((
-    ((tmpvar_6 * tmpvar_10) + (tmpvar_9 * tmpvar_11))
-   + tmpvar_12).xy - (0.5 * u_screenRes.xy)) * (2.0 * u_screenRes.zw));
+  tmpvar_13 = ((floor(
+    (((tmpvar_6 * tmpvar_10) + (tmpvar_9 * tmpvar_11)) + tmpvar_12)
+  .xy) - (0.5 * u_screenRes.xy)) * (2.0 * u_screenRes.zw));
   vec4 tmpvar_14;
   tmpvar_14.zw = vec2(0.0, 1.0);
   tmpvar_14.x = tmpvar_13.x;

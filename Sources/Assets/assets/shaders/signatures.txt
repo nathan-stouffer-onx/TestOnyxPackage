@@ -451,7 +451,6 @@ BaseShader-F-T-F-F-T-0-1_TextureLayer-1
 BaseShader-F-T-F-F-T-0-1_TextureLayer-2
 BaseShader-F-T-F-F-T-0-1_TextureLayer-3
 BaseShader-F-T-F-F-T-0-1_Sharpen
-BaseShader-F-T-F-F-T-1-0_VertColor-0
 BaseShader-F-T-F-F-T-0-1_VertHeight
 ColorOnlyQuatBase-F-T-T-T-F-4-1_Billboard-T-T-F-F_BillboardGlyph
 BaseShader-F-T-F-F-T-0-1_VertColor-1
@@ -465,3 +464,4 @@ ColorOnlyQuatBase-F-F-T-T-T-3-1_FixedSize-T_DepthBias_BillboardGlyph
 BaseShader-F-T-F-F-T-0-1_GaussBlur
 ParticleUpdate
 ParticleDraw
+PosColor

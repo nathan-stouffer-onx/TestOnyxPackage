@@ -47,7 +47,6 @@
   "ints": {},
   "shaderParameters": [
       {
-      "componentName": "Vector",
       "imguiRate": 0.01,
       "max": -1.0,
       "min": -1.0,
@@ -66,7 +65,6 @@
       }
     },
     {
-      "componentName" : "Vector",
       "imguiRate": 0.01,
       "name": "s_vectorColor",
       "realtimeUniform": true,

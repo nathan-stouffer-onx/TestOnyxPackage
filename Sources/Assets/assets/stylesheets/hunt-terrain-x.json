@@ -1,7 +1,7 @@
 {
     "name": "hunt-terrain-x",
     "version": 8,
-    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706133353/sprites",
+	"sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1720207609/sprites",
     "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/backcountry/{fontstack}/{range}.pbf",
     "sources": {
         "elevation": {
@@ -2699,7 +2699,8 @@
                     ],
                     "hsl(33, 100%, 45%)",
                     "hsl(205, 87%, 70%)"
-                ]
+                ],
+                "text-halo-width": 2
             }
         },
         {
@@ -2804,7 +2805,8 @@
                 ]
             },
             "paint": {
-                "text-color": "#C7C7C7"
+                "text-color": "#C7C7C7",
+                "text-halo-width": 2
             }
         },
         {
@@ -2974,7 +2976,8 @@
                     ],
                     "hsl(205, 87%, 40%)",
                     "hsl(0, 0%, 80%)"
-                ]
+                ],
+                "text-halo-width": 2
             }
         },
         {
@@ -3067,7 +3070,8 @@
                 "visibility": "visible"
             },
             "paint": {
-                "text-color": "#C7C7C7"
+                "text-color": "#C7C7C7",
+                "text-halo-width": 2
             }
         },
         {
@@ -3117,7 +3121,8 @@
                 ]
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 100%)"
+                "text-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 2
             }
         },
         {
@@ -3169,7 +3174,8 @@
                 ]
             },
             "paint": {
-                "text-color": "#FFFFFF"
+                "text-color": "#FFFFFF",
+                "text-halo-width": 2
             }
         },
         {
@@ -3247,7 +3253,8 @@
                     "hsl(33, 100%, 45%)",
                     "hsl(205, 87%, 60%)"
                 ],
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 2
             }
         },
         {
@@ -3354,7 +3361,8 @@
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 33%)",
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 2
             }
         },
         {
@@ -3525,7 +3533,8 @@
                     "hsl(205, 87%, 40%)",
                     "hsl(0, 0%, 33%)"
                 ],
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 2
             }
         },
         {
@@ -3619,7 +3628,8 @@
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 40%)",
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 2
             }
         },
         {
@@ -3671,7 +3681,8 @@
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 40%)",
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 2
             }
         },
         {
@@ -3725,8 +3736,462 @@
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 50%)",
-                "text-halo-color": "hsl(0, 0%, 100%)"
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 2
             }
-        }
+        },
+		{
+			"filter": [
+				"step",
+				[ "zoom" ],
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "interstate-highway", "us-highway", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"match",
+						[ "get", "data:type" ],
+						[ "tertiary" ],
+						false,
+						true
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				],
+				9,
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "interstate-highway", "us-highway", "county-highway", "state-highway", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"match",
+						[ "get", "data:type" ],
+						[ "tertiary" ],
+						false,
+						true
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				],
+				10,
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "interstate-highway", "us-highway", "us-highway-alternate", "county-highway", "county-highway-alternate", "county-highway-business", "county-highway-truck", "state-highway", "state-highway-alternate", "state-highway-business", "state-highway-truck", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				],
+				13,
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "county-highway", "county-highway-alternate", "county-highway-business", "county-highway-truck", "state-highway", "state-highway-alternate", "interstate-highway", "interstate-highway-business", "interstate-highway-truck", "us-highway", "us-highway-alternate", "us-highway-business", "us-highway-truck", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				]
+			],
+			"groups": [ "aerial", "hybrid" ],
+			"id": "transportation_roads$hwy_shields$light",
+			"layout": {
+				"icon-image": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "county-highway", "provincial-highway", "mexico-highway" ],
+					[
+						"concat",
+						"HIGHWAY_COUNTY_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "county-highway-alternate", "county-highway-business", "county-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_COUNTY_BLANK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "state-highway" ],
+					[
+						"concat",
+						"HIGHWAY_STATE_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "state-highway-alternate", "state-highway-business", "state-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_STATE_BLANK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway" ],
+					[
+						"concat",
+						"HIGHWAY_INTERSTATE_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway-business" ],
+					[
+						"concat",
+						"HIGHWAY_INTERSTATE_BUSINESS_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_INTERSTATE_TRUCK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "us-highway" ],
+					[
+						"concat",
+						"HIGHWAY_US_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "us-highway-alternate", "us-highway-business", "us-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_US_BLANK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					""
+				],
+				"icon-offset": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "us-highway-alternate", "us-highway-business", "us-highway-truck", "interstate-highway-business" ],
+					[
+						"literal",
+						[ 0, 1.6 ]
+					],
+					[ "interstate-highway-truck" ],
+					[
+						"literal",
+						[ 0, 1.5 ]
+					],
+					[ "county-highway-alternate", "county-highway-business", "county-highway-truck" ],
+					[
+						"literal",
+						[ 0, 0.6 ]
+					],
+					[ "state-highway-alternate", "state-highway-business", "state-highway-truck" ],
+					[
+						"literal",
+						[ 0, 0.5 ]
+					],
+					[
+						"literal",
+						[ 0, 0 ]
+					]
+				],
+				"icon-rotation-alignment": "viewport",
+				"icon-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					9,
+					0.7,
+					12,
+					0.8,
+					14,
+					0.9
+				],
+				"symbol-placement": "line",
+				"symbol-spacing": 300,
+				"text-field": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "us-highway-alternate", "state-highway-alternate", "county-highway-alternate" ],
+					[
+						"format",
+						"ALT",
+						{ "font-scale": 0.8 },
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "us-highway-business", "state-highway-business", "county-highway-business" ],
+					[
+						"format",
+						"BUS",
+						{ "font-scale": 0.8 },
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "us-highway-truck", "state-highway-truck", "county-highway-truck" ],
+					[
+						"format",
+						"BYP",
+						{ "font-scale": 0.8 },
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "interstate-highway-truck" ],
+					[
+						"format",
+						"BYP",
+						{
+							"font-scale": 0.9,
+							"text-color": "rgba(0, 0, 0, 1)",
+							"text-font": [
+								"literal",
+								[ "Open Sans SemiBold" ]
+							]
+						},
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "interstate-highway-business" ],
+					[
+						"format",
+						"BUS",
+						{
+							"font-scale": 0.8,
+							"text-font": [
+								"literal",
+								[ "Open Sans SemiBold" ]
+							]
+						},
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[
+						"to-string",
+						[ "get", "data:highway_number" ]
+					]
+				],
+				"text-font": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
+					[
+						"literal",
+						[ "Open Sans Bold" ]
+					],
+					[
+						"literal",
+						[ "Open Sans SemiBold" ]
+					]
+				],
+				"text-letter-spacing": 0.05,
+				"text-line-height": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "county-highway-alternate", "county-highway-business", "county-highway-truck", "interstate-highway-truck" ],
+					1.8,
+					[ "state-highway-alternate", "state-highway-business", "state-highway-truck" ],
+					1.85,
+					[ "interstate-highway-business", "us-highway-alternate", "us-highway-business", "us-highway-truck" ],
+					1.9,
+					0
+				],
+				"text-max-angle": 38,
+				"text-rotation-alignment": "viewport",
+				"text-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					10,
+					8,
+					14,
+					10
+				],
+				"visibility": "visible"
+			},
+			"minzoom": 5,
+			"paint": {
+				"icon-opacity": 0.7,
+				"text-color": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
+					"rgba(229, 229, 229, 1)",
+					"rgba(0, 0, 0, 1)"
+				]
+			},
+			"source": "transportation",
+			"source-layer": "roads_us",
+			"type": "symbol"
+		}
     ]
 }

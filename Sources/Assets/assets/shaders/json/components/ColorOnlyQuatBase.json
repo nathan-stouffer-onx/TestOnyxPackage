@@ -145,7 +145,6 @@
 
     "shaderParameters": [
         {
-            "componentName": "ColorOnlyQuatBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -162,7 +161,6 @@
             }
         },
         {
-            "componentName": "ColorOnlyQuatBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -179,7 +177,6 @@
             }
         },
         {
-            "componentName" : "ColorOnlyQuatBase",
             "imguiRate" : 0.009999999776482582,
             "max" : 100.0,
             "min" : 0.0,
@@ -192,7 +189,6 @@
             }
         },
         {
-            "componentName" : "ColorOnlyQuatBase",
             "imguiRate" : 0.009999999776482582,
             "name" : "u_quatRotation",
             "realtimeUniform": true,
@@ -209,7 +205,6 @@
             }
         },
         {
-            "componentName" : "ColorOnlyQuatBase",
             "imguiRate" : 0.009999999776482582,
             "name" : "u_translation",
             "realtimeUniform": true,
@@ -225,7 +220,6 @@
             }
         },
         {
-            "componentName": "ColorOnlyQuatBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -239,7 +233,6 @@
             }
         },
         {
-            "componentName": "ColorOnlyQuatBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -253,7 +246,6 @@
             }
         },
         {
-            "componentName": "ColorOnlyQuatBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -267,7 +259,6 @@
             }
         },
         {
-            "componentName": "ColorOnlyQuatBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -281,7 +272,6 @@
             }
         },
         {
-            "componentName": "ColorOnlyQuatBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,

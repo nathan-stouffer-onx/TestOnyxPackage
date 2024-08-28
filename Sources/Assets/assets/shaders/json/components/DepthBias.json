@@ -25,7 +25,6 @@
 
     "shaderParameters": [
         {
-            "componentName" : "DepthBias",
             "imguiRate" : 0.009999999776482582,
             "max" : -0.1,
             "min" : 0.1,

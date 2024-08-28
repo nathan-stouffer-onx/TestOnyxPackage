@@ -27,7 +27,6 @@ uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_TileFillData;
 uniform vec4 u_NearFarFocus;
-uniform vec4 u_screenResolution;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;

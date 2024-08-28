@@ -56,7 +56,6 @@
   "ints": {},
   "shaderParameters": [
     {
-    "componentName": "Skybox",
     "imguiRate": 0.01,
     "max": -1.0,
     "min": -1.0,
@@ -71,7 +70,6 @@
     }
   },
   {
-    "componentName": "Skybox",
     "imguiRate": 0.01,
     "max": -1.0,
     "min": -1.0,

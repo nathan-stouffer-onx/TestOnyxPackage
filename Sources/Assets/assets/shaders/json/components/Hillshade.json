@@ -30,7 +30,6 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "Hillshade",
       "name": "u_HillshadeLightDir",
       "realtimeUniform": true,
       "type": "vec3",
@@ -41,7 +40,6 @@
       }
     },
     {
-      "componentName": "Hillshade",
       "name": "u_HillshadeAlbedo",
       "realtimeUniform": true,
       "type": "color",
@@ -53,7 +51,6 @@
       }
     },
     {
-      "componentName": "Hillshade",
       "name": "u_HillshadeParams",
       "realtimeUniform": true,
       "type": "vec2",

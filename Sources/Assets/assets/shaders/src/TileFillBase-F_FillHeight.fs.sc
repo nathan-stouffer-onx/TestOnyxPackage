@@ -22,7 +22,6 @@ uniform vec4 u_tileDistortion;
 uniform vec4 u_MeshResolution;
 uniform vec4 u_TileFillData;
 uniform vec4 u_NearFarFocus;
-uniform vec4 u_screenResolution;
 uniform vec4 u_eyePos;
 uniform vec4 u_camRight;
 uniform vec4 u_camForward;

@@ -44,7 +44,6 @@
   ],
   "shaderParameters": [
     {
-      "componentName": "IntersectShade",
       "name": "u_IntersectTint",
       "realtimeUniform": true,
       "type": "color",
@@ -56,7 +55,6 @@
       }
     },
     {
-      "componentName": "IntersectShade",
       "max": 1.0,
       "min": 0.0,
       "name": "u_IntersectInverted",
@@ -65,30 +63,25 @@
       "float": 0.0
     },
     {
-      "componentName": "IntersectShade",
       "name": "s_ElevationShadeTexture",
       "type": "texture",
       "anisoFilter": false
     },
     {
-      "componentName": "IntersectShade",
       "name": "u_ElevationExtents",
       "type": "vec2"
     },
     {
-      "componentName": "IntersectShade",
       "name": "s_SlopeAngleShadeTexture",
       "type": "texture",
       "anisoFilter": false
     },
     {
-      "componentName": "IntersectShade",
       "name": "s_SlopeAspectShadeTexture",
       "type": "texture",
       "anisoFilter": false
     },
     {
-      "componentName": "IntersectShade",
       "max": 1.0,
       "min": 0.0,
       "name": "u_IntersectSlopeAspectMaxNormalZ",

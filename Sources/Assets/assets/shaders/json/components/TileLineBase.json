@@ -83,7 +83,7 @@
             "dataType": "vec4"
         },
         {
-            "alias": "line_lengthTotal",
+            "alias": "phaseParams",
             "dataType": "vec4"
         },
         {
@@ -184,7 +184,7 @@
                 "vec4 casingColor = texture2DLod(s_CasingColors, texParams, 0);",
                 "vec4 lineWidth = texture2DLod(s_Widths, texParams, 0) * cMaxLineWidth;",
                 "float dashRow = texture2DLod(s_DashCoords, texParams, 0).r;",
-                "vec4 line_lengthTotal = vec4(u_params.xy,0,0);",
+                "vec4 phaseParams = vec4(u_params.xy, lineWidth.x, 0);",
                 "vec2 p1 = u_p1p2.xy;",
                 "vec2 p2 = u_p1p2.zw;"
             ],
@@ -227,7 +227,7 @@
                 "vec3 worldPosition = mix(wp1.xyz, wp2.xyz, position.y); // write to this variable so fog works correctly",
                 "vec4 distFade = vec4(1.0 - smoothstep(u_TileLineOpacityTransition.x, u_TileLineOpacityTransition.y, length(worldPosition.xyz)), 0.0, 0.0, 0.0);",
                 "vec3 fromEye = normalize(worldPosition);",
-                "float biasKm = max(0.020, 0.004 * u_NearFarFocus.z);",
+                "float biasKm = max(0.020, max((2.0 / 256.0) * (u_tileMax.x - u_tileMin.x), 0.004 * u_NearFarFocus.z));",
                 "wp1 *= max(0.5, 1.0 - biasKm / length(wp1));",
                 "wp2 *= max(0.5, 1.0 - biasKm / length(wp2));",
                 "vec4 screen1 = mul(u_viewProj, vec4(wp1, 1.0));",
@@ -255,10 +255,10 @@
                 "screenPos.z -= endA * depthAdjustment;",
                 "screenPos.z += endB * depthAdjustment;",
                 "// adjust line length because we expand the vertex from it's true location in screen space",
-                "float deltaPhase = line_lengthTotal.y - line_lengthTotal.x;",
+                "float deltaPhase = phaseParams.y - phaseParams.x;",
                 "float phaseAdjustment = widthExpansion * deltaPhase / lineLength;",
-                "line_lengthTotal.x -= phaseAdjustment;",
-                "line_lengthTotal.y += phaseAdjustment;",
+                "phaseParams.x -= phaseAdjustment;",
+                "phaseParams.y += phaseAdjustment;",
                 "vec4 line_endFlags = vec4(u_PrevNext.xz,0,0);",
                 "vec3 prevPos = vec3(prevTP, prevZ);",
                 "vec3 nextPos = vec3(nextTP, nextZ);",
@@ -344,7 +344,7 @@
         {
             "lines": [
                 "// compute line color",
-                "float dashStrength = DashStrength(dashRow, line_lengthTotal.xy, linePosition.y, line_width.x);",
+                "float dashStrength = DashStrength(dashRow, phaseParams.xy, linePosition.y, phaseParams.z);",
                 "float strength = LineStrength(screenPosition.xy, line_endPointsScreen.xy, line_endPointsScreen.zw, line_width.x);",
                 "lineColor.a *= strength * dashStrength;",
                 "// compute line casing",
@@ -384,37 +384,31 @@
     ],
     "shaderParameters": [
         {
-            "componentName": "TileLineBase",
             "name": "s_LineColors",
             "type": "texture",
             "anisoFilter": false
         },
         {
-            "componentName": "TileLineBase",
             "name": "s_CasingColors",
             "type": "texture",
             "anisoFilter": false
         },
         {
-            "componentName": "TileLineBase",
             "name": "s_Widths",
             "type": "texture",
             "anisoFilter": false
         },
         {
-            "componentName": "TileLineBase",
             "name": "s_DashCoords",
             "type": "texture",
             "anisoFilter": false
         },
         {
-            "componentName": "TileLineBase",
             "name": "s_DashSampler",
             "type": "texture",
             "anisoFilter": false
         },
         {
-            "componentName": "TileLineBase",
             "max": -1.0,
             "min": -1.0,
             "name": "u_time",
@@ -427,7 +421,6 @@
             }
         },
         {
-            "componentName": "TileLineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -441,7 +434,6 @@
             }
         },
         {
-            "componentName": "TileLineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -455,7 +447,6 @@
             }
         },
         {
-            "componentName": "TileLineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -470,7 +461,6 @@
             }
         },
         {
-            "componentName": "TileLineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -486,30 +476,12 @@
             }
         },
         {
-            "componentName": "TileLineBase",
             "realtimeUniform": true,
             "instanced": true,
             "name": "u_PrevNext",
             "type": "vec4"
         },
         {
-            "comment": ".xy = normalized pixel height/width; zw = screen dimensions in pixels",
-            "componentName": "TileLineBase",
-            "imguiRate": 0.01,
-            "max": -1.0,
-            "min": -1.0,
-            "realtimeUniform": true,
-            "name": "u_screenDimensions",
-            "type": "vec4",
-            "vec4": {
-                "x": 0.01,
-                "y": 0.01,
-                "z": 1280,
-                "w": 720
-            }
-        },
-        {
-            "componentName": "TileLineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -525,7 +497,6 @@
             }
         },
         {
-            "componentName": "TileLineBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -535,7 +506,6 @@
             "float": 1.0
         },
         {
-            "componentName": "TileLineBase",
             "name": "u_TileLineOpacityTransition",
             "type": "vec2",
             "vec2": {
@@ -544,7 +514,6 @@
             }
         },
         {
-            "componentName": "TileLineBase",
             "realtimeUniform": true,
             "name": "u_NearFarFocus",
             "type": "vec3"

@@ -62,15 +62,15 @@ void main ()
   rgba_1[2] = tmpvar_14.x;
   rgba_1[3] = tmpvar_14.w;
   float tmpvar_16;
-  tmpvar_16 = rgba_1[tmpvar_15];
+  tmpvar_16 = (rgba_1[tmpvar_15] * 0.97);
   vec3 tmpvar_17;
   tmpvar_17 = (abs(dFdx(v_texcoord7.xyz)) + abs(dFdy(v_texcoord7.xyz)));
   float tmpvar_18;
   tmpvar_18 = (((16.0 * 
     sqrt(dot (tmpvar_17, tmpvar_17))
-  ) / 1.414214) * u_sdfParams.y);
+  ) / 3.464102) * u_sdfParams.y);
   float tmpvar_19;
-  tmpvar_19 = (0.5 - (u_sdfParams.w * tmpvar_18));
+  tmpvar_19 = (0.5 - ((u_sdfParams.w * tmpvar_18) * 2.0));
   float edge0_20;
   edge0_20 = (tmpvar_19 - tmpvar_18);
   float tmpvar_21;

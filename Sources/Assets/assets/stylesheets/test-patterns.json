@@ -152,7 +152,8 @@
             "paint": {
                "text-color": "hsl(291, 80%, 60%)",
                "text-shadow-color": "hsl(75, 100%, 40%)",
-               "text-halo-color": "hsl(0, 100%, 100%)"
+                "text-halo-color": "hsl(0, 100%, 100%)",
+                "text-halo-width": 2
             }
         },
         {
@@ -176,7 +177,8 @@
             "paint": {
                "text-color": "hsl(150, 80%, 60%)",
                "text-shadow-color": "hsl(200, 100%, 100%)",
-               "text-halo-color": "hsl(100, 50%, 40%)"
+                "text-halo-color": "hsl(100, 50%, 40%)",
+                "text-halo-width": 2
             }
         }
     ]

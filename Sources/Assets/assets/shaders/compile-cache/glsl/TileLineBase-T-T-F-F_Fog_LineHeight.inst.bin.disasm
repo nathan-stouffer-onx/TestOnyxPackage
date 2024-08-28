@@ -47,7 +47,7 @@ void main ()
   float prevZ_9;
   float tileZ2_10;
   float tileZ1_11;
-  vec4 line_lengthTotal_12;
+  vec4 phaseParams_12;
   vec3 tmpvar_13;
   tmpvar_13 = a_position;
   vec4 tmpvar_14;
@@ -59,9 +59,10 @@ void main ()
   float tmpvar_17;
   tmpvar_17 = texture2DLod (s_DashCoords, i_data2.zw, 0.0).x;
   vec4 tmpvar_18;
-  tmpvar_18.zw = vec2(0.0, 0.0);
+  tmpvar_18.w = 0.0;
   tmpvar_18.xy = i_data2.xy;
-  line_lengthTotal_12 = tmpvar_18;
+  tmpvar_18.z = tmpvar_16.x;
+  phaseParams_12 = tmpvar_18;
   vec2 tmpvar_19;
   tmpvar_19 = mix (u_tileMin.xy, u_tileMax.xy, i_data0.xy);
   vec2 tmpvar_20;
@@ -300,7 +301,9 @@ void main ()
     (3.0 - (2.0 * tmpvar_101))
   )));
   float tmpvar_103;
-  tmpvar_103 = max (0.02, (0.004 * u_NearFarFocus.z));
+  tmpvar_103 = max (0.02, max ((0.0078125 * 
+    (u_tileMax.x - u_tileMin.x)
+  ), (0.004 * u_NearFarFocus.z)));
   vec4 tmpvar_104;
   tmpvar_104.w = 1.0;
   tmpvar_104.xyz = (tmpvar_98 * max (0.5, (1.0 - 
@@ -364,8 +367,8 @@ void main ()
   screenPos_6.z = (screenPos_6.z + (a_position.y * tmpvar_122));
   float tmpvar_123;
   tmpvar_123 = ((tmpvar_120 * (i_data2.y - i_data2.x)) / tmpvar_117);
-  line_lengthTotal_12.x = (i_data2.x - tmpvar_123);
-  line_lengthTotal_12.y = (i_data2.y + tmpvar_123);
+  phaseParams_12.x = (i_data2.x - tmpvar_123);
+  phaseParams_12.y = (i_data2.y + tmpvar_123);
   vec4 tmpvar_124;
   tmpvar_124.zw = vec2(0.0, 0.0);
   tmpvar_124.xy = i_data1.xz;
@@ -608,7 +611,7 @@ void main ()
   v_tangent = tmpvar_160;
   v_texcoord0 = line_width_4;
   v_color4 = tmpvar_113;
-  v_color3 = line_lengthTotal_12;
+  v_color3 = phaseParams_12;
   v_color2 = tmpvar_124;
   v_color1 = tmpvar_102;
   v_color0 = tmpvar_161;

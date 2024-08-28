@@ -95,9 +95,9 @@
         "rgba[1] = color.y;",
         "rgba[2] = color.x;",
         "rgba[3] = color.w;",
-        "float distance = rgba[index];",
-        "float smoothing = 16.0 * length(fwidth(sdf_tex0.xyz)) / sqrt(2.0) * u_distanceMultiplier;",
-        "float outlineWidth = u_outlineWidth * smoothing;",
+        "float distance = rgba[index] * 0.97;",
+        "float smoothing = 16.0 * length(fwidth(sdf_tex0.xyz)) / sqrt(12.0) * u_distanceMultiplier;",
+        "float outlineWidth = u_outlineWidth * smoothing * 2.0;",
         "float outerEdgeCenter = 0.5 - outlineWidth;",
         "float alpha = smoothstep(outerEdgeCenter - smoothing, outerEdgeCenter + smoothing, distance);",
         "float borderBlendCorrection = 0.47; //not sure why, but at 0.5 our text color was being blended with the border beyond the edges of the border, .47 seems to look a lot better so far",
@@ -112,7 +112,6 @@
   ],
   "shaderParameters": [
     {
-      "componentName" : "SDF",
       "name": "s_fontAtlas",
       "imguiRate": 0.01,
       "max": -1.0,
@@ -123,7 +122,6 @@
     },
     {
       "bool": false,
-      "componentName": "SDF",
       "imguiRate": 0.01,
       "max": -1.0,
       "min": -1.0,
@@ -133,7 +131,6 @@
     },
     {
       "bool": false,
-      "componentName": "SDF",
       "imguiRate": 0.01,
       "max": -1.0,
       "min": -1.0,
@@ -142,7 +139,6 @@
       "type": "bool"
     },
     {
-      "componentName": "SDF",
       "imguiRate": 0.01,
       "max": 1.0,
       "min": 0.0,
@@ -157,7 +153,6 @@
       }
     },
     {
-      "componentName": "SDF",
       "imguiRate": 0.01,
       "max": 1.0,
       "min": 0.0,

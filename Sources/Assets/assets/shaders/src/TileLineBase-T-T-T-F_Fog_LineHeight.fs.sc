@@ -33,7 +33,6 @@ uniform vec4 u_tileMax;
 uniform vec4 u_TileFragClip;
 uniform vec4 u_p1p2;
 uniform vec4 u_PrevNext;
-uniform vec4 u_screenDimensions;
 uniform vec4 u_params;
 uniform vec4 u_vectorFade;
 uniform vec4 u_TileLineOpacityTransition;
@@ -86,7 +85,7 @@ vec3 line_dir = v_tangent.xyz;
 vec3 line_side = v_normal.xyz;
 vec4 line_width = v_texcoord0.xyzw;
 vec4 line_endPointsScreen = v_color4.xyzw;
-vec4 line_lengthTotal = v_color3.xyzw;
+vec4 phaseParams = v_color3.xyzw;
 vec4 line_endFlags = v_color2.xyzw;
 vec4 distFade = v_color1.xyzw;
 vec4 fogDist = v_color0.xyzw;
@@ -106,7 +105,7 @@ if ((clipA && isEndA) || (clipB && isEndB)) { discard; }
 
 //lighting
 // compute line color
-float dashStrength = DashStrength(dashRow, line_lengthTotal.xy, linePosition.y, line_width.x);
+float dashStrength = DashStrength(dashRow, phaseParams.xy, linePosition.y, phaseParams.z);
 float strength = LineStrength(screenPosition.xy, line_endPointsScreen.xy, line_endPointsScreen.zw, line_width.x);
 lineColor.a *= strength * dashStrength;
 // compute line casing

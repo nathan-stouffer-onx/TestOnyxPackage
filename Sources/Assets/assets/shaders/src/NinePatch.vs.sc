@@ -75,6 +75,7 @@ vec4 normal = a_normal.xyzw;
 	vec3 iconDown = vec3(screenYAxis, 0);
 	vec3 offset = widthOffset * iconRgt + heightOffset * iconDown;
 	vec2 finalPosScrSp = ((offset + vec3(screenPos.xy, 0))).xy;
+	finalPosScrSp = floor(finalPosScrSp);
 	vec2 finalPosN = (finalPosScrSp - 0.5*u_screenRes.xy) * (2.0 * u_screenRes.zw);
 	gl_Position = vec4(finalPosN.x, -finalPosN.y, 0, 1);
 	// Compute UV offset

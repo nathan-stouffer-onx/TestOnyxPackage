@@ -64,7 +64,6 @@
     "shaderParameters" :
     [
         {
-            "componentName" : "TransformSRT",
             "imguiRate" : 0.009999999776482582,
             "max" : 100.0,
             "min" : 0.0,
@@ -74,7 +73,6 @@
             "float" : 1.0
         },
         {
-            "componentName" : "TransformSRT",
             "imguiRate" : 0.009999999776482582,
             "name" : "u_quatRotation",
             "realtimeUniform": true,
@@ -88,7 +86,6 @@
             }
         },
         {
-            "componentName" : "TransformSRT",
             "imguiRate" : 0.009999999776482582,
             "name" : "u_translation",
             "realtimeUniform": true,

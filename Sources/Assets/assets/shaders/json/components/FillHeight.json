@@ -31,13 +31,11 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "FillHeight",
       "name": "s_heightTexture",
       "type": "texture",
       "anisoFilter": true
     },
     {
-      "componentName": "FillHeight",
       "name": "u_tileSize",
       "type": "vec3",
       "vec3": {
@@ -47,7 +45,6 @@
       }
     },
     {
-      "componentName": "FillHeight",
       "name": "u_ScaleOffsetHeight",
       "type": "vec4",
       "vec3": {
@@ -58,7 +55,6 @@
       }
     },
     {
-      "componentName": "FillHeight",
       "name": "u_tileDistortion",
       "type": "vec3",
       "vec3": {
@@ -68,7 +64,6 @@
       }
     },
     {
-      "componentName": "FillHeight",
       "name": "u_MeshResolution",
       "type": "vec4",
       "vec4": {

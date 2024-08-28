@@ -43,14 +43,12 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "GaussBlur",
       "imguiRate": 0.001,
       "name": "u_GaussBlurScale",
       "realtimeUniform": true,
       "type": "vec3"
     },
     {
-      "componentName": "GaussBlur",
       "name": "s_BlurTex",
       "realtimeUniform": true,
       "type": "texture",

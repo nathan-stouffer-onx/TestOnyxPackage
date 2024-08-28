@@ -1,7 +1,7 @@
 {
     "name": "hunt-satellite",
     "version": 8,
-    "sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1706067613/sprites",
+	"sprite": "https://assets.production.onxmaps.com/v1/carto/onxspritesheet/all/1720207609/sprites",
     "glyphs": "https://assets.production.onxmaps.com/v1/carto/onxglyphset/hunt/{fontstack}/{range}.pbf",
     "sources": {
         "elevation": {
@@ -619,346 +619,459 @@
                 ]
             }
         },
-        {
-            "id": "transportation_roads$hwy_shields$light",
-            "type": "symbol",
-            "source": "transportation",
-            "source-layer": "roads_us",
-            "minzoom": 5,
-            "maxzoom": 22,
-            "filter": [
-                "step",
-                [
-                    "zoom"
-                ],
-                [
-                    "all",
-                    [
-                        "match",
-                        [
-                            "get",
-                            "data:shield"
-                        ],
-                        [
-                            "interstate-highway",
-                            "us-highway",
-                            "county-highway",
-                            "state-highway",
-                            "provincial-highway",
-                            "mexico-highway"
-                        ],
-                        true,
-                        false
-                    ],
-                    [
-                        "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "tertiary"
-                        ],
-                        false,
-                        true
-                    ]
-                ],
-                10,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "interstate-highway",
-                        "us-highway",
-                        "county-highway",
-                        "state-highway",
-                        "provincial-highway",
-                        "mexico-highway"
-                    ],
-                    true,
-                    false
-                ],
-                13,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "county-highway",
-                        "state-highway",
-                        "interstate-highway",
-                        "interstate-highway-business",
-                        "interstate-highway-truck",
-                        "us-highway",
-                        "us-highway-business",
-                        "us-highway-truck",
-                        "provincial-highway",
-                        "mexico-highway"
-                    ],
-                    true,
-                    false
-                ]
-            ],
-            "layout": {
-                "text-size": [
-                    "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
-                    6,
-                    8,
-                    14,
-                    10
-                ],
-                "text-offset": [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "us-highway-business",
-                        "us-highway-truck",
-                        "interstate-highway-truck"
-                    ],
-                    [
-                        "literal",
-                        [
-                            0,
-                            0.55
-                        ]
-                    ],
-                    [
-                        "literal",
-                        [
-                            0,
-                            0
-                        ]
-                    ]
-                ],
-                "symbol-placement": "line",
-                "icon-image": [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "county-highway",
-                        "provincial-highway",
-                        "mexico-highway"
-                    ],
-                    [
-                        "concat",
-                        "highway-county-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        "state-highway"
-                    ],
-                    [
-                        "concat",
-                        "highway-state-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        "interstate-highway"
-                    ],
-                    [
-                        "concat",
-                        "highway-interstate-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        "interstate-highway-business"
-                    ],
-                    [
-                        "concat",
-                        "highway-interstate-business-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        "interstate-highway-truck"
-                    ],
-                    [
-                        "concat",
-                        "highway-interstate-truck-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        "us-highway"
-                    ],
-                    [
-                        "concat",
-                        "highway-us-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        "us-highway-business"
-                    ],
-                    [
-                        "concat",
-                        "highway-us-business-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        "us-highway-truck"
-                    ],
-                    [
-                        "concat",
-                        "highway-us-truck-",
-                        [
-                            "to-string",
-                            [
-                                "length",
-                                [
-                                    "get",
-                                    "data:highway_number"
-                                ]
-                            ]
-                        ]
-                    ],
-                    ""
-                ],
-                "icon-size": [
-                    "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
-                    5,
-                    0.7,
-                    14,
-                    1
-                ],
-                "icon-rotation-alignment": "viewport",
-                "text-max-angle": 38,
-                "symbol-spacing": 300,
-                "text-font": [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "interstate-highway",
-                        "interstate-highway-business",
-                        "interstate-highway-truck"
-                    ],
-                    [
-                        "literal",
-                        [
-                            "Open Sans Bold"
-                        ]
-                    ],
-                    [
-                        "literal",
-                        [
-                            "Open Sans SemiBold"
-                        ]
-                    ]
-                ],
-                "text-rotation-alignment": "viewport",
-                "text-field": [
-                    "to-string",
-                    [
-                        "get",
-                        "data:highway_number"
-                    ]
-                ],
-                "text-letter-spacing": 0.05,
-                "visibility": "visible"
-            },
-            "paint": {
-                "text-color": [
-                    "match",
-                    [
-                        "get",
-                        "data:shield"
-                    ],
-                    [
-                        "interstate-highway",
-                        "interstate-highway-business",
-                        "interstate-highway-truck"
-                    ],
-                    "hsl(0, 0%, 100%)",
-                    "hsl(0, 0%, 10%)"
-                ]
-            }
-        },
+		{
+			"filter": [
+				"step",
+				[ "zoom" ],
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "interstate-highway", "us-highway", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"match",
+						[ "get", "data:type" ],
+						[ "tertiary" ],
+						false,
+						true
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				],
+				9,
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "interstate-highway", "us-highway", "county-highway", "state-highway", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"match",
+						[ "get", "data:type" ],
+						[ "tertiary" ],
+						false,
+						true
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				],
+				10,
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "interstate-highway", "us-highway", "us-highway-alternate", "county-highway", "county-highway-alternate", "county-highway-business", "county-highway-truck", "state-highway", "state-highway-alternate", "state-highway-business", "state-highway-truck", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				],
+				13,
+				[
+					"all",
+					[ "has", "data:shield" ],
+					[ "has", "data:highway_number" ],
+					[
+						"match",
+						[ "get", "data:shield" ],
+						[ "county-highway", "county-highway-alternate", "county-highway-business", "county-highway-truck", "state-highway", "state-highway-alternate", "interstate-highway", "interstate-highway-business", "interstate-highway-truck", "us-highway", "us-highway-alternate", "us-highway-business", "us-highway-truck", "provincial-highway", "mexico-highway" ],
+						true,
+						false
+					],
+					[
+						"case",
+						[
+							"<=",
+							[ "pitch" ],
+							60
+						],
+						true,
+						[
+							"all",
+							[
+								"<=",
+								[ "distance-from-center" ],
+								1
+							],
+							[
+								">",
+								[ "pitch" ],
+								60
+							]
+						],
+						true,
+						false
+					]
+				]
+			],
+			"groups": [ "aerial", "hybrid" ],
+			"id": "transportation_roads$hwy_shields$light",
+			"layout": {
+				"icon-image": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "county-highway", "provincial-highway", "mexico-highway" ],
+					[
+						"concat",
+						"HIGHWAY_COUNTY_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "county-highway-alternate", "county-highway-business", "county-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_COUNTY_BLANK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "state-highway" ],
+					[
+						"concat",
+						"HIGHWAY_STATE_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "state-highway-alternate", "state-highway-business", "state-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_STATE_BLANK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway" ],
+					[
+						"concat",
+						"HIGHWAY_INTERSTATE_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway-business" ],
+					[
+						"concat",
+						"HIGHWAY_INTERSTATE_BUSINESS_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "interstate-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_INTERSTATE_TRUCK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "us-highway" ],
+					[
+						"concat",
+						"HIGHWAY_US_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					[ "us-highway-alternate", "us-highway-business", "us-highway-truck" ],
+					[
+						"concat",
+						"HIGHWAY_US_BLANK_",
+						[
+							"to-string",
+							[
+								"length",
+								[ "get", "data:highway_number" ]
+							]
+						]
+					],
+					""
+				],
+				"icon-offset": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "us-highway-alternate", "us-highway-business", "us-highway-truck", "interstate-highway-business" ],
+					[
+						"literal",
+						[ 0, 1.6 ]
+					],
+					[ "interstate-highway-truck" ],
+					[
+						"literal",
+						[ 0, 1.5 ]
+					],
+					[ "county-highway-alternate", "county-highway-business", "county-highway-truck" ],
+					[
+						"literal",
+						[ 0, 0.6 ]
+					],
+					[ "state-highway-alternate", "state-highway-business", "state-highway-truck" ],
+					[
+						"literal",
+						[ 0, 0.5 ]
+					],
+					[
+						"literal",
+						[ 0, 0 ]
+					]
+				],
+				"icon-rotation-alignment": "viewport",
+				"icon-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					9,
+					0.7,
+					12,
+					0.8,
+					14,
+					0.9
+				],
+				"symbol-placement": "line",
+				"symbol-spacing": 300,
+				"text-field": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "us-highway-alternate", "state-highway-alternate", "county-highway-alternate" ],
+					[
+						"format",
+						"ALT",
+						{ "font-scale": 0.8 },
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "us-highway-business", "state-highway-business", "county-highway-business" ],
+					[
+						"format",
+						"BUS",
+						{ "font-scale": 0.8 },
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "us-highway-truck", "state-highway-truck", "county-highway-truck" ],
+					[
+						"format",
+						"BYP",
+						{ "font-scale": 0.8 },
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "interstate-highway-truck" ],
+					[
+						"format",
+						"BYP",
+						{
+							"font-scale": 0.9,
+							"text-color": "rgba(0, 0, 0, 1)",
+							"text-font": [
+								"literal",
+								[ "Open Sans SemiBold" ]
+							]
+						},
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[ "interstate-highway-business" ],
+					[
+						"format",
+						"BUS",
+						{
+							"font-scale": 0.8,
+							"text-font": [
+								"literal",
+								[ "Open Sans SemiBold" ]
+							]
+						},
+						"\n",
+						[
+							"to-string",
+							[ "get", "data:highway_number" ]
+						]
+					],
+					[
+						"to-string",
+						[ "get", "data:highway_number" ]
+					]
+				],
+				"text-font": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
+					[
+						"literal",
+						[ "Open Sans Bold" ]
+					],
+					[
+						"literal",
+						[ "Open Sans SemiBold" ]
+					]
+				],
+				"text-letter-spacing": 0.05,
+				"text-line-height": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "county-highway-alternate", "county-highway-business", "county-highway-truck", "interstate-highway-truck" ],
+					1.8,
+					[ "state-highway-alternate", "state-highway-business", "state-highway-truck" ],
+					1.85,
+					[ "interstate-highway-business", "us-highway-alternate", "us-highway-business", "us-highway-truck" ],
+					1.9,
+					0
+				],
+				"text-max-angle": 38,
+				"text-rotation-alignment": "viewport",
+				"text-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					10,
+					8,
+					14,
+					10
+				],
+				"visibility": "visible"
+			},
+			"minzoom": 5,
+			"paint": {
+				"icon-opacity": 0.7,
+				"text-color": [
+					"match",
+					[ "get", "data:shield" ],
+					[ "interstate-highway", "interstate-highway-business", "interstate-highway-truck" ],
+					"rgba(229, 229, 229, 1)",
+					"rgba(0, 0, 0, 1)"
+				]
+			},
+			"source": "transportation",
+			"source-layer": "roads_us",
+			"type": "symbol"
+		},
         {
             "id": "mt_private$fill",
             "source-layer": "mt_private",
@@ -1002,135 +1115,371 @@
             }
         },
         {
-            "id": "water$area_label$light",
-            "type": "symbol",
-            "source": "base",
-            "source-layer": "water_areas_label",
-            "minzoom": 7,
             "filter": [
                 "all",
                 [
                     "match",
-                    [
-                        "get",
-                        "label"
-                    ],
-                    [
-                        "Inundation Area",
-                        "Foreshore"
-                    ],
+                    [ "get", "data:type" ],
+                    [ "dam", "glacier", "NE_ocean" ],
                     false,
                     true
                 ],
                 [
-                    "match",
+                    "any",
                     [
-                        "get",
-                        "data:type"
+                        "<",
+                        [
+                            "to-number",
+                            [ "get", "data:join_count" ]
+                        ],
+                        1
                     ],
                     [
-                        "glacier",
-                        "dam"
+                        "<=",
+                        [ "zoom" ],
+                        [
+                            "+",
+                            [
+                                "to-number",
+                                [ "get", "data:min_label" ]
+                            ],
+                            1
+                        ]
+                    ]
+                ],
+                [
+                    "case",
+                    [
+                        "<=",
+                        [ "pitch" ],
+                        60
                     ],
-                    false,
-                    true
+                    true,
+                    [
+                        "all",
+                        [
+                            "<=",
+                            [ "distance-from-center" ],
+                            2
+                        ],
+                        [
+                            ">",
+                            [ "pitch" ],
+                            60
+                        ]
+                    ],
+                    true,
+                    false
                 ]
             ],
+            "groups": [ "aerial", "hybrid" ],
+            "id": "water$area_label$light",
             "layout": {
                 "text-field": [
-                    "get",
-                    "label"
+                    "to-string",
+                    [ "get", "label" ]
                 ],
                 "text-font": [
-                    "Open Sans SemiBold Italic"
+                    "step",
+                    [ "zoom" ],
+                    [
+                        "literal",
+                        [ "Open Sans SemiBold Italic" ]
+                    ],
+                    12,
+                    [
+                        "literal",
+                        [ "Open Sans Bold Italic" ]
+                    ]
                 ],
+                "text-letter-spacing": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    11,
+                    0,
+                    13,
+                    0.1
+                ],
+                "text-max-width": 3,
                 "text-size": [
                     "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    5,
+                    12,
+                    6,
                     [
-                        "linear"
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        9,
+                        50000,
+                        11,
+                        100000,
+                        11,
+                        500000,
+                        12,
+                        10000000,
+                        13
                     ],
+                    7,
                     [
-                        "zoom"
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        9,
+                        50000,
+                        11,
+                        100000,
+                        11,
+                        500000,
+                        14,
+                        10000000,
+                        17
+                    ],
+                    8,
+                    [
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        9,
+                        1000,
+                        9,
+                        10000,
+                        10,
+                        50000,
+                        11,
+                        100000,
+                        13,
+                        500000,
+                        17,
+                        10000000,
+                        20
+                    ],
+                    9,
+                    [
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        9,
+                        1000,
+                        10,
+                        10000,
+                        11,
+                        50000,
+                        12,
+                        100000,
+                        15,
+                        500000,
+                        22,
+                        10000000,
+                        25
                     ],
                     10,
-                    9,
-                    22,
-                    12
+                    [
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        9,
+                        800,
+                        11,
+                        1000,
+                        11,
+                        10000,
+                        12,
+                        50000,
+                        15,
+                        100000,
+                        18,
+                        500000,
+                        22,
+                        10000000,
+                        25
+                    ],
+                    11,
+                    [
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        9,
+                        800,
+                        11,
+                        1000,
+                        12,
+                        10000,
+                        14,
+                        50000,
+                        17,
+                        100000,
+                        20,
+                        500000,
+                        24,
+                        10000000,
+                        28
+                    ],
+                    12,
+                    [
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        9,
+                        100,
+                        12,
+                        500,
+                        13,
+                        1000,
+                        14,
+                        10000,
+                        17,
+                        50000,
+                        20,
+                        100000,
+                        22,
+                        500000,
+                        28,
+                        10000000,
+                        30
+                    ],
+                    13,
+                    [
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        10,
+                        30,
+                        12,
+                        100,
+                        13,
+                        500,
+                        14,
+                        1000,
+                        15,
+                        10000,
+                        17,
+                        50000,
+                        20,
+                        100000,
+                        22,
+                        500000,
+                        28,
+                        10000000,
+                        30
+                    ],
+                    15,
+                    [
+                        "step",
+                        [
+                            "to-number",
+                            [ "get", "data:acreage_calculated" ]
+                        ],
+                        14,
+                        30,
+                        15,
+                        100,
+                        17,
+                        500,
+                        20,
+                        1000,
+                        23,
+                        5000,
+                        30,
+                        10000,
+                        35,
+                        50000,
+                        35,
+                        100000,
+                        35,
+                        500000,
+                        35,
+                        10000000,
+                        35
+                    ]
                 ],
-                "text-letter-spacing": 4.0,
                 "visibility": "visible"
             },
+            "minzoom": 7,
             "paint": {
                 "text-color": [
                     "match",
-                    [
-                        "get",
-                        "data:type"
-                    ],
-                    [
-                        "basin"
-                    ],
-                    "hsl(33, 100%, 45%)",
-                    "hsl(205, 87%, 70%)"
-                ]
-            }
+                    [ "get", "data:type" ],
+                    [ "basin" ],
+                    "rgba(213, 193, 175, 1)",
+                    "rgba(185, 238, 238, 1)"
+                ],
+                "text-halo-blur": 0,
+                "text-halo-color": "rgba(1, 35, 45, 1)",
+                "text-halo-width": 1
+            },
+            "source": "base",
+            "source-layer": "water_areas_label",
+            "type": "symbol"
         },
         {
-            "id": "natural_places$mountain_ranges$light",
-            "type": "symbol",
-            "source": "base",
-            "source-layer": "places",
-            "minzoom": 7,
-            "maxzoom": 14,
             "filter": [
                 "all",
                 [
                     "match",
-                    [
-                        "get",
-                        "data:type"
-                    ],
-                    [
-                        "mountain_range"
-                    ],
+                    [ "get", "data:type" ],
+                    [ "mountain_range" ],
                     true,
                     false
                 ],
                 [
                     "match",
-                    [
-                        "get",
-                        "label"
-                    ],
-                    [
-                        "Adirondack Mountains",
-                        "Alaska Range",
-                        "Appalachian Mountains",
-                        "Bitterroot Mountains",
-                        "Bitterroot Range",
-                        "Blue Ridge",
-                        "Brooks Range",
-                        "Cascade Range",
-                        "Coast Mountains",
-                        "Coast Ranges",
-                        "Columbia Mountains",
-                        "Front Range",
-                        "Pacific Ranges",
-                        "Rocky Mountains",
-                        "Salmon River Mountains",
-                        "Sierra Nevada",
-                        "Wasatch Range"
-                    ],
+                    [ "get", "label" ],
+                    [ "Adirondack Mountains", "Alaska Range", "Appalachian Mountains", "Bitterroot Mountains", "Bitterroot Range", "Blue Ridge", "Brooks Range", "Cascade Range", "Coast Mountains", "Coast Ranges", "Columbia Mountains", "Front Range", "Pacific Ranges", "Rocky Mountains", "Salmon River Mountains", "Sierra Nevada", "Wasatch Range" ],
                     false,
                     true
+                ],
+                [
+                    "case",
+                    [
+                        "<=",
+                        [ "pitch" ],
+                        60
+                    ],
+                    true,
+                    [
+                        "all",
+                        [
+                            "<=",
+                            [ "distance-from-center" ],
+                            2
+                        ],
+                        [
+                            ">",
+                            [ "pitch" ],
+                            60
+                        ]
+                    ],
+                    true,
+                    false
                 ]
             ],
+            "groups": [ "aerial", "hybrid" ],
+            "id": "natural_places$mountain_ranges$light",
             "layout": {
+                "text-anchor": "top",
                 "text-field": [
                     "step",
-                    [
-                        "zoom"
-                    ],
+                    [ "zoom" ],
                     "",
                     7,
                     [
@@ -1138,1106 +1487,1998 @@
                         [
                             ">",
                             [
-                                "get",
-                                "data:num_count"
+                                "to-number",
+                                [ "get", "data:num_count" ]
                             ],
                             2
                         ],
-                        [
-                            "get",
-                            "label"
-                        ],
+                        [ "get", "label" ],
                         ""
                     ],
                     8,
                     [
-                        "get",
-                        "label"
+                        "to-string",
+                        [ "get", "label" ]
                     ]
                 ],
-                "text-font": [
-                    "Open Sans SemiBold Italic"
+                "text-font": [ "Open Sans SemiBold Italic" ],
+                "text-letter-spacing": 0.1,
+                "text-max-width": 5,
+                "text-padding": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    7,
+                    100,
+                    8,
+                    120,
+                    9,
+                    150,
+                    10,
+                    150,
+                    11,
+                    200
                 ],
-                "text-letter-spacing": 2.0,
                 "text-size": [
                     "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
+                    [ "linear" ],
+                    [ "zoom" ],
                     7,
                     10,
                     8,
                     12
-                ]
-            },
-            "paint": {
-                "text-color": "#80FF80"
-            }
-        },
-        {
-            "id": "natural_places$label$light",
-            "type": "symbol",
-            "source": "base",
-            "source-layer": "places_lines",
-            "minzoom": 2,
-            "maxzoom": 14,
-            "filter": [
-                "step",
-                [
-                    "zoom"
-                ],
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:scalerank"
-                    ],
-                    [
-                        1
-                    ],
-                    true,
-                    false
-                ],
-                5,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:scalerank"
-                    ],
-                    [
-                        1,
-                        2
-                    ],
-                    true,
-                    false
-                ],
-                6,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:scalerank"
-                    ],
-                    [
-                        1,
-                        2,
-                        3,
-                        4
-                    ],
-                    true,
-                    false
-                ],
-                7,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:scalerank"
-                    ],
-                    [
-                        1,
-                        2,
-                        3,
-                        4,
-                        5,
-                        6,
-                        7
-                    ],
-                    true,
-                    false
-                ],
-                9,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:scalerank"
-                    ],
-                    [
-                        2,
-                        3,
-                        4,
-                        5,
-                        6,
-                        7
-                    ],
-                    true,
-                    false
-                ],
-                10,
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:scalerank"
-                    ],
-                    [
-                        4,
-                        5,
-                        6,
-                        7
-                    ],
-                    true,
-                    false
-                ]
-            ],
-            "layout": {
-                "text-field": [
-                    "get",
-                    "label"
-                ],
-                "text-font": [
-                    "Open Sans Italic"
-                ],
-                "text-letter-spacing": 15.0,
-                "symbol-placement": "line",
-                "text-size": [
-                    "match",
-                    [
-                        "get",
-                        "data:scalerank"
-                    ],
-                    [
-                        1,
-                        2
-                    ],
-                    14,
-                    [
-                        3,
-                        4
-                    ],
-                    13,
-                    [
-                        5,
-                        6,
-                        7
-                    ],
-                    11,
-                    0
                 ],
                 "visibility": "visible"
             },
+            "maxzoom": 14,
+            "minzoom": 7,
             "paint": {
-                "text-color": [
-                    "match",
-                    [
-                        "get",
-                        "data:type"
-                    ],
-                    [
-                        "bay",
-                        "channel",
-                        "fjord",
-                        "gulf",
-                        "inlet",
-                        "lagoon",
-                        "sea",
-                        "sound",
-                        "strait"
-                    ],
-                    "hsl(205, 87%, 40%)",
-                    "hsl(0, 0%, 80%)"
-                ]
-            }
-        },
-        {
-            "id": "natural_places$geo_features$light",
-            "type": "symbol",
+                "text-color": "rgba(228, 228, 228, 1)",
+                "text-halo-blur": 1,
+                "text-halo-color": "rgba(0, 0, 0, 1)",
+                "text-halo-width": 1.25
+            },
             "source": "base",
             "source-layer": "places",
-            "minzoom": 7,
-            "maxzoom": 22,
+            "type": "symbol"
+        },
+        {
             "filter": [
                 "step",
+                [ "zoom" ],
                 [
-                    "zoom"
+                    "all",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        7
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
                 ],
+                4,
                 [
-                    "match",
+                    "all",
                     [
-                        "get",
-                        "data:type"
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        9
                     ],
                     [
-                        "peak",
-                        "volcano"
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                5,
+                [
+                    "all",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        9
                     ],
-                    true,
-                    false
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                6,
+                [
+                    "all",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        9
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                7,
+                [
+                    "all",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        11
+                    ],
+                    [
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        7
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                8,
+                [
+                    "all",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        11
+                    ],
+                    [
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        8
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
                 ],
                 9,
                 [
-                    "match",
+                    "all",
                     [
-                        "get",
-                        "data:type"
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        12
                     ],
                     [
-                        "island",
-                        "peak",
-                        "volcano"
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        9
                     ],
-                    true,
-                    false
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                10,
+                [
+                    "all",
+                    [
+                        "<=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        14
+                    ],
+                    [
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        9
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
                 ],
                 11,
                 [
-                    "match",
+                    "all",
                     [
-                        "get",
-                        "data:type"
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        10
                     ],
                     [
-                        "arch",
-                        "beach",
-                        "cape",
-                        "cliff",
-                        "crater",
-                        "dam",
-                        "dyke",
-                        "island",
-                        "isthmus",
-                        "lava",
-                        "mineshaft",
-                        "peak",
-                        "peninsula",
-                        "ridge",
-                        "rock",
-                        "saddle",
-                        "tower",
-                        "valley",
-                        "volcano",
-                        "wood"
-                    ],
-                    true,
-                    false
-                ]
-            ],
-            "layout": {
-                "text-field": [
-                    "step",
-                    [
-                        "zoom"
-                    ],
-                    [
-                        "match",
+                        "case",
                         [
-                            "get",
-                            "data:type"
+                            "<=",
+                            [ "pitch" ],
+                            60
                         ],
+                        true,
                         [
-                            "peak",
-                            "volcano"
-                        ],
-                        [
-                            "case",
+                            "all",
                             [
-                                "match",
-                                [
-                                    "to-number",
-                                    [
-                                        "get",
-                                        "data:elevation_feet"
-                                    ]
-                                ],
-                                0,
-                                false,
-                                true
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
                             ],
                             [
-                                "format",
-                                [
-                                    "get",
-                                    "label"
-                                ],
-                                {
-                                    "text-font": [
-                                        "literal",
-                                        [
-                                            "Open Sans SemiBold Italic"
-                                        ]
-                                    ],
-                                    "font-scale": 1
-                                },
-                                "\n",
-                                [
-                                    "get",
-                                    "data:elevation_feet"
-                                ],
-                                {
-                                    "text-font": [
-                                        "literal",
-                                        [
-                                            "Open Sans Italic"
-                                        ]
-                                    ],
-                                    "font-scale": 0.9
-                                },
-                                " ft",
-                                {
-                                    "text-font": [
-                                        "literal",
-                                        [
-                                            "Open Sans Italic"
-                                        ]
-                                    ],
-                                    "font-scale": 0.9
-                                }
-                            ],
-                            ""
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
                         ],
-                        [
-                            "mineshaft",
-                            "dam",
-                            "tower"
-                        ],
-                        [
-                            "format",
-                            [
-                                "get",
-                                "label"
-                            ],
-                            {
-                                "text-font": [
-                                    "literal",
-                                    [
-                                        "Open Sans Regular"
-                                    ]
-                                ],
-                                "font-scale": 1
-                            }
-                        ],
-                        [
-                            "format",
-                            [
-                                "get",
-                                "label"
-                            ],
-                            {
-                                "text-font": [
-                                    "literal",
-                                    [
-                                        "Open Sans Italic"
-                                    ]
-                                ],
-                                "font-scale": 1
-                            }
-                        ]
-                    ],
-                    13,
-                    [
-                        "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "peak",
-                            "volcano"
-                        ],
-                        [
-                            "case",
-                            [
-                                "match",
-                                [
-                                    "to-number",
-                                    [
-                                        "get",
-                                        "data:elevation_feet"
-                                    ]
-                                ],
-                                0,
-                                false,
-                                true
-                            ],
-                            [
-                                "format",
-                                [
-                                    "get",
-                                    "label"
-                                ],
-                                {
-                                    "text-font": [
-                                        "literal",
-                                        [
-                                            "Open Sans SemiBold Italic"
-                                        ]
-                                    ],
-                                    "font-scale": 1
-                                },
-                                "\n",
-                                [
-                                    "get",
-                                    "data:elevation_feet"
-                                ],
-                                {
-                                    "text-font": [
-                                        "literal",
-                                        [
-                                            "Open Sans Italic"
-                                        ]
-                                    ],
-                                    "font-scale": 0.9
-                                },
-                                " ft",
-                                {
-                                    "text-font": [
-                                        "literal",
-                                        [
-                                            "Open Sans Italic"
-                                        ]
-                                    ],
-                                    "font-scale": 0.9
-                                }
-                            ],
-                            ""
-                        ],
-                        [
-                            "mineshaft",
-                            "dam",
-                            "tower"
-                        ],
-                        [
-                            "format",
-                            [
-                                "get",
-                                "label"
-                            ],
-                            {
-                                "text-font": [
-                                    "literal",
-                                    [
-                                        "Open Sans Regular"
-                                    ]
-                                ],
-                                "font-scale": 1
-                            }
-                        ],
-                        [
-                            "format",
-                            [
-                                "get",
-                                "label"
-                            ],
-                            {
-                                "text-font": [
-                                    "literal",
-                                    [
-                                        "Open Sans SemiBold Italic"
-                                    ]
-                                ],
-                                "font-scale": 1
-                            }
-                        ]
+                        true,
+                        false
                     ]
                 ],
-                "text-font": [
-                    "Roboto Medium Italic"
-                ],
-                "text-size": [
-                    "match",
+                12,
+                [
+                    "all",
                     [
-                        "get",
-                        "data:type"
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        10
                     ],
                     [
-                        "mineshaft"
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                13,
+                [
+                    "all",
+                    [
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        12
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                14,
+                [
+                    "all",
+                    [
+                        ">=",
+                        [
+                            "to-number",
+                            [ "get", "data:max_label" ]
+                        ],
+                        13
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ]
+            ],
+            "groups": [ "aerial", "hybrid" ],
+            "id": "natural_places$label$light",
+            "layout": {
+                "symbol-placement": "line-center",
+                "symbol-sort-key": [
+                    "to-number",
+                    [ "get", "data:scalerank" ]
+                ],
+                "symbol-spacing": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    3,
+                    200,
+                    10,
+                    500
+                ],
+                "text-field": [
+                    "to-string",
+                    [ "get", "label" ]
+                ],
+                "text-font": [ "Noto Sans Bold Italic" ],
+                "text-letter-spacing": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    2,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        0.2,
+                        [ 3, 4 ],
+                        0,
+                        [ 5, 6, 7 ],
+                        0,
+                        0
+                    ],
+                    5,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        0.3,
+                        [ 3, 4 ],
+                        0.2,
+                        [ 5, 6, 7 ],
+                        0.1,
+                        0
                     ],
                     9,
-                    10
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        0.6,
+                        [ 3, 4 ],
+                        0.4,
+                        [ 5, 6, 7 ],
+                        0.4,
+                        [ 8, 9 ],
+                        0.2,
+                        0
+                    ],
+                    12,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        0.4,
+                        [ 3, 4 ],
+                        0.4,
+                        [ 5, 6, 7 ],
+                        0.4,
+                        [ 8, 9 ],
+                        0.3,
+                        0
+                    ]
                 ],
-                "text-padding": 1,
-                "text-max-width": 5,
+                "text-max-angle": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    4,
+                    40,
+                    5,
+                    40,
+                    12,
+                    60
+                ],
+                "text-size": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    2,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        10,
+                        [ 3, 4 ],
+                        9,
+                        [ 5, 6, 7 ],
+                        9,
+                        0
+                    ],
+                    3,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        10,
+                        [ 3, 4 ],
+                        9,
+                        [ 5, 6, 7 ],
+                        9,
+                        0
+                    ],
+                    4,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        11,
+                        [ 3, 4 ],
+                        10,
+                        [ 5, 6, 7 ],
+                        9,
+                        0
+                    ],
+                    7,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        14,
+                        [ 3, 4 ],
+                        11,
+                        [ 5, 6, 7 ],
+                        11,
+                        0
+                    ],
+                    9,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        16,
+                        [ 3 ],
+                        14,
+                        [ 4 ],
+                        13,
+                        [ 5, 6, 7 ],
+                        12,
+                        [ 8 ],
+                        12,
+                        [ 9 ],
+                        10,
+                        0
+                    ],
+                    12,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        16,
+                        [ 3, 4 ],
+                        15,
+                        [ 5, 6, 7, 8 ],
+                        13,
+                        [ 9 ],
+                        11,
+                        0
+                    ],
+                    14,
+                    [
+                        "match",
+                        [ "get", "data:scalerank" ],
+                        [ 1, 2 ],
+                        14,
+                        [ 3, 4 ],
+                        13,
+                        [ 5, 6, 7, 8, 9 ],
+                        14,
+                        0
+                    ]
+                ],
+                "visibility": "visible"
+            },
+            "maxzoom": 14,
+            "minzoom": 3,
+            "paint": {
+                "text-color": [
+                    "match",
+                    [ "get", "data:type" ],
+                    [ "bay", "canal", "channel", "fjord", "gulf", "inlet", "lagoon", "port", "reef", "sea", "shoal", "sound", "strait", "tidal_channel", "water" ],
+                    "rgba(65, 167, 240, 1)",
+                    "rgba(221, 221, 221, 1)"
+                ],
+                "text-halo-blur": 0,
+                "text-halo-color": "rgba(12, 12, 12, 1)",
+                "text-halo-width": [
+                    "match",
+                    [ "get", "data:type" ],
+                    [ "bay", "canal", "channel", "fjord", "gulf", "inlet", "lagoon", "port", "reef", "sea", "shoal", "sound", "strait", "tidal_channel", "water" ],
+                    0,
+                    1
+                ],
+                "text-opacity": 1
+            },
+            "source": "base",
+            "source-layer": "places_lines",
+            "type": "symbol"
+        },
+        {
+            "filter": [
+                "step",
+                [ "zoom" ],
+                [
+                    "all",
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "island" ],
+                        true,
+                        false
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                11,
+                [
+                    "all",
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "arch", "beach", "cape", "cliff", "crater", "dam", "dyke", "island", "isthmus", "lava", "peninsula", "ridge", "rock", "saddle", "valley", "wood" ],
+                        true,
+                        false
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ],
+                14,
+                [
+                    "all",
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "arch", "beach", "cape", "cliff", "crater", "dam", "dyke", "island", "isthmus", "lava", "mineshaft", "peninsula", "ridge", "rock", "saddle", "tower", "valley", "wood" ],
+                        true,
+                        false
+                    ],
+                    [
+                        "case",
+                        [
+                            "<=",
+                            [ "pitch" ],
+                            60
+                        ],
+                        true,
+                        [
+                            "all",
+                            [
+                                "<=",
+                                [ "distance-from-center" ],
+                                2
+                            ],
+                            [
+                                ">",
+                                [ "pitch" ],
+                                60
+                            ]
+                        ],
+                        true,
+                        false
+                    ]
+                ]
+            ],
+            "groups": [ "aerial", "hybrid" ],
+            "id": "natural_places$geo_features$light",
+            "layout": {
+                "icon-anchor": "bottom",
                 "icon-image": [
                     "step",
-                    [
-                        "zoom"
-                    ],
+                    [ "zoom" ],
                     [
                         "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "peak",
-                            "volcano"
-                        ],
-                        [
-                            "case",
-                            [
-                                "match",
-                                [
-                                    "to-number",
-                                    [
-                                        "get",
-                                        "data:elevation_feet"
-                                    ]
-                                ],
-                                0,
-                                true,
-                                false
-                            ],
-                            "",
-                            "GEO_PEAK_AERIAL"
-                        ],
-                        ""
-                    ],
-                    11,
-                    [
-                        "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "peak",
-                            "volcano"
-                        ],
-                        [
-                            "case",
-                            [
-                                "match",
-                                [
-                                    "to-number",
-                                    [
-                                        "get",
-                                        "data:elevation_feet"
-                                    ]
-                                ],
-                                0,
-                                true,
-                                false
-                            ],
-                            "",
-                            "GEO_PEAK_AERIAL"
-                        ],
-                        [
-                            "saddle"
-                        ],
+                        [ "get", "data:type" ],
+                        [ "saddle" ],
                         "GEO_PASS_AERIAL",
                         ""
                     ],
                     14,
                     [
                         "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "peak",
-                            "volcano"
-                        ],
-                        [
-                            "case",
-                            [
-                                "match",
-                                [
-                                    "to-number",
-                                    [
-                                        "get",
-                                        "data:elevation_feet"
-                                    ]
-                                ],
-                                0,
-                                true,
-                                false
-                            ],
-                            "",
-                            "GEO_PEAK_AERIAL"
-                        ],
-                        [
-                            "mineshaft"
-                        ],
+                        [ "get", "data:type" ],
+                        [ "mineshaft" ],
                         "GEO_MINE_AERIAL",
-                        [
-                            "saddle"
-                        ],
+                        [ "saddle" ],
                         "GEO_PASS_AERIAL",
-                        [
-                            "tower"
-                        ],
+                        [ "tower" ],
                         "GEO_TOWER_AERIAL",
                         ""
                     ]
                 ],
                 "icon-size": [
-                    "match",
+                    "step",
+                    [ "zoom" ],
                     [
-                        "get",
-                        "data:type"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "saddle" ],
+                        0.6,
+                        [ "tower" ],
+                        0.6,
+                        [ "mineshaft" ],
+                        0.5,
+                        0
                     ],
+                    13,
                     [
-                        "peak",
-                        "saddle",
-                        "volcano"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "saddle" ],
+                        0.7,
+                        [ "tower" ],
+                        0.6,
+                        [ "mineshaft" ],
+                        0.5,
+                        0
                     ],
-                    0.7,
+                    14,
                     [
-                        "mineshaft",
-                        "tower"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "saddle" ],
+                        0.7,
+                        [ "tower" ],
+                        0.6,
+                        [ "mineshaft" ],
+                        0.5,
+                        0
                     ],
-                    0.6,
-                    0
+                    16,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "saddle" ],
+                        0.8,
+                        [ "tower" ],
+                        0.6,
+                        [ "mineshaft" ],
+                        0.5,
+                        0
+                    ]
                 ],
                 "symbol-sort-key": [
                     "match",
-                    [
-                        "get",
-                        "data:type"
-                    ],
-                    [
-                        "peak"
-                    ],
+                    [ "get", "data:type" ],
+                    [ "saddle" ],
                     1,
-                    [
-                        "saddle"
-                    ],
-                    2,
-                    3
+                    2
                 ],
-                "icon-anchor": "bottom",
-                "text-anchor": "top",
-                "visibility": "visible"
-            },
-            "paint": {
-                "text-color": "hsl(0, 0%, 100%)",
-                "text-halo-color": "hsl(0, 0%, 25%)",
-                "text-halo-width": 0.75
-            }
-        },
-        {
-            "id": "populated_places$light",
-            "type": "symbol",
-            "source": "base",
-            "source-layer": "populated_places",
-            "minzoom": 4,
-            "maxzoom": 15,
-            "layout": {
-                "text-field": [
+                "text-anchor": [
                     "match",
+                    [ "get", "data:type" ],
+                    [ "saddle", "tower", "mineshaft" ],
+                    "bottom",
+                    "center"
+                ],
+                "text-field": [
+                    "step",
+                    [ "zoom" ],
                     [
-                        "get",
-                        "data:type"
-                    ],
-                    [
-                        "neighbourhood"
-                    ],
-                    [
-                        "upcase",
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "mineshaft", "dam", "tower" ],
                         [
-                            "get",
-                            "label"
+                            "format",
+                            [ "get", "label" ],
+                            {
+                                "font-scale": 1,
+                                "text-font": [
+                                    "literal",
+                                    [ "Open Sans Regular" ]
+                                ]
+                            }
+                        ],
+                        [
+                            "format",
+                            [ "get", "label" ],
+                            {
+                                "font-scale": 1,
+                                "text-font": [
+                                    "literal",
+                                    [ "Open Sans Italic" ]
+                                ]
+                            }
                         ]
                     ],
+                    13,
                     [
-                        "to-string",
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "mineshaft", "dam", "tower" ],
                         [
-                            "get",
-                            "label"
+                            "format",
+                            [ "get", "label" ],
+                            {
+                                "font-scale": 1,
+                                "text-font": [
+                                    "literal",
+                                    [ "Open Sans Regular" ]
+                                ]
+                            }
+                        ],
+                        [
+                            "format",
+                            [ "get", "label" ],
+                            {
+                                "font-scale": 1,
+                                "text-font": [
+                                    "literal",
+                                    [ "Open Sans SemiBold Italic" ]
+                                ]
+                            }
                         ]
                     ]
                 ],
-                "text-font": [
-                    "match",
+                "text-font": [ "Roboto Medium Italic" ],
+                "text-justify": "center",
+                "text-max-width": 3,
+                "text-padding": 2,
+                "text-radial-offset": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    12,
                     [
-                        "get",
-                        "data:type"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "saddle", "tower", "mineshaft" ],
+                        1.6,
+                        0
                     ],
+                    15,
                     [
-                        "city"
-                    ],
-                    [
-                        "literal",
-                        [
-                            "Atlas Grotesk Bold"
-                        ]
-                    ],
-                    [
-                        "literal",
-                        [
-                            "Atlas Grotesk Medium"
-                        ]
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "saddle", "tower", "mineshaft" ],
+                        1.7,
+                        0
                     ]
                 ],
                 "text-size": [
-                    "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
-                    0,
+                    "step",
+                    [ "zoom" ],
                     [
                         "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "hamlet",
-                            "suburb",
-                            "neighbourhood"
-                        ],
+                        [ "get", "data:type" ],
+                        [ "mineshaft" ],
+                        0,
+                        [ "dam", "tower" ],
                         9,
+                        10
+                    ],
+                    12,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "mineshaft" ],
+                        0,
+                        [ "dam", "tower" ],
+                        9,
+                        10
+                    ],
+                    13,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "mineshaft" ],
+                        0,
+                        [ "dam", "tower" ],
+                        9,
+                        12
+                    ],
+                    14,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "mineshaft" ],
+                        11,
+                        [ "dam", "tower" ],
+                        11,
+                        13
+                    ],
+                    16,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "mineshaft" ],
+                        12,
+                        [ "dam", "tower" ],
+                        12,
+                        14
+                    ]
+                ],
+                "visibility": "visible"
+            },
+            "minzoom": 7,
+            "paint": {
+                "icon-opacity": 0.7,
+                "text-color": "rgba(251, 251, 251, 1)",
+                "text-halo-blur": 1,
+                "text-halo-color": "rgba(0, 0, 0, 1)",
+                "text-halo-width": 1.25
+            },
+            "source": "base",
+            "source-layer": "places",
+            "type": "symbol"
+        },
+        {
+            "filter": [
+                "all",
+                [
+                    "match",
+                    [ "get", "data:capital" ],
+                    [ "state", "country" ],
+                    false,
+                    true
+                ],
+                [
+                    "case",
+                    [
+                        "<=",
+                        [ "pitch" ],
+                        60
+                    ],
+                    true,
+                    [
+                        "all",
                         [
-                            "town",
-                            "village",
-                            "city"
+                            "<=",
+                            [ "distance-from-center" ],
+                            4
                         ],
+                        [
+                            ">",
+                            [ "pitch" ],
+                            60
+                        ]
+                    ],
+                    true,
+                    false
+                ]
+            ],
+            "groups": [ "aerial", "hybrid" ],
+            "id": "populated_places$light",
+            "layout": {
+                "icon-image": "POP_PLACE",
+                "icon-size": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    7,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        0.6,
+                        [ "town", "village" ],
+                        0.6,
+                        [ "city" ],
+                        0.7,
+                        0.6
+                    ],
+                    8,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        0.6,
+                        [ "town", "village", "city" ],
                         [
                             "step",
                             [
                                 "to-number",
-                                [
-                                    "get",
-                                    "data:population"
-                                ]
+                                [ "get", "data:population" ]
                             ],
-                            9,
+                            0.6,
+                            75000,
+                            0.7,
+                            300000,
+                            0.7,
                             750000,
+                            0.9
+                        ],
+                        0.6
+                    ],
+                    9,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        0.5,
+                        [ "town", "village", "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            0.6,
+                            25000,
+                            0.7,
+                            75000,
+                            0.7,
+                            300000,
+                            0.8,
+                            750000,
+                            1
+                        ],
+                        0.5
+                    ],
+                    10,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        0.6,
+                        [ "town", "village", "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            0.7,
+                            25000,
+                            0.8,
+                            75000,
+                            0.8,
+                            300000,
+                            0.9,
+                            750000,
+                            1
+                        ],
+                        0.6
+                    ]
+                ],
+                "symbol-sort-key": [
+                    "*",
+                    -1,
+                    [
+                        "to-number",
+                        [ "get", "data:population" ]
+                    ]
+                ],
+                "text-field": [
+                    "match",
+                    [ "get", "data:type" ],
+                    [ "neighbourhood", "suburb" ],
+                    [
+                        "upcase",
+                        [ "get", "label" ]
+                    ],
+                    [
+                        "to-string",
+                        [ "get", "label" ]
+                    ]
+                ],
+                "text-font": [
+                    "step",
+                    [ "zoom" ],
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "city" ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ],
+                        [
+                            "literal",
+                            [ "Roboto Medium" ]
+                        ]
+                    ],
+                    10,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "city", "town" ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ],
+                        [ "neighbourhood", "suburb" ],
+                        [
+                            "literal",
+                            [ "Roboto Condensed Regular" ]
+                        ],
+                        [
+                            "literal",
+                            [ "Roboto Medium" ]
+                        ]
+                    ],
+                    11,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "city", "town", "village" ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ],
+                        [ "neighbourhood", "suburb" ],
+                        [
+                            "literal",
+                            [ "Roboto Condensed Bold" ]
+                        ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ]
+                    ],
+                    12,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "city" ],
+                        [
+                            "literal",
+                            [ "Roboto Black" ]
+                        ],
+                        [ "town", "village" ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ],
+                        [ "neighbourhood", "suburb" ],
+                        [
+                            "literal",
+                            [ "Roboto Condensed Bold" ]
+                        ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ]
+                    ],
+                    13,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "city" ],
+                        [
+                            "literal",
+                            [ "Roboto Black" ]
+                        ],
+                        [ "town", "village" ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ],
+                        [ "suburb", "neighbourhood" ],
+                        [
+                            "literal",
+                            [ "Roboto Condensed Bold" ]
+                        ],
+                        [
+                            "literal",
+                            [ "Roboto Bold" ]
+                        ]
+                    ]
+                ],
+                "text-justify": "auto",
+                "text-letter-spacing": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    7,
+                    0,
+                    8,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "city" ],
+                        0.05,
+                        0
+                    ],
+                    10,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "city" ],
+                        0.05,
+                        0
+                    ],
+                    11,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "hamlet", "suburb", "neighbourhood" ],
+                        0,
+                        [ "town", "village" ],
+                        0.05,
+                        [ "city" ],
+                        0.07,
+                        0
+                    ],
+                    12,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "hamlet", "suburb", "neighbourhood" ],
+                        0,
+                        [ "town", "village" ],
+                        0.05,
+                        [ "city" ],
+                        0.1,
+                        0.05
+                    ],
+                    13,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "hamlet", "suburb", "neighbourhood" ],
+                        0.05,
+                        [ "town", "village", "city" ],
+                        0.1,
+                        0.05
+                    ]
+                ],
+                "text-max-width": 5,
+                "text-radial-offset": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    9.8,
+                    0.2,
+                    9.9,
+                    0
+                ],
+                "text-size": [
+                    "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    5,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "hamlet", "suburb", "neighbourhood" ],
+                        9,
+                        [ "town", "village", "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
                             10,
-                            3000000,
+                            75000,
+                            11,
+                            300000,
                             12
                         ],
                         9
                     ],
-                    15,
+                    8,
                     [
                         "match",
-                        [
-                            "get",
-                            "data:type"
-                        ],
-                        [
-                            "neighbourhood"
-                        ],
-                        10,
-                        [
-                            "hamlet",
-                            "suburb"
-                        ],
-                        11,
-                        [
-                            "town",
-                            "village",
-                            "city"
-                        ],
+                        [ "get", "data:type" ],
+                        [ "hamlet", "suburb", "neighbourhood" ],
+                        8,
+                        [ "town", "village" ],
                         [
                             "step",
                             [
                                 "to-number",
-                                [
-                                    "get",
-                                    "data:population"
-                                ]
+                                [ "get", "data:population" ]
+                            ],
+                            10,
+                            75000,
+                            11,
+                            300000,
+                            11,
+                            750000,
+                            12
+                        ],
+                        [ "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            11,
+                            75000,
+                            12,
+                            300000,
+                            13,
+                            750000,
+                            15
+                        ],
+                        8
+                    ],
+                    9,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood" ],
+                        8,
+                        [ "hamlet", "suburb" ],
+                        8,
+                        [ "town", "village" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            10,
+                            1000,
+                            10,
+                            10000,
+                            11,
+                            30000,
+                            12,
+                            75000,
+                            12,
+                            100000,
+                            13,
+                            200000,
+                            14
+                        ],
+                        [ "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            10,
+                            1000,
+                            11,
+                            10000,
+                            12,
+                            30000,
+                            13,
+                            75000,
+                            13,
+                            100000,
+                            14,
+                            200000,
+                            16
+                        ],
+                        10
+                    ],
+                    10,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        10,
+                        [ "hamlet" ],
+                        10,
+                        [ "town", "village" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            10,
+                            1000,
+                            10,
+                            10000,
+                            12,
+                            30000,
+                            12,
+                            75000,
+                            13,
+                            100000,
+                            14,
+                            200000,
+                            15
+                        ],
+                        [ "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            10,
+                            1000,
+                            11,
+                            10000,
+                            12,
+                            30000,
+                            13,
+                            75000,
+                            14,
+                            100000,
+                            16,
+                            200000,
+                            18
+                        ],
+                        10
+                    ],
+                    11,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        10,
+                        [ "hamlet" ],
+                        11,
+                        [ "town", "village", "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            11,
+                            1000,
+                            12,
+                            5000,
+                            14,
+                            30000,
+                            15,
+                            75000,
+                            17,
+                            100000,
+                            20,
+                            200000,
+                            24
+                        ],
+                        10
+                    ],
+                    12,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        11,
+                        [ "hamlet" ],
+                        11,
+                        [ "town", "village", "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
                             ],
                             13,
-                            300000,
+                            1000,
                             14,
-                            750000,
+                            5000,
+                            16,
+                            20000,
+                            20,
+                            100000,
+                            25,
+                            500000,
+                            30
+                        ],
+                        10
+                    ],
+                    13,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        12,
+                        [ "hamlet" ],
+                        14,
+                        [ "town", "village", "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            14,
+                            1000,
                             15,
-                            1000000,
-                            16
+                            5000,
+                            20,
+                            20000,
+                            25,
+                            100000,
+                            30,
+                            500000,
+                            35
+                        ],
+                        10
+                    ],
+                    15,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        14,
+                        [ "hamlet" ],
+                        17,
+                        [ "town", "village", "city" ],
+                        [
+                            "step",
+                            [
+                                "to-number",
+                                [ "get", "data:population" ]
+                            ],
+                            18,
+                            1000,
+                            20,
+                            5000,
+                            25,
+                            20000,
+                            30,
+                            100000,
+                            35
                         ],
                         10
                     ]
                 ],
-                "text-max-width": [
-                    "step",
-                    [
-                        "zoom"
-                    ],
-                    10,
-                    10,
-                    7
-                ],
-                "text-letter-spacing": [
+                "text-variable-anchor": [ "bottom", "left", "right", "bottom-left", "bottom-right", "top-left", "top-right", "top" ],
+                "visibility": "visible"
+            },
+            "maxzoom": 15,
+            "minzoom": 3,
+            "paint": {
+                "icon-opacity": [
                     "interpolate",
+                    [ "linear" ],
+                    [ "zoom" ],
+                    9.8,
+                    0.7,
+                    9.9,
+                    0
+                ],
+                "text-color": [
+                    "step",
+                    [ "zoom" ],
                     [
-                        "linear"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        "rgba(127, 127, 127, 1)",
+                        [ "town", "village" ],
+                        "rgba(127, 127, 127, 1)",
+                        [ "city" ],
+                        "rgba(178, 178, 178, 1)",
+                        "rgba(153, 153, 153, 1)"
                     ],
+                    5,
                     [
-                        "zoom"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        "rgba(127, 127, 127, 1)",
+                        [ "town", "village" ],
+                        "rgba(127, 127, 127, 1)",
+                        [ "city" ],
+                        "rgba(178, 178, 178, 1)",
+                        "rgba(153, 153, 153, 1)"
                     ],
                     6,
-                    0,
-                    13,
-                    0.2
-                ],
-                "icon-image": [
-                    "step",
                     [
-                        "zoom"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        "rgba(145, 145, 145, 1)",
+                        [ "town", "village" ],
+                        "rgba(145, 145, 145, 1)",
+                        [ "city" ],
+                        "rgba(191, 191, 191, 1)",
+                        "rgba(158, 158, 158, 1)"
                     ],
+                    7,
                     [
-                        "case",
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:capital"
-                            ],
-                            [
-                                "4",
-                                "6"
-                            ],
-                            true,
-                            false
-                        ],
-                        "POP_PLACE_CAPITAL_AERIAL",
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:type"
-                            ],
-                            [
-                                "town",
-                                "village",
-                                "city"
-                            ],
-                            true,
-                            false
-                        ],
-                        "POP_PLACE_AERIAL",
-                        ""
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        "rgba(165, 165, 165, 1)",
+                        [ "town", "village" ],
+                        "rgba(165, 165, 165, 1)",
+                        [ "city" ],
+                        "rgba(204, 204, 204, 1)",
+                        "rgba(165, 165, 165, 1)"
+                    ],
+                    8,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        "rgba(183, 183, 183, 1)",
+                        [ "town", "village" ],
+                        "rgba(183, 183, 183, 1)",
+                        [ "city" ],
+                        "rgba(216, 216, 216, 1)",
+                        "rgba(170, 170, 170, 1)"
                     ],
                     9,
-                    ""
-                ],
-                "icon-size": [
-                    "interpolate",
                     [
-                        "linear"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb", "hamlet" ],
+                        "rgba(204, 204, 204, 1)",
+                        [ "town", "village" ],
+                        "rgba(204, 204, 204, 1)",
+                        [ "city" ],
+                        "rgba(229, 229, 229, 1)",
+                        "rgba(178, 178, 178, 1)"
                     ],
+                    10,
                     [
-                        "zoom"
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        "rgba(178, 178, 178, 1)",
+                        [ "hamlet" ],
+                        "rgba(178, 178, 178, 1)",
+                        [ "village" ],
+                        "rgba(178, 178, 178, 1)",
+                        [ "town" ],
+                        "rgba(204, 204, 204, 1)",
+                        [ "city" ],
+                        "rgba(229, 229, 229, 1)",
+                        "rgba(178, 178, 178, 1)"
                     ],
-                    0,
+                    11,
                     [
-                        "case",
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:type"
-                            ],
-                            [
-                                "town",
-                                "village",
-                                "city"
-                            ],
-                            true,
-                            false
-                        ],
-                        [
-                            "step",
-                            [
-                                "to-number",
-                                [
-                                    "get",
-                                    "data:population"
-                                ]
-                            ],
-                            0.4,
-                            750000,
-                            0.5,
-                            3000000,
-                            0.6
-                        ],
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:capital"
-                            ],
-                            [
-                                "4"
-                            ],
-                            true,
-                            false
-                        ],
-                        5,
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:capital"
-                            ],
-                            [
-                                "6"
-                            ],
-                            true,
-                            false
-                        ],
-                        2,
-                        0
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        "rgba(204, 204, 204, 1)",
+                        [ "hamlet" ],
+                        "rgba(204, 204, 204, 1)",
+                        [ "village" ],
+                        "rgba(204, 204, 204, 1)",
+                        [ "town" ],
+                        "rgba(216, 216, 216, 1)",
+                        [ "city" ],
+                        "rgba(229, 229, 229, 1)",
+                        "rgba(204, 204, 204, 1)"
+                    ],
+                    12,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "hamlet" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "village" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "town" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "city" ],
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(229, 229, 229, 1)"
+                    ],
+                    13,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "hamlet" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "village" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "town" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "city" ],
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(229, 229, 229, 1)"
+                    ],
+                    14,
+                    [
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "hamlet" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "village" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "town" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "city" ],
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(229, 229, 229, 1)"
                     ],
                     15,
                     [
-                        "case",
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:type"
-                            ],
-                            [
-                                "town",
-                                "village",
-                                "city"
-                            ],
-                            true,
-                            false
-                        ],
-                        [
-                            "step",
-                            [
-                                "to-number",
-                                [
-                                    "get",
-                                    "data:population"
-                                ]
-                            ],
-                            0.5,
-                            750000,
-                            0.6,
-                            1000000,
-                            0.7
-                        ],
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:capital"
-                            ],
-                            [
-                                "4"
-                            ],
-                            true,
-                            false
-                        ],
-                        5,
-                        [
-                            "match",
-                            [
-                                "get",
-                                "data:capital"
-                            ],
-                            [
-                                "6"
-                            ],
-                            true,
-                            false
-                        ],
-                        2.5,
-                        0
+                        "match",
+                        [ "get", "data:type" ],
+                        [ "neighbourhood", "suburb" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "hamlet" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "village" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "town" ],
+                        "rgba(229, 229, 229, 1)",
+                        [ "city" ],
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(229, 229, 229, 1)"
                     ]
                 ],
-                "icon-offset": [
-                    "match",
-                    [
-                        "get",
-                        "data:capital"
-                    ],
-                    [
-                        "4"
-                    ],
-                    [
-                        "literal",
-                        [
-                            0,
-                            7
-                        ]
-                    ],
-                    [
-                        "literal",
-                        [
-                            0,
-                            0
-                        ]
-                    ]
-                ],
-                "text-allow-overlap": false,
-                "symbol-sort-key": 6,
-                "visibility": "none"
+                "text-halo-color": "rgba(0, 0, 0, 1)",
+                "text-halo-width": 1.25
             },
-            "paint": {
-                "text-color": [
-                    "match",
-                    [
-                        "get",
-                        "data:type"
-                    ],
-                    [
-                        "neighbourhood"
-                    ],
-                    "hsl(100, 15%, 97%)",
-                    "hsl(0, 0%, 100%)"
-                ],
-                "text-halo-color": "hsl(0, 0%, 10%)",
-                "text-halo-width": 1.25,
-                "text-translate": [
-                    0,
-                    -5.5
-                ]
-            }
-        },
-        {
-            "id": "admin_bounds$state_centroid_label$light",
-            "type": "symbol",
             "source": "base",
-            "source-layer": "admin_boundaries_label",
-            "minzoom": 4,
-            "maxzoom": 10,
-            "filter": [
-                "match",
-                [
-                    "get",
-                    "data:type"
-                ],
-                [
-                    "state"
-                ],
-                true,
-                false
-            ],
-            "layout": {
-                "text-field": [
-                    "upcase",
-                    [
-                        "get",
-                        "label"
-                    ]
-                ],
-                "symbol-placement": "point",
-                "text-font": [
-                    "Open Sans SemiBold"
-                ],
-                "text-size": [
-                    "interpolate",
-                    [
-                        "linear"
-                    ],
-                    [
-                        "zoom"
-                    ],
-                    4,
-                    16,
-                    13,
-                    19
-                ]
-            },
-            "paint": {
-                "text-color": "#FFFFFF"
-            }
-        }
+            "source-layer": "populated_places",
+            "type": "symbol"
+        },
+		{
+			"filter": [
+				"match",
+				[ "get", "data:type" ],
+				[ "state" ],
+				true,
+				false
+			],
+			"groups": [ "aerial", "hybrid" ],
+			"id": "admin_bounds$state_centroid_label$light",
+			"layout": {
+				"symbol-placement": "point",
+				"symbol-sort-key": [
+					"*",
+					-1,
+					[
+						"to-number",
+						[ "get", "data:acreage_calculated" ]
+					]
+				],
+				"text-field": [
+					"step",
+					[ "zoom" ],
+					[
+						"case",
+						[
+							">",
+							[
+								"to-number",
+								[ "get", "data:acreage_calculated" ]
+							],
+							174000000
+						],
+						[ "get", "label" ],
+						[
+							"coalesce",
+							[ "get", "data:short_name" ],
+							[ "get", "label" ]
+						]
+					],
+					4,
+					[
+						"case",
+						[
+							">",
+							[
+								"to-number",
+								[ "get", "data:acreage_calculated" ]
+							],
+							30000000
+						],
+						[ "get", "label" ],
+						[
+							"coalesce",
+							[ "get", "data:short_name" ],
+							[ "get", "label" ]
+						]
+					],
+					5,
+					[ "get", "label" ]
+				],
+				"text-font": [
+					"step",
+					[ "zoom" ],
+					[
+						"literal",
+						[ "Open Sans SemiBold" ]
+					],
+					6,
+					[
+						"literal",
+						[ "Open Sans Bold" ]
+					]
+				],
+				"text-letter-spacing": 0.2,
+				"text-max-angle": 30,
+				"text-max-width": 5,
+				"text-padding": 1,
+				"text-pitch-alignment": "viewport",
+				"text-size": [
+					"interpolate",
+					[ "linear" ],
+					[ "zoom" ],
+					3,
+					9,
+					4,
+					11,
+					5,
+					13,
+					8,
+					17
+				],
+				"text-transform": "uppercase",
+				"visibility": "visible"
+			},
+			"maxzoom": 10,
+			"minzoom": 3.4,
+			"paint": {
+				"text-color": "rgba(255, 255, 255, 1)",
+				"text-halo-color": "rgba(0, 0, 0, 1)",
+				"text-halo-width": 1
+			},
+			"source": "base",
+			"source-layer": "admin_boundaries_label",
+			"type": "symbol"
+		}
     ]
 }

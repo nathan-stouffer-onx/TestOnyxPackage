@@ -107,21 +107,18 @@
     ],
     "shaderParameters": [
         {
-            "componentName": "ParticleUpdate",
             "name": "s_posLifeTex",
             "realtimeUniform": true,
             "type": "texture",
             "comment": "xyz - position, w - life. All components are 32-bit floats"
         },
         {
-            "componentName": "ParticleUpdate",
             "name": "s_velocSeedTex",
             "realtimeUniform": true,
             "type": "texture",
             "comment": "Texture full of random numbers"
         },
         {
-            "componentName": "ParticleUpdate",
             "name": "u_velLifeMinMax",
             "realtimeUniform": true,
             "instanced": false,
@@ -134,7 +131,6 @@
             }
         },
         {
-            "componentName": "ParticleUpdate",
             "name": "u_initAccelDeltaProg",
             "realtimeUniform": true,
             "instanced": false,

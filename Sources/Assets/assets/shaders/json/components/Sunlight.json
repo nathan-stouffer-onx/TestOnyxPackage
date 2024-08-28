@@ -97,7 +97,6 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "Sunlight",
       "imguiRate": 1.0,
       "max": -1.0,
       "min": -1.0,
@@ -112,7 +111,6 @@
       }
     },
     {
-      "componentName": "Sunlight",
       "float": 0.0,
       "imguiRate": 0.01,
       "max": 1.0,
@@ -122,7 +120,6 @@
       "type": "float"
     },
     {
-      "componentName": "Sunlight",
       "float": 0.5,
       "imguiRate": 0.01,
       "max": 1.0,
@@ -132,7 +129,6 @@
       "type": "float"
     },
     {
-      "componentName": "Sunlight",
       "imguiRate": 0.01,
       "max": 1.0,
       "min": 0.0,
@@ -146,7 +142,6 @@
       }
     },
     {
-      "componentName": "Sunlight",
       "imguiRate": 0.009999999776482582,
       "max": 1.0,
       "min": 0.0,
@@ -160,7 +155,6 @@
       }
     },
     {
-      "componentName": "Sunlight",
       "imguiRate": 0.01,
       "max": 1.0,
       "min": 0.0,
@@ -174,7 +168,6 @@
       }
     },
     {
-      "componentName": "Sunlight",
       "imguiRate": 0.009999999776482582,
       "max": 1.0,
       "min": 0.0,
@@ -188,43 +181,36 @@
       }
     },
     {
-      "componentName": "Sunlight",
       "name": "u_sunShadowFarPlane",
       "realtimeUniform": true,
       "type": "float",
       "float": 40000.0
     },
     {
-      "componentName": "Sunlight",
       "name": "u_sunShadowBias",
       "type": "float",
       "float": 0.00001
     },
     {
-      "componentName": "Sunlight",
       "name": "u_sunShadowStrength",
       "type": "float",
       "float": 0.5
     },
     {
-      "componentName": "Sunlight",
       "name": "u_sunShadowView",
       "type": "mat4"
     },
     {
-      "componentName": "Sunlight",
       "name": "u_sunShadowProj",
       "type": "mat4"
     },
     {
-      "componentName": "Sunlight",
       "name": "s_sunShadowDepth",
       "realtimeUniform": true,
       "type": "texture",
       "anisoFilter": true
     },
     {
-      "componentName": "Sunlight",
       "comment": "minVariance, lightBleed, blurAmount",
       "name": "u_sunShadowVSMParams",
       "realtimeUniform": true,
@@ -236,7 +222,6 @@
       }
     },
     {
-      "componentName": "Sunlight",
       "name": "u_CascadeDebug",
       "type": "float",
       "float": 0.0

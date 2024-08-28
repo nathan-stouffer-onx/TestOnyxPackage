@@ -137,7 +137,7 @@
         {
             "lines": [
                 "\tvec2 normalized = (depth.xy / depth.w) * 0.5f + 0.5f;",
-                "\tvec2 screenPosition = normalized.xy * u_screenResolution.xy;",
+                "\tvec2 screenPosition = normalized.xy * u_viewRect.zw;",
                 "\tvec2 uvOffset = vec2(mod(screenPosition.x, vecPattern.z), mod(screenPosition.y, vecPattern.w)) * s_patterns_Res.zw;",
                 "\tvec4 pattern = texture2DLod(s_patterns, vecPattern.xy + uvOffset, 0);",
                 "\tgl_FragData[0] = outColor * pattern;",
@@ -170,20 +170,17 @@
     ],
     "shaderParameters": [
         {
-            "componentName": "TileFillBase",
             "name": "s_vectorColors",
             "type": "texture",
             "anisoFilter": false
         },
         {
-            "componentName": "TileFillBase",
             "name": "s_vectorPatterns",
             "type": "texture",
             "anisoFilter": false,
             "shaderType": "Vertex"
         },
         {
-            "componentName": "TileFillBase",
             "name": "s_patterns",
             "type": "texture",
             "anisoFilter": false,
@@ -191,7 +188,6 @@
         },
         {
             "comment": "x is the tile level, y/z unused so far",
-            "componentName": "TileFillBase",
             "name": "u_TileFillData",
             "realtimeUniform": true,
             "type": "vec3",
@@ -203,7 +199,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -218,22 +213,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
-            "imguiRate": 0.01,
-            "max": -1.0,
-            "min": -1.0,
-            "name": "u_screenResolution",
-            "realtimeUniform": true,
-            "type": "vec3",
-            "shaderType": "Vertex_and_Pixel",
-            "vec3": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            }
-        },
-        {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -247,7 +226,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -261,7 +239,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -275,7 +252,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -289,7 +265,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "max": -1.0,
             "min": -1.0,
             "name": "u_time",
@@ -302,7 +277,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -316,7 +290,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "name": "u_TileFillOpacityTransition",
             "type": "vec2",
             "vec2": {
@@ -325,7 +298,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -335,7 +307,6 @@
             "float": 1.0
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -349,7 +320,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,
@@ -364,7 +334,6 @@
             }
         },
         {
-            "componentName": "TileFillBase",
             "imguiRate": 0.01,
             "max": -1.0,
             "min": -1.0,

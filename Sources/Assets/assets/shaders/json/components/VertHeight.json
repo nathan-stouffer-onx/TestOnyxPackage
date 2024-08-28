@@ -81,13 +81,11 @@
   "ints": {},
   "shaderParameters": [
     {
-      "componentName": "VertHeight",
       "name": "s_heightTexture",
       "type": "texture",
       "anisoFilter": true
     },
     {
-      "componentName": "VertHeight",
       "name": "u_tileSize",
       "type": "vec3",
       "vec3": {
@@ -97,7 +95,6 @@
       }
     },
     {
-      "componentName": "VertHeight",
       "name": "u_tileDistortion",
       "type": "vec3",
       "vec3": {
@@ -107,7 +104,6 @@
       }
     },
     {
-      "componentName": "VertHeight",
       "name": "u_ScaleOffsetHeight",
       "type": "vec4",
       "vec3": {
@@ -118,7 +114,6 @@
       }
     },
     {
-      "componentName": "VertHeight",
       "name": "u_lightStrengthPow",
       "imguiRate": 0.01,
       "max": 10.0,

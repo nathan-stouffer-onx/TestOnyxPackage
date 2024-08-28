@@ -101,11 +101,13 @@ div r1.x, -r1.x, r1.z
 mad r1.z, cb0[6].z, r1.x, cb0[10].z
 add r2.xyzw, -cb0[10].xyxy, cb0[11].xyxy
 mad r4.xyzw, cb0[12].xyzw, r2.zwzw, cb0[10].xyxy
-mad r2.xyzw, cb0[13].xyzw, r2.xyzw, cb0[10].xyxy
 mov r1.xy, r4.zwzz
 dp3 r1.w, r1.xyzx, r1.xyzx
 sqrt r1.w, r1.w
-mul r3.y, cb0[16].z, l(0.004000)
+mul r3.y, r2.z, l(0.007812)
+mad r2.xyzw, cb0[13].xyzw, r2.xyzw, cb0[10].xyxy
+mul r3.z, cb0[16].z, l(0.004000)
+max r3.y, r3.z, r3.y
 max r3.y, r3.y, l(0.020000)
 div r1.w, r3.y, r1.w
 add r1.w, -r1.w, l(1.000000)
@@ -165,9 +167,8 @@ div r1.y, cb0[16].z, r1.x
 add r1.x, r1.x, -cb0[15].x
 min r1.y, r1.y, l(1.000000)
 sample_l_indexable(texture2d)(float,float,float,float) r4.xyzw, cb0[14].zwzz, t4.xyzw, s4, l(0.000000)
-mul r4.xyzw, r4.xyzw, l(64.000000, 64.000000, 64.000000, 64.000000)
-mul r6.xyzw, r1.yyyy, r4.xyzw
-mov o13.w, r4.x
+mul r4.xyzw, r4.yzwx, l(64.000000, 64.000000, 64.000000, 64.000000)
+mul r6.xyzw, r1.yyyy, r4.wxyz
 max r1.y, r6.y, r6.x
 mov o7.xyzw, r6.xyzw
 add r1.y, r1.y, l(2.000000)
@@ -176,38 +177,38 @@ mad r3.yz, r5.xxyx, l(0.000000, 0.500000, 0.500000, 0.000000), l(0.000000, 0.500
 mul r5.xy, r3.yzyy, cb0[0].zwzz
 mad r3.yz, r0.xxyx, l(0.000000, 0.500000, 0.500000, 0.000000), l(0.000000, 0.500000, 0.500000, 0.000000)
 mul r0.xy, r3.yzyy, cb0[0].zwzz
-add r4.xyzw, -r0.xyzw, r5.xyzw
-mad r6.xyzw, v0.yyyy, r4.xyzw, r0.xyzw
-div r3.yzw, r6.xxyz, r6.wwww
-mul r0.z, r1.y, r4.z
-dp2 r0.w, r4.xyxx, r4.xyxx
+add r6.xyzw, -r0.xyzw, r5.xyzw
+mad r7.xyzw, v0.yyyy, r6.xyzw, r0.xyzw
+div r3.yzw, r7.xxyz, r7.wwww
+mul r0.z, r1.y, r6.z
+dp2 r0.w, r6.xyxx, r6.xyxx
 sqrt r0.w, r0.w
 div r0.z, r0.z, r0.w
 add r1.z, -v0.y, l(1.000000)
 mad r3.w, -r1.z, r0.z, r3.w
-mad r6.z, v0.y, r0.z, r3.w
-div r4.xy, r4.xyxx, r0.wwww
-mul r5.zw, r1.zzzz, -r4.xxxy
-mul r7.xy, r4.xyxx, v0.yyyy
+mad r4.z, v0.y, r0.z, r3.w
+div r6.xy, r6.xyxx, r0.wwww
+mul r5.zw, r1.zzzz, -r6.xxxy
+mul r7.xy, r6.xyxx, v0.yyyy
 mul r7.xy, r1.yyyy, r7.xyxx
 mad r5.zw, r5.zzzw, r1.yyyy, r7.xxxy
-mov r4.zw, -r4.yyyy
-dp2 r0.z, r4.xzxx, r4.xwxx
+mov r6.zw, -r6.yyyy
+dp2 r0.z, r6.xzxx, r6.xwxx
 rsq r0.z, r0.z
-mul r4.zw, r4.yyyx, l(0.000000, 0.000000, -1.000000, 1.000000)
-mul r4.zw, r0.zzzz, r4.zzzw
-mul r7.xy, r4.zwzz, v0.xxxx
-mov o6.xy, r4.zwzz
+mul r6.zw, r6.yyyx, l(0.000000, 0.000000, -1.000000, 1.000000)
+mul r6.zw, r0.zzzz, r6.zzzw
+mul r7.xy, r6.zwzz, v0.xxxx
+mov o6.xy, r6.zwzz
 mad r3.yz, r7.xxyx, r1.yyyy, r3.yyzy
 add r3.yz, r5.zzwz, r3.yyzy
 dp2 r0.z, r5.zwzz, r5.zwzz
 sqrt r0.z, r0.z
-mul r4.zw, r3.yyyz, cb0[1].xxxy
+mul r5.zw, r3.yyyz, cb0[1].xxxy
 mov o10.xy, r3.yzyy
-mad r6.xy, r4.zwzz, l(2.000000, 2.000000, 0.000000, 0.000000), l(-1.000000, -1.000000, 0.000000, 0.000000)
-mul o0.xyz, r1.wwww, r6.xyzx
-mov o10.z, r6.z
-mov o1.xy, r4.xyxx
+mad r4.xy, r5.zwzz, l(2.000000, 2.000000, 0.000000, 0.000000), l(-1.000000, -1.000000, 0.000000, 0.000000)
+mul o0.xyz, r1.wwww, r4.xyzx
+mov o10.z, r4.z
+mov o1.xy, r6.xyxx
 sample_l_indexable(texture2d)(float,float,float,float) r1.z, cb0[14].zwzz, t1.yzxw, s1, l(0.000000)
 mov o1.w, r1.z
 mov o1.z, l(0)
@@ -226,13 +227,15 @@ div r1.x, r1.x, r0.w
 div r0.w, r0.w, r1.y
 add o4.x, -r1.x, cb0[14].x
 add o4.y, r1.x, cb0[14].y
-mov o4.zw, l(0,0,0,0)
+mov o4.z, r4.w
+mov o13.w, r4.w
+mov o4.w, l(0)
 mov o5.xy, r0.xyxx
 mov o5.zw, r5.xxxy
 mov o6.z, l(0)
-max r1.x, |r4.x|, |r4.y|
+max r1.x, |r6.x|, |r6.y|
 div r1.x, l(1.000000, 1.000000, 1.000000, 1.000000), r1.x
-min r1.z, |r4.x|, |r4.y|
+min r1.z, |r6.x|, |r6.y|
 mul r1.x, r1.x, r1.z
 mul r1.z, r1.x, r1.x
 mad r1.w, r1.z, l(0.020835), l(-0.085133)
@@ -241,29 +244,29 @@ mad r1.w, r1.z, r1.w, l(-0.330299)
 mad r1.z, r1.z, r1.w, l(0.999866)
 mul r1.w, r1.z, r1.x
 mad r1.w, r1.w, l(-2.000000), l(1.570796)
-lt r3.y, |r4.x|, |r4.y|
+lt r3.y, |r6.x|, |r6.y|
 and r1.w, r1.w, r3.y
 mad r1.x, r1.x, r1.z, r1.w
-lt r1.z, -r4.x, r4.x
+lt r1.z, -r6.x, r6.x
 and r1.z, r1.z, l(0xc0490fdb)
 add r1.z, r1.z, r1.x
-min r1.w, -r4.x, -r4.y
+min r1.w, -r6.x, -r6.y
 lt r1.w, r1.w, -r1.w
-max r3.y, -r4.x, -r4.y
+max r3.y, -r6.x, -r6.y
 ge r3.y, r3.y, -r3.y
 and r1.w, r1.w, r3.y
 movc r1.z, r1.w, -r1.z, r1.z
-max r6.xyzw, cb0[13].xyzw, l(0.003906, 0.003906, 0.003906, 0.003906)
-min r6.xyzw, r6.xyzw, l(0.996094, 0.996094, 0.996094, 0.996094)
-mul r6.xyzw, r6.xyzw, cb0[9].xxxx
-round_ni r6.xyzw, r6.xyzw
-add r3.yz, r6.zzwz, l(0.000000, 1.000000, 0.000000, 0.000000)
+max r4.xyzw, cb0[13].xyzw, l(0.003906, 0.003906, 0.003906, 0.003906)
+min r4.xyzw, r4.xyzw, l(0.996094, 0.996094, 0.996094, 0.996094)
+mul r4.xyzw, r4.xyzw, cb0[9].xxxx
+round_ni r4.xyzw, r4.xyzw
+add r3.yz, r4.zzwz, l(0.000000, 1.000000, 0.000000, 0.000000)
 div r7.xw, r3.yyyz, cb0[9].xxxx
-add r8.xyzw, r6.xyzw, l(0.000000, 1.000000, 0.000000, 1.000000)
-add r3.yz, r6.xxyx, l(0.000000, 1.000000, 0.000000, 0.000000)
-div r6.xw, r3.yyyz, cb0[9].xxxx
+add r8.xyzw, r4.xyzw, l(0.000000, 1.000000, 0.000000, 1.000000)
+add r3.yz, r4.xxyx, l(0.000000, 1.000000, 0.000000, 0.000000)
+div r4.xw, r3.yyyz, cb0[9].xxxx
 div r7.yz, r8.zzwz, cb0[9].xxxx
-div r6.yz, r8.xxyx, cb0[9].xxxx
+div r4.yz, r8.xxyx, cb0[9].xxxx
 add r8.xyzw, r7.ywxz, -cb0[13].zwzw
 dp2 r1.w, r8.xyxx, r8.xyxx
 dp2 r3.y, r8.zwzz, r8.zwzz
@@ -302,20 +305,20 @@ dp2 r1.w, r2.zwzz, r2.zwzz
 rsq r1.w, r1.w
 mul r2.zw, r1.wwww, r2.zzzw
 lt r3.yz, cb0[13].xxzx, l(0.000000, -9999.000000, -9999.000000, 0.000000)
-movc r2.zw, r3.zzzz, -r4.yyyx, r2.zzzw
+movc r2.zw, r3.zzzz, -r6.yyyx, r2.zzzw
 lt r1.w, |r2.w|, |r2.z|
 max r3.z, |r2.w|, |r2.z|
 div r3.z, l(1.000000, 1.000000, 1.000000, 1.000000), r3.z
 min r3.w, |r2.w|, |r2.z|
 mul r3.z, r3.z, r3.w
 mul r3.w, r3.z, r3.z
-mad r4.z, r3.w, l(0.020835), l(-0.085133)
-mad r4.z, r3.w, r4.z, l(0.180141)
-mad r4.z, r3.w, r4.z, l(-0.330299)
-mad r3.w, r3.w, r4.z, l(0.999866)
-mul r4.z, r3.w, r3.z
-mad r4.z, r4.z, l(-2.000000), l(1.570796)
-and r1.w, r1.w, r4.z
+mad r5.x, r3.w, l(0.020835), l(-0.085133)
+mad r5.x, r3.w, r5.x, l(0.180141)
+mad r5.x, r3.w, r5.x, l(-0.330299)
+mad r3.w, r3.w, r5.x, l(0.999866)
+mul r5.x, r3.w, r3.z
+mad r5.x, r5.x, l(-2.000000), l(1.570796)
+and r1.w, r1.w, r5.x
 mad r1.w, r3.z, r3.w, r1.w
 lt r3.z, r2.w, -r2.w
 and r3.z, r3.z, l(0xc0490fdb)
@@ -331,7 +334,7 @@ mul r1.z, r1.z, l(0.500000)
 sincos r5.x, r7.x, r1.z
 mov r1.w, -r7.x
 mov r1.z, r5.x
-dp2 r2.z, r1.zwzz, -r4.xyxx
+dp2 r2.z, r1.zwzz, -r6.xyxx
 lt r2.w, l(0.000000), r2.z
 lt r3.z, r2.z, l(0.000000)
 lt r2.z, l(0.001000), |r2.z|
@@ -340,27 +343,27 @@ iadd r2.w, -r2.w, r3.z
 itof r2.w, r2.w
 mul r2.z, r2.z, r2.w
 mul o8.zw, r1.zzzw, r2.zzzz
-add r5.xyzw, r6.ywxz, -cb0[13].xyxy
+add r5.xyzw, r4.ywxz, -cb0[13].xyxy
 dp2 r1.z, r5.xyxx, r5.xyxx
 dp2 r1.w, r5.zwzz, r5.zwzz
 sqrt r1.zw, r1.zzzw
 ge r1.z, r1.w, r1.z
-movc r5.xz, r1.zzzz, r6.wwyw, r6.zzxz
+movc r5.xz, r1.zzzz, r4.wwyw, r4.zzxz
 mad r1.zw, cb0[7].zzzw, r5.zzzx, cb0[7].xxxy
 sample_l_indexable(texture2d)(float,float,float,float) r1.z, r1.zwzz, t5.yzxw, s5, l(0.000000)
 mad r1.w, r5.x, r3.x, cb0[8].x
-mad r2.zw, r6.wwwz, r3.xxxx, cb0[8].xxxx
+mad r2.zw, r4.wwwz, r3.xxxx, cb0[8].xxxx
 mul r5.y, r1.w, r1.z
-mad r7.xyzw, cb0[7].zwzw, r6.xwyz, cb0[7].xyxy
-mov r8.xy, r6.xwxx
+mad r7.xyzw, cb0[7].zwzw, r4.xwyz, cb0[7].xyxy
+mov r8.xy, r4.xwxx
 sample_l_indexable(texture2d)(float,float,float,float) r1.z, r7.xyxx, t5.yzxw, s5, l(0.000000)
 sample_l_indexable(texture2d)(float,float,float,float) r1.w, r7.zwzz, t5.yzwx, s5, l(0.000000)
-mul r6.x, r2.w, r1.w
+mul r4.x, r2.w, r1.w
 mul r8.z, r2.z, r1.z
-add r3.xzw, -r8.zzxy, r6.xxyz
-add r5.xyz, r5.xyzx, -r8.yzxy
-mul r6.xyz, r3.xzwx, r5.xyzx
-mad r3.xzw, r3.wwxz, r5.yyzx, -r6.xxyz
+add r3.xzw, -r8.zzxy, r4.xxyz
+add r4.xyz, r5.xyzx, -r8.yzxy
+mul r5.xyz, r3.xzwx, r4.xyzx
+mad r3.xzw, r3.wwxz, r4.yyzx, -r5.xxyz
 dp3 r1.z, r3.xzwx, r8.xyzx
 dp2 r1.w, r3.xzxx, cb0[13].xyxx
 add r1.z, -r1.z, r1.w
@@ -376,7 +379,7 @@ mad r0.xy, r1.zwzz, cb0[0].wzww, -r0.yxyy
 dp2 r1.z, r0.xyxx, r0.xyxx
 rsq r1.z, r1.z
 mul r0.xy, r0.xyxx, r1.zzzz
-movc r0.xy, r3.yyyy, r4.yxyy, r0.xyxx
+movc r0.xy, r3.yyyy, r6.yxyy, r0.xyxx
 lt r1.z, |r0.y|, |r0.x|
 max r1.w, |r0.y|, |r0.x|
 div r1.w, l(1.000000, 1.000000, 1.000000, 1.000000), r1.w
@@ -400,12 +403,12 @@ ge r0.x, r0.x, -r0.x
 lt r0.y, r1.w, -r1.w
 and r0.x, r0.x, r0.y
 movc r0.x, r0.x, -r1.z, r1.z
-min r0.y, r4.x, r4.y
+min r0.y, r6.x, r6.y
 lt r0.y, r0.y, -r0.y
-max r1.z, r4.x, r4.y
+max r1.z, r6.x, r6.y
 ge r1.z, r1.z, -r1.z
 and r0.y, r0.y, r1.z
-lt r1.z, r4.x, -r4.x
+lt r1.z, r6.x, -r6.x
 and r1.z, r1.z, l(0xc0490fdb)
 add r1.x, r1.z, r1.x
 movc r0.y, r0.y, -r1.x, r1.x
@@ -413,7 +416,7 @@ add r0.x, r0.y, r0.x
 mul r0.x, r0.x, l(0.500000)
 sincos null, r2.y, r0.x
 sincos r2.x, null, -r0.x
-dp2 r0.x, r2.xyxx, r4.xyxx
+dp2 r0.x, r2.xyxx, r6.xyxx
 lt r0.y, l(0.000000), r0.x
 lt r1.x, r0.x, l(0.000000)
 lt r0.x, l(0.001000), |r0.x|

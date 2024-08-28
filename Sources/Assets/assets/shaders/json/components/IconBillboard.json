@@ -37,7 +37,6 @@
     ],
     "shaderParameters": [
         {
-            "componentName": "IconBillboard",
             "name": "u_camRight",
             "realtimeUniform": true,
             "type": "vec3",
@@ -48,7 +47,6 @@
             }
         },
         {
-            "componentName": "IconBillboard",
             "name": "u_camUp",
             "realtimeUniform": true,
             "type": "vec3",
