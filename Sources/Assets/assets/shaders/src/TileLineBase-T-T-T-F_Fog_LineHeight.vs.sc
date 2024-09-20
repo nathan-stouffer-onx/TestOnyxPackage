@@ -36,7 +36,7 @@ uniform vec4 u_TileFragClip;
 uniform vec4 u_p1p2;
 uniform vec4 u_PrevNext;
 uniform vec4 u_params;
-uniform vec4 u_vectorFade;
+uniform vec4 u_PackedParams;
 uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_NearFarFocus;
 
@@ -80,6 +80,10 @@ float tileZ1 = u_tileMin.z;
 float tileZ2 = u_tileMin.z;
 float prevZ = u_tileMin.z;
 float nextZ = u_tileMin.z;
+float z1Offset = u_PackedParams.x;
+float z2Offset = u_PackedParams.x;
+float prevZOffset = u_PackedParams.x;
+float nextZOffset = u_PackedParams.x;
 vec2 tilePos = mix(p1, p2, position.y);
 vec4 texcoords = vec4(position.xy,0,0);
 float lineLengthSoFar = position.z;
@@ -90,9 +94,13 @@ tileZ1 += u_tileSize.z * meshHeightAtPlanes(p1, u_tileDistortion.xy, u_ScaleOffs
 tileZ2 += u_tileSize.z * meshHeightAtPlanes(p2, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);
 prevZ += u_tileSize.z * meshHeightAtPlanes(u_PrevNext.xy, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);
 nextZ += u_tileSize.z * meshHeightAtPlanes(u_PrevNext.zw, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);
+z1Offset = u_tileSize.z * distort(z1Offset, tilePos, u_tileDistortion.xy);
+z2Offset = u_tileSize.z * distort(z2Offset, tilePos, u_tileDistortion.xy);
+prevZOffset = u_tileSize.z * distort(prevZOffset, tilePos, u_tileDistortion.xy);
+nextZOffset = u_tileSize.z * distort(nextZOffset, tilePos, u_tileDistortion.xy);
 // convert to screen space and expand the line
-vec3 wp1 = vec3(tileP1, tileZ1);
-vec3 wp2 = vec3(tileP2, tileZ2);
+vec3 wp1 = vec3(tileP1, tileZ1 + z1Offset);
+vec3 wp2 = vec3(tileP2, tileZ2 + z2Offset);
 vec3 worldPosition = mix(wp1.xyz, wp2.xyz, position.y); // write to this variable so fog works correctly
 vec4 distFade = vec4(1.0 - smoothstep(u_TileLineOpacityTransition.x, u_TileLineOpacityTransition.y, length(worldPosition.xyz)), 0.0, 0.0, 0.0);
 vec3 fromEye = normalize(worldPosition);
@@ -129,8 +137,8 @@ float phaseAdjustment = widthExpansion * deltaPhase / lineLength;
 phaseParams.x -= phaseAdjustment;
 phaseParams.y += phaseAdjustment;
 vec4 line_endFlags = vec4(u_PrevNext.xz,0,0);
-vec3 prevPos = vec3(prevTP, prevZ);
-vec3 nextPos = vec3(nextTP, nextZ);
+vec3 prevPos = vec3(prevTP, prevZ + prevZOffset);
+vec3 nextPos = vec3(nextTP, nextZ + nextZOffset);
 vec2 screenPrev = toScreenCoords(mul(u_viewProj, vec4(prevPos, 1.0)), u_viewRect.zw).xy;
 vec2 screenNext = toScreenCoords(mul(u_viewProj, vec4(nextPos, 1.0)), u_viewRect.zw).xy;
 vec2 prevDir = normalize(screenPrev.xy - screen1.xy);

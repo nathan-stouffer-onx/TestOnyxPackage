@@ -29,9 +29,8 @@ uniform vec4 u_camUp;
 uniform vec4 u_time;
 uniform vec4 u_tileMin;
 uniform vec4 u_TileFillOpacityTransition;
-uniform vec4 u_vectorFade;
+uniform vec4 u_PackedParams;
 uniform vec4 u_tileMax;
-uniform vec4 u_TileVertClip;
 uniform vec4 u_TileFragClip;
 
 //functions
@@ -65,7 +64,7 @@ vec4 fragColor = vecColor;
 	vec2 uvOffset = vec2(mod(worldUV.x, vecPattern.z), mod(worldUV.y, vecPattern.w)) * s_patterns_Res.zw;
 	vec4 pattern = texture2DLod(s_patterns, vecPattern.xy + uvOffset, 0);
 	fragColor *= pattern;
-	gl_FragData[0] = vec4(fragColor.xyz, fragColor.a * u_vectorFade.r * distFade);
+	gl_FragData[0] = vec4(fragColor.xyz, fragColor.a * u_PackedParams.y * distFade);
 	gl_FragData[1] = vec4(0, 0, 0, 0);
 
 

@@ -62,34 +62,42 @@ void main ()
   rgba_1[2] = tmpvar_14.x;
   rgba_1[3] = tmpvar_14.w;
   float tmpvar_16;
-  tmpvar_16 = (rgba_1[tmpvar_15] * 0.97);
-  vec3 tmpvar_17;
-  tmpvar_17 = (abs(dFdx(v_texcoord7.xyz)) + abs(dFdy(v_texcoord7.xyz)));
-  float tmpvar_18;
-  tmpvar_18 = (((16.0 * 
-    sqrt(dot (tmpvar_17, tmpvar_17))
-  ) / 3.464102) * u_sdfParams.y);
+  tmpvar_16 = max (min (max (
+    (u_sdfParams.x / 14.0)
+  , 0.0), 1.0), 0.1);
+  float tmpvar_17;
+  tmpvar_17 = (rgba_1[tmpvar_15] * mix (1.03, 0.98, tmpvar_16));
+  vec3 tmpvar_18;
+  tmpvar_18 = (abs(dFdx(v_texcoord7.xyz)) + abs(dFdy(v_texcoord7.xyz)));
   float tmpvar_19;
-  tmpvar_19 = (0.5 - ((u_sdfParams.w * tmpvar_18) * 2.0));
-  float edge0_20;
-  edge0_20 = (tmpvar_19 - tmpvar_18);
-  float tmpvar_21;
-  tmpvar_21 = clamp (((tmpvar_16 - edge0_20) / (
-    (tmpvar_19 + tmpvar_18)
-   - edge0_20)), 0.0, 1.0);
-  float edge0_22;
-  edge0_22 = (0.47 - tmpvar_18);
-  float tmpvar_23;
-  tmpvar_23 = clamp (((tmpvar_16 - edge0_22) / (
-    (0.47 + tmpvar_18)
-   - edge0_22)), 0.0, 1.0);
-  vec4 tmpvar_24;
-  tmpvar_24.xyz = mix (v_texcoord4.xyz, v_texcoord5.xyz, (tmpvar_23 * (tmpvar_23 * 
-    (3.0 - (2.0 * tmpvar_23))
+  tmpvar_19 = (((16.0 * 
+    sqrt(dot (tmpvar_18, tmpvar_18))
+  ) / sqrt(
+    mix (6.0, 10.0, tmpvar_16)
+  )) * u_sdfParams.y);
+  float tmpvar_20;
+  tmpvar_20 = (0.5 - ((u_sdfParams.w * tmpvar_19) * mix (1.5, 2.5, tmpvar_16)));
+  float edge0_21;
+  edge0_21 = (tmpvar_20 - tmpvar_19);
+  float tmpvar_22;
+  tmpvar_22 = clamp (((
+    (tmpvar_17 + mix (0.035, 0.005, tmpvar_16))
+   - edge0_21) / (
+    (tmpvar_20 + tmpvar_19)
+   - edge0_21)), 0.0, 1.0);
+  float edge0_23;
+  edge0_23 = (0.47 - tmpvar_19);
+  float tmpvar_24;
+  tmpvar_24 = clamp (((tmpvar_17 - edge0_23) / (
+    (0.47 + tmpvar_19)
+   - edge0_23)), 0.0, 1.0);
+  vec4 tmpvar_25;
+  tmpvar_25.xyz = mix (v_texcoord4.xyz, v_texcoord5.xyz, (tmpvar_24 * (tmpvar_24 * 
+    (3.0 - (2.0 * tmpvar_24))
   )));
-  tmpvar_24.w = ((tmpvar_21 * (tmpvar_21 * 
-    (3.0 - (2.0 * tmpvar_21))
+  tmpvar_25.w = ((tmpvar_22 * (tmpvar_22 * 
+    (3.0 - (2.0 * tmpvar_22))
   )) * v_texcoord5.w);
-  bgfx_FragColor = tmpvar_24;
+  bgfx_FragColor = tmpvar_25;
 }
 

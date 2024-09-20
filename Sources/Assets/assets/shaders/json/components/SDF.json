@@ -49,6 +49,7 @@
   "chunks": [
     {
       "lines": [
+        "#define u_pixelSize              u_sdfParams.x",
         "#define u_distanceMultiplier     u_sdfParams.y",
         "#define u_dropShadowSoftener     u_sdfParams.z",
         "#define u_outlineWidth           u_sdfParams.w"
@@ -95,11 +96,12 @@
         "rgba[1] = color.y;",
         "rgba[2] = color.x;",
         "rgba[3] = color.w;",
-        "float distance = rgba[index] * 0.97;",
-        "float smoothing = 16.0 * length(fwidth(sdf_tex0.xyz)) / sqrt(12.0) * u_distanceMultiplier;",
-        "float outlineWidth = u_outlineWidth * smoothing * 2.0;",
+        "float sharpeningStrength = max(0.1, min(u_pixelSize / 14.0, 1.0));",
+        "float distance = rgba[index] * mix(1.03, 0.98, sharpeningStrength);",
+        "float smoothing = 16.0 * length(fwidth(sdf_tex0.xyz)) / sqrt(mix(6.0, 10.0, sharpeningStrength)) * u_distanceMultiplier;",
+        "float outlineWidth = u_outlineWidth * smoothing * mix(1.5, 2.5, sharpeningStrength);",
         "float outerEdgeCenter = 0.5 - outlineWidth;",
-        "float alpha = smoothstep(outerEdgeCenter - smoothing, outerEdgeCenter + smoothing, distance);",
+        "float alpha = smoothstep(outerEdgeCenter - smoothing, outerEdgeCenter + smoothing, distance + mix(0.035, 0.005, sharpeningStrength));",
         "float borderBlendCorrection = 0.47; //not sure why, but at 0.5 our text color was being blended with the border beyond the edges of the border, .47 seems to look a lot better so far",
         "float border = smoothstep(borderBlendCorrection - smoothing, borderBlendCorrection + smoothing, distance);",
         "vec4 sdfColor = vec4(mix(fontColor1.xyz, fontColor0.xyz, border), alpha * fontColor0.w);",

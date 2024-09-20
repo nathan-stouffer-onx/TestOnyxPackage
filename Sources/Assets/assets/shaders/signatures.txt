@@ -430,7 +430,6 @@ BaseShader-T-T-T-F-T-0-1_TextureLayer-3_Fog_ElevationShade_SlopeAspectShade_Slop
 BaseShader-T-T-T-F-T-0-1_TextureLayer-3_Fog_ElevationShade_SlopeAspectShade_SlopeAngleShade_Sunlight_VertHeight_Viewshed
 BaseShader-T-T-T-F-T-0-1_TextureLayer-3_Fog_ElevationShade_SlopeAspectShade_SlopeAngleShade_Sunlight_ContourLine_VertHeight
 BaseShader-T-T-T-F-T-0-1_TextureLayer-3_Fog_ElevationShade_SlopeAspectShade_SlopeAngleShade_Sunlight_ContourLine_VertHeight_Viewshed
-Skydome
 TileLineBase-T-T-F-F_LineHeight
 TileLineBase-T-T-T-F_Fog_LineHeight
 TileFillBase-F_FillHeight
@@ -465,3 +464,4 @@ BaseShader-F-T-F-F-T-0-1_GaussBlur
 ParticleUpdate
 ParticleDraw
 PosColor
+Skydome

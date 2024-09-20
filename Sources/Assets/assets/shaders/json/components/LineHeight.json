@@ -23,7 +23,11 @@
         "tileZ1 += u_tileSize.z * meshHeightAtPlanes(p1, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);",
         "tileZ2 += u_tileSize.z * meshHeightAtPlanes(p2, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);",
         "prevZ += u_tileSize.z * meshHeightAtPlanes(u_PrevNext.xy, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);",
-        "nextZ += u_tileSize.z * meshHeightAtPlanes(u_PrevNext.zw, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);"
+        "nextZ += u_tileSize.z * meshHeightAtPlanes(u_PrevNext.zw, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);",
+        "z1Offset = u_tileSize.z * distort(z1Offset, tilePos, u_tileDistortion.xy);",
+        "z2Offset = u_tileSize.z * distort(z2Offset, tilePos, u_tileDistortion.xy);",
+        "prevZOffset = u_tileSize.z * distort(prevZOffset, tilePos, u_tileDistortion.xy);",
+        "nextZOffset = u_tileSize.z * distort(nextZOffset, tilePos, u_tileDistortion.xy);"
       ],
       "position": "Main",
       "positionOffset": 2,

@@ -13,7 +13,7 @@ varying vec4 v_texcoord7;
 uniform sampler2D s_DashSampler;
 uniform vec4 s_DashSampler_Res;
 uniform vec4 u_TileFragClip;
-uniform vec4 u_vectorFade;
+uniform vec4 u_PackedParams;
 void main ()
 {
   vec4 casingColor_1;
@@ -119,7 +119,7 @@ void main ()
   };
   vec4 tmpvar_29;
   tmpvar_29.xyz = tmpvar_27.xyz;
-  tmpvar_29.w = ((tmpvar_27.w * u_vectorFade.x) * v_color1.x);
+  tmpvar_29.w = ((tmpvar_27.w * u_PackedParams.y) * v_color1.x);
   gl_FragData[0] = tmpvar_29;
   gl_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }

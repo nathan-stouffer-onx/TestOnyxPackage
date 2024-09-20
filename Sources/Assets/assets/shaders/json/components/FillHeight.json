@@ -21,7 +21,8 @@
       "lines": [
         "\t// compute height at the actual mesh",
         "\tfloat z = meshHeightAtPlanes(tilePos, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);",
-        "\ttileZ += z * u_tileSize.z;"
+        "\ttileZ += z * u_tileSize.z;",
+        "\tzOffset = distort(zOffset, tilePos, u_tileDistortion.xy) * u_tileSize.z;"
       ],
       "position": "Main",
       "positionOffset": 2,

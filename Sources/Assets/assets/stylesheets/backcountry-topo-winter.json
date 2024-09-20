@@ -2749,6 +2749,9 @@
                     "data:lift_type"
                 ]
             ],
+            "effect": {
+                "line-z-offset": 15
+            },
             "layout": {
                 "line-cap": "round",
                 "line-join": "round"
@@ -2785,6 +2788,9 @@
                     "data:lift_type"
                 ]
             ],
+            "effect": {
+                "line-z-offset": 15
+            },
             "layout": {
                 "line-cap": "round",
                 "line-join": "round"

@@ -1,30 +1,14 @@
 $input v_bitangent
-//includes
+
 #include <common.sh>
-#include "layers.sc"
 
-//samplers
-
-//cubeSamplers
-
-//definitions
-uniform vec4 u_skyColor;
-uniform vec4 u_hazeColor;
-
-//functions
+uniform vec4 u_SkyColor;
+uniform vec4 u_HazeColor;
 
 void main()
 {
-
-vec3 worldPosition = v_bitangent.xyz;
-//main start
-
-//lighting
-
-//compose
-	gl_FragData[0] = vec4(mix(u_hazeColor, u_skyColor, worldPosition.z).xyz, 1.0);
+	vec3 worldPosition = v_bitangent.xyz;
+	gl_FragData[0] = vec4(mix(u_HazeColor, u_SkyColor, worldPosition.z).xyz, 1.0);
 	gl_FragData[1] = vec4(1, 1, 1, 1);
-
-
 }
 

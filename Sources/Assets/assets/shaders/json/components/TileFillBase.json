@@ -51,6 +51,7 @@
             "lines": [
                 "\tvec2 tilePos = vec2(tilePosition_style.xy);",
                 "\tfloat tileZ = u_tileMin.z;",
+                "\tfloat zOffset = u_PackedParams.x;",
                 "\tvec3 worldPosition = vec3(mix(u_tileMin.xy, u_tileMax.xy, tilePos), u_tileMin.z);"
             ],
             "position": "Main",
@@ -65,7 +66,7 @@
         {
             "comment": "TODO figure out a way to have positionOffset = 0 so other components easily override base shader behavior",
             "lines": [
-                "\tworldPosition.z = tileZ;",
+                "\tworldPosition.z = tileZ + zOffset;",
                 "\tfloat distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz));",
                 "\tfloat biasKm = max(0.010, max((2.0 / 256.0) * (u_tileMax.x - u_tileMin.x), 0.002 * u_NearFarFocus.z));",
                 "\tfloat biasScalar = max(0.5, 1.0 - biasKm / length(worldPosition));",
@@ -80,9 +81,6 @@
         {
             "lines": [
                 "\tvec4 tilePosition = vec4(tilePos, 0.0, 0.0);",
-                "\tfloat inX = inRange(tilePosition.x, u_TileVertClip.x, u_TileVertClip.z);",
-                "\tfloat inY = inRange(tilePosition.y, u_TileVertClip.y, u_TileVertClip.w);",
-                "\tif (inX * inY == 0.0) { projected = vec4(0, 0, 0, 0); }",
                 "\tgl_Position = projected;"
             ],
             "position": "Compose",
@@ -125,7 +123,7 @@
                 "\tvec2 uvOffset = vec2(mod(worldUV.x, vecPattern.z), mod(worldUV.y, vecPattern.w)) * s_patterns_Res.zw;",
                 "\tvec4 pattern = texture2DLod(s_patterns, vecPattern.xy + uvOffset, 0);",
                 "\tfragColor *= pattern;",
-                "\tgl_FragData[0] = vec4(fragColor.xyz, fragColor.a * u_vectorFade.r * distFade);",
+                "\tgl_FragData[0] = vec4(fragColor.xyz, fragColor.a * u_PackedParams.y * distFade);",
                 "\tgl_FragData[1] = vec4(0, 0, 0, 0);"
             ],
             "position": "Compose",
@@ -298,13 +296,16 @@
             }
         },
         {
-            "imguiRate": 0.01,
-            "max": -1.0,
-            "min": -1.0,
             "realtimeUniform": true,
-            "name": "u_vectorFade",
-            "type": "float",
-            "float": 1.0
+            "name": "u_PackedParams",
+            "comment": "packed as (z offset, opacity multiplier, _, _)",
+            "type": "vec4",
+            "vec4": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+            }
         },
         {
             "imguiRate": 0.01,
@@ -317,20 +318,6 @@
                 "x": -10000.0,
                 "y": -10000.0,
                 "z": 1.0
-            }
-        },
-        {
-            "imguiRate": 0.01,
-            "max": -1.0,
-            "min": -1.0,
-            "name": "u_TileVertClip",
-            "realtimeUniform": true,
-            "type": "vec4",
-            "vec4": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 1.0,
-                "w": 1.0
             }
         },
         {

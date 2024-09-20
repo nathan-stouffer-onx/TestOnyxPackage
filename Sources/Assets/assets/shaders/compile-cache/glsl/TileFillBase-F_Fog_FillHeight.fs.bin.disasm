@@ -10,7 +10,7 @@ uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_TileFillData;
 uniform vec4 u_eyePos;
-uniform vec4 u_vectorFade;
+uniform vec4 u_PackedParams;
 uniform vec4 u_TileFragClip;
 void main ()
 {
@@ -37,7 +37,7 @@ void main ()
   fragColor_2 = (fragColor_2 * texture2DLod (s_patterns, (v_texcoord4.xy + (tmpvar_6 * s_patterns_Res.zw)), 0.0));
   vec4 tmpvar_7;
   tmpvar_7.xyz = fragColor_2.xyz;
-  tmpvar_7.w = ((fragColor_2.w * u_vectorFade.x) * v_depth);
+  tmpvar_7.w = ((fragColor_2.w * u_PackedParams.y) * v_depth);
   gl_FragData[0] = tmpvar_7;
   gl_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }

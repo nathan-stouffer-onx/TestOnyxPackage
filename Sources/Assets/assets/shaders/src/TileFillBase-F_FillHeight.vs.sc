@@ -32,9 +32,8 @@ uniform vec4 u_camUp;
 uniform vec4 u_time;
 uniform vec4 u_tileMin;
 uniform vec4 u_TileFillOpacityTransition;
-uniform vec4 u_vectorFade;
+uniform vec4 u_PackedParams;
 uniform vec4 u_tileMax;
-uniform vec4 u_TileVertClip;
 uniform vec4 u_TileFragClip;
 
 //functions
@@ -46,6 +45,7 @@ vec4 tilePosition_style = a_texcoord7.xyzw;
 //main start
 	vec2 tilePos = vec2(tilePosition_style.xy);
 	float tileZ = u_tileMin.z;
+	float zOffset = u_PackedParams.x;
 	vec3 worldPosition = vec3(mix(u_tileMin.xy, u_tileMax.xy, tilePos), u_tileMin.z);
 	 vec4 vecPattern = texture2DLod(s_vectorPatterns, tilePosition_style.zw, 0);
 	 vecPattern.zw = vecPattern.zw * s_patterns_Res.xy;
@@ -54,11 +54,12 @@ mat4 viewMat = u_view;
 	// compute height at the actual mesh
 	float z = meshHeightAtPlanes(tilePos, u_tileDistortion.xy, u_ScaleOffsetHeight, u_MeshResolution.x, s_heightTexture);
 	tileZ += z * u_tileSize.z;
+	zOffset = distort(zOffset, tilePos, u_tileDistortion.xy) * u_tileSize.z;
 
 //lighting
 
 //compose
-	worldPosition.z = tileZ;
+	worldPosition.z = tileZ + zOffset;
 	float distFade = 1.0 - smoothstep(u_TileFillOpacityTransition.x, u_TileFillOpacityTransition.y, length(worldPosition.xyz));
 	float biasKm = max(0.010, max((2.0 / 256.0) * (u_tileMax.x - u_tileMin.x), 0.002 * u_NearFarFocus.z));
 	float biasScalar = max(0.5, 1.0 - biasKm / length(worldPosition));
@@ -66,9 +67,6 @@ mat4 viewMat = u_view;
 	vec4 projected = mul(u_proj, mul(viewMat, vec4(biasedPosition.xyz, 1.0)));
 	vec4 depth = projected;
 	vec4 tilePosition = vec4(tilePos, 0.0, 0.0);
-	float inX = inRange(tilePosition.x, u_TileVertClip.x, u_TileVertClip.z);
-	float inY = inRange(tilePosition.y, u_TileVertClip.y, u_TileVertClip.w);
-	if (inX * inY == 0.0) { projected = vec4(0, 0, 0, 0); }
 	gl_Position = projected;
 
 v_texcoord4 = vecPattern.xyzw;

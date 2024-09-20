@@ -19,7 +19,7 @@ uniform vec4 s_DashSampler_Res;
 uniform vec4 u_FogTransition;
 uniform vec4 u_FogColor;
 uniform vec4 u_TileFragClip;
-uniform vec4 u_vectorFade;
+uniform vec4 u_PackedParams;
 void main ()
 {
   vec4 fragColor_1;
@@ -132,7 +132,7 @@ void main ()
   ) * u_FogColor.w));
   mediump vec4 tmpvar_31;
   tmpvar_31.xyz = fragColor_1.xyz;
-  tmpvar_31.w = ((tmpvar_28.w * u_vectorFade.x) * v_color1.x);
+  tmpvar_31.w = ((tmpvar_28.w * u_PackedParams.y) * v_color1.x);
   bgfx_FragData[0] = tmpvar_31;
   bgfx_FragData[1] = vec4(0.0, 0.0, 0.0, 0.0);
 }

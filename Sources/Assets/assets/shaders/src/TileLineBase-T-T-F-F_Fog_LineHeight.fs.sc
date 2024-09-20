@@ -34,7 +34,7 @@ uniform vec4 u_TileFragClip;
 uniform vec4 u_p1p2;
 uniform vec4 u_PrevNext;
 uniform vec4 u_params;
-uniform vec4 u_vectorFade;
+uniform vec4 u_PackedParams;
 uniform vec4 u_TileLineOpacityTransition;
 uniform vec4 u_NearFarFocus;
 
@@ -115,7 +115,7 @@ vec4 fragColor = (casingColor.a == 0.0) ? lineColor : vec4(mix(casingColor.rgb, 
 fragColor.rgb = fog(fragColor.rgb, u_FogColor, u_FogTransition.xy, fogDist.x);
 
 //compose
-gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * u_vectorFade.r * distFade.x);
+gl_FragData[0] = vec4(fragColor.rgb, fragColor.a * u_PackedParams.y * distFade.x);
 gl_FragData[1] = vec4(0, 0, 0, 0);
 
 
