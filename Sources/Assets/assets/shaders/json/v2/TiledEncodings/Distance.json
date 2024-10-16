@@ -1,0 +1,25 @@
+{
+  "transfers": [
+    {
+      "name": "distance",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "float distance = distToEye / far;"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "gl_FragColor.xy = vec2(distance, distance * distance);"
+      ],
+      "section": "COMPOSE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": []
+}

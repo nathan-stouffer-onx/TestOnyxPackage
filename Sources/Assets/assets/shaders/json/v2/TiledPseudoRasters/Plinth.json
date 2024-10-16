@@ -1,0 +1,109 @@
+{
+  "inputs": [
+    {
+      "name": "position",
+      "type": "VEC3"
+    }
+  ],
+  "transfers": [
+    {
+      "name": "worldPosition",
+      "type": "VEC3"
+    },
+    {
+      "name": "uv",
+      "type": "VEC2"
+    },
+    {
+      "name": "elevation",
+      "type": "FLOAT"
+    },
+    {
+      "name": "distToEye",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <common.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "#include <layers.sc>",
+        "#include <derivatives.sc>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "float extent = u_PackedParams.x;",
+        "float elevation = 0.0;",
+        "float tileZ = u_TileMin.z + (position.z * extent);",
+        "vec2 uv = position.xy;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "// lerp between TileMin and TileMax. TileMin is (xPos, yPos, skirt offset); TileMax is (xPos, yPos, _)",
+        "vec3 worldPosition = vec3(mix(u_TileMin.xy, u_TileMax.xy, uv), tileZ);",
+        "float distToEye = length(worldPosition);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "gl_Position = mul(u_proj, mul(u_view, vec4(worldPosition, 1.0)));"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "vec3 normal = vec3(0, 0, 1);"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec4 fragColor = vec4(0, 0, 0, 0);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "gl_FragColor = fragColor;"
+      ],
+      "section": "COMPOSE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_NearFarFocus",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_TileMin",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_TileMax",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_PackedParams",
+      "type": "VEC4",
+      "comment": "packed as (extent, _, _, _)"
+    }
+  ]
+}

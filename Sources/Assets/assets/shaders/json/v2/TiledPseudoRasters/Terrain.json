@@ -1,0 +1,87 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sc>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec2 distortion = u_PackedTerrainParams.xy;",
+        "float exaggeration = u_PackedTerrainParams.z;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "elevation = elevationAtVS(uv, u_ScaleOffsetTerrain, s_Terrain);",
+        "float z = distort(elevation, uv, distortion);",
+        "tileZ += z * exaggeration;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "// sample elevation in the fragment shader so low detail meshes don't impact elevation precision",
+        "// clamping the uv to [0, 1] should be unnecessary but (for some unknown reason) it prevents artifacts at tile boundaries when dynamic contours are enabled",
+        "elevation = elevationAtFS(clamp(uv, vec2(0.0, 0.0), vec2(1.0, 1.0)), u_ScaleOffsetTerrain, s_Terrain);",
+        "normal = normalAt(uv, exaggeration, distortion, s_Terrain, u_ScaleOffsetTerrain, s_TerrainRes.z);"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec3 eyeDir = normalize(-worldPosition.xyz);",
+        "float camDown = max(0.0, dot(eyeDir, vec3(0,0,1)));",
+        "vec3 lightDir = vec3(eyeDir.y * 0.5, -eyeDir.x * 0.5, max(0.7 * (1.0 - camDown), 0.2));",
+        "float nDotL = dot(normal.xyz, lightDir);",
+        "vec3 reflection = normalize(2.0 * normal.xyz * nDotL - lightDir);",
+        "float rDotV = clamp(dot(reflection, eyeDir), 0, 1);",
+        "float strength = u_LightStrengthPow.x;",
+        "float power = u_LightStrengthPow.y;",
+        "float vertDim = 1.0 - max(0.0, dot(vec3(0,0,1), normal.xyz)); //reduce the strenth as things approach straight vertical",
+        "vertDim *= 2.0;",
+        "float heightFade = max(0.0, min(1.0, (-worldPosition.z - 5.0) / 100.0)); //fade out the shading as we get close to the terrain and make sure its off completely when closer",
+        "fragColor.rgb += pow(rDotV, power) * strength * (vertDim * 0.9 + 0.1) * heightFade;",
+        "//the following lines are helpful when debugging to let us see normal/height/raw height easily in app",
+        "//vec3 res = gl_FragColor.rgb;",
+        "//if(u_LightStrengthPow.z > 0.5) res = normal.xyz * 0.5 + 0.5;",
+        "//if(u_LightStrengthPow.z > 1.0) { float z = worldPosition.z - u_TileMin.z; res = vec3(z,z,z);}",
+        "//if(u_LightStrengthPow.z > 1.5) res = texture2D(s_Terrain, uv * u_ScaleOffsetTerrain.z + u_ScaleOffsetTerrain.xy).xyz;",
+        "//gl_FragColor.rgb = res;"
+      ],
+      "section": "LIGHTING",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_Terrain",
+      "type": "TEXTURE",
+      "anisoFilter": true
+    },
+    {
+      "name": "u_PackedTerrainParams",
+      "type": "VEC4",
+      "comment": "packed as (distortion at tile min, distortion at tile max, exaggeration, mesh resolution)"
+    },
+    {
+      "name": "u_ScaleOffsetTerrain",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_LightStrengthPow",
+      "type": "VEC3",
+      "vec3": {
+        "x": 0.15,
+        "y": 0.5,
+        "z": 0.0
+      }
+    }
+  ]
+}

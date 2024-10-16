@@ -1,0 +1,45 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "vec3 texSample(const int x, const int y, vec2 uv, sampler2D tex, vec4 res)",
+        "{",
+        "vec2 st = uv.xy + vec2(x,y) * res.zw;",
+        "return texture2D(tex, st).rgb;",
+        "}"
+      ],
+      "section": "FUNCTIONS",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "float strength = u_PackedSharpenParams.x;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec2 pixelStep = s_ColorRes.zw;",
+        "vec3 sharpened = 9.0 * texture2D(s_Color, uv).rgb;",
+        "for (float i = -1.0; i <= 1.0; ++i)",
+        "{",
+        "for (float j = -1.0; j <= 1.0; ++j)",
+        "{",
+        "if (i != 0.0 || j != 0.0) { sharpened -= texSample(-1, -1, uv, s_Color, s_ColorRes); }",
+        "}",
+        "}",
+        "fragColor.rgb = mix(fragColor.rgb, sharpened, strength);"
+      ],
+      "section": "LIGHTING",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_PackedSharpenParams",
+      "type": "VEC4",
+      "comment": "packed as (strength, _, _, _)"
+    }
+  ]
+}

@@ -48,7 +48,7 @@
         "\tfloat biasedDist = dist - u_viewshedBias0.x; // simple depth bias",
         "\tfloat cubemapDist = cubemapRayTo(viewshedPos, pixelPos);",
         "\tfloat inRange = float(dist < range);",
-        "\tfloat isVisible = abs(inverted - float(biasedDist < cubemapDist));",
+        "\tfloat isVisible = abs(inverted - float(biasedDist <= cubemapDist));",
         "\tfloat grey = (terrainColor.r + terrainColor.g + terrainColor.b) / 3.0;",
         "\tvec3 color = grey * tint.rgb;",
         "\t// compute the strength to apply to the the viewshed color",

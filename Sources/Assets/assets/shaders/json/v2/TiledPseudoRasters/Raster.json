@@ -1,0 +1,26 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "fragColor = blend(fragColor, raster_layer(uv, s_Raster, u_RasterScaleOffset, u_PackedRasterParams));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_Raster",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_RasterScaleOffset",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_PackedRasterParams",
+      "type": "VEC4",
+      "comment": "packed as (opacity, _, _, _)"
+    }
+  ]
+}

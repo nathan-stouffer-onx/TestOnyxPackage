@@ -1,0 +1,43 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sc>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "vec2 distortion = u_PackedTerrainParams.xy;",
+        "float exaggeration = u_PackedTerrainParams.z;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "float elevation = elevationAtVS(uv, u_ScaleOffsetTerrain, s_Terrain);",
+        "float z = distort(elevation, uv, distortion);",
+        "tileZ += z * exaggeration;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_Terrain",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_ScaleOffsetTerrain",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_PackedTerrainParams",
+      "type": "VEC4",
+      "comment": "packed as (distortion at tile min, distortion at tile max, exaggeration, mesh resolution)"
+    }
+  ]
+}

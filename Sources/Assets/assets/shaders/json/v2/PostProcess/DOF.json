@@ -1,0 +1,31 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "vec4 depthPx = texture2D(s_Depth, uv);",
+        "float depthDist = abs(u_DOFParams.x - depthPx.r);",
+        "float blurDist = smoothstep(u_DOFParams.y * 0.5, 1.0, abs(u_DOFParams.x - depthPx.r));",
+        "float focus = step(u_DOFParams.y, depthDist);",
+        "float spread = u_DOFParams.z;",
+        "vec4 blurred = blur(uv, s_Color, s_ColorRes, spread * clamp(blurDist * 1000.0, 0.0, 1.0));",
+        "fragColor.rgb = mix(fragColor.rgb, blurred.rgb, u_DOFParams.w /* * focus */);",
+        "// uncomment these 2 lines to show DOF params",
+        "//fragColor.r = mix(depthPx.r, fragColor.r, u_DOFParams.w);",
+        "//fragColor.b = mix(blurDist, fragColor.b, u_DOFParams.w);"
+      ],
+      "section": "LIGHTING",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_DOFParams",
+      "type": "VEC4",
+      "comment": "packed as ( , , , )"
+    },
+    {
+      "name": "s_Depth",
+      "type": "TEXTURE"
+    }
+  ]
+}

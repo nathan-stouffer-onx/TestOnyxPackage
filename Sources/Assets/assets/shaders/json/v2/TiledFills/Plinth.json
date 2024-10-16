@@ -1,0 +1,195 @@
+{
+  "inputs": [
+    {
+      "comment": "two vec2s packed in a vec4 as (tile coordinates, style coordinates)",
+      "name": "uv_style",
+      "type": "VEC4"
+    }
+  ],
+  "transfers": [
+    {
+      "name": "worldPosition",
+      "type": "VEC3",
+      "swizzle": "xyz"
+    },
+    {
+      "name": "tilePosition",
+      "type": "VEC2"
+    },
+    {
+      "name": "depth",
+      "type": "VEC4"
+    },
+    {
+      "name": "vecColor",
+      "type": "VEC4"
+    },
+    {
+      "name": "vecPattern",
+      "type": "VEC4"
+    },
+    {
+      "name": "distFade",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <common.sh>",
+        "#include <math.sc>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec2 tilePos = uv_style.xy;",
+        "float tileZ = u_TileMin.z;",
+        "float zOffset = u_PackedParams.x;",
+        "vec2 styleCoords = uv_style.zw;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "// lerp between TileMin and TileMax. TileMin is (xPos, yPos, skirt offset); TileMax is (xPos, yPos, _)",
+        "vec3 worldPosition = vec3(mix(u_TileMin.xy, u_TileMax.xy, tilePos), tileZ + zOffset);",
+        "float distToEye = length(worldPosition);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "vec4 vecPattern = texture2DLod(s_PatternCoords, styleCoords, 0);",
+        "vecPattern.zw = vecPattern.zw * s_PatternsRes.xy;",
+        "vec4 vecColor = texture2DLod(s_Colors, styleCoords, 0);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "float distFade = 1.0 - smoothstep(u_Opacity.x, u_Opacity.y, distToEye);"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "float biasKm = max(0.010, max((2.0 / 256.0) * (u_TileMax.x - u_TileMin.x), 0.002 * u_NearFarFocus.z));",
+        "float biasScalar = max(0.5, 1.0 - biasKm / distToEye);",
+        "vec3 biasedPosition = worldPosition * biasScalar;",
+        "vec4 projected = mul(u_proj, mul(u_view, vec4(biasedPosition, 1.0)));",
+        "vec4 depth = projected;"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "vec2 tilePosition = tilePos;",
+        "gl_Position = projected;"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "float inX = inRange(tilePosition.x, u_FragClip.x, u_FragClip.z);",
+        "float inY = inRange(tilePosition.y, u_FragClip.y, u_FragClip.w);",
+        "if (inX * inY == 0.0) { discard; }"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "// assign worldspace pattern",
+        "vec2 normalized = (depth.xy / depth.w) * 0.5f + 0.5f;",
+        "vec2 worldUV = worldPosition.xy + u_EyePos.xy;",
+        "float vectorLevel = 20.0 - u_PackedParams.y;",
+        "worldUV *= 1000.0;",
+        "worldUV /= pow(2.0, vectorLevel);",
+        "vec2 uvOffset = vec2(mod(worldUV.x, vecPattern.z), mod(worldUV.y, vecPattern.w)) * s_PatternsRes.zw;",
+        "vec4 pattern = texture2DLod(s_Patterns, vecPattern.xy + uvOffset, 0);"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "// assign screenspace pattern",
+        "//vec2 normalized = (depth.xy / depth.w) * 0.5f + 0.5f;",
+        "//vec2 screenPosition = normalized.xy * u_viewRect.zw;",
+        "//vec2 uvOffset = vec2(mod(screenPosition.x, vecPattern.z), mod(screenPosition.y, vecPattern.w)) * s_PatternsRes.zw;",
+        "//vec4 pattern = texture2DLod(s_Patterns, vecPattern.xy + uvOffset, 0);"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec4 fragColor = vecColor * pattern;"
+      ],
+      "section": "LIGHTING",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "gl_FragColor = vec4(fragColor.xyz, fragColor.a * u_Opacity.z * distFade);"
+      ],
+      "section": "COMPOSE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_Colors",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "s_PatternCoords",
+      "type": "TEXTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "name": "s_Patterns",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_NearFarFocus",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_EyePos",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_TileMin",
+      "type": "VEC3",
+      "comment": "packed as (x, y, skirt offset)"
+    },
+    {
+      "name": "u_TileMax",
+      "type": "VEC3",
+      "comment": "packed as (x, y, 1)"
+    },
+    {
+      "name": "u_Opacity",
+      "type": "VEC3",
+      "comment": "x and y denote the range over which the opacity gradient is applied. z is an opacity multiplier"
+    },
+    {
+      "name": "u_PackedParams",
+      "type": "VEC4",
+      "comment": "packed as (z offset, frame zoom, _, _)"
+    },
+    {
+      "name": "u_FragClip",
+      "type": "VEC4"
+    }
+  ]
+}

@@ -6,19 +6,7 @@
         "filename": "components/BillboardBase.json"
     },
     {
-        "filename": "components/LineBase.json"
-    },
-    {
-        "filename": "components/TileLineBase.json"
-    },
-    {
-        "filename": "components/TileFillBase.json"
-    },
-    {
         "filename": "components/Billboard.json"
-    },
-    {
-        "filename": "components/DepthWrite.json"
     },
     {
         "filename": "components/DirectionalLight.json"
@@ -27,16 +15,10 @@
         "filename": "components/IntersectShade.json"
     },
     {
-        "filename": "components/Line.json"
-    },
-    {
         "filename": "components/ElevationShade.json"
     },
     {
         "filename": "components/Hillshade.json"
-    },
-    {
-        "filename": "components/SDF.json"
     },
     {
         "filename": "components/SlopeAngleShade.json"
@@ -56,17 +38,8 @@
         "filename": "components/ContourLine.json"
     },
     {
-        "filename": "components/VertColor.json"
-    },
-    {
         "filename": "components/VertHeight.json"
     },
-    {
-        "filename": "components/FillHeight.json"
-    },
-    {
-        "filename": "components/LineHeight.json"
-    }, 
     {
         "filename": "components/Fog.json"
     },
@@ -77,50 +50,15 @@
         "filename": "components/Viewshed.json"
     },
     {
-        "comment" : "is this in use?",
-        "filename": "components/Vector.json"
-    },
-    {
-        "filename": "components/VectorHeight.json"
-    },
-    {
         "filename": "components/FixedSize.json"
     },
     {
         "filename": "components/TransformSRT.json"
     },
     {
-        "filename": "components/GaussBlur.json"
-    },
-    {
         "filename": "components/ColorOnlyQuatBase.json"
     },
     {
         "filename": "components/DepthBias.json"
-    },
-    {
-        "filename": "components/IconBase.json"
-    },
-    {
-        "filename": "components/IconBillboard.json"
-    },
-    {
-        "filename": "components/NinePatch.json"
-    },
-    {
-        "filename": "components/ParticleUpdate.json"
-    },
-    {
-        "filename": "components/ParticleDraw.json"
-    },
-    {
-        "filename": "components/Sharpen.json"
-    },
-    {
-        "filename": "components/Blit.json"
-    },
-    {
-        "componentName": "DOF",
-        "filename": "components/DOF.json"
     }
 ]

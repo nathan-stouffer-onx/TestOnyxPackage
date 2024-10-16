@@ -39,7 +39,17 @@
       "type": "Vertex"
     },
     {
-      "data": "normal.xyz = normalAt(texcoords.xy, u_tileSize.x, tileDistortion.xy, s_heightTexture, scaleOffsetHeight, s_heightTexture_Res.z);",
+      "lines": [
+        "// sample elevation in the fragment shader so low detail meshes don't impact elevation precision",
+        "// clamping the texcoords to [0, 1] should be unnecessary but (for some unknown reason) it prevents artifacts at tile boundaries when dynamic contours are enabled",
+        "worldPosition.w = elevationAtFS(clamp(texcoords.xy, vec2(0.0, 0.0), vec2(1.0, 1.0)), u_ScaleOffsetHeight, s_heightTexture);"
+      ],
+      "position": "Main",
+      "type": "Pixel",
+      "positionOffset": -1
+    },
+    {
+      "data": "vec3 normal = normalAt(texcoords.xy, u_tileSize.x, tileDistortion.xy, s_heightTexture, scaleOffsetHeight, s_heightTexture_Res.z);",
       "position": "Main",
       "type": "Pixel",
       "positionOffset": -1,
@@ -48,7 +58,6 @@
       }
     },
     {
-      "data1": "//gl_FragData[0] = vec4(normal.xyz * 0.5 + 0.5, 1.0);",
       "lines": [
         "vec3 eyeDir = normalize(-worldPosition.xyz);",
         "float camDown = max(0.0, dot( eyeDir, vec3(0,0,1)));",
@@ -63,13 +72,13 @@
         "float vertDim = 1.0 - max(0.0, dot(vec3(0,0,1), norm.xyz)); //reduce the strenth as things approach straight vertical",
         "vertDim *= 2.0;",
         "float heightFade = max(0.0, min(1.0, (-worldPosition.z - 5.0) / 100.0)); //fade out the shading as we get close to the terrain and make sure its off completely when closer",
-        "gl_FragData[0].xyz += pow(rDotV, power) * strength * (vertDim * 0.9 + 0.1) * heightFade;",
+        "gl_FragColor.rgb += pow(rDotV, power) * strength * (vertDim * 0.9 + 0.1) * heightFade;",
         "//the following lines are helpful when debugging to let us see normal/height/raw height easily in app",
-        "//vec3 res = gl_FragData[0].xyz;",
+        "//vec3 res = gl_FragColor.rgb;",
         "//if(u_lightStrengthPow.z > 0.5) res = norm.xyz * 0.5 + 0.5;",
         "//if(u_lightStrengthPow.z > 1.0) { float z = worldPosition.z - u_tileMin.z; res = vec3(z,z,z);}",
         "//if(u_lightStrengthPow.z > 1.5) res = texture2D(s_heightTexture, texcoords.xy * scaleOffsetHeight.z + scaleOffsetHeight.xy).xyz;",
-        "//gl_FragData[0].xyz = res;"
+        "//gl_FragColor.rgb = res;"
       ],
       "position": "Compose",
       "type": "Pixel",

@@ -1,0 +1,37 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "fragColor = blend(fragColor, intersect_layer(u_IntersectTint, normal, elevation, u_PackedIntersectParams, s_SlopeAngleShadeTexture, s_SlopeAspectShadeTexture, s_ElevationShadeTexture, s_ElevationShadeTextureRes));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_IntersectTint",
+      "type": "COLOR"
+    },
+    {
+      "name": "u_PackedIntersectParams",
+      "type": "VEC4",
+      "comment": "packed as (inverted, max normal z for slope aspect, elevation extents -- a vec2)"
+    },
+    {
+      "name": "s_SlopeAngleShadeTexture",
+      "type": "TEXTURE",
+      "anisoFilter": false
+    },
+    {
+      "name": "s_SlopeAspectShadeTexture",
+      "type": "TEXTURE",
+      "anisoFilter": false
+    },
+    {
+      "name": "s_ElevationShadeTexture",
+      "type": "TEXTURE",
+      "anisoFilter": false
+    }
+  ]
+}

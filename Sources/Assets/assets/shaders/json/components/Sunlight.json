@@ -21,6 +21,13 @@
   "chunks": [
     {
       "lines": [
+          "#include <globe.sc>"
+      ],
+      "position": "Includes",
+      "type": "Vertex_and_Pixel"
+    },
+    {
+      "lines": [
         "\tvec4 sunUV = vec4(u_sunTileMin.xy + (u_sunTileMax.xy - u_sunTileMin.xy) * texcoords.xy, 0,0);",
         "\tvec4 sunDir = vec4(calcSunDir(u_SunTimeData.x, u_SunTimeData.y), 0);"
       ],

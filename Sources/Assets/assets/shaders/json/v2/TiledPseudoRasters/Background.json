@@ -1,0 +1,17 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "fragColor = blend(fragColor, u_BackgroundColor);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_BackgroundColor",
+      "type": "COLOR"
+    }
+  ]
+}

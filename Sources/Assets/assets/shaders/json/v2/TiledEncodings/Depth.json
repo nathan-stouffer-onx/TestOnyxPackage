@@ -1,0 +1,31 @@
+{
+  "transfers": [
+    {
+      "name": "depth",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "float depth = 0.5 * (1.0 + gl_Position.z / gl_Position.w);"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "float d = depth * 256.0;",
+        "float r = floor(d);",
+        "d = (d - r) * 256.0;",
+        "float g = floor(d);",
+        "d = (d - g) * 256.0;",
+        "float b = floor(d);",
+        "gl_FragColor = vec4(r / 256.0, g / 256.0, b / 256.0, 1.0);"
+      ],
+      "section": "COMPOSE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": []
+}

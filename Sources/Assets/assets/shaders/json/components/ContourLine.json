@@ -35,8 +35,8 @@
     {
       "lines": [
         "float contourFade = 1.0 - smoothstep(u_ContourFade.x, u_ContourFade.y, length(worldPosition.xyz));",
-        "fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w, contourFade, u_NearFarFocus.z, length(worldPosition));",
-        "fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w, contourFade, u_NearFarFocus.z, length(worldPosition));"
+        "fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor0, u_ContourParams0, worldPosition.w, contourFade, u_NearFarFocus.z, length(worldPosition.xyz));",
+        "fragColor.rgb = calcContour(fragColor.rgb, u_ContourColor1, u_ContourParams1, worldPosition.w, contourFade, u_NearFarFocus.z, length(worldPosition.xyz));"
       ],
       "position": "Main",
       "positionOffset": 1,

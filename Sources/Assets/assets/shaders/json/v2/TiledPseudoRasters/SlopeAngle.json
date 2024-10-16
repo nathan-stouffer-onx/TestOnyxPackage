@@ -1,0 +1,18 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "fragColor = blend(fragColor, slope_angle_layer(normal, s_SlopeAngleGradient));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_SlopeAngleGradient",
+      "type": "TEXTURE",
+      "anisoFilter":  false
+    }
+  ]
+}

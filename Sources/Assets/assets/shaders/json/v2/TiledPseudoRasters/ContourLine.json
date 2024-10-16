@@ -1,0 +1,32 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "#include <derivatives.sc>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "fragColor = blend(fragColor, contour_line_layer(u_ContourColor, u_ContourFade.xy, u_ContourParams, elevation, u_NearFarFocus.z, distToEye));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_ContourParams",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_ContourColor",
+      "type": "COLOR"
+    },
+    {
+      "name": "u_ContourFade",
+      "type": "VEC2"
+    }
+  ]
+}

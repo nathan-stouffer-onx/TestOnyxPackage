@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    {
+      "name": "position",
+      "type": "VEC3"
+    },
+    {
+      "name": "texcoords",
+      "type": "VEC4"
+    }
+  ],
+  "transfers": [
+    {
+      "name": "texcoords",
+      "type": "VEC4"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <common.sh>",
+        "#include <postprocess.sc>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "position.xy = mix(u_Corners.xy, u_Corners.zw, position.xy);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "gl_Position = mul(u_proj, mul(u_view, vec4(position, 1.0)));"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "vec2 uv = texcoords.xy;",
+        "vec4 fragColor = vec4(texture2D(s_Color, uv).rgb, 1.0);"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "gl_FragColor = fragColor;"
+      ],
+      "section": "COMPOSE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_Corners",
+      "type": "VEC4",
+      "comment": "packed as (top left, bottom right)"
+    },
+    {
+      "name": "s_Color",
+      "type": "TEXTURE"
+    }
+  ]
+}

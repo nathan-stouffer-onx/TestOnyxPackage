@@ -85,15 +85,20 @@
 
     "chunks": [
     {
-        "comment" : "#include \"layers.sc\"",
-
         "lines":
         [
-            "#include <../examples/common/common.sh>"
-            , "#include \"layers.sc\""
+            "#include <common.sh>"
         ],
         "position": "Includes",
         "type": "Vertex_and_Pixel"
+    },
+    {
+        "lines":
+        [
+            "#include <layers.sc>"
+        ],
+        "position": "Includes",
+        "type": "Pixel"
     },
     {
         "data": "position.xy = mul(u_model[0], vec4(position.xy, 0, 1)).xy;  // Preserve Z as depth",

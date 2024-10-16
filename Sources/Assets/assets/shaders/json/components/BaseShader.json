@@ -27,14 +27,6 @@
             }
         },
         {
-            "comment": "existing: a_normal",
-            "alias": "normal",
-            "dataType": "vec4",
-            "conditional": {
-                "ifBoolTrue": "Normal"
-            }
-        },
-        {
             "comment": "existing: a_tangent",
             "alias": "tangent",
             "dataType": "vec4",
@@ -49,11 +41,6 @@
             "conditional": {
                 "ifBoolTrue": "Tangent"
             }
-        },
-        {
-            "comment": "existing: a_texcoords",
-            "alias": "texcoords",
-            "dataType": "vec4"
         }
     ],
     "outputs": [
@@ -64,21 +51,6 @@
             "swizzle": "xyzw",
             "conditional": {
                 "ifBoolTrue": "PositionOutput"
-            }
-        },
-        {
-            "comment": "Depth output; existing v_color4",
-            "alias": "depth",
-            "dataType": "vec4",
-            "conditional": {
-                "ifBoolTrue": "TransformPosition"
-            }
-        },
-        {
-            "alias": "normal",
-            "dataType": "vec3",
-            "conditional": {
-                "ifBoolTrue": "Normal"
             }
         },
         {
@@ -103,15 +75,15 @@
     "chunks": [
         {
             "lines": [
-                "#include <common.sh>",
-                "#include \"layers.sc\""
+                "#include <common.sh>"
             ],
             "position": "Includes",
             "type": "Vertex_and_Pixel"
         },
         {
             "lines": [
-                "#include \"derivatives.sc\""
+                "#include <layers.sc>",
+                "#include <derivatives.sc>"
             ],
             "position": "Includes",
             "type": "Pixel"
@@ -122,7 +94,8 @@
                 "\tvec2 tileCoord = mix(u_tileMin.xy, u_tileMax.xy, position.xy);",
                 "\tfloat baseHeight = u_tileMin.z + (position.z * u_tileMax.z);",
                 "\tvec4 worldPosition = vec4(tileCoord, baseHeight, 0.0);",
-                "\tvec3 vertexPosition = worldPosition.xyz;"
+                "\tvec3 vertexPosition = worldPosition.xyz;",
+                "\tvec4 texcoords = vec4(position.xy, 0.0, 0.0);"
             ],
             "position": "Main",
             "type": "Vertex",
@@ -142,8 +115,7 @@
         {
             "comment": "TODO figure out a way to have positionOffset = 0 so other components easily override base shader behavior",
             "lines": [
-                "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(vertexPosition.xyz, 1.0)));",
-                "\tvec4 depth = projected;"
+                "\tvec4 projected = mul(u_proj, mul(viewMat, vec4(vertexPosition.xyz, 1.0)));"
             ],
             "position": "Compose",
             "positionOffset": 1,
@@ -161,14 +133,6 @@
             "type": "Vertex",
             "conditional": {
                 "ifBoolTrue": "TransformPosition"
-            }
-        },
-        {
-            "data": "normal = mul(u_model[0], vec4(normal.xyz, 0.0));",
-            "position": "Main",
-            "type": "Vertex",
-            "conditional": {
-                "ifBoolTrue": "Normal"
             }
         },
         {
@@ -196,15 +160,7 @@
         },
         {
             "lines": [
-                "\tgl_FragData[0] = fragColor;",
-                "\t//scaling from -1,1 to 0,1, but I suspect that may only be needed for opengl?",
-                "\tfloat d = ((depth.z / depth.w) * 0.5 + 0.5) * 256.0;",
-                "\tfloat r = floor(d);",
-                "\td = (d - r) * 256.0;",
-                "\tfloat g = floor(d);",
-                "\td = (d - g) * 256.0;",
-                "\tfloat b = floor(d);",
-                "\tgl_FragData[1] = vec4(r / 256.0, g / 256.0, b / 256.0, 1.0);"
+                "\tgl_FragColor = fragColor;"
             ],
             "position": "Compose",
             "type": "Pixel"

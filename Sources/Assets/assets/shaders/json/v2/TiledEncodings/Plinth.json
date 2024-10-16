@@ -1,0 +1,62 @@
+{
+  "inputs": [
+    {
+      "name": "position",
+      "type": "VEC3"
+    }
+  ],
+  "transfers": [],
+  "chunks": [
+    {
+      "lines": [
+        "#include <common.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec2 uv = position.xy;",
+        "float extent = u_PackedParams.x;",
+        "float far = u_PackedParams.y;",
+        "float tileZ = u_TileMin.z;",
+        "tileZ += position.z * extent; // adjust for skirt"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "// lerp between tile min and max",
+        "vec3 worldPosition = vec3(mix(u_TileMin.xy, u_TileMax.xy, uv), tileZ);",
+        "float distToEye = length(worldPosition);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "gl_Position = mul(u_proj, mul(u_view, vec4(worldPosition, 1.0)));"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_TileMin",
+      "type": "VEC3",
+      "comment": "tile minimum relative to the eye (min - eye)"
+    },
+    {
+      "name": "u_TileMax",
+      "type": "VEC3",
+      "comment": "tile maximum relative to the eye (max - eye)"
+    },
+    {
+      "name": "u_PackedParams",
+      "type": "VEC4",
+      "comment": "packed as (tile extent, far plane, _, _)"
+    }
+  ]
+}

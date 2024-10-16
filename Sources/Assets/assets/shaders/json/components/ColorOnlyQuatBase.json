@@ -57,14 +57,21 @@
 
     "chunks": [
     {
-        "comment" : "#include \"layers.sc\"",
         "lines":
         [
-            "#include <../examples/common/common.sh>",
-            "#include \"layers.sc\""
+            "#include <common.sh>",
+            "#include <math.sc>"
         ],
         "position": "Includes",
         "type": "Vertex_and_Pixel"
+    },
+    {
+        "lines":
+        [
+            "#include <layers.sc>"
+        ],
+        "position": "Includes",
+        "type": "Pixel"
     },
     { 
         "position": "Main",

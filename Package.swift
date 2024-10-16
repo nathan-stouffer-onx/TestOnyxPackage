@@ -11,8 +11,8 @@ let package = Package(
             name: "OnyxCore",
             targets: [
                 "Assets", "apiLibPackage", "bgfxPackage", "bimgPackage", "bimg_decodePackage", "bxPackage",
-                "coreUtilsPackage", "cryptoPackage", "curlPackage", "onyxPackage", "lucidPackage",
-                "nghttp2Package", "protobufPackage", "shaderPackage", /* "sqlite3Package" ,*/ "sslPackage",
+                "coreUtilsPackage", "onyxPackage", "lucidPackage",
+                "nghttp2Package", "protobufPackage", "shaderPackage", /* "sqlite3Package" ,*/ 
                 "stylingPackage", "testAppPackage", "thirdPartyPackage", "webpPackage",
                 "webpdecoderPackage", "zPackage"
             ]
@@ -48,14 +48,6 @@ let package = Package(
             path: "bx.xcframework.zip"
         ),
         .binaryTarget(
-            name: "cryptoPackage",
-            path: "crypto.xcframework.zip"
-        ),
-        .binaryTarget(
-            name: "curlPackage",
-            path: "curl.xcframework.zip"
-        ),
-        .binaryTarget(
             name: "coreUtilsPackage",
             path: "coreUtils.xcframework.zip"
         ),
@@ -84,10 +76,6 @@ let package = Package(
         //    name: "sqlite3Package",
         //    path: "sqlite3.xcframework.zip"
         // ),
-        .binaryTarget(
-            name: "sslPackage",
-            path: "ssl.xcframework.zip"
-        ),
         .binaryTarget(
             name: "stylingPackage",
             path: "styling.xcframework.zip"
