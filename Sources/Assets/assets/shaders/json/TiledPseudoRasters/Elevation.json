@@ -1,0 +1,56 @@
+{
+  "transfers": [
+    {
+      "name": "reliefElevation",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "float reliefElevation = elevationAtVS(uv, u_ScaleOffsetElevationDem, s_ElevationDem);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "reliefElevation = (meshRes == 1.0) ? elevationAtFS(clamp(uv, vec2(0.0, 0.0), vec2(1.0, 1.0)), u_ScaleOffsetElevationDem, s_ElevationDem) : reliefElevation;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "fragColor = blend(fragColor, elevation_layer(s_ElevationGradient, s_ElevationGradientRes, u_ElevationExtents.xy, reliefElevation));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_ElevationDem",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_ScaleOffsetElevationDem",
+      "type": "VEC4"
+    },
+    {
+      "name": "s_ElevationGradient",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_ElevationExtents",
+      "type": "VEC2"
+    }
+  ]
+}

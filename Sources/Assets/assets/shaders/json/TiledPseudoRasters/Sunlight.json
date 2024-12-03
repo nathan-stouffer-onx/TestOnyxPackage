@@ -1,0 +1,105 @@
+{
+  "transfers": [
+    {
+      "name": "sunDir",
+      "type": "VEC3"
+    },
+    {
+      "name": "sunUV",
+      "type": "VEC2"
+    },
+    {
+      "name": "sunShadowUV",
+      "type": "VEC4"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <globe.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "comment": "Calculate the sun depth uv coords for this vert",
+      "lines": [
+        "vec2 sunUV = mix(u_SunTileMin.xy, u_SunTileMax.xy, uv);",
+        "vec3 sunDir = calcSunDir(u_SunTimeData.x, u_SunTimeData.y);",
+        "vec2 shadowTileCoord = mix(u_SunShadowTileMin.xy, u_SunShadowTileMax.xy, uv);",
+        "vec4 shadowWorldPosition = vec4(shadowTileCoord, u_SunShadowTileMin.z + position.z * extent + height, 1.0);",
+        "vec4 sunShadowUV = mul(u_SunShadowProj, mul(u_SunShadowView, shadowWorldPosition));",
+        "sunShadowUV.z = length(shadowWorldPosition.xyz) / u_SunShadowFarPlane.x;"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "fragColor = blend(fragColor, sunlight_layer(sunShadowUV, sunUV, sunDir, s_SunShadowDistance, normal, u_SunShadowVSMParams.xyz, u_SunShadowStrength.x, u_SunAmbient.x, u_SunShadowBias.x, u_CascadeDebug.x));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "u_SunTimeData",
+      "type": "VEC3",
+      "comment": "{ julianCentury, timeoffset, _ }"
+    },
+    {
+      "name": "u_SunAmbient",
+      "type": "FLOAT"
+    },
+    {
+      "name": "u_SunTileMin",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_SunTileMax",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_SunShadowTileMin",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_SunShadowTileMax",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_SunShadowFarPlane",
+      "type": "FLOAT"
+    },
+    {
+      "name": "u_SunShadowBias",
+      "type": "FLOAT"
+    },
+    {
+      "name": "u_SunShadowStrength",
+      "type": "FLOAT"
+    },
+    {
+      "name": "u_SunShadowView",
+      "type": "MAT4"
+    },
+    {
+      "name": "u_SunShadowProj",
+      "type": "MAT4"
+    },
+    {
+      "name": "s_SunShadowDistance",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_SunShadowVSMParams",
+      "type": "VEC3",
+      "comment": "{ minVariance, lightBleed, blurAmount }"
+    },
+    {
+      "name": "u_CascadeDebug",
+      "type": "FLOAT"
+    }
+  ]
+}

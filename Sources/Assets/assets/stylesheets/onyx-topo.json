@@ -167,7 +167,7 @@
                     360
                 ],
                 "hillshade-altitude": 50,
-                "hillshade-albedo": "rgb(255, 242, 225)",
+                "hillshade-albedo": "#FFF",
                 "hillshade-ambient-intensity": 0,
                 "hillshade-exaggeration": [
                     "interpolate",
@@ -860,6 +860,102 @@
                     20,
                     20
                 ]
+            }
+        },
+        {
+            "id": "water$area_pattern-intermittent$dark",
+            "source": "base",
+            "source-layer": "water_areas",
+            "type": "fill",
+            "minzoom": 2,
+            "filter": [
+                "all",
+                [
+                    "match",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    [
+                        "glacier",
+                        "river",
+                        "stream"
+                    ],
+                    false,
+                    true
+                ],
+                [
+                    "has",
+                    "data:intermittent"
+                ]
+            ],
+            "paint": {
+                "fill-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    0.2,
+                    12,
+                    0.4
+                ],
+                "fill-pattern": "INTERMITTENT_WATER_FILL"
+            }
+        },
+        {
+            "id": "water$area_pattern-basin$dark",
+            "source": "base",
+            "source-layer": "water_areas",
+            "type": "fill",
+            "minzoom": 8,
+            "filter": [
+                "any",
+                [
+                    "==",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    "basin"
+                ],
+                [
+                    "==",
+                    [
+                        "get",
+                        "label"
+                    ],
+                    "Salt Flats"
+                ]
+            ],
+            "paint": {
+                "fill-opacity": 0.3,
+                "fill-pattern": "SALT_FLAT_FILL"
+            }
+        },
+        {
+            "id": "water$area_pattern-wetland$dark",
+            "source": "base",
+            "source-layer": "water_areas",
+            "type": "fill",
+            "minzoom": 4,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    [
+                        "get",
+                        "data:type"
+                    ],
+                    "wetland"
+                ]
+            ],
+            "paint": {
+                "fill-opacity": 0.3,
+                "fill-pattern": "WETLAND_FILL_SMALL"
             }
         },
         {

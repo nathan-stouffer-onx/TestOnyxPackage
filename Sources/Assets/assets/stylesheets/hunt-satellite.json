@@ -1079,7 +1079,16 @@
             "type": "fill",
             "paint": {
                 "fill-color": [ "case", [ "boolean", [ "feature-state", "selected" ] ], "#F00", "hsl(13, 66%, 51%)" ],
-                "fill-pattern": "checker1",
+                "fill-opacity": 0.6
+            }
+        },
+        {
+            "id": "mt_private$fill_pattern",
+            "source-layer": "mt_private",
+            "source": "land",
+            "type": "fill",
+            "paint": {
+                "fill-pattern": [ "case", [ "boolean", [ "feature-state", "selected" ] ], "DOTS_GREEN_LIGHT_FILL", "SAFETY_ZONES_FILL" ],
                 "fill-opacity": 0.6
             }
         },
@@ -1090,7 +1099,16 @@
             "type": "fill",
             "paint": {
                 "fill-color": [ "case", [ "boolean", [ "feature-state", "selected" ] ], "#F00", "#00FF00" ],
-                "fill-pattern": "checker4",
+                "fill-opacity": 0.6
+            }
+        },
+        {
+            "id": "mt_public$fill_pattern",
+            "source-layer": "mt_public",
+            "source": "land",
+            "type": "fill",
+            "paint": {
+                "fill-pattern": [ "case", [ "boolean", [ "feature-state", "selected" ] ], "DOTS_GREEN_LIGHT_FILL", "HASH_GREEN_DARK_FILL" ],
                 "fill-opacity": 0.6
             }
         },
@@ -3479,6 +3497,35 @@
 			"source": "base",
 			"source-layer": "admin_boundaries_label",
 			"type": "symbol"
+		},
+		{
+			"id": "aerial-high-frequency$color_fill",
+			"type": "background",
+			"paint": {
+				"background-color": "rgba(102, 102, 102, 1)",
+				"background-opacity": [
+					"interpolate",
+					[
+						"linear"
+					],
+					[
+						"zoom"
+					],
+					7,
+					0.85,
+					10,
+					0.8,
+					14,
+					0.75
+				]
+			}
+		},
+		{
+			"id": "unavailable$aerial-high-frequency",
+			"type": "background",
+			"paint": {
+				"background-pattern": "NO_RECENT_IMAGERY"
+			}
 		}
-    ]
+	]
 }

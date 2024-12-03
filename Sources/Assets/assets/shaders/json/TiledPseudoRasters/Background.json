@@ -1,0 +1,30 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "fragColor = blend(fragColor, background_layer(uv, u_BackgroundPackedParams, s_BackgroundPatterns, s_BackgroundPatternsRes, u_BackgroundPatternsBounds, u_BackgroundColor));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_BackgroundPatterns",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_BackgroundPatternsBounds",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_BackgroundColor",
+      "type": "COLOR"
+    },
+    {
+      "name": "u_BackgroundPackedParams",
+      "type": "VEC4",
+      "comment": "packed as (opacity, omega, phase in x, phase in y)"
+    }
+  ]
+}

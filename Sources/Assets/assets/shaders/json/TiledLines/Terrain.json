@@ -1,0 +1,50 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "vec2 distortion = u_PackedTerrainParams.xy;",
+        "float exaggeration = u_PackedTerrainParams.z;",
+        "float meshResolution = u_PackedTerrainParams.w;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "// add heights to vertices",
+        "tileZ1 += exaggeration * meshHeightAtPlanes(p1, distortion, u_ScaleOffsetTerrain, meshResolution, s_Terrain);",
+        "tileZ2 += exaggeration * meshHeightAtPlanes(p2, distortion, u_ScaleOffsetTerrain, meshResolution, s_Terrain);",
+        "prevZ += exaggeration * meshHeightAtPlanes(u_PrevNext.xy, distortion, u_ScaleOffsetTerrain, meshResolution, s_Terrain);",
+        "nextZ += exaggeration * meshHeightAtPlanes(u_PrevNext.zw, distortion, u_ScaleOffsetTerrain, meshResolution, s_Terrain);",
+        "z1Offset = exaggeration * distort(z1Offset, tilePos, distortion);",
+        "z2Offset = exaggeration * distort(z2Offset, tilePos, distortion);",
+        "prevZOffset = exaggeration * distort(prevZOffset, tilePos, distortion);",
+        "nextZOffset = exaggeration * distort(nextZOffset, tilePos, distortion);"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_Terrain",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_ScaleOffsetTerrain",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_PackedTerrainParams",
+      "type": "VEC4",
+      "comment": "packed as (distortion at tile min, distortion at tile max, exaggeration, mesh resolution)"
+    }
+  ]
+}

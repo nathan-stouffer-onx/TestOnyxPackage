@@ -134,6 +134,11 @@
             ],
             "type": "raster",
             "tileSize": 256
+        },
+        "snow-areas": {
+            "type": "vector",
+            "url": "https://tileserver.production.onxmaps.com/v1/knowledge-graph/snow-region:geometry,snow-region:location,snow-zone:geometry,snow-zone:location,snowpack-observation:location.json",
+            "promoteId": "id"
         }
     },
     "terrain": {
@@ -1771,34 +1776,93 @@
         },
         {
             "id": "backcountry_ski_board_adventure$line_casing",
-            "type": "line",
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
-            "minzoom": 7,
+            "type": "line",
+            "minzoom": 9,
+            "maxzoom": 22,
             "filter": [
-                "all",
+                "step",
                 [
-                    "has",
-                    "data:backcountry_ski_board"
+                    "zoom"
                 ],
                 [
-                    "match",
+                    "all",
                     [
-                        "get",
-                        "data:submitted_by"
+                        "has",
+                        "data:backcountry_ski_board"
                     ],
                     [
-                        "Beacon Guidebooks"
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        false,
+                        true
                     ],
-                    false,
-                    true
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:source"
+                        ],
+                        [
+                            "Beacon Guidebooks",
+                            "Catamount Trail Association",
+                            "Peaks and Couloirs of Southwest Montana",
+                            "Backcountry Skiing California's Eastern Sierra"
+                        ],
+                        false,
+                        true
+                    ]
+                ],
+                11,
+                [
+                    "all",
+                    [
+                        "has",
+                        "data:backcountry_ski_board"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        false,
+                        true
+                    ]
                 ]
             ],
             "layout": {
-                "line-cap": "round"
+                "line-cap": "round",
+                "line-join": "round",
+                "visibility": "visible"
             },
             "paint": {
-                "line-color": "hsl(0, 0%, 100%)",
+                "line-color": "rgba(255, 255, 255, 1)",
+                "line-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    1,
+                    19,
+                    1,
+                    20,
+                    0.2
+                ],
                 "line-width": [
                     "interpolate",
                     [
@@ -1807,61 +1871,106 @@
                     [
                         "zoom"
                     ],
-                    7,
-                    1.5,
+                    9,
+                    3,
                     18,
-                    8
+                    6.5
                 ]
             }
         },
         {
             "id": "backcountry_ski_board_adventure$line_ascent_exit",
-            "type": "line",
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
-            "minzoom": 7,
+            "type": "line",
+            "minzoom": 9,
+            "maxzoom": 22,
             "filter": [
-                "all",
+                "step",
                 [
-                    "has",
-                    "data:backcountry_ski_board"
+                    "zoom"
                 ],
                 [
-                    "match",
+                    "all",
                     [
-                        "get",
-                        "data:ski_route_type"
+                        "has",
+                        "data:backcountry_ski_board"
                     ],
                     [
-                        "ascent",
-                        "exit"
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        false,
+                        true
                     ],
-                    true,
-                    false
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:source"
+                        ],
+                        [
+                            "Beacon Guidebooks",
+                            "Catamount Trail Association",
+                            "Peaks and Couloirs of Southwest Montana",
+                            "Backcountry Skiing California's Eastern Sierra"
+                        ],
+                        false,
+                        true
+                    ]
                 ],
+                11,
                 [
-                    "match",
+                    "all",
                     [
-                        "get",
-                        "data:submitted_by"
+                        "has",
+                        "data:backcountry_ski_board"
                     ],
                     [
-                        "Beacon Guidebooks"
-                    ],
-                    false,
-                    true
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        false,
+                        true
+                    ]
                 ]
             ],
             "layout": {
+                "line-cap": "round",
                 "line-join": "round",
-                "line-cap": "round"
+                "visibility": "visible"
             },
             "paint": {
+                "line-color": "rgba(132, 46, 125, 1)",
                 "line-dasharray": [
                     2,
-                    1
+                    1.5
                 ],
-                "line-color": "hsl(300, 100%, 25%)",
+                "line-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    1,
+                    19,
+                    1,
+                    20,
+                    0.2
+                ],
                 "line-width": [
                     "interpolate",
                     [
@@ -1870,19 +1979,20 @@
                     [
                         "zoom"
                     ],
-                    7,
-                    1,
+                    9,
+                    1.5,
                     18,
-                    4
+                    4.5
                 ]
             }
         },
         {
-            "id": "backcountry_ski_board_adventure$line_descent_tour",
-            "type": "line",
+            "id": "backcountry_ski_board_adventure$direction_line_ascent_exit",
             "source": "backcountry",
             "source-layer": "rich_content_adventure_line",
-            "minzoom": 7,
+            "type": "symbol",
+            "maxzoom": 22,
+            "minzoom": 12,
             "filter": [
                 "all",
                 [
@@ -1896,35 +2006,171 @@
                         "data:ski_route_type"
                     ],
                     [
-                        "ascent",
-                        "exit"
-                    ],
-                    false,
-                    true
-                ],
-                [
-                    "match",
-                    [
-                        "get",
-                        "data:submitted_by"
-                    ],
-                    [
-                        "Beacon Guidebooks"
+                        "descent"
                     ],
                     false,
                     true
                 ]
             ],
             "layout": {
-                "line-join": "round",
-                "line-cap": "round"
-            },
-            "paint": {
-                "line-dasharray": [
-                    2,
+                "icon-ignore-placement": true,
+                "icon-image": "CHEVRONS_PURPLE",
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    12,
+                    0.5,
+                    15,
+                    0.8,
+                    20,
                     1
                 ],
-                "line-color": "hsl(300, 100%, 25%)",
+                "symbol-placement": "line",
+                "symbol-spacing": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    12,
+                    20,
+                    15,
+                    50,
+                    17,
+                    100
+                ],
+                "visibility": "visible"
+            },
+            "paint": {}
+        },
+        {
+            "id": "backcountry_ski_board_adventure$line_descent_casing",
+            "source": "backcountry",
+            "source-layer": "rich_content_adventure_line",
+            "type": "line",
+            "maxzoom": 22,
+            "minzoom": 9,
+            "filter": [
+                "step",
+                [
+                    "zoom"
+                ],
+                [
+                    "all",
+                    [
+                        "has",
+                        "data:backcountry_ski_board"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        true,
+                        false
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:source"
+                        ],
+                        [
+                            "Beacon Guidebooks",
+                            "Catamount Trail Association",
+                            "Peaks and Couloirs of Southwest Montana",
+                            "Backcountry Skiing California's Eastern Sierra"
+                        ],
+                        false,
+                        true
+                    ]
+                ],
+                11,
+                [
+                    "all",
+                    [
+                        "has",
+                        "data:backcountry_ski_board"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        true,
+                        false
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round",
+                "visibility": "visible"
+            },
+            "paint": {
+                "line-blur": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    1,
+                    11,
+                    2
+                ],
+                "line-color": "rgba(240, 240, 240, 1)",
+                "line-gap-width": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    1,
+                    11,
+                    3,
+                    12,
+                    5,
+                    13,
+                    7,
+                    14,
+                    11,
+                    15,
+                    17
+                ],
+                "line-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    0.3,
+                    15,
+                    0.7
+                ],
                 "line-width": [
                     "interpolate",
                     [
@@ -1933,20 +2179,31 @@
                     [
                         "zoom"
                     ],
-                    7,
+                    9,
+                    1,
+                    15,
+                    1.5
+                ]
+            }
+        },
+        {
+            "id": "backcountry_ski_board_adventure$line_descent",
+            "source": "backcountry",
+            "source-layer": "rich_content_adventure_line",
+            "type": "line",
+            "maxzoom": 22,
+            "minzoom": 9,
+            "filter": [
+                "step",
+                [
+                    "zoom"
+                ],
+                [
+                    "all",
                     [
-                        "match",
-                        [
-                            "get",
-                            "data:ski_route_type"
-                        ],
-                        [
-                            "tour"
-                        ],
-                        1,
-                        1.5
+                        "has",
+                        "data:backcountry_ski_board"
                     ],
-                    18,
                     [
                         "match",
                         [
@@ -1954,11 +2211,211 @@
                             "data:ski_route_type"
                         ],
                         [
-                            "tour"
+                            "descent"
                         ],
-                        2,
-                        4
+                        true,
+                        false
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:source"
+                        ],
+                        [
+                            "Beacon Guidebooks",
+                            "Catamount Trail Association",
+                            "Peaks and Couloirs of Southwest Montana",
+                            "Backcountry Skiing California's Eastern Sierra"
+                        ],
+                        false,
+                        true
                     ]
+                ],
+                11,
+                [
+                    "all",
+                    [
+                        "has",
+                        "data:backcountry_ski_board"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        true,
+                        false
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round",
+                "visibility": "visible"
+            },
+            "paint": {
+                "line-blur": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    11,
+                    0,
+                    14,
+                    2,
+                    15,
+                    3
+                ],
+                "line-color": "rgba(149, 53, 141, 1)",
+                "line-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    0.5,
+                    10,
+                    0.8,
+                    15,
+                    0.5
+                ],
+                "line-width": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    9,
+                    2,
+                    11,
+                    4,
+                    12,
+                    6,
+                    13,
+                    8,
+                    14,
+                    12,
+                    15,
+                    18
+                ]
+            }
+        },
+        {
+            "id": "backcountry_ski_board_adventure$direction_line_descent",
+            "source": "backcountry",
+            "source-layer": "rich_content_adventure_line",
+            "type": "line",
+            "maxzoom": 22,
+            "minzoom": 9,
+            "filter": [
+                "step",
+                [
+                    "zoom"
+                ],
+                [
+                    "all",
+                    [
+                        "has",
+                        "data:backcountry_ski_board"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        true,
+                        false
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:source"
+                        ],
+                        [
+                            "Beacon Guidebooks",
+                            "Catamount Trail Association",
+                            "Peaks and Couloirs of Southwest Montana",
+                            "Backcountry Skiing California's Eastern Sierra"
+                        ],
+                        false,
+                        true
+                    ]
+                ],
+                11,
+                [
+                    "all",
+                    [
+                        "has",
+                        "data:backcountry_ski_board"
+                    ],
+                    [
+                        "match",
+                        [
+                            "get",
+                            "data:ski_route_type"
+                        ],
+                        [
+                            "descent"
+                        ],
+                        true,
+                        false
+                    ]
+                ]
+            ],
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "line-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    11,
+                    0.5,
+                    14,
+                    0.7,
+                    15,
+                    0.8
+                ],
+                "line-pattern": "ARROW_WHITE_LINE",
+                "line-width": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    11,
+                    4,
+                    12,
+                    5,
+                    13,
+                    8,
+                    15,
+                    10
                 ]
             }
         },
@@ -3490,6 +3947,31 @@
             "source": "base",
             "source-layer": "places",
             "type": "symbol"
+        },
+        {
+            "id": "avalanche_observations$snow_observation_icon",
+            "source": "snow-areas",
+            "source-layer": "snowpack-observation:location",
+            "type": "symbol",
+            "minzoom": 10,
+            "layout": {
+                "icon-allow-overlap": true,
+                "icon-image": "SNOW_OBSERVATION",
+                "icon-size": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    10,
+                    0.6,
+                    15,
+                    1
+                ]
+            },
+            "paint": {}
         },
         {
             "filter": [

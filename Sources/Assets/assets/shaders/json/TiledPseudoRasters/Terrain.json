@@ -1,0 +1,52 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "float exaggeration = u_PackedTerrainParams.x;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "elevation = elevationAtVS(uv, u_ScaleOffsetTerrain, s_Terrain);",
+        "height = distort(elevation, uv, distortion);",
+        "tileZ += height * exaggeration;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "// sample elevation in the fragment shader so low detail meshes don't impact elevation precision",
+        "// clamping the uv to [0, 1] should be unnecessary but (for some unknown reason) it prevents artifacts at tile boundaries when dynamic contours are enabled",
+        "elevation = (meshRes == 1.0) ? elevationAtFS(clamp(uv, vec2(0.0, 0.0), vec2(1.0, 1.0)), u_ScaleOffsetTerrain, s_Terrain) : elevation;",
+        "normal = normalAt(uv, extent, distortion, s_Terrain, u_ScaleOffsetTerrain, s_TerrainRes.z);"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_Terrain",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_PackedTerrainParams",
+      "type": "VEC4",
+      "comment": "packed as (exaggeration, _, _, _)"
+    },
+    {
+      "name": "u_ScaleOffsetTerrain",
+      "type": "VEC4"
+    }
+  ]
+}

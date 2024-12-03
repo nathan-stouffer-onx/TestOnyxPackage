@@ -1,0 +1,67 @@
+{
+  "transfers": [
+    {
+      "name": "contourElevation",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "#include <derivatives.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "float contourElevation = elevationAtVS(uv, u_ScaleOffsetContourDem, s_ContourDem);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "contourElevation = (meshRes == 1.0) ? elevationAtFS(clamp(uv, vec2(0.0, 0.0), vec2(1.0, 1.0)), u_ScaleOffsetContourDem, s_ContourDem) : contourElevation;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "fragColor = blend(fragColor, contour_line_layer(u_ContourColor, u_ContourFade.xy, u_ContourParams, contourElevation, u_NearFarFocus.z, distToEye));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_ContourDem",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_ScaleOffsetContourDem",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_ContourParams",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_ContourColor",
+      "type": "COLOR"
+    },
+    {
+      "name": "u_ContourFade",
+      "type": "VEC2"
+    }
+  ]
+}

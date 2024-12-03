@@ -1,0 +1,42 @@
+{
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec3 hillshadeNormal = normalAt(uv, extent, distortion, s_HillshadeDem, u_ScaleOffsetHillshadeDem, s_HillshadeDemRes.z);",
+        "fragColor = blend(fragColor, hillshade_layer(hillshadeNormal, u_HillshadeLightDir.xyz, u_HillshadeAlbedo.rgba, u_HillshadeParams.x, u_HillshadeParams.y));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_HillshadeDem",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_ScaleOffsetHillshadeDem",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_HillshadeLightDir",
+      "type": "VEC3"
+    },
+    {
+      "name": "u_HillshadeAlbedo",
+      "type": "COLOR"
+    },
+    {
+      "name": "u_HillshadeParams",
+      "type": "VEC4",
+      "comment": "{ ambient intensity, exaggeration, _, _ }"
+    }
+  ]
+}

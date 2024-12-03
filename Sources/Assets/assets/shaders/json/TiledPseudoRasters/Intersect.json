@@ -1,0 +1,70 @@
+{
+  "transfers": [
+    {
+      "name": "intersectElevation",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <terrain.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "float intersectElevation = elevationAtVS(uv, u_ScaleOffsetIntersectDem, s_IntersectDem);"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "intersectElevation = (meshRes == 1.0) ? elevationAtFS(clamp(uv, vec2(0.0, 0.0), vec2(1.0, 1.0)), u_ScaleOffsetIntersectDem, s_IntersectDem) : intersectElevation;"
+      ],
+      "section": "INITIALIZE",
+      "shaders": "FRAGMENT"
+    },
+    {
+      "lines": [
+        "vec3 intersectNormal = normalAt(uv, extent, distortion, s_IntersectDem, u_ScaleOffsetIntersectDem, s_IntersectDemRes.z);",
+        "fragColor = blend(fragColor, intersect_layer(u_IntersectTint, intersectNormal, intersectElevation, u_PackedIntersectParams, s_SlopeAngleShadeDem, s_SlopeAspectShadeDem, s_ElevationShadeDem, s_ElevationShadeDemRes));"
+      ],
+      "section": "STRUCTURE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "s_IntersectDem",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "u_ScaleOffsetIntersectDem",
+      "type": "VEC4"
+    },
+    {
+      "name": "u_IntersectTint",
+      "type": "COLOR"
+    },
+    {
+      "name": "u_PackedIntersectParams",
+      "type": "VEC4",
+      "comment": "packed as (inverted, max normal z for slope aspect, elevation extents -- a vec2)"
+    },
+    {
+      "name": "s_SlopeAngleShadeDem",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "s_SlopeAspectShadeDem",
+      "type": "TEXTURE"
+    },
+    {
+      "name": "s_ElevationShadeDem",
+      "type": "TEXTURE"
+    }
+  ]
+}

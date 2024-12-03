@@ -32,23 +32,6 @@
             "maxzoom": 13
         }
     },
-    "expressions": {
-        "exaggeration-expr": {
-            "number": [
-                "interpolate",
-                [
-                    "linear"
-                ],
-                [
-                    "pitch"
-                ],
-                0,
-                0,
-                45,
-                2
-            ]
-        }
-    },
     "layouts": {
         "sym-layout": {
             "symbol-layout": {
@@ -76,16 +59,15 @@
     },
     "terrain": {
         "source": "elevation",
-        "exaggeration": [
-            "context",
-            "exaggeration-expr"
-        ]
+        "exaggeration": 1.5
     },
     "layers": [
         {
             "id": "background$dark",
             "type": "background",
-            "layout": {},
+            "layout": { 
+                "visibility": "none"
+            },
             "paint": {
                 "background-color": [
                     "interpolate",
@@ -116,15 +98,6 @@
                     14,
                     "rgba(237, 235, 202, 1)"
                 ]
-            }
-        },
-        {
-            "id": "hillshade$",
-            "type": "raster",
-            "source": "hillshade",
-            "minzoom": 0,
-            "paint": {
-                "raster-opacity": 0.5
             }
         },
         {
@@ -167,10 +140,9 @@
             }
         },
         {
-            "id": "elevation$shade",
+            "id": "elevation$relief",
             "type": "elevation",
             "source": "elevation",
-            "maxzoom": 12,
             "layout": {
                 "elevation-gradient": [
                     "gradient",
@@ -206,10 +178,90 @@
                     [
                         "zoom"
                     ],
-                    9,
-                    0.2,
-                    12,
+                    6,
+                    0.5,
+                    8,
+                    0.75
+                ]
+            }
+        },
+        {
+            "id": "low$detail$hillshade",
+            "type": "raster",
+            "source": "hillshade",
+            "minzoom": 0,
+            "maxzoom": 9,
+            "effect": {
+                "hillshade-blend-mode": "multiply"
+            },
+            "paint": {
+                "raster-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0.5,
+                    8.5,
                     0
+                ]
+            }
+        },
+        {
+            "id": "dynamic$hillshade",
+            "type": "hillshade",
+            "source": "elevation",
+            "minzoom": 8,
+            "effect": {
+                "raster-blend-mode": "multiply"
+            },
+            "paint": {
+                "hillshade-azimuth": [
+                    "%",
+                    [
+                        "+",
+                        [
+                            "heading"
+                        ],
+                        315
+                    ],
+                    360
+                ],
+                "hillshade-altitude": 50,
+                "hillshade-albedo": "#FFF",
+                "hillshade-ambient-intensity": 0,
+                "hillshade-exaggeration": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    1.5,
+                    9,
+                    2,
+                    10,
+                    3,
+                    15,
+                    1.5
+                ],
+                "hillshade-opacity": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "zoom"
+                    ],
+                    8,
+                    0,
+                    8.5,
+                    0.5
                 ]
             }
         },

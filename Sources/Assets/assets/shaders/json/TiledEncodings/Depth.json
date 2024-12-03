@@ -1,0 +1,32 @@
+{
+  "transfers": [
+    {
+      "name": "depth",
+      "type": "FLOAT"
+    }
+  ],
+  "chunks": [
+    {
+      "lines": [
+        "#include <depth.sh>"
+      ],
+      "section": "INCLUDES",
+      "shaders": "VERTEX_AND_FRAGMENT"
+    },
+    {
+      "lines": [
+        "float depth = 0.5 * (gl_Position.z / gl_Position.w + 1.0);"
+      ],
+      "section": "COMPOSE",
+      "shaders": "VERTEX"
+    },
+    {
+      "lines": [
+        "gl_FragColor = vec4(encode_depth(depth), 1.0);"
+      ],
+      "section": "COMPOSE",
+      "shaders": "FRAGMENT"
+    }
+  ],
+  "uniforms": []
+}
